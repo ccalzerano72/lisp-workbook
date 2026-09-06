@@ -186,28 +186,26 @@ Sei libero di condividere e modificare questo materiale, a condizione di:
   arc=3pt,
   left=12pt, right=12pt, top=10pt, bottom=10pt
 ]
-\textbf{Percorso minimo} (25 esercizi) \minimo\\[2pt]
-Solo i \minimo: un esercizio per ogni concetto chiave del linguaggio.
-Per chi ha poco tempo o vuole una panoramica essenziale.
+
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textcolor{black!80}{\textbf{Percorso minimo}} \minimo & \small\color{black!65} 25 esercizi — un esercizio per concetto chiave \\
+\textcolor{black!80}{\textbf{Percorso standard}} \minimo\ + \standard & \small\color{black!65} 50 esercizi — consigliato per la maggior parte \\
+\textcolor{black!80}{\textbf{Percorso completo}} \minimo\ + \standard\ + \collateral & \small\color{black!65} 148 esercizi — padronanza solida \\
+\end{tabular}
+\renewcommand{\arraystretch}{1.0}
 
 \medskip
-\textbf{Percorso standard} (50 esercizi) \minimo\ + \standard\\[2pt]
-Minimi più gli \standard: copre tutti i concetti con pratica sufficiente.
-Percorso consigliato per la maggior parte degli studenti.
+\small\color{black!70}
+\textbf{\textcolor{black!80}{Suggerimenti:}} esercizi \treStelle+ hanno un hint. Consultalo prima della soluzione.
 
-\medskip
-\textbf{Percorso completo} (148 esercizi) \minimo\ + \standard\ + \collateral\\[2pt]
-Anche i \collateral\ per padronanza solida e preparazione approfondita.
+\smallskip
+\textbf{\textcolor{black!80}{Soluzioni:}}
+\unaStella/\dueStelle\ solo codice\enspace\textcolor{black!40}{|}\enspace
+\treStelle\ commenti inline\enspace\textcolor{black!40}{|}\enspace
+\quattroStelle/\cinqueStelle\ ragionamento e complessità
+\color{black}
 
-\medskip
-\textbf{Suggerimenti}\\[2pt]
-Esercizi \treStelle+ hanno un hint nella sezione apposita. Consultalo prima della soluzione.
-
-\medskip
-\textbf{Soluzioni}\\[2pt]
-\unaStella/\dueStelle: solo codice.
-\treStelle: commenti inline.
-\quattroStelle/\cinqueStelle: ragionamento e complessità.
 \end{tcolorbox}
 
 \clearpage
@@ -242,20 +240,41 @@ Esercizi \treStelle+ hanno un hint nella sezione apposita. Consultalo prima dell
 \markboth{Esercizi}{Esercizi}
 \renewcommand{\thesection}{\arabic{section}}
 
-\vspace*{0.5cm}
-\begin{center}
-\begin{tabular}{@{}ll@{}}
-\minimo\ \textbf{Minimo} & concetto chiave --- percorso rapido (25 esercizi) \\[4pt]
-\standard\ \textbf{Standard} & approfondimento --- percorso consigliato (+25 = 50) \\[4pt]
-\collateral\ \textbf{Collaterale} & consolidamento --- percorso completo (+98 = 148) \\[6pt]
-\unaStella\ Facile \quad
-\dueStelle\ Medio \quad
-\treStelle\ Difficile \quad
-\quattroStelle\ Avanzato \quad
-\cinqueStelle\ Progetto \\
+\vspace*{0.3cm}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2,
+  colframe=black!25,
+  boxrule=0.4pt,
+  arc=3pt,
+  left=12pt, right=12pt, top=10pt, bottom=10pt
+]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}l@{\enspace}l@{\qquad}l@{\enspace}l@{\qquad}l@{\enspace}l@{}}
+\minimo & \small\color{black!70} Minimo &
+\standard & \small\color{black!70} Standard &
+\collateral & \small\color{black!70} Collaterale \\
 \end{tabular}
-\end{center}
-\vspace*{0.5cm}
+
+\vspace{6pt}
+\small\color{black!65}
+\minimo\ 25 esercizi (concetti chiave)\enspace\textcolor{black!30}{|}\enspace
+\standard\ +25 = 50 (consigliato)\enspace\textcolor{black!30}{|}\enspace
+\collateral\ +98 = 148 (completo)
+\color{black}
+
+\vspace{8pt}
+\unaStella\ \small\color{black!70}Facile\color{black}\quad
+\dueStelle\ \small\color{black!70}Medio\color{black}\quad
+\treStelle\ \small\color{black!70}Difficile\color{black}\quad
+\quattroStelle\ \small\color{black!70}Avanzato\color{black}\quad
+\cinqueStelle\ \small\color{black!70}Progetto\color{black}
+\renewcommand{\arraystretch}{1.0}
+\end{tcolorbox}
+
+\vspace*{0.3cm}
 
 \input{parts/02_esercizi}
 
