@@ -26,49 +26,84 @@
 
 % ---- Pagina crediti ------------------------------------------
 \thispagestyle{empty}
-\vspace*{2cm}
+\vspace*{1.5cm}
 
-\noindent\textbf{Autore}\\[0.3em]
-Carmelo Calzerano\\[1em]
-Prima versione --- Settembre 2026
+\begin{tcolorbox}[
+  enhanced,
+  colback=boxEssBack,
+  colframe=boxEssFrame,
+  fonttitle=\bfseries\large,
+  title=Scopo del manuale,
+  boxrule=0.8pt,
+  arc=4pt,
+  left=12pt, right=12pt, top=10pt, bottom=10pt
+]
+Un percorso \textbf{pratico} per imparare Common Lisp attraverso
+148 esercizi graduali: dalla sintassi ai progetti completi.
+
+\medskip
+\textbf{Destinatari:} studenti con basi di programmazione imperativa
+(variabili, cicli, funzioni). Nessuna esperienza Lisp richiesta.
+\end{tcolorbox}
+
+\vspace{1.2em}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!3,
+  colframe=black!30,
+  boxrule=0.5pt,
+  arc=3pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt
+]
+\small
+\textbf{Ambiente:} gli esempi sono conformi ad \textbf{ANSI Common Lisp},
+testati con Allegro CL Free Express. Qualsiasi implementazione
+conforme (SBCL, CCL, CLISP, ECL) è compatibile.
+
+\medskip
+\textbf{Genesi:} realizzato con supporto di IA generativa;
+l'autore ha curato revisione, organizzazione didattica e verifica tecnica.
+\end{tcolorbox}
 
 \vspace{2em}
-\noindent\textbf{Scopo del manuale}\\[0.3em]
-Questo manuale nasce con un obiettivo chiaro: fornire un percorso
-\textbf{pratico} e graduale per imparare Common Lisp attraverso
-l'esercizio. Non è un trattato teorico né una reference esaustiva,
-ma una guida essenziale pensata per chi vuole \textit{diventare}
-uno sviluppatore competente in questo linguaggio.
 
-I 148 esercizi sono organizzati in difficoltà crescente: si parte
-dai fondamenti della sintassi e si arriva a progetti completi,
-passando per ricorsione, funzioni di ordine superiore, strutture
-dati, macro e algoritmi. L'idea è semplice: si impara a programmare
-programmando.
+\noindent
+\begin{tabular}{@{}ll@{}}
+\textbf{Autore} & Carmelo Calzerano\\[4pt]
+\textbf{Versione} & Prima edizione — Settembre 2026\\
+\end{tabular}
 
-Il manuale è rivolto a \textbf{studenti di informatica} che abbiano
-già acquisito le basi della programmazione imperativa (variabili,
-cicli, funzioni, array). Non è necessaria alcuna esperienza
-precedente con Lisp o con la programmazione funzionale.
+\vspace{2em}
 
-\vspace{1.5em}
-\noindent\textbf{Nota sulla genesi del testo}\\[0.3em]
-Questo manuale è stato realizzato con ampio ricorso a sistemi di
-\textbf{intelligenza artificiale generativa}, sia nella stesura
-dei contenuti sia nella generazione degli esercizi e delle soluzioni.
-L'autore ha curato la revisione, l'organizzazione didattica e la
-verifica della correttezza tecnica del materiale.
+\begin{tcolorbox}[
+  enhanced,
+  colback=white,
+  colframe=black!40,
+  boxrule=0.5pt,
+  arc=3pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt
+]
+\small
+\textbf{Licenza}\\[4pt]
+Quest'opera è distribuita con licenza\\
+\textbf{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International}\\
+(CC BY-NC-SA 4.0)
 
-\vspace{1.5em}
-\noindent\textbf{Note sull'ambiente}\\[0.3em]
-Gli esempi e le soluzioni di questo manuale sono conformi allo
-standard \textbf{ANSI Common Lisp} e sono stati sviluppati e
-testati con \textbf{Allegro CL Free Express Edition}.
-Qualsiasi implementazione conforme allo standard (SBCL, CCL,
-CLISP, ECL, ecc.) è egualmente compatibile.
+\medskip
+Sei libero di condividere e modificare questo materiale, a condizione di:
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=2pt]
+  \item attribuire la paternità all'autore originale
+  \item non utilizzarlo per scopi commerciali
+  \item distribuire eventuali opere derivate con la stessa licenza
+\end{itemize}
 
-\vspace{1.5em}
-\noindent\textit{Compilato con \LaTeX.}
+\smallskip
+\noindent Testo completo: \url{https://creativecommons.org/licenses/by-nc-sa/4.0/}
+\end{tcolorbox}
+
+\vspace{1em}
+\noindent\small\textit{Compilato con \LaTeX.}
 
 \clearpage
 
@@ -76,64 +111,77 @@ CLISP, ECL, ecc.) è egualmente compatibile.
 \chapter*{Come leggere questo manuale}
 \addcontentsline{toc}{chapter}{Come leggere questo manuale}
 
-\noindent
-Il manuale è diviso in cinque sezioni:
+\vspace{-0.5em}
 
-\begin{enumerate}[leftmargin=2em]
-  \item \textbf{Cheat sheet} --- una o due pagine da tenere
-        aperte durante gli esercizi, con i costrutti
-        più usati e link alle sezioni della reference.
-  \item \textbf{Allegro CL Free Express} --- guida rapida
-        all'ambiente: avvio, REPL, comandi per caricare
-        e compilare file, trace e debugger.
-  \item \textbf{Quick reference} --- descrizione concisa di
-        tutti i costrutti del linguaggio, con esempi.
-  \item \textbf{Esercizi} --- 148 esercizi in 10 capitoli,
-        dalla sintassi base ai progetti complessi.
-  \item \textbf{Suggerimenti e soluzioni} --- hint per gli
-        esercizi più difficili e soluzioni commentate.
-\end{enumerate}
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!3,
+  colframe=black!30,
+  boxrule=0.5pt,
+  arc=3pt,
+  left=12pt, right=12pt, top=10pt, bottom=10pt
+]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}r@{\enspace}p{11cm}@{}}
+\textbf{1.} & \textbf{Cheat sheet} — costrutti essenziali, da tenere aperto durante gli esercizi\\
+\textbf{2.} & \textbf{Allegro CL} — guida rapida all'ambiente: REPL, file, trace, debugger\\
+\textbf{3.} & \textbf{Quick reference} — tutti i costrutti del linguaggio con esempi\\
+\textbf{4.} & \textbf{Esercizi} — 148 esercizi in 10 capitoli, difficoltà crescente\\
+\textbf{5.} & \textbf{Suggerimenti e soluzioni} — hint e codice commentato\\
+\end{tabular}
+\end{tcolorbox}
 
-\bigskip
-\noindent\textbf{Legenda simboli}
+\vspace{1.5em}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=boxEssBack,
+  colframe=boxEssFrame,
+  fonttitle=\bfseries,
+  title=Legenda esercizi,
+  boxrule=0.8pt,
+  arc=4pt,
+  left=12pt, right=12pt, top=10pt, bottom=10pt
+]
+\begin{tabular}{@{}ll@{\qquad}ll@{}}
+  \essential & Essenziale (concetto nuovo) &
+  \optional  & Collaterale (consolidamento)\\[8pt]
+  \unaStella & Facile &
+  \quattroStelle & Avanzato\\[2pt]
+  \dueStelle & Medio &
+  \cinqueStelle  & Progetto\\[2pt]
+  \treStelle & Difficile & &\\
+\end{tabular}
+\end{tcolorbox}
+
+\vspace{1.5em}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=white,
+  colframe=black!40,
+  boxrule=0.5pt,
+  arc=3pt,
+  left=12pt, right=12pt, top=10pt, bottom=10pt
+]
+\textbf{Percorso minimo} (53 esercizi)\\[2pt]
+Solo gli \essential: coprono tutti i concetti fondamentali.
 
 \medskip
-\begin{tabular}{@{}lp{10cm}@{}}
-  \essential & \textbf{Esercizio essenziale} --- introduce un costrutto
-               o un pattern nuovo. Da svolgere sempre.\\[6pt]
-  \optional  & \textbf{Esercizio collaterale} --- consolida o approfondisce
-               quanto già visto. Consigliato per chi vuole
-               padronanza completa del capitolo.\\[6pt]
-  \unaStella & Facile\\[2pt]
-  \dueStelle & Medio\\[2pt]
-  \treStelle & Difficile\\[2pt]
-  \quattroStelle & Avanzato\\[2pt]
-  \cinqueStelle  & Progetto\\
-\end{tabular}
+\textbf{Percorso completo} (148 esercizi)\\[2pt]
+Anche i \optional\ per padronanza più solida.
 
-\bigskip
-\noindent\textbf{Percorso minimo (53 esercizi)}\\
-Svolgi solo gli esercizi \essential: sono sufficienti a
-coprire tutti i concetti fondamentali del linguaggio.
+\medskip
+\textbf{Suggerimenti}\\[2pt]
+Esercizi \treStelle+ hanno un hint nella sezione apposita. Consultalo prima della soluzione.
 
-\noindent\textbf{Percorso completo (148 esercizi)}\\
-Svolgi anche i collaterali \optional\ per consolidare
-ogni argomento e acquisire una padronanza più solida.
-
-\bigskip
-\noindent\textbf{Suggerimenti}\\
-Gli esercizi di difficoltà \treStelle\ o superiore hanno
-un suggerimento nella sezione apposita. Cercalo prima di
-guardare la soluzione.
-
-\bigskip
-\noindent\textbf{Soluzioni}\\
-Le soluzioni sono nella sezione finale. Per gli esercizi
-\unaStella/\dueStelle\ è riportato solo il codice.
-Per \treStelle\ ci sono commenti inline.
-Per \quattroStelle/\cinqueStelle\ c'è anche una sezione di
-\textit{ragionamento} che spiega la strategia e la
-complessità algoritmica.
+\medskip
+\textbf{Soluzioni}\\[2pt]
+\unaStella/\dueStelle: solo codice.
+\treStelle: commenti inline.
+\quattroStelle/\cinqueStelle: ragionamento e complessità.
+\end{tcolorbox}
 
 \clearpage
 
