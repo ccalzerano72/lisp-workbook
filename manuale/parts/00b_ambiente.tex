@@ -27,7 +27,6 @@
   toptitle=4pt, bottomtitle=4pt,
   before skip=14pt plus 4pt,
   after skip=14pt plus 4pt,
-  fontupper=\small\color{black!75},
   parskip=6pt
 }
 
@@ -44,7 +43,7 @@
   left=10pt, right=10pt, top=6pt, bottom=6pt,
   before skip=10pt,
   after skip=10pt,
-  fontupper=\small\color{black!70}
+  fontupper=\small\color{black!65}
 }
 
 % --- Box per attenzione/warning ---
@@ -60,14 +59,13 @@
   left=10pt, right=10pt, top=6pt, bottom=6pt,
   before skip=10pt,
   after skip=10pt,
-  fontupper=\small\color{black!70}
+  fontupper=\small\color{black!65}
 }
 
 \vspace{-0.3cm}
 
-\noindent\small\color{black!70}
-Allegro CL Free Express (Franz Inc.) è un'implementazione ANSI Common Lisp
-gratuita per uso didattico. Tutto il codice di questo manuale è testato con questa edizione.
+\noindent\small\color{black!60}
+Allegro CL Free Express (Franz Inc.) — implementazione ANSI Common Lisp gratuita per uso didattico.
 \color{black}
 
 \vspace{10pt}
@@ -78,14 +76,18 @@ gratuita per uso didattico. Tutto il codice di questo manuale è testato con que
 
 \begin{envbox}[Avvio e REPL]{envBlue}
 
-Avvia \fn{allegro-ansi.exe} (modalità ANSI: i simboli diventano maiuscoli).
-Compare il prompt REPL:\nopagebreak
+\small\color{black!70}
+Avvia \fn{allegro-ansi.exe} \color{black!55}(modalità ANSI: i simboli diventano maiuscoli)\color{black!70}.
+Compare il \textbf{\textcolor{envBlue!80!black}{prompt REPL}}:\nopagebreak
+\color{black}
 
 \begin{lstlisting}
 CL-USER(1):
 \end{lstlisting}
 
-Digita un'espressione e premi Invio:\nopagebreak
+\small\color{black!70}
+Digita un'espressione e premi \textbf{Invio}:\nopagebreak
+\color{black}
 
 \begin{lstlisting}
 CL-USER(1): (+ 1 2)
@@ -96,8 +98,9 @@ CL-USER(3): (quadrato 5)
 25
 \end{lstlisting}
 
-\textbf{Riutilizzare risultati:} \fn{*}, \fn{**}, \fn{***} contengono
-gli ultimi tre valori:\nopagebreak
+\small\color{black!70}
+\textbf{\textcolor{envBlue!80!black}{Riutilizzare risultati:}} \fn{*}, \fn{**}, \fn{***} = ultimi tre valori:\nopagebreak
+\color{black}
 
 \begin{lstlisting}
 CL-USER(4): (+ 10 20)
@@ -114,22 +117,26 @@ CL-USER(5): (1+ *)       ; * vale 30 -> 31
 
 \begin{envbox}[Caricare e compilare file]{envGreen}
 
+\small\color{black!70}
 Scrivi il codice in un file \fn{.lisp}, poi caricalo nel REPL:
+\color{black}
 
 \smallskip
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}p{5cm}p{8cm}@{}}
-\rowcolor{envGreen!10}
-\textbf{Comando} & \textbf{Effetto} \\
-\fn{:ld "file.lisp"} & Carica e valuta (interpretato) \\
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\rowcolor{envGreen!12}
+\textcolor{envGreen!80!black}{\textbf{Comando}} & \textcolor{envGreen!80!black}{\textbf{Effetto}} \\
+\fn{:ld "file.lisp"} & \small\color{black!65} Carica e valuta (interpretato) \\
 \rowcolor{envGreen!5}
-\fn{:cl "file.lisp"} & Compila e carica (genera \fn{.fasl}) \\
-\fn{:cf "file.lisp"} & Solo compila \\
+\fn{:cl "file.lisp"} & \small\color{black!65} Compila e carica (genera \fn{.fasl}) \\
+\fn{:cf "file.lisp"} & \small\color{black!65} Solo compila \\
 \end{tabular}
 \renewcommand{\arraystretch}{1.0}
 
 \smallskip
-Gestione directory:\nopagebreak
+\small\color{black!70}
+\textbf{\textcolor{envGreen!80!black}{Gestione directory:}}\nopagebreak
+\color{black}
 
 \begin{lstlisting}
 CL-USER(1): :pwd                   ; directory corrente
@@ -138,8 +145,7 @@ CL-USER(3): :ld "es01.lisp"        ; carica file
 \end{lstlisting}
 
 \begin{warnbox}[Percorsi Windows]
-Usa slash \fn{/} nei percorsi, non backslash.
-Corretto: \fn{"c:/cartella/file.lisp"}
+Usa \fn{/} nei percorsi, non backslash. Esempio: \fn{"c:/cartella/file.lisp"}
 \end{warnbox}
 
 \end{envbox}
@@ -150,34 +156,38 @@ Corretto: \fn{"c:/cartella/file.lisp"}
 
 \begin{envbox}[Comandi top-level]{envBlue}
 
-I comandi \fn{:} sono specifici di Allegro (non ANSI standard).
+\small\color{black!70}
+I comandi \fn{:} sono specifici di Allegro \color{black!55}(non ANSI standard)\color{black!70}.
+\color{black}
 
 \smallskip
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{@{}l@{\hspace{6pt}}l@{\hspace{10pt}}l@{}}
-\rowcolor{envBlue!10}
-\textbf{Comando} & \textbf{Abbr.} & \textbf{Effetto} \\
-\fn{:ld "file"} & --- & carica file \\
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l@{\quad}l@{\quad}l@{}}
+\rowcolor{envBlue!12}
+\textcolor{envBlue!80!black}{\textbf{Comando}} & \textcolor{envBlue!80!black}{\textbf{Abbr.}} & \textcolor{envBlue!80!black}{\textbf{Effetto}} \\
+\fn{:ld "file"} & --- & \small\color{black!65} carica file \\
 \rowcolor{envBlue!5}
-\fn{:cl "file"} & --- & compila e carica \\
-\fn{:pwd} / \fn{:cd "dir"} & \fn{:pw} & directory \\
+\fn{:cl "file"} & --- & \small\color{black!65} compila e carica \\
+\fn{:pwd} / \fn{:cd "dir"} & \fn{:pw} & \small\color{black!65} directory \\
 \rowcolor{envBlue!5}
-\fn{:trace fn} & \fn{:tr} & attiva trace \\
-\fn{:untrace fn} & \fn{:untr} & disattiva trace \\
+\fn{:trace fn} & \fn{:tr} & \small\color{black!65} attiva trace \\
+\fn{:untrace fn} & \fn{:untr} & \small\color{black!65} disattiva trace \\
 \rowcolor{envBlue!5}
-\fn{:inspect obj} & \fn{:i} & ispeziona oggetto \\
-\fn{:describe obj} & \fn{:de} & documentazione \\
+\fn{:inspect obj} & \fn{:i} & \small\color{black!65} ispeziona oggetto \\
+\fn{:describe obj} & \fn{:de} & \small\color{black!65} documentazione \\
 \rowcolor{envBlue!5}
-\fn{:apropos "str"} & \fn{:ap} & cerca simboli \\
-\fn{:history} & \fn{:his} & cronologia \\
+\fn{:apropos "str"} & \fn{:ap} & \small\color{black!65} cerca simboli \\
+\fn{:history} & \fn{:his} & \small\color{black!65} cronologia \\
 \rowcolor{envBlue!5}
-\fn{:help} & \fn{:he} & lista comandi \\
-\fn{:exit} & \fn{:ex} & esci \\
+\fn{:help} & \fn{:he} & \small\color{black!65} lista comandi \\
+\fn{:exit} & \fn{:ex} & \small\color{black!65} esci \\
 \end{tabular}
 \renewcommand{\arraystretch}{1.0}
 
 \smallskip
-\textbf{Cercare funzioni} con \fn{:apropos}:\nopagebreak
+\small\color{black!70}
+\textbf{\textcolor{envBlue!80!black}{Cercare funzioni}} con \fn{:apropos}:\nopagebreak
+\color{black}
 
 \begin{lstlisting}
 CL-USER(1): :apropos "remove"
@@ -194,7 +204,9 @@ REMOVE-DUPLICATES function
 
 \begin{envbox}[Trace: seguire la ricorsione]{envOrange}
 
-\fn{:trace} mostra ogni chiamata e il valore restituito:\nopagebreak
+\small\color{black!70}
+\fn{:trace} mostra ogni \emph{chiamata} e il \emph{valore restituito}:\nopagebreak
+\color{black}
 
 \begin{lstlisting}
 CL-USER(1): (defun fatt (n)
@@ -215,7 +227,9 @@ CL-USER(3): (fatt 4)
 24
 \end{lstlisting}
 
-Disattivare: \fn{:untrace fatt} (o \fn{:untrace} per tutte).
+\small\color{black!70}
+Disattivare: \fn{:untrace fatt} \color{black!55}(o \fn{:untrace} per tutte)\color{black!70}.
+\color{black}
 
 \end{envbox}
 
@@ -225,7 +239,9 @@ Disattivare: \fn{:untrace fatt} (o \fn{:untrace} per tutte).
 
 \begin{envbox}[Il debugger]{envOrange}
 
-In caso di errore, Allegro entra nel debugger (prompt \fn{[1]}):\nopagebreak
+\small\color{black!70}
+In caso di \emph{errore}, Allegro entra nel \textbf{\textcolor{envOrange!80!black}{debugger}} (prompt \fn{[1]}):\nopagebreak
+\color{black}
 
 \begin{lstlisting}
 CL-USER(1): (/ 1 0)
@@ -234,22 +250,21 @@ Error: Division-by-zero.
 \end{lstlisting}
 
 \smallskip
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{@{}l@{\hspace{6pt}}l@{\hspace{10pt}}l@{}}
-\rowcolor{envOrange!10}
-\textbf{Comando} & \textbf{Abbr.} & \textbf{Effetto} \\
-\fn{:reset} & \fn{:res} & torna al livello 0 \\
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l@{\quad}l@{\quad}l@{}}
+\rowcolor{envOrange!12}
+\textcolor{envOrange!80!black}{\textbf{Comando}} & \textcolor{envOrange!80!black}{\textbf{Abbr.}} & \textcolor{envOrange!80!black}{\textbf{Effetto}} \\
+\fn{:reset} & \fn{:res} & \small\color{black!65} torna al livello 0 \\
 \rowcolor{envOrange!5}
-\fn{:pop} & --- & sale di un livello \\
-\fn{:bt} / \fn{:zoom} & \fn{:zo} & stampa stack \\
+\fn{:pop} & --- & \small\color{black!65} sale di un livello \\
+\fn{:bt} / \fn{:zoom} & \fn{:zo} & \small\color{black!65} stampa stack \\
 \rowcolor{envOrange!5}
-\fn{:error} & \fn{:err} & ristampa errore \\
+\fn{:error} & \fn{:err} & \small\color{black!65} ristampa errore \\
 \end{tabular}
 \renewcommand{\arraystretch}{1.0}
 
 \begin{warnbox}[Livelli annidati]
-Se il prompt mostra \fn{[2]} o più, hai accumulato errori.
-Usa \fn{:reset} per tornare al livello 0.
+Prompt \fn{[2]}+ = errori accumulati. Usa \fn{:reset} per tornare al livello 0.
 \end{warnbox}
 
 \end{envbox}
@@ -260,24 +275,34 @@ Usa \fn{:reset} per tornare al livello 0.
 
 \begin{envbox}[Errori comuni]{envOrange}
 
-\textbf{Parentesi mancante:} se Invio non fa nulla, manca una \fn{)}.
-Chiudila o premi \textbf{Ctrl+C} per annullare.
+\small\color{black!70}
+\textbf{\textcolor{envOrange!80!black}{Parentesi mancante:}} se Invio non fa nulla, manca una \fn{)}.
+Chiudila o premi \textbf{Ctrl+C}.
+\color{black}
 
 \smallskip
-\textbf{Parentesi in più:}\nopagebreak
+\small\color{black!70}
+\textbf{\textcolor{envOrange!80!black}{Parentesi in più:}}\nopagebreak
+\color{black}
 \begin{lstlisting}
 CL-USER(1): (+ 1 2))
 Error: eof encountered ...
 \end{lstlisting}
+\small\color{black!70}
 Usa \fn{:reset} e riscrivi.
+\color{black}
 
 \smallskip
-\textbf{Funzione non definita:}\nopagebreak
+\small\color{black!70}
+\textbf{\textcolor{envOrange!80!black}{Funzione non definita:}}\nopagebreak
+\color{black}
 \begin{lstlisting}
 CL-USER(1): (mia-funzione 3)
 Error: Undefined function: MIA-FUNZIONE
 \end{lstlisting}
+\small\color{black!70}
 Verifica di aver caricato il file con \fn{:ld}.
+\color{black}
 
 \end{envbox}
 
@@ -287,18 +312,20 @@ Verifica di aver caricato il file con \fn{:ld}.
 
 \begin{envbox}[Flusso di lavoro consigliato]{envPurple}
 
+\small\color{black!70}
 \begin{enumerate}[leftmargin=1.5em, itemsep=3pt, topsep=0pt]
   \item Crea \fn{es01.lisp} con un editor
-  \item Scrivi \textbf{una sola funzione} per volta
+  \item Scrivi \textbf{\textcolor{envPurple!80!black}{una sola funzione}} per volta
   \item Nel REPL: \fn{:cd} + \fn{:ld "es01.lisp"}
-  \item Testa subito con vari input
+  \item \textbf{Testa subito} con vari input
   \item Bug? Modifica, salva, ricarica con \fn{:ld}
   \item Per ricorsione: usa \fn{:trace}
-  \item Passa alla prossima solo quando funziona
+  \item Passa alla prossima \emph{solo quando funziona}
 \end{enumerate}
+\color{black}
 
 \begin{tipbox}[Sviluppo incrementale]
-Non scrivere mai tutto insieme. Scrivi poco, testa subito, procedi.
+Non scrivere tutto insieme. \textbf{Scrivi poco}, \textbf{testa subito}, \textbf{procedi}.
 \end{tipbox}
 
 \end{envbox}
