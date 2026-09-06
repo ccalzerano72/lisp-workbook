@@ -456,3 +456,30 @@
 % Alias legacy
 \newcommand{\essential}{\minimo}
 \newcommand{\optional}{\collateral}
+
+% =============================================================
+%  Sezioni separate per Suggerimenti e Soluzioni
+%  Usano contatori propri per evitare conflitti con Esercizi
+% =============================================================
+\newcounter{hintsec}
+\newcounter{solsec}
+
+% Sezione numerata per Suggerimenti (con voce in indice)
+% Uso: \hintsection{Titolo}
+\newcommand{\hintsection}[1]{%
+  \stepcounter{hintsec}%
+  \vspace{1.5em}%
+  \noindent{\large\bfseries\thehintsec\quad #1}%
+  \addcontentsline{toc}{section}{\protect\numberline{\thehintsec}#1}%
+  \par\vspace{0.8em}%
+}
+
+% Sezione numerata per Soluzioni (con voce in indice)
+% Uso: \solsection{Titolo}
+\newcommand{\solsection}[1]{%
+  \stepcounter{solsec}%
+  \vspace{1.5em}%
+  \noindent{\large\bfseries\thesolsec\quad #1}%
+  \addcontentsline{toc}{section}{\protect\numberline{\thesolsec}#1}%
+  \par\vspace{0.8em}%
+}

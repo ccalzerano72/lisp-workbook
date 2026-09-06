@@ -4,7 +4,7 @@
 \chapter*{Suggerimenti}
 \addcontentsline{toc}{chapter}{Suggerimenti}
 \markboth{Suggerimenti}{Suggerimenti}
-% Numeri di sezione senza prefisso capitolo (es. "1" non "0.1")
+\setcounter{hintsec}{0}  % reset contatore sezioni hint
 
 \noindent\small\color{black!65}
 Suggerimenti per gli esercizi \treStelle\ o superiore.
@@ -14,7 +14,7 @@ Prima di leggere, fai almeno un tentativo autonomo: anche una soluzione parziale
 \vspace{8pt}
 
 % =============================================================
-\section*{Fondamenti}
+\hintsection{Fondamenti}
 % =============================================================
 
 \label{hint:17}
@@ -27,7 +27,7 @@ l'ultima cifra. Continua finche' \fn{n} e' zero.
 \end{hintbox}
 
 % =============================================================
-\section*{Liste}
+\hintsection{Liste}
 % =============================================================
 
 \label{hint:40}
@@ -80,7 +80,7 @@ Usa \fn{member} (o la tua \fn{member*}) per il controllo.
 \end{hintbox}
 
 % =============================================================
-\section*{Ricorsione avanzata}
+\hintsection{Ricorsione avanzata}
 % =============================================================
 
 \label{hint:54}
@@ -194,7 +194,7 @@ e ricorre sul resto.
 \end{hintbox}
 
 % =============================================================
-\section*{Higher-order e closure}
+\hintsection{Higher-order e closure}
 % =============================================================
 
 \label{hint:75}
@@ -310,7 +310,7 @@ trovato'' da ``chiave non presente''.
 \end{hintbox}
 
 % =============================================================
-\section*{Strutture dati}
+\hintsection{Strutture dati}
 % =============================================================
 
 \label{hint:94}
@@ -502,7 +502,7 @@ si confrontano con \fn{equal}) per contare le occorrenze.
 \end{hintbox}
 
 % =============================================================
-\section*{Macro}
+\hintsection{Macro}
 % =============================================================
 
 \label{hint:121}
@@ -566,7 +566,7 @@ e' il nome che l'utente vuole usare nel corpo.
 \end{hintbox}
 
 % =============================================================
-\section*{Backtracking e algoritmi}
+\hintsection{Backtracking e algoritmi}
 % =============================================================
 
 \label{hint:124}
@@ -761,7 +761,7 @@ Riduce drasticamente il backtracking.
 \end{hintbox}
 
 % =============================================================
-\section*{Stringhe e I/O}
+\hintsection{Stringhe e I/O}
 % =============================================================
 
 \label{hint:139}
@@ -786,7 +786,7 @@ di caratteri con \fn{coerce}, ordina con \fn{sort}, e confronta.
 \end{hintbox}
 
 % =============================================================
-\section*{Parsing e interprete}
+\hintsection{Parsing e interprete}
 % =============================================================
 
 \label{hint:142}
@@ -838,7 +838,7 @@ o restituito insieme al valore).
 \end{hintbox}
 
 % =============================================================
-\section*{Progetti}
+\hintsection{Progetti}
 % =============================================================
 
 \label{hint:146}
