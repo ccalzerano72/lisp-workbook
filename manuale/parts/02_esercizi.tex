@@ -576,8 +576,9 @@ a ogni elemento.
 
 \label{ex:38}
 \begin{colbox}{38}{Seleziona posizioni dispari}{2}
-\exlabel{Implementare} \fn{(seleziona-dispari lst)}: elementi in posizione
-1, 3, 5, \ldots (prima, terza, quinta, ecc.).
+\exlabel{Implementare} \fn{(seleziona-dispari lst)}: restituisce gli elementi
+in posizione 1\textsuperscript{a}, 3\textsuperscript{a}, 5\textsuperscript{a},
+\ldots\ nella numerazione naturale (indici 0, 2, 4, \ldots\ in notazione 0-based).
 \begin{lstlisting}
 (seleziona-dispari '(a b c d e))   ; -> (A C E)
 \end{lstlisting}
@@ -649,7 +650,7 @@ Non usare \fn{remove}; non modificare la lista originale.
 (palindroma-p '(a b c b a))   ; -> T
 (palindroma-p '(a b c))       ; -> NIL
 \end{lstlisting}
-Usare \fn{reverse*} e \fn{equal}.
+Usare la funzione \fn{reverse*} dell'es.~39 (o \fn{reverse}) e \fn{equal}.
 
 
 \small\color{black!55}\hyperref[sol:43]{$\rightarrow$ Soluzione}\normalsize\color{black}
@@ -683,10 +684,10 @@ Usare \fn{reverse*} e \fn{equal}.
 
 \label{ex:46}
 \begin{colbox}{46}{Estrai chiavi da alist}{2}
-\exlabel{Implementare} \fn{(schiaccia-coppia alist)}: restituisce la
-lista dei \fn{car} di ogni coppia puntata.
+\exlabel{Implementare} \fn{(estrai-chiavi alist)}: restituisce la
+lista delle chiavi (\fn{car} di ogni coppia puntata).
 \begin{lstlisting}
-(schiaccia-coppia '((a . 1) (b . 2) (c . 3)))
+(estrai-chiavi '((a . 1) (b . 2) (c . 3)))
 ; -> (A B C)
 \end{lstlisting}
 
@@ -1249,8 +1250,8 @@ una alist con chiave = risultato della funzione.
 \nopagebreak
 \begin{lstlisting}
 (defparameter *c* (make-counter))
+(funcall *c*)   ; -> 0
 (funcall *c*)   ; -> 1
-(funcall *c*)   ; -> 2
 
 (defparameter *c2* (make-counter 10 5))
 (funcall *c2*)  ; -> 10
@@ -1489,7 +1490,7 @@ modificandolo con \fn{setf}/\fn{aref}, senza liste ausiliarie.
 \end{stdbox}
 
 \label{ex:104}
-\begin{colbox}{104}{Moltiplicazione di matrici \quattroStelle\ (opzionale)}{4}
+\begin{colbox}{104}{Moltiplicazione di matrici (opzionale)}{4}
 \exlabel{Implementare} \fn{(moltiplica-matrici a b n)}: prodotto di
 matrici quadrate $n \times n$.
 

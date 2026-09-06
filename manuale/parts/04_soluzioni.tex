@@ -76,8 +76,8 @@
 \begin{solbox}{6}{Pari o dispari}
 \small\color{black!55}\hyperref[ex:6]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
-(defun pari-p (n)   (= (mod n 2) 0))
-(defun dispari-p (n) (= (mod n 2) 1))
+(defun pari-p (n)
+  (= (mod n 2) 0))
 \end{lstlisting}
 \end{solbox}
 
@@ -283,10 +283,10 @@
 \small\color{black!55}\hyperref[ex:24]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun first-element (lst)
-  (if (null lst) nil (nth 0 lst)))
+  (car lst))       ; car di NIL restituisce NIL
 
 (defun rest-elements (lst)
-  (if (null lst) nil (nthcdr 1 lst)))
+  (cdr lst))       ; cdr di NIL restituisce NIL
 \end{lstlisting}
 \end{solbox}
 
@@ -549,7 +549,7 @@
 \begin{solbox}{46}{Estrai chiavi da alist}
 \small\color{black!55}\hyperref[ex:46]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
-(defun schiaccia-coppia (alist)
+(defun estrai-chiavi (alist)
   (mapcar #'car alist))
 \end{lstlisting}
 \end{solbox}
@@ -603,8 +603,12 @@
       nil
       (let ((n (caar lst))
             (e (cadar lst)))
-        (append (loop repeat n collect e)
-                (rle-decode (cdr lst))))))
+        (labels ((ripeti (k)
+                   (if (= k 0)
+                       nil
+                       (cons e (ripeti (1- k))))))
+          (append (ripeti n)
+                  (rle-decode (cdr lst)))))))
 \end{lstlisting}
 \end{solbox}
 
@@ -1082,7 +1086,9 @@
 \small\color{black!55}\hyperref[ex:87]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:87]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun make-counter (&optional (start 0) (step 1))
-  ;; curr e' privato alla closure
+  ;; curr e' privato alla closure.
+  ;; prog1 restituisce il valore PRIMA dell'incremento:
+  ;; con (start 0 step 1) -> 0, 1, 2, ...
   (let ((curr start))
     (lambda ()
       (prog1 curr       ; restituisce curr prima dell'incremento
@@ -1140,6 +1146,13 @@
             ;; calcola e memorizza
             (setf (gethash args cache)
                   (apply funzione args)))))))
+\end{lstlisting}
+\textbf{Nota:} questa versione memoizza le chiamate \emph{esterne}.
+Per memoizzare una funzione ricorsiva occorre che la funzione stessa
+chiami la versione memoizzata, non se stessa:
+\begin{lstlisting}
+(setf (symbol-function 'fibonacci)
+      (memoize #'fibonacci))
 \end{lstlisting}
 \end{solbox}
 
@@ -1499,11 +1512,11 @@
 \begin{lstlisting}
 (defun bilanciato-p (tree)
   ;; ritorna altezza se bilanciato, -1 come segnale di errore
-  (labels ((check (t)
-             (if (null t)
+  (labels ((check (tr)
+             (if (null tr)
                  0
-                 (let ((hl (check (nodo-sinistra t)))
-                       (hr (check (nodo-destra t))))
+                 (let ((hl (check (nodo-sinistra tr)))
+                       (hr (check (nodo-destra tr))))
                    (if (or (= hl -1) (= hr -1)
                            (> (abs (- hl hr)) 1))
                        -1
