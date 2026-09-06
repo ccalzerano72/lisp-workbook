@@ -28,6 +28,9 @@ condizionali (\fn{if}, \fn{cond}), binding locale (\fn{let},
 (add -2 7)     ; -> 5
 (add 1.5 2.5)  ; -> 4.0
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:1]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:2}
@@ -43,6 +46,9 @@ Usare la costante \fn{pi} per $\pi$.
 (circle-area 2)           ; -> 12.566...
 (circle-circumference 2)  ; -> 12.566...
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:2]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:3}
@@ -54,6 +60,9 @@ Usare la costante \fn{pi} per $\pi$.
 (fahrenheit->celsius f)
 \end{lstlisting}
 Formule: $F = C \times 9/5 + 32$;\quad $C = (F - 32) \times 5/9$.
+
+
+\small\color{black!55}\hyperref[sol:3]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:4}
@@ -67,6 +76,9 @@ Formule: $F = C \times 9/5 + 32$;\quad $C = (F - 32) \times 5/9$.
 (ipotenusa 3 4)   ; -> 5.0
 \end{lstlisting}
 \vincolo{usare \fn{let} per i quadrati intermedi.}
+
+
+\small\color{black!55}\hyperref[sol:4]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:5}
@@ -80,6 +92,9 @@ Formule: $F = C \times 9/5 + 32$;\quad $C = (F - 32) \times 5/9$.
 (distanza-euclidea 0 0 3 4)   ; -> 5.0
 \end{lstlisting}
 \vincolo{usare \fn{let} per i valori intermedi.}
+
+
+\small\color{black!55}\hyperref[sol:5]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:6}
@@ -94,6 +109,9 @@ senza usare \fn{evenp}.
 (pari-p 8)    ; -> T
 (pari-p 7)    ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:6]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:7}
@@ -107,6 +125,9 @@ senza usare \fn{evenp}.
 (divisibile-p 12 4)   ; -> T
 (divisibile-p 7  3)   ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:7]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:8}
@@ -123,6 +144,9 @@ che restituisce \fn{'positivo}, \fn{'negativo} o \fn{'zero}.
 (segno 12)   ; -> POSITIVO
 \end{lstlisting}
 \vincolo{usare \fn{cond}.}
+
+
+\small\color{black!55}\hyperref[sol:8]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:9}
@@ -133,6 +157,9 @@ che restituisce \fn{'positivo}, \fn{'negativo} o \fn{'zero}.
 (max-tre 3 7 2)   ; -> 7
 \end{lstlisting}
 \vincolo{usare \fn{cond}.}
+
+
+\small\color{black!55}\hyperref[sol:9]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:10}
@@ -143,6 +170,9 @@ Ogni lato deve essere minore della somma degli altri due.
 (triangolo-valido-p 3 4 5)   ; -> T
 (triangolo-valido-p 1 2 10)  ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:10]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:11}
@@ -159,6 +189,9 @@ Divisibile per 4, eccetto multipli di 100 che non siano anche di 400.
 (bisestile-p 2024)   ; -> T
 \end{lstlisting}
 \vincolo{usare \fn{and}/\fn{or} senza \fn{cond}.}
+
+
+\small\color{black!55}\hyperref[sol:11]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:12}
@@ -171,6 +204,9 @@ Divisibile per 4, eccetto multipli di 100 che non siano anche di 400.
 (giorni-mese 7 2024)   ; -> 31
 \end{lstlisting}
 Usare \fn{bisestile-p} per febbraio.
+
+
+\small\color{black!55}\hyperref[sol:12]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:13}
@@ -181,6 +217,9 @@ Usare \fn{bisestile-p} per febbraio.
 60--74 $\to$ ``sufficiente''; $<60$ $\to$ ``insufficiente''.
 
 \vincolo{usare \fn{cond}.}
+
+
+\small\color{black!55}\hyperref[sol:13]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:14}
@@ -191,6 +230,9 @@ Usare \fn{bisestile-p} per febbraio.
 (terna-pitagorica-p 3 4 5)    ; -> T
 (terna-pitagorica-p 1 2 3)    ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:14]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:15}
@@ -206,6 +248,9 @@ Restituire lista con le due radici reali, oppure \fn{NIL} se $\Delta < 0$.
 (radici-quadratiche 1  0 1)   ; -> NIL
 \end{lstlisting}
 \vincolo{usare \fn{let*} per discriminante e radici.}
+
+
+\small\color{black!55}\hyperref[sol:15]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:16}
@@ -217,6 +262,9 @@ Restituire lista con le due radici reali, oppure \fn{NIL} se $\Delta < 0$.
 (calcola '* 5 6)   ; -> 30
 \end{lstlisting}
 Gestire la divisione per zero restituendo \fn{NIL}.
+
+
+\small\color{black!55}\hyperref[sol:16]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:17}
@@ -231,7 +279,9 @@ Gestire la divisione per zero restituendo \fn{NIL}.
 (somma-cifre 99)     ; -> 18
 \end{lstlisting}
 \textbf{Suggerimento:} estrarre le cifre con \fn{mod} e \fn{floor}.
-\quad\hyperref[hint:17]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:17]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:17]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:18}
@@ -246,6 +296,9 @@ Gestire la divisione per zero restituendo \fn{NIL}.
 ; 4
 \end{lstlisting}
 \vincolo{usare \fn{dotimes} o \fn{loop}.}
+
+
+\small\color{black!55}\hyperref[sol:18]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:19}
@@ -258,6 +311,9 @@ da 1 a 10.
 ; 3 x 2 = 6
 ; ...
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:19]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:20}
@@ -269,6 +325,9 @@ $\geq 200$ $\to$ 20\%; $\geq 100$ $\to$ 10\%; altrimenti 0\%.
 (sconto 120)   ; -> 108.0
 (sconto 50)    ; -> 50
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:20]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:21}
@@ -280,6 +339,9 @@ Ore eccedenti: tariffa $\times$ 1.5.
 (paga-settimanale 35 10)   ; -> 350
 (paga-settimanale 45 10)   ; -> 475
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:21]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -303,6 +365,9 @@ l'esercizio, salvo diversa indicazione.
 \textbf{Parte B.} Costruire la stessa lista con \fn{list}.
 
 Verificare che le due espressioni siano \fn{equal}.
+
+
+\small\color{black!55}\hyperref[sol:22]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:23}
@@ -312,6 +377,9 @@ usando solo \fn{car} e \fn{cdr} (non \fn{nth}, \fn{third}, ecc.).
 \begin{lstlisting}
 ; risultato atteso: C
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:23]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:24}
@@ -328,6 +396,9 @@ Gestire la lista vuota restituendo \fn{NIL}.
 (rest-elements '(a b c))    ; -> (B C)
 (first-element '())         ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:24]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:25}
@@ -339,6 +410,9 @@ con il primo e l'ultimo elemento.
 (primo-e-ultimo '(a))         ; -> (A A)
 \end{lstlisting}
 Gestire la lista vuota.
+
+
+\small\color{black!55}\hyperref[sol:25]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:26}
@@ -349,6 +423,9 @@ Gestire la lista vuota.
 (scambia-primi-due '(a b c d))   ; -> (B A C D)
 \end{lstlisting}
 Gestire liste con meno di due elementi.
+
+
+\small\color{black!55}\hyperref[sol:26]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:27}
@@ -360,6 +437,9 @@ Gestire liste con meno di due elementi.
 (length* '(a b c))   ; -> 3
 \end{lstlisting}
 \vincolo{ricorsione.}
+
+
+\small\color{black!55}\hyperref[sol:27]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:28}
@@ -371,6 +451,9 @@ Gestire liste con meno di due elementi.
 (sum-list '())          ; -> 0
 \end{lstlisting}
 \vincolo{ricorsione.}
+
+
+\small\color{black!55}\hyperref[sol:28]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:29}
@@ -381,6 +464,9 @@ Gestire liste con meno di due elementi.
 (product-list '(2 3 4))   ; -> 24
 (product-list '())        ; -> 1
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:29]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:30}
@@ -391,6 +477,9 @@ Gestire liste con meno di due elementi.
 (max-list '(4 8 2 9 1))   ; -> 9
 \end{lstlisting}
 Definire il comportamento per la lista vuota.
+
+
+\small\color{black!55}\hyperref[sol:30]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:31}
@@ -401,6 +490,9 @@ Definire il comportamento per la lista vuota.
 (member* 'b '(a b c))   ; -> T
 (member* 'x '(a b c))   ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:31]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:32}
@@ -410,6 +502,9 @@ Definire il comportamento per la lista vuota.
 \begin{lstlisting}
 (count-element 'a '(a b a c a))   ; -> 3
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:32]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:33}
@@ -420,6 +515,9 @@ della prima occorrenza, oppure \fn{NIL}.
 (position* 'c '(a b c d))   ; -> 2
 (position* 'x '(a b c d))   ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:33]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:34}
@@ -429,6 +527,9 @@ della prima occorrenza, oppure \fn{NIL}.
 \begin{lstlisting}
 (last-element '(a b c))   ; -> C
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:34]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:35}
@@ -441,6 +542,9 @@ a ogni elemento.
 \vincolo{ricorsione; non usare \fn{mapcar}.}
 
 \exnota{Obiettivo: capire il pattern di trasformazione, precursore di \fn{mapcar}.}
+
+
+\small\color{black!55}\hyperref[sol:35]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:36}
@@ -453,6 +557,9 @@ a ogni elemento.
 \vincolo{ricorsione; non usare \fn{remove-if}.}
 
 \exnota{Obiettivo: capire il pattern di filtraggio, precursore di \fn{remove-if-not}.}
+
+
+\small\color{black!55}\hyperref[sol:36]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:37}
@@ -462,6 +569,9 @@ a ogni elemento.
 \begin{lstlisting}
 (elimina-tutte 'a '(a b a c a))   ; -> (B C)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:37]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:38}
@@ -471,6 +581,9 @@ a ogni elemento.
 \begin{lstlisting}
 (seleziona-dispari '(a b c d e))   ; -> (A C E)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:38]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:39}
@@ -482,6 +595,9 @@ con accumulatore (tail-recursive).
 \begin{lstlisting}
 (reverse* '(a b c d))   ; -> (D C B A)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:39]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:40}
@@ -494,7 +610,9 @@ con accumulatore (tail-recursive).
 \end{lstlisting}
 Non modificare le liste originali; ricorsione su \fn{lst1}.
 
-\hyperref[hint:40]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:40]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:40]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:41}
@@ -506,7 +624,9 @@ prima occorrenza.
 \end{lstlisting}
 Non usare \fn{remove}; non modificare la lista originale.
 
-\hyperref[hint:41]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:41]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:41]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:42}
@@ -516,6 +636,9 @@ Non usare \fn{remove}; non modificare la lista originale.
 \begin{lstlisting}
 (replace-first 'b 'x '(a b c b))   ; -> (A X C B)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:42]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:43}
@@ -527,6 +650,9 @@ Non usare \fn{remove}; non modificare la lista originale.
 (palindroma-p '(a b c))       ; -> NIL
 \end{lstlisting}
 Usare \fn{reverse*} e \fn{equal}.
+
+
+\small\color{black!55}\hyperref[sol:43]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:44}
@@ -538,6 +664,9 @@ Usare \fn{reverse*} e \fn{equal}.
 (range 3 3)    ; -> (3)
 (range 5 3)    ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:44]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:45}
@@ -547,6 +676,9 @@ Usare \fn{reverse*} e \fn{equal}.
 \begin{lstlisting}
 (duplica-elementi '(a b c))   ; -> (A A B B C C)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:45]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:46}
@@ -557,6 +689,9 @@ lista dei \fn{car} di ogni coppia puntata.
 (schiaccia-coppia '((a . 1) (b . 2) (c . 3)))
 ; -> (A B C)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:46]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:47}
@@ -568,6 +703,9 @@ lista dei \fn{car} di ogni coppia puntata.
 (prefisso-p '(a c) '(a b c d))   ; -> NIL
 (prefisso-p '() '(a b))          ; -> T
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:47]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:48}
@@ -578,6 +716,9 @@ lista dei \fn{car} di ogni coppia puntata.
 (intercala '(1 2 3) '(a b c))   ; -> (1 A 2 B 3 C)
 \end{lstlisting}
 Assumere lunghezze uguali.
+
+
+\small\color{black!55}\hyperref[sol:48]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:49}
@@ -590,7 +731,9 @@ Assumere lunghezze uguali.
 \begin{lstlisting}
 (rle-decode '((3 A) (2 B) (1 C)))   ; -> (A A A B B C)
 \end{lstlisting}
-\hyperref[hint:49]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:49]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:49]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:50}
@@ -600,7 +743,9 @@ occorrenza, senza usare \fn{remove-duplicates}.
 \begin{lstlisting}
 (remove-duplicates* '(a b a c b a))   ; -> (A B C)
 \end{lstlisting}
-\hyperref[hint:50]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:50]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:50]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -624,11 +769,17 @@ con accumulatore, usando \fn{labels}.
 (fattoriale 5)   ; -> 120
 \end{lstlisting}
 \exnota{Obiettivo: capire il pattern accumulatore.}
+
+
+\small\color{black!55}\hyperref[sol:51]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:52}
 \begin{stdbox}{52}{Reverse tail-recursive}{2}
 Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
+
+
+\small\color{black!55}\hyperref[sol:52]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:53}
@@ -638,6 +789,9 @@ Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 \begin{lstlisting}
 (somma-range 1 100)   ; -> 5050
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:53]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:54}
@@ -648,8 +802,11 @@ complessita' $O(n)$.
 (fibonacci-fast 10)   ; -> 55
 (fibonacci-fast 50)   ; -> 12586269025
 \end{lstlisting}
-\hyperref[hint:54]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:54]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:54]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
+\label{ex:55}
 \begin{essbox}{55}{Flatten}{3}
 \exlabel{Implementare} \fn{(flatten* tree)} che appiattisce strutture annidate.
 \nopagebreak
@@ -657,7 +814,9 @@ complessita' $O(n)$.
 (flatten* '(a (b (c d) e) f))   ; -> (A B C D E F)
 (flatten* '((1 2) (3 (4 5))))   ; -> (1 2 3 4 5)
 \end{lstlisting}
-\hyperref[hint:55]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:55]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:55]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:56}
@@ -670,14 +829,20 @@ complessita' $O(n)$.
 (tree-depth '(a (b c)))      ; -> 2
 (tree-depth '(a (b (c d))))  ; -> 3
 \end{lstlisting}
-\hyperref[hint:56]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:56]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:56]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
+\label{ex:57}
 \begin{colbox}{57}{Conta atomi}{2}
 \exlabel{Implementare} \fn{(count-atoms tree)}.
 \nopagebreak
 \begin{lstlisting}
 (count-atoms '(a (b c) ((d))))   ; -> 4
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:57]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:58}
@@ -687,6 +852,9 @@ complessita' $O(n)$.
 \begin{lstlisting}
 (sum-tree '(1 (2 3) ((4 5))))   ; -> 15
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:58]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:59}
@@ -697,6 +865,9 @@ complessita' $O(n)$.
 (tree-member-p 'c '(a (b c) d))   ; -> T
 (tree-member-p 'x '(a (b c) d))   ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:59]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:60}
@@ -707,8 +878,11 @@ complessita' $O(n)$.
 (sostituisci-profondo 'b 'x '(a (b (b c)) b))
 ; -> (A (X (X C)) X)
 \end{lstlisting}
-\hyperref[hint:60]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:60]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:60]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
+\label{ex:61}
 \begin{stdbox}{61}{Potenza efficiente}{3}
 \exlabel{Implementare} \fn{(power-fast base exp)} con complessita' $O(\log n)$:
 \[
@@ -721,8 +895,11 @@ x^n = \begin{cases}
 (power-fast 2 10)   ; -> 1024
 (power-fast 3  0)   ; -> 1
 \end{lstlisting}
-\hyperref[hint:61]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:61]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:61]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
+\label{ex:62}
 \begin{stdbox}{62}{MCD e MCM}{2}
 Implementare \fn{(mcd* a b)} e \fn{(mcm* a b)} senza usare
 \fn{gcd}/\fn{lcm}.
@@ -730,7 +907,11 @@ Implementare \fn{(mcd* a b)} e \fn{(mcm* a b)} senza usare
 (mcd* 48 18)   ; -> 6
 (mcm* 4  6)    ; -> 12
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:62]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
+\label{ex:63}
 \begin{colbox}{63}{Numero primo}{2}
 \exlabel{Implementare} \fn{(primo-p n)}.
 \nopagebreak
@@ -739,6 +920,9 @@ Implementare \fn{(mcd* a b)} e \fn{(mcm* a b)} senza usare
 (primo-p 18)   ; -> NIL
 \end{lstlisting}
 Gestire correttamente 0 e 1.
+
+
+\small\color{black!55}\hyperref[sol:63]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:64}
@@ -752,7 +936,9 @@ Gestire correttamente 0 e 1.
 Vincoli: usare array booleano di lunghezza $n+1$; marcare i
 multipli con \fn{setf}/\fn{aref}.
 
-\hyperref[hint:64]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:64]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:64]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:65}
@@ -764,7 +950,9 @@ multipli con \fn{setf}/\fn{aref}.
 \end{lstlisting}
 Risultato ordinato; $n > 1$.
 
-\hyperref[hint:65]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:65]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:65]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:66}
@@ -774,6 +962,9 @@ Risultato ordinato; $n > 1$.
 \begin{lstlisting}
 (sublist '(a b c d e) 1 4)   ; -> (B C D)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:66]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:67}
@@ -784,7 +975,9 @@ Risultato ordinato; $n > 1$.
 (raggruppa '(a b c d e f g) 3)
 ; -> ((A B C) (D E F) (G))
 \end{lstlisting}
-\hyperref[hint:67]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:67]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:67]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:68}
@@ -794,6 +987,9 @@ Risultato ordinato; $n > 1$.
 \begin{lstlisting}
 (interseca '(a b c d) '(b d e))   ; -> (B D)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:68]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -815,6 +1011,9 @@ catturano variabili dall'ambiente lessicale.
 \begin{lstlisting}
 (square-list '(1 2 3 4))   ; -> (1 4 9 16)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:69]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:70}
@@ -824,6 +1023,9 @@ catturano variabili dall'ambiente lessicale.
 \begin{lstlisting}
 (even-list '(1 2 3 4 5 6))   ; -> (2 4 6)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:70]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:71}
@@ -834,6 +1036,9 @@ catturano variabili dall'ambiente lessicale.
 (vocali-iniziali '("anna" "bob" "elena" "carlo"))
 ; -> ("anna" "elena")
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:71]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:72}
@@ -844,6 +1049,9 @@ catturano variabili dall'ambiente lessicale.
 (sum-reduce '(1 2 3 4))   ; -> 10
 (sum-reduce '())          ; -> 0
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:72]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:73}
@@ -853,6 +1061,9 @@ catturano variabili dall'ambiente lessicale.
 \begin{lstlisting}
 (product-reduce '(2 3 4))   ; -> 24
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:73]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:74}
@@ -864,6 +1075,9 @@ catturano variabili dall'ambiente lessicale.
 (reduce-max '(8 3 5 1 9))   ; -> 9
 \end{lstlisting}
 Gestire la lista vuota.
+
+
+\small\color{black!55}\hyperref[sol:74]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:75}
@@ -876,7 +1090,9 @@ Gestire la lista vuota.
 Suggerimento: a ogni passo moltiplicare l'accumulatore per 10
 e sommare la cifra corrente.
 
-\hyperref[hint:75]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:75]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:75]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:76}
@@ -887,6 +1103,9 @@ e \fn{append}.
 (appiattisci-un-livello '((a b) (c d) (e)))
 ; -> (A B C D E)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:76]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:77}
@@ -899,7 +1118,9 @@ p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)
 ; 2x^2 + 3x + 1  con x=2  -> 15
 (horner '(2 3 1) 2)   ; -> 15
 \end{lstlisting}
-\hyperref[hint:77]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:77]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:77]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:78}
@@ -911,6 +1132,9 @@ p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)
 \end{lstlisting}
 Vincolo: usare \fn{mapcar} per i prodotti componente per componente,
 poi \fn{apply} con \fn{+} per la somma.
+
+
+\small\color{black!55}\hyperref[sol:78]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:79}
@@ -921,6 +1145,9 @@ poi \fn{apply} con \fn{+} per la somma.
 (raddoppia '(1 2 3))   ; -> (1 1 2 2 3 3)
 \end{lstlisting}
 Spiegare la differenza tra \fn{mapcan} e \fn{mapcar} in un commento.
+
+
+\small\color{black!55}\hyperref[sol:79]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:80}
@@ -933,6 +1160,9 @@ Spiegare la differenza tra \fn{mapcan} e \fn{mapcar} in un commento.
 ; -> ((ANNA . 92) (MARIO . 85) (LUCA . 78))
 \end{lstlisting}
 Vincolo: usare \fn{sort} con comparatore custom.
+
+
+\small\color{black!55}\hyperref[sol:80]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:81}
@@ -943,6 +1173,9 @@ replicando \fn{every}/\fn{some} senza usarli.
 (tutti-p #'evenp '(2 4 6))    ; -> T
 (qualcuno-p #'oddp '(2 3 4))  ; -> T
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:81]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:82}
@@ -952,6 +1185,9 @@ replicando \fn{every}/\fn{some} senza usarli.
 \begin{lstlisting}
 (count-matching #'evenp '(1 2 3 4 5))   ; -> 2
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:82]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:83}
@@ -962,7 +1198,9 @@ una alist con chiave = risultato della funzione.
 (raggruppa-per #'evenp '(1 2 3 4 5))
 ; -> ((NIL 1 3 5) (T 2 4))
 \end{lstlisting}
-\hyperref[hint:83]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:83]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:83]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:84}
@@ -973,6 +1211,9 @@ una alist con chiave = risultato della funzione.
 (applica-a-tutti (list #'1+ #'1- #'zerop) 0)
 ; -> (1 -1 T)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:84]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:85}
@@ -983,7 +1224,9 @@ una alist con chiave = risultato della funzione.
 (defparameter *f* (compose #'1+ #'1+))
 (funcall *f* 10)   ; -> 12
 \end{lstlisting}
-\hyperref[hint:85]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:85]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:85]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:86}
@@ -995,7 +1238,9 @@ una alist con chiave = risultato della funzione.
 (funcall *add10* 5)    ; -> 15
 (funcall *add10* 20)   ; -> 30
 \end{lstlisting}
-\hyperref[hint:86]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:86]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:86]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:87}
@@ -1011,7 +1256,9 @@ una alist con chiave = risultato della funzione.
 (funcall *c2*)  ; -> 10
 (funcall *c2*)  ; -> 15
 \end{lstlisting}
-\hyperref[hint:87]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:87]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:87]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:88}
@@ -1023,6 +1270,9 @@ somma un valore al totale.
 (funcall *acc* 10)   ; -> 15
 (funcall *acc* 3)    ; -> 18
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:88]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:89}
@@ -1036,7 +1286,9 @@ che ad ogni chiamata produce il successivo numero di Fibonacci.
 (funcall *fib*)   ; -> 1
 (funcall *fib*)   ; -> 2
 \end{lstlisting}
-\hyperref[hint:89]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:89]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:89]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:90}
@@ -1047,6 +1299,9 @@ che ad ogni chiamata produce il successivo numero di Fibonacci.
 (pipeline 5 (list #'1+ #'1+ (lambda (x) (* x 2))))
 ; -> 14
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:90]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:91}
@@ -1060,7 +1315,9 @@ Vincoli: hash table nella closure; funzione originale invariata.
   (memoize #'fibonacci))
 (funcall *fib-m* 35)   ; veloce
 \end{lstlisting}
-\hyperref[hint:91]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:91]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:91]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:92}
@@ -1072,6 +1329,9 @@ Raccogliere in un unico file, con docstring:
 Aggiungere almeno 3 funzioni a scelta (es.\ \fn{take}, \fn{drop}, \fn{zip}).
 
 Requisiti: nessuno stato globale; almeno un test per funzione.
+
+
+\small\color{black!55}\hyperref[sol:92]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -1096,6 +1356,9 @@ alberi binari e BST, pila e coda come ADT, grafi.
 ; -> ((NAME . "Mario") (AGE . 24))
 \end{lstlisting}
 Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
+
+
+\small\color{black!55}\hyperref[sol:93]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:94}
@@ -1106,7 +1369,9 @@ Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
 (frequencies '(a b a c b a))
 ; -> ((A . 3) (B . 2) (C . 1))
 \end{lstlisting}
-\hyperref[hint:94]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:94]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:94]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:95}
@@ -1120,6 +1385,9 @@ Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
 (ht-delete 'foo *ht*)
 (ht-get 'foo *ht*)     ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:95]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:96}
@@ -1127,6 +1395,9 @@ Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
 Riscrivere \fn{(frequencies-hash lst)} usando una hash table.
 
 \exnota{Obiettivo: confrontare alist vs hash table.}
+
+
+\small\color{black!55}\hyperref[sol:96]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:97}
@@ -1137,7 +1408,9 @@ Riscrivere \fn{(frequencies-hash lst)} usando una hash table.
 (frequenza-caratteri "banana")
 ; hash table: #\b->1, #\a->3, #\n->2
 \end{lstlisting}
-\hyperref[hint:97]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:97]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:97]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:98}
@@ -1145,7 +1418,9 @@ Riscrivere \fn{(frequencies-hash lst)} usando una hash table.
 \exlabel{Implementare} \fn{(unisci-hash ht1 ht2)}: chiavi duplicate
 $\to$ somma dei valori.
 
-\hyperref[hint:98]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:98]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:98]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:99}
@@ -1153,7 +1428,9 @@ $\to$ somma dei valori.
 \exlabel{Implementare} \fn{(inverti-hash ht)}: scambia chiavi e valori.
 Assumere valori unici.
 
-\hyperref[hint:99]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:99]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:99]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:100}
@@ -1164,6 +1441,9 @@ Assumere valori unici.
 (alist->hash '((a . 1) (b . 2)))
 ; -> hash table a->1, b->2
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:100]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:101}
@@ -1179,13 +1459,18 @@ Creare una matrice $3 \times 3$ con \fn{make-array} e implementare:
 (mat-set *m* 1 1 5)
 (mat-get *m* 1 1)   ; -> 5
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:101]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
 
 \label{ex:102}
 \begin{colbox}{102}{Trasposta di matrice}{3}
 \exlabel{Implementare} \fn{(trasposta m n)}: trasposta di una matrice $n \times n$.
 
-\hyperref[hint:102]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:102]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:102]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:103}
@@ -1198,6 +1483,9 @@ modificandolo con \fn{setf}/\fn{aref}, senza liste ausiliarie.
 (inverti-array! *v*)
 ; *v* ora e': #(5 4 3 2 1)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:103]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:104}
@@ -1205,7 +1493,9 @@ modificandolo con \fn{setf}/\fn{aref}, senza liste ausiliarie.
 \exlabel{Implementare} \fn{(moltiplica-matrici a b n)}: prodotto di
 matrici quadrate $n \times n$.
 
-\hyperref[hint:104]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:104]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:104]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:105}
@@ -1223,6 +1513,9 @@ Definire:
 (crea-persona "Mario" 23 "Roma")
 ; -> #S(PERSONA :NOME "Mario" :ETA 23 :CITTA "Roma")
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:105]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:106}
@@ -1242,6 +1535,9 @@ Costruire manualmente l'albero:
 ;    / \
 ;   1   4
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:106]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:107}
@@ -1252,6 +1548,9 @@ Rappresentare lo stesso albero con la notazione
 (make-leaf v)
 (make-node v left right)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:107]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:108}
@@ -1265,7 +1564,9 @@ Implementare un albero binario di ricerca:
 (bst-find 4 (bst-insert 4 (bst-insert 5 nil)))
 ; -> T
 \end{lstlisting}
-\hyperref[hint:108]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:108]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:108]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:109}
@@ -1277,7 +1578,9 @@ Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 \begin{lstlisting}
 (inorder albero)   ; -> (1 3 4 5 8)
 \end{lstlisting}
-\hyperref[hint:109]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:109]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:109]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:110}
@@ -1288,12 +1591,18 @@ Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 (tree-height albero)    ; -> 3
 (count-leaves albero)   ; -> 3
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:110]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:111}
 \begin{colbox}{111}{Specchia l'albero}{3}
 \exlabel{Implementare} \fn{(specchia tree)}: scambia ricorsivamente
 sottoalberi sinistro e destro.
+
+
+\small\color{black!55}\hyperref[sol:111]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:112}
@@ -1301,7 +1610,9 @@ sottoalberi sinistro e destro.
 \exlabel{Implementare} \fn{(bilanciato-p tree)}: le altezze dei sottoalberi
 differiscono al piu' di 1 per ogni nodo.
 
-\hyperref[hint:112]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:112]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:112]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:113}
@@ -1321,6 +1632,9 @@ Implementare con \fn{setf}:
 (stack-pop *s*)    ; -> 2
 (stack-peek *s*)   ; -> 1
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:113]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:114}
@@ -1333,7 +1647,9 @@ Implementare con \fn{setf}:
 (dequeue queue)
 (queue-empty-p queue)
 \end{lstlisting}
-\hyperref[hint:114]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:114]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:114]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:115}
@@ -1347,7 +1663,9 @@ Implementare con \fn{setf}:
 \end{lstlisting}
 Vincolo: usare una pila.
 
-\hyperref[hint:115]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:115]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:115]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:116}
@@ -1361,6 +1679,9 @@ Vincolo: usare una pila.
 (list-contacts)
 \end{lstlisting}
 Gestire il caso contatto non trovato.
+
+
+\small\color{black!55}\hyperref[sol:116]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:117}
@@ -1375,6 +1696,9 @@ Gestire il caso contatto non trovato.
 (neighbors 'a '((a b c) (b a d) (c a d) (d b c)))
 ; -> (B C)
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:117]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:118}
@@ -1387,7 +1711,9 @@ Gestire il caso contatto non trovato.
 \end{lstlisting}
 Gestire i cicli con un insieme di nodi gia' visitati.
 
-\hyperref[hint:118]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:118]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:118]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:119}
@@ -1400,7 +1726,9 @@ Gestire i cicli con un insieme di nodi gia' visitati.
 \end{lstlisting}
 Vincolo: usare una coda.
 
-\hyperref[hint:119]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:119]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:119]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:120}
@@ -1411,7 +1739,9 @@ Vincolo: usare una coda.
 (conta-parole "il gatto e' sul tetto e il tetto")
 ; hash table: "il"->2, ...
 \end{lstlisting}
-\hyperref[hint:120]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:120]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:120]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -1443,7 +1773,9 @@ Verificare l'espansione con \fn{macroexpand-1}.
 
 \exnota{Obiettivo: capire la differenza macro/funzione.}
 
-\hyperref[hint:121]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:121]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:121]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:122}
@@ -1460,7 +1792,9 @@ Verificare l'espansione con \fn{macroexpand-1}.
     (setf i (1+ i))))
 ; stampa 0 1 2 3 4
 \end{lstlisting}
-\hyperref[hint:122]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:122]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:122]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:123}
@@ -1477,7 +1811,9 @@ Verificare l'espansione con \fn{macroexpand-1}.
 \end{lstlisting}
 \exnota{Obiettivo: usare \fn{gensym} per evitare cattura della variabile.}
 
-\hyperref[hint:123]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:123]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:123]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -1499,7 +1835,9 @@ combinazioni, ordinamento e problemi classici di backtracking.
 (subsets '(a b))
 ; -> (() (A) (B) (A B))
 \end{lstlisting}
-\hyperref[hint:124]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:124]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:124]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:125}
@@ -1509,7 +1847,9 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \begin{lstlisting}
 (length (permutations '(a b c)))   ; -> 6
 \end{lstlisting}
-\hyperref[hint:125]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:125]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:125]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:126}
@@ -1520,7 +1860,9 @@ combinazioni, ordinamento e problemi classici di backtracking.
 (combinations '(a b c d) 2)
 ; -> ((A B) (A C) (A D) (B C) (B D) (C D))
 \end{lstlisting}
-\hyperref[hint:126]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:126]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:126]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:127}
@@ -1531,7 +1873,9 @@ combinazioni, ordinamento e problemi classici di backtracking.
 (somma-a-target '(1 2 3 4 5) 6)
 ; -> ((1 5) (2 4) (1 2 3))
 \end{lstlisting}
-\hyperref[hint:127]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:127]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:127]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:128}
@@ -1542,7 +1886,9 @@ combinazioni, ordinamento e problemi classici di backtracking.
 (genera-parentesi 3)
 ; -> ("((()))" "(()())" "(())()" "()(())" "()()()")
 \end{lstlisting}
-\hyperref[hint:128]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:128]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:128]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:129}
@@ -1554,7 +1900,9 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \end{lstlisting}
 Vincoli: non usare \fn{sort}; complessita' $O(n \log n)$.
 
-\hyperref[hint:129]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:129]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:129]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:130}
@@ -1564,7 +1912,9 @@ Vincoli: non usare \fn{sort}; complessita' $O(n \log n)$.
 \begin{lstlisting}
 (quicksort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
 \end{lstlisting}
-\hyperref[hint:130]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:130]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:130]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:131}
@@ -1576,7 +1926,9 @@ Vincoli: non usare \fn{sort}; complessita' $O(n \log n)$.
 ; Sposta disco 1: A -> C
 ; ...
 \end{lstlisting}
-\hyperref[hint:131]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:131]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:131]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:132}
@@ -1587,7 +1939,9 @@ Oggetti: lista di \fn{(peso valore)}.
 (knapsack '((2 3) (3 4) (4 5) (5 8)) 5)
 ; -> 7
 \end{lstlisting}
-\hyperref[hint:132]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:132]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:132]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:133}
@@ -1599,7 +1953,9 @@ Rappresentare un labirinto come matrice 2D (0 libero, 1 muro).
 (find-path maze '(0 0) '(4 4))
 ; -> ((0 0) (1 0) ... (4 4))
 \end{lstlisting}
-\hyperref[hint:133]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:133]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:133]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:134}
@@ -1612,7 +1968,9 @@ Rappresentare un labirinto come matrice 2D (0 libero, 1 muro).
 \end{lstlisting}
 Vincoli: backtracking con pruning; rappresentazione compatta.
 
-\hyperref[hint:134]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:134]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:134]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:135}
@@ -1623,7 +1981,9 @@ Vincoli: backtracking con pruning; rappresentazione compatta.
 Algoritmo: per ogni cella vuota, provare i valori 1--9,
 verificare vincoli riga/colonna/blocco, procedere ricorsivamente.
 
-\hyperref[hint:135]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:135]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:135]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:136}
@@ -1635,7 +1995,9 @@ scacchiera $n \times n$ visitando ogni casella esattamente una volta.
 \end{lstlisting}
 Suggerimento: euristica di Warnsdorff.
 
-\hyperref[hint:136]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:136]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:136]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -1655,6 +2017,9 @@ direttamente; usare \fn{coerce}.
 \begin{lstlisting}
 (reverse-string "hello")   ; -> "olleh"
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:137]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:138}
@@ -1665,6 +2030,9 @@ direttamente; usare \fn{coerce}.
 (palindrome-p "anna")    ; -> T
 (palindrome-p "casa")    ; -> NIL
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:138]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:139}
@@ -1675,7 +2043,9 @@ maiuscole/minuscole, spazi, punteggiatura.
 (palindrome-robust-p "I topi non avevano nipoti")
 ; -> T
 \end{lstlisting}
-\hyperref[hint:139]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:139]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:139]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:140}
@@ -1685,7 +2055,9 @@ maiuscole/minuscole, spazi, punteggiatura.
 \begin{lstlisting}
 (anagram-p "roma" "amor")   ; -> T
 \end{lstlisting}
-\hyperref[hint:140]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:140]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:140]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:141}
@@ -1695,6 +2067,9 @@ maiuscole/minuscole, spazi, punteggiatura.
 \begin{lstlisting}
 (count-char #\a "banana")   ; -> 3
 \end{lstlisting}
+
+
+\small\color{black!55}\hyperref[sol:141]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -1719,7 +2094,9 @@ polacca inversa.
 \end{lstlisting}
 Vincolo: usare una pila.
 
-\hyperref[hint:142]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:142]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:142]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:143}
@@ -1730,7 +2107,9 @@ in notazione prefissa, senza usare \fn{eval}.
 (evaluate-expression '(+ 2 3))        ; -> 5
 (evaluate-expression '(* 4 (+ 2 3)))  ; -> 20
 \end{lstlisting}
-\hyperref[hint:143]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:143]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:143]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:144}
@@ -1742,7 +2121,9 @@ Estendere l'es.~143 con variabili (\fn{set x 10}) e riferimenti.
 \end{lstlisting}
 Ambiente separato come alist; non usare \fn{eval}.
 
-\hyperref[hint:144]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:144]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:144]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 % =============================================================
@@ -1769,6 +2150,9 @@ l'utente lo indovina con feedback troppo alto/troppo basso.
 ; Esatto! Ci hai messo 5 tentativi.
 \end{lstlisting}
 Vincolo: \fn{loop} per il ciclo; \fn{random} per la generazione.
+
+
+\small\color{black!55}\hyperref[sol:145]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:146}
@@ -1781,7 +2165,9 @@ Gioco del tris a due giocatori da tastiera.
 \end{itemize}
 Separare logica del gioco, verifica vittoria e I/O.
 
-\hyperref[hint:146]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:146]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:146]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:147}
@@ -1794,7 +2180,9 @@ Regole: sopravvive con 2--3 vicini vivi; nasce con esattamente 3.
       do (setf g (evolvi g))
          (stampa-griglia g))
 \end{lstlisting}
-\hyperref[hint:147]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:147]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:147]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:148}
@@ -1819,8 +2207,14 @@ Struttura minima:
 ;; IO     -- input/output e file
 \end{lstlisting}
 
-\hyperref[hint:148]{$\to$ Suggerimento}
+
+
+\small\color{black!55}\hyperref[sol:148]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:148]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
+
+
+
+
 
 
 

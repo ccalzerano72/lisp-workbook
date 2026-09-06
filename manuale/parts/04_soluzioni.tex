@@ -22,6 +22,7 @@
 
 \label{sol:1}
 \begin{solbox}{1}
+\small\color{black!55}\hyperref[ex:1]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun add (a b) (+ a b))
 \end{lstlisting}
@@ -29,6 +30,7 @@
 
 \label{sol:2}
 \begin{solbox}{2}
+\small\color{black!55}\hyperref[ex:2]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun circle-area (r)
   (* pi r r))
@@ -40,6 +42,7 @@
 
 \label{sol:3}
 \begin{solbox}{3}
+\small\color{black!55}\hyperref[ex:3]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun celsius->fahrenheit (c)
   (+ (* c 9/5) 32))
@@ -51,6 +54,7 @@
 
 \label{sol:4}
 \begin{solbox}{4}
+\small\color{black!55}\hyperref[ex:4]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun ipotenusa (a b)
   (let ((a2 (* a a))
@@ -61,6 +65,7 @@
 
 \label{sol:5}
 \begin{solbox}{5}
+\small\color{black!55}\hyperref[ex:5]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun distanza-euclidea (x1 y1 x2 y2)
   (let ((dx (- x2 x1))
@@ -71,6 +76,7 @@
 
 \label{sol:6}
 \begin{solbox}{6}
+\small\color{black!55}\hyperref[ex:6]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun pari-p (n)   (= (mod n 2) 0))
 (defun dispari-p (n) (= (mod n 2) 1))
@@ -79,6 +85,7 @@
 
 \label{sol:7}
 \begin{solbox}{7}
+\small\color{black!55}\hyperref[ex:7]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun divisibile-p (a b)
   (= (mod a b) 0))
@@ -87,6 +94,7 @@
 
 \label{sol:8}
 \begin{solbox}{8}
+\small\color{black!55}\hyperref[ex:8]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun segno (n)
   (cond ((< n 0) 'negativo)
@@ -97,6 +105,7 @@
 
 \label{sol:9}
 \begin{solbox}{9}
+\small\color{black!55}\hyperref[ex:9]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun max-tre (a b c)
   (cond ((and (>= a b) (>= a c)) a)
@@ -107,6 +116,7 @@
 
 \label{sol:10}
 \begin{solbox}{10}
+\small\color{black!55}\hyperref[ex:10]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun triangolo-valido-p (a b c)
   (and (< a (+ b c))
@@ -117,6 +127,7 @@
 
 \label{sol:11}
 \begin{solbox}{11}
+\small\color{black!55}\hyperref[ex:11]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun bisestile-p (anno)
   (or (and (= (mod anno 4)   0)
@@ -127,6 +138,7 @@
 
 \label{sol:12}
 \begin{solbox}{12}
+\small\color{black!55}\hyperref[ex:12]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun giorni-mese (mese anno)
   (cond ((member mese '(1 3 5 7 8 10 12)) 31)
@@ -138,6 +150,7 @@
 
 \label{sol:13}
 \begin{solbox}{13}
+\small\color{black!55}\hyperref[ex:13]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun voto->giudizio (p)
   (cond ((>= p 90) "ottimo")
@@ -149,6 +162,7 @@
 
 \label{sol:14}
 \begin{solbox}{14}
+\small\color{black!55}\hyperref[ex:14]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun terna-pitagorica-p (a b c)
   (= (* c c) (+ (* a a) (* b b))))
@@ -157,6 +171,7 @@
 
 \label{sol:15}
 \begin{solbox}{15}
+\small\color{black!55}\hyperref[ex:15]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun radici-quadratiche (a b c)
   (let* ((delta (- (* b b) (* 4 a c))))
@@ -171,6 +186,7 @@
 
 \label{sol:16}
 \begin{solbox}{16}
+\small\color{black!55}\hyperref[ex:16]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun calcola (op a b)
   (case op
@@ -183,6 +199,7 @@
 
 \label{sol:17}
 \begin{solbox}{17}
+\small\color{black!55}\hyperref[ex:17]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:17]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun somma-cifre (n)
   (if (= n 0)
@@ -194,6 +211,7 @@
 
 \label{sol:18}
 \begin{solbox}{18}
+\small\color{black!55}\hyperref[ex:18]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun conta-fino-a (n)
   (dotimes (i n)
@@ -203,6 +221,7 @@
 
 \label{sol:19}
 \begin{solbox}{19}
+\small\color{black!55}\hyperref[ex:19]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun tabellina (n)
   (dotimes (i 10)
@@ -213,6 +232,7 @@
 
 \label{sol:20}
 \begin{solbox}{20}
+\small\color{black!55}\hyperref[ex:20]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun sconto (prezzo)
   (cond ((>= prezzo 200) (* prezzo 0.8))
@@ -223,6 +243,7 @@
 
 \label{sol:21}
 \begin{solbox}{21}
+\small\color{black!55}\hyperref[ex:21]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun paga-settimanale (ore tariffa)
   (if (<= ore 40)
@@ -239,6 +260,7 @@
 
 \label{sol:22}
 \begin{solbox}{22}
+\small\color{black!55}\hyperref[ex:22]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 ;; Parte A: con cons
 (cons 'a (cons (cons 'b (cons 'c nil)) (cons 'd nil)))
@@ -252,6 +274,7 @@
 
 \label{sol:23}
 \begin{solbox}{23}
+\small\color{black!55}\hyperref[ex:23]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (car (cdr (cdr '(a b c d e))))
 ; -> C
@@ -260,6 +283,7 @@
 
 \label{sol:24}
 \begin{solbox}{24}
+\small\color{black!55}\hyperref[ex:24]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun first-element (lst)
   (if (null lst) nil (nth 0 lst)))
@@ -271,6 +295,7 @@
 
 \label{sol:25}
 \begin{solbox}{25}
+\small\color{black!55}\hyperref[ex:25]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun primo-e-ultimo (lst)
   (if (null lst)
@@ -281,6 +306,7 @@
 
 \label{sol:26}
 \begin{solbox}{26}
+\small\color{black!55}\hyperref[ex:26]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun scambia-primi-due (lst)
   (if (or (null lst) (null (cdr lst)))
@@ -293,6 +319,7 @@
 
 \label{sol:27}
 \begin{solbox}{27}
+\small\color{black!55}\hyperref[ex:27]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun length* (lst)
   (if (null lst)
@@ -303,6 +330,7 @@
 
 \label{sol:28}
 \begin{solbox}{28}
+\small\color{black!55}\hyperref[ex:28]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun sum-list (lst)
   (if (null lst)
@@ -313,6 +341,7 @@
 
 \label{sol:29}
 \begin{solbox}{29}
+\small\color{black!55}\hyperref[ex:29]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun product-list (lst)
   (if (null lst)
@@ -323,6 +352,7 @@
 
 \label{sol:30}
 \begin{solbox}{30}
+\small\color{black!55}\hyperref[ex:30]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun max-list (lst)
   (cond ((null lst) (error "lista vuota"))
@@ -333,6 +363,7 @@
 
 \label{sol:31}
 \begin{solbox}{31}
+\small\color{black!55}\hyperref[ex:31]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun member* (item lst)
   (cond ((null lst)          nil)
@@ -343,6 +374,7 @@
 
 \label{sol:32}
 \begin{solbox}{32}
+\small\color{black!55}\hyperref[ex:32]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun count-element (item lst)
   (cond ((null lst) 0)
@@ -354,6 +386,7 @@
 
 \label{sol:33}
 \begin{solbox}{33}
+\small\color{black!55}\hyperref[ex:33]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun position* (item lst)
   (labels ((iter (lst i)
@@ -366,6 +399,7 @@
 
 \label{sol:34}
 \begin{solbox}{34}
+\small\color{black!55}\hyperref[ex:34]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun last-element (lst)
   (cond ((null lst) nil)
@@ -376,6 +410,7 @@
 
 \label{sol:35}
 \begin{solbox}{35}
+\small\color{black!55}\hyperref[ex:35]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun incrementa-tutti (lst)
   (if (null lst)
@@ -387,6 +422,7 @@
 
 \label{sol:36}
 \begin{solbox}{36}
+\small\color{black!55}\hyperref[ex:36]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun solo-pari (lst)
   (cond ((null lst) nil)
@@ -398,6 +434,7 @@
 
 \label{sol:37}
 \begin{solbox}{37}
+\small\color{black!55}\hyperref[ex:37]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun elimina-tutte (item lst)
   (cond ((null lst) nil)
@@ -410,6 +447,7 @@
 
 \label{sol:38}
 \begin{solbox}{38}
+\small\color{black!55}\hyperref[ex:38]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun seleziona-dispari (lst)
   (cond ((null lst)       nil)
@@ -421,6 +459,7 @@
 
 \label{sol:39}
 \begin{solbox}{39}
+\small\color{black!55}\hyperref[ex:39]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 ;; Versione ricorsiva semplice (non tail-recursive)
 (defun reverse*-naive (lst)
@@ -441,6 +480,7 @@
 
 \label{sol:40}
 \begin{solbox}{40}
+\small\color{black!55}\hyperref[ex:40]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:40]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun append* (lst1 lst2)
   (if (null lst1)
@@ -452,6 +492,7 @@
 
 \label{sol:41}
 \begin{solbox}{41}
+\small\color{black!55}\hyperref[ex:41]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:41]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun remove-first (item lst)
   (cond ((null lst) nil)
@@ -463,6 +504,7 @@
 
 \label{sol:42}
 \begin{solbox}{42}
+\small\color{black!55}\hyperref[ex:42]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun replace-first (old new lst)
   (cond ((null lst) nil)
@@ -475,6 +517,7 @@
 
 \label{sol:43}
 \begin{solbox}{43}
+\small\color{black!55}\hyperref[ex:43]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun palindroma-p (lst)
   (equal lst (reverse* lst)))
@@ -483,6 +526,7 @@
 
 \label{sol:44}
 \begin{solbox}{44}
+\small\color{black!55}\hyperref[ex:44]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun range (a b)
   (if (> a b)
@@ -493,6 +537,7 @@
 
 \label{sol:45}
 \begin{solbox}{45}
+\small\color{black!55}\hyperref[ex:45]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun duplica-elementi (lst)
   (if (null lst)
@@ -505,6 +550,7 @@
 
 \label{sol:46}
 \begin{solbox}{46}
+\small\color{black!55}\hyperref[ex:46]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun schiaccia-coppia (alist)
   (mapcar #'car alist))
@@ -513,6 +559,7 @@
 
 \label{sol:47}
 \begin{solbox}{47}
+\small\color{black!55}\hyperref[ex:47]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun prefisso-p (sub lst)
   (cond ((null sub) t)
@@ -525,6 +572,7 @@
 
 \label{sol:48}
 \begin{solbox}{48}
+\small\color{black!55}\hyperref[ex:48]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun intercala (lst1 lst2)
   (if (null lst1)
@@ -537,6 +585,7 @@
 
 \label{sol:49}
 \begin{solbox}{49}
+\small\color{black!55}\hyperref[ex:49]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:49]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun rle-encode (lst)
   (if (null lst)
@@ -564,6 +613,7 @@
 
 \label{sol:50}
 \begin{solbox}{50}
+\small\color{black!55}\hyperref[ex:50]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:50]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun remove-duplicates* (lst)
   (labels ((iter (lst seen)
@@ -585,6 +635,7 @@
 
 \label{sol:51}
 \begin{solbox}{51}
+\small\color{black!55}\hyperref[ex:51]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun fattoriale (n)
   ;; labels definisce iter localmente (tail-recursive)
@@ -598,6 +649,7 @@
 
 \label{sol:52}
 \begin{solbox}{52}
+\small\color{black!55}\hyperref[ex:52]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun reverse-tr (lst)
   ;; l'accumulatore accumula in ordine inverso
@@ -611,6 +663,7 @@
 
 \label{sol:53}
 \begin{solbox}{53}
+\small\color{black!55}\hyperref[ex:53]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun somma-range (a b)
   (labels ((iter (i acc)
@@ -623,6 +676,7 @@
 
 \label{sol:54}
 \begin{solbox}{54}
+\small\color{black!55}\hyperref[ex:54]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:54]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun fibonacci-fast (n)
   ;; a = F(i), b = F(i+1); a ogni passo a <- b, b <- a+b
@@ -636,6 +690,7 @@
 
 \label{sol:55}
 \begin{solbox}{55}
+\small\color{black!55}\hyperref[ex:55]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:55]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun flatten* (tree)
   (cond
@@ -650,6 +705,7 @@
 
 \label{sol:56}
 \begin{solbox}{56}
+\small\color{black!55}\hyperref[ex:56]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:56]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun tree-depth (tree)
   (cond
@@ -663,6 +719,7 @@
 
 \label{sol:57}
 \begin{solbox}{57}
+\small\color{black!55}\hyperref[ex:57]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun count-atoms (tree)
   (cond ((null tree) 0)
@@ -674,6 +731,7 @@
 
 \label{sol:58}
 \begin{solbox}{58}
+\small\color{black!55}\hyperref[ex:58]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun sum-tree (tree)
   (cond ((null tree)   0)
@@ -686,6 +744,7 @@
 
 \label{sol:59}
 \begin{solbox}{59}
+\small\color{black!55}\hyperref[ex:59]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun tree-member-p (item tree)
   (cond ((null tree) nil)
@@ -698,6 +757,7 @@
 
 \label{sol:60}
 \begin{solbox}{60}
+\small\color{black!55}\hyperref[ex:60]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:60]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun sostituisci-profondo (old new tree)
   (cond ((null tree) nil)
@@ -710,6 +770,7 @@
 
 \label{sol:61}
 \begin{solbox}{61}
+\small\color{black!55}\hyperref[ex:61]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:61]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun power-fast (base exp)
   (cond ((= exp 0) 1)
@@ -723,6 +784,7 @@
 
 \label{sol:62}
 \begin{solbox}{62}
+\small\color{black!55}\hyperref[ex:62]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun mcd* (a b)
   (if (= b 0) a (mcd* b (mod a b))))
@@ -734,6 +796,7 @@
 
 \label{sol:63}
 \begin{solbox}{63}
+\small\color{black!55}\hyperref[ex:63]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun primo-p (n)
   (if (< n 2)
@@ -745,6 +808,7 @@
 
 \label{sol:64}
 \begin{solbox}{64}
+\small\color{black!55}\hyperref[ex:64]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:64]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun crivello (n)
   ;; array di candidati: T = possibile primo
@@ -764,6 +828,7 @@
 
 \label{sol:65}
 \begin{solbox}{65}
+\small\color{black!55}\hyperref[ex:65]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:65]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun prime-factors (n)
   ;; prova divisori da 2 in su; non avanzare d se divide
@@ -779,6 +844,7 @@
 
 \label{sol:66}
 \begin{solbox}{66}
+\small\color{black!55}\hyperref[ex:66]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun sublist (lst inizio fine)
   (let ((len (- fine inizio)))
@@ -791,6 +857,7 @@
 
 \label{sol:67}
 \begin{solbox}{67}
+\small\color{black!55}\hyperref[ex:67]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:67]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun raggruppa (lst n)
   (if (null lst)
@@ -803,6 +870,7 @@
 
 \label{sol:68}
 \begin{solbox}{68}
+\small\color{black!55}\hyperref[ex:68]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun interseca (lst1 lst2)
   (remove-if-not (lambda (x) (member x lst2)) lst1))
@@ -816,6 +884,7 @@
 
 \label{sol:69}
 \begin{solbox}{69}
+\small\color{black!55}\hyperref[ex:69]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun square-list (lst)
   (mapcar (lambda (x) (* x x)) lst))
@@ -824,6 +893,7 @@
 
 \label{sol:70}
 \begin{solbox}{70}
+\small\color{black!55}\hyperref[ex:70]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun even-list (lst)
   (remove-if-not #'evenp lst))
@@ -832,6 +902,7 @@
 
 \label{sol:71}
 \begin{solbox}{71}
+\small\color{black!55}\hyperref[ex:71]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun vocali-iniziali (lst)
   (remove-if-not
@@ -844,6 +915,7 @@
 
 \label{sol:72}
 \begin{solbox}{72}
+\small\color{black!55}\hyperref[ex:72]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun sum-reduce (lst)
   (reduce #'+ lst :initial-value 0))
@@ -852,6 +924,7 @@
 
 \label{sol:73}
 \begin{solbox}{73}
+\small\color{black!55}\hyperref[ex:73]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun product-reduce (lst)
   (reduce #'* lst :initial-value 1))
@@ -860,6 +933,7 @@
 
 \label{sol:74}
 \begin{solbox}{74}
+\small\color{black!55}\hyperref[ex:74]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun reduce-min (lst)
   (if (null lst)
@@ -875,6 +949,7 @@
 
 \label{sol:75}
 \begin{solbox}{75}
+\small\color{black!55}\hyperref[ex:75]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:75]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun cifre->intero (lst)
   ;; a ogni passo: acc = acc*10 + cifra
@@ -885,6 +960,7 @@
 
 \label{sol:76}
 \begin{solbox}{76}
+\small\color{black!55}\hyperref[ex:76]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun appiattisci-un-livello (lst)
   (reduce #'append lst :initial-value nil))
@@ -893,6 +969,7 @@
 
 \label{sol:77}
 \begin{solbox}{77}
+\small\color{black!55}\hyperref[ex:77]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:77]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun horner (coefficienti x)
   ;; fold: acc = acc*x + c
@@ -903,6 +980,7 @@
 
 \label{sol:78}
 \begin{solbox}{78}
+\small\color{black!55}\hyperref[ex:78]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun prodotto-scalare (v1 v2)
   (apply #'+ (mapcar #'* v1 v2)))
@@ -911,6 +989,7 @@
 
 \label{sol:79}
 \begin{solbox}{79}
+\small\color{black!55}\hyperref[ex:79]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 ;; mapcan applica f a ogni elemento e concatena le liste risultanti;
 ;; mapcar le raccoglie senza appiattire.
@@ -921,6 +1000,7 @@
 
 \label{sol:80}
 \begin{solbox}{80}
+\small\color{black!55}\hyperref[ex:80]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun ordina-per-punteggio (lst)
   (sort (copy-list lst)
@@ -930,6 +1010,7 @@
 
 \label{sol:81}
 \begin{solbox}{81}
+\small\color{black!55}\hyperref[ex:81]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun tutti-p (pred lst)
   (cond ((null lst) t)
@@ -946,6 +1027,7 @@
 
 \label{sol:82}
 \begin{solbox}{82}
+\small\color{black!55}\hyperref[ex:82]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun count-matching (pred lst)
   (reduce (lambda (acc x)
@@ -956,6 +1038,7 @@
 
 \label{sol:83}
 \begin{solbox}{83}
+\small\color{black!55}\hyperref[ex:83]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:83]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun raggruppa-per (f lst)
   ;; per ogni elemento, trova o crea il gruppo nella alist
@@ -971,6 +1054,7 @@
 
 \label{sol:84}
 \begin{solbox}{84}
+\small\color{black!55}\hyperref[ex:84]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun applica-a-tutti (funzioni x)
   (mapcar (lambda (f) (funcall f x)) funzioni))
@@ -979,6 +1063,7 @@
 
 \label{sol:85}
 \begin{solbox}{85}
+\small\color{black!55}\hyperref[ex:85]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:85]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun compose (f g)
   ;; cattura f e g nella closure
@@ -988,6 +1073,7 @@
 
 \label{sol:86}
 \begin{solbox}{86}
+\small\color{black!55}\hyperref[ex:86]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:86]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun partial (funzione &rest argomenti)
   ;; cattura funzione e argomenti nella closure
@@ -998,6 +1084,7 @@
 
 \label{sol:87}
 \begin{solbox}{87}
+\small\color{black!55}\hyperref[ex:87]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:87]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun make-counter (&optional (start 0) (step 1))
   ;; curr e' privato alla closure
@@ -1010,6 +1097,7 @@
 
 \label{sol:88}
 \begin{solbox}{88}
+\small\color{black!55}\hyperref[ex:88]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun make-accumulator (iniziale)
   (let ((totale iniziale))
@@ -1020,6 +1108,7 @@
 
 \label{sol:89}
 \begin{solbox}{89}
+\small\color{black!55}\hyperref[ex:89]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:89]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun make-fib-generator ()
   ;; a e b condividono la stessa closure
@@ -1033,6 +1122,7 @@
 
 \label{sol:90}
 \begin{solbox}{90}
+\small\color{black!55}\hyperref[ex:90]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun pipeline (valore funzioni)
   (reduce (lambda (v f) (funcall f v))
@@ -1042,6 +1132,7 @@
 
 \label{sol:91}
 \begin{solbox}{91}
+\small\color{black!55}\hyperref[ex:91]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:91]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun memoize (funzione)
   ;; la cache e' privata alla closure
@@ -1059,6 +1150,7 @@
 
 \label{sol:92}
 \begin{solbox}{92}
+\small\color{black!55}\hyperref[ex:92]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 ;; Mini libreria funzionale (estratto)
 (defun map-list (f lst)
@@ -1101,6 +1193,7 @@
 
 \label{sol:93}
 \begin{solbox}{93}
+\small\color{black!55}\hyperref[ex:93]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun lookup (key alist)
   (let ((pair (assoc key alist)))
@@ -1116,6 +1209,7 @@
 
 \label{sol:94}
 \begin{solbox}{94}
+\small\color{black!55}\hyperref[ex:94]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:94]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun frequencies (lst)
   ;; per ogni elemento, aggiorna o aggiunge la coppia
@@ -1130,6 +1224,7 @@
 
 \label{sol:95}
 \begin{solbox}{95}
+\small\color{black!55}\hyperref[ex:95]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun ht-get (key ht)
   (gethash key ht))
@@ -1147,6 +1242,7 @@
 
 \label{sol:96}
 \begin{solbox}{96}
+\small\color{black!55}\hyperref[ex:96]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun frequencies-hash (lst)
   (let ((ht (make-hash-table)))
@@ -1157,6 +1253,7 @@
 
 \label{sol:97}
 \begin{solbox}{97}
+\small\color{black!55}\hyperref[ex:97]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:97]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun frequenza-caratteri (stringa)
   (let ((ht (make-hash-table :test #'eql)))
@@ -1168,6 +1265,7 @@
 
 \label{sol:98}
 \begin{solbox}{98}
+\small\color{black!55}\hyperref[ex:98]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:98]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun unisci-hash (ht1 ht2)
   (let ((result (make-hash-table :test (hash-table-test ht1))))
@@ -1181,6 +1279,7 @@
 
 \label{sol:99}
 \begin{solbox}{99}
+\small\color{black!55}\hyperref[ex:99]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:99]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun inverti-hash (ht)
   (let ((result (make-hash-table :test #'equal)))
@@ -1191,6 +1290,7 @@
 
 \label{sol:100}
 \begin{solbox}{100}
+\small\color{black!55}\hyperref[ex:100]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun alist->hash (alist)
   (let ((ht (make-hash-table)))
@@ -1205,6 +1305,7 @@
 
 \label{sol:101}
 \begin{solbox}{101}
+\small\color{black!55}\hyperref[ex:101]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun mat-get (m r c) (aref m r c))
 
@@ -1221,6 +1322,7 @@
 
 \label{sol:102}
 \begin{solbox}{102}
+\small\color{black!55}\hyperref[ex:102]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:102]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun trasposta (m n)
   ;; t[i][j] = m[j][i]
@@ -1234,6 +1336,7 @@
 
 \label{sol:103}
 \begin{solbox}{103}
+\small\color{black!55}\hyperref[ex:103]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun inverti-array! (v)
   ;; scambia elementi simmetrici senza lista ausiliaria
@@ -1247,6 +1350,7 @@
 
 \label{sol:104}
 \begin{solbox}{104}
+\small\color{black!55}\hyperref[ex:104]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:104]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun moltiplica-matrici (a b n)
   (let ((c (make-array (list n n) :initial-element 0)))
@@ -1260,6 +1364,7 @@
 
 \label{sol:105}
 \begin{solbox}{105}
+\small\color{black!55}\hyperref[ex:105]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defstruct persona
   nome
@@ -1275,6 +1380,7 @@
 
 \label{sol:106}
 \begin{solbox}{106}
+\small\color{black!55}\hyperref[ex:106]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defstruct nodo
   valore
@@ -1297,6 +1403,7 @@
 
 \label{sol:107}
 \begin{solbox}{107}
+\small\color{black!55}\hyperref[ex:107]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 ;; Rappresentazione: (valore sinistra destra)
 ;; NIL = albero vuoto
@@ -1310,6 +1417,7 @@
 
 \label{sol:108}
 \begin{solbox}{108}
+\small\color{black!55}\hyperref[ex:108]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:108]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun bst-insert (value tree)
   ;; restituisce il nuovo albero (non modifica in loco)
@@ -1339,6 +1447,7 @@
 
 \label{sol:109}
 \begin{solbox}{109}
+\small\color{black!55}\hyperref[ex:109]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:109]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun preorder (tree)
   (if (null tree) nil
@@ -1362,6 +1471,7 @@
 
 \label{sol:110}
 \begin{solbox}{110}
+\small\color{black!55}\hyperref[ex:110]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun tree-height (tree)
   (if (null tree) 0
@@ -1379,6 +1489,7 @@
 
 \label{sol:111}
 \begin{solbox}{111}
+\small\color{black!55}\hyperref[ex:111]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun specchia (tree)
   (if (null tree) nil
@@ -1390,6 +1501,7 @@
 
 \label{sol:112}
 \begin{solbox}{112}
+\small\color{black!55}\hyperref[ex:112]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:112]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun bilanciato-p (tree)
   ;; ritorna altezza se bilanciato, -1 come segnale di errore
@@ -1408,6 +1520,7 @@
 
 \label{sol:113}
 \begin{solbox}{113}
+\small\color{black!55}\hyperref[ex:113]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 ;; Pila come lista avvolta in cons-cell per mutabilita'
 (defun make-stack () (list nil))
@@ -1427,6 +1540,7 @@
 
 \label{sol:114}
 \begin{solbox}{114}
+\small\color{black!55}\hyperref[ex:114]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:114]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 ;; Coda con due liste: testa (estrai) e fondo (aggiungi)
 (defstruct queue (head nil) (tail nil))
@@ -1450,6 +1564,7 @@
 
 \label{sol:115}
 \begin{solbox}{115}
+\small\color{black!55}\hyperref[ex:115]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:115]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun valida-parentesi (stringa)
   ;; mappa ogni chiusa alla corrispondente aperta
@@ -1474,6 +1589,7 @@
 
 \label{sol:116}
 \begin{solbox}{116}
+\small\color{black!55}\hyperref[ex:116]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defparameter *rubrica* (make-hash-table :test #'equal))
 
@@ -1495,6 +1611,7 @@
 
 \label{sol:117}
 \begin{solbox}{117}
+\small\color{black!55}\hyperref[ex:117]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun neighbors (node graph)
   (cdr (assoc node graph)))
@@ -1512,6 +1629,7 @@
 
 \label{sol:118}
 \begin{solbox}{118}
+\small\color{black!55}\hyperref[ex:118]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:118]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun dfs (graph start)
   ;; visited e' condivisa dalla closure tramite let
@@ -1528,6 +1646,7 @@
 
 \label{sol:119}
 \begin{solbox}{119}
+\small\color{black!55}\hyperref[ex:119]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:119]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun bfs (graph start)
   (let ((visited nil)
@@ -1546,6 +1665,7 @@
 
 \label{sol:120}
 \begin{solbox}{120}
+\small\color{black!55}\hyperref[ex:120]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:120]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun tokenize (testo)
   ;; divide per spazi
@@ -1583,6 +1703,7 @@
 
 \label{sol:121}
 \begin{solbox}{121}
+\small\color{black!55}\hyperref[ex:121]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:121]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defmacro quando (test &body corpo)
   ;; backquote: ,test inserisce il valore di test
@@ -1599,6 +1720,7 @@
 
 \label{sol:122}
 \begin{solbox}{122}
+\small\color{black!55}\hyperref[ex:122]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:122]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defmacro mio-while (test &body corpo)
   ;; usa loop nell'espansione: semplice ed idiomatico
@@ -1618,6 +1740,7 @@
 
 \label{sol:123}
 \begin{solbox}{123}
+\small\color{black!55}\hyperref[ex:123]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:123]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defmacro mio-for ((var da a) &body corpo)
   ;; gensym per start/end: evita valutazioni multiple
@@ -1638,6 +1761,7 @@
 
 \label{sol:124}
 \begin{solbox}{124}
+\small\color{black!55}\hyperref[ex:124]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:124]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun subsets (lst)
   ;; ogni elemento: incluso o non incluso
@@ -1653,6 +1777,7 @@
 
 \label{sol:125}
 \begin{solbox}{125}
+\small\color{black!55}\hyperref[ex:125]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:125]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun permutations (lst)
   (if (null lst)
@@ -1668,6 +1793,7 @@
 
 \label{sol:126}
 \begin{solbox}{126}
+\small\color{black!55}\hyperref[ex:126]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:126]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun combinations (lst k)
   (cond ((= k 0)    '(()))
@@ -1682,6 +1808,7 @@
 
 \label{sol:127}
 \begin{solbox}{127}
+\small\color{black!55}\hyperref[ex:127]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:127]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun somma-a-target (numeri target)
   (cond ((= target 0) '(()))
@@ -1699,6 +1826,7 @@
 
 \label{sol:128}
 \begin{solbox}{128}
+\small\color{black!55}\hyperref[ex:128]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:128]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun genera-parentesi (n)
   (let ((risultati nil))
@@ -1720,6 +1848,7 @@
 
 \label{sol:129}
 \begin{solbox}{129}
+\small\color{black!55}\hyperref[ex:129]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:129]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun merge-sorted (lst1 lst2)
   (cond ((null lst1) lst2)
@@ -1743,6 +1872,7 @@
 
 \label{sol:130}
 \begin{solbox}{130}
+\small\color{black!55}\hyperref[ex:130]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:130]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun quicksort* (lst)
   (if (or (null lst) (null (cdr lst)))
@@ -1759,6 +1889,7 @@
 
 \label{sol:131}
 \begin{solbox}{131}
+\small\color{black!55}\hyperref[ex:131]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:131]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun hanoi (n da a tramite)
   (when (> n 0)
@@ -1773,6 +1904,7 @@
 
 \label{sol:132}
 \begin{solbox}{132}
+\small\color{black!55}\hyperref[ex:132]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:132]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{ragionamentoBox}{132}
 La soluzione ricorsiva esplora tutte le $2^n$ combinazioni.
 Per ogni oggetto ci sono due scelte: prenderlo o lasciarlo.
@@ -1802,6 +1934,7 @@ dinamica con una tabella $n \times W$.
 
 \label{sol:133}
 \begin{solbox}{133}
+\small\color{black!55}\hyperref[ex:133]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:133]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{ragionamentoBox}{133}
 DFS con backtracking su griglia. Usiamo un array separato
 per i visitati per non modificare il labirinto originale.
@@ -1838,6 +1971,7 @@ La funzione restituisce il percorso se trovato, \fn{NIL} altrimenti.
 
 \label{sol:134}
 \begin{solbox}{134}
+\small\color{black!55}\hyperref[ex:134]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:134]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{ragionamentoBox}{134}
 \textbf{Rappresentazione:} vettore \fn{board} di \fn{n} interi, dove
 \fn{(aref board col)} e' la riga della regina nella colonna \fn{col}.
@@ -1879,6 +2013,7 @@ per $n=8$ si trovano 92 soluzioni in poche ms.
 
 \label{sol:135}
 \begin{solbox}{135}
+\small\color{black!55}\hyperref[ex:135]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:135]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \solriferimento
 \begin{ragionamentoBox}{135}
 Backtracking con tre array di flag per righe, colonne e blocchi
@@ -1919,6 +2054,7 @@ $3\times3$ per un check $O(1)$ dei vincoli.
 
 \label{sol:136}
 \begin{solbox}{136}
+\small\color{black!55}\hyperref[ex:136]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:136]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \solriferimento
 \begin{ragionamentoBox}{136}
 Backtracking con euristica di Warnsdorff: tra le mosse
@@ -1968,6 +2104,7 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 
 \label{sol:137}
 \begin{solbox}{137}
+\small\color{black!55}\hyperref[ex:137]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun reverse-string (s)
   (coerce (reverse (coerce s 'list)) 'string))
@@ -1976,6 +2113,7 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 
 \label{sol:138}
 \begin{solbox}{138}
+\small\color{black!55}\hyperref[ex:138]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun palindrome-p (s)
   (equal s (reverse-string s)))
@@ -1984,6 +2122,7 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 
 \label{sol:139}
 \begin{solbox}{139}
+\small\color{black!55}\hyperref[ex:139]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:139]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun palindrome-robust-p (s)
   ;; normalizza: minuscolo, solo caratteri alfabetici
@@ -1997,6 +2136,7 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 
 \label{sol:140}
 \begin{solbox}{140}
+\small\color{black!55}\hyperref[ex:140]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:140]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun anagram-p (s1 s2)
   ;; ordina le lettere di entrambe e confronta
@@ -2007,6 +2147,7 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 
 \label{sol:141}
 \begin{solbox}{141}
+\small\color{black!55}\hyperref[ex:141]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun count-char (c s)
   (count c s))
@@ -2020,6 +2161,7 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 
 \label{sol:142}
 \begin{solbox}{142}
+\small\color{black!55}\hyperref[ex:142]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:142]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun rpn-eval (expr)
   (let ((stack (make-stack)))
@@ -2040,6 +2182,7 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 
 \label{sol:143}
 \begin{solbox}{143}
+\small\color{black!55}\hyperref[ex:143]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:143]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun evaluate-expression (expr)
   ;; atomo numerico: restituisci direttamente
@@ -2062,6 +2205,7 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 
 \label{sol:144}
 \begin{solbox}{144}
+\small\color{black!55}\hyperref[ex:144]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:144]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{ragionamentoBox}{144}
 L'ambiente e' una alist \fn{((simbolo . valore) ...)}.
 Il valutatore e' un'estensione dell'es.~143 con due nuovi casi:
@@ -2113,6 +2257,7 @@ oppure usare un contenitore mutabile.
 
 \label{sol:145}
 \begin{solbox}{145}
+\small\color{black!55}\hyperref[ex:145]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 (defun gioca ()
   (let ((segreto (1+ (random 100)))
@@ -2131,6 +2276,7 @@ oppure usare un contenitore mutabile.
 
 \label{sol:146}
 \begin{solbox}{146}
+\small\color{black!55}\hyperref[ex:146]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:146]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{ragionamentoBox}{146}
 Separazione netta tra Model (griglia), Logic (verifica vittoria,
 mossa valida) e IO (input/output). La funzione \fn{vinto-p}
@@ -2197,6 +2343,7 @@ controlla le 8 combinazioni vincenti hard-coded
 
 \label{sol:147}
 \begin{solbox}{147}
+\small\color{black!55}\hyperref[ex:147]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:147]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
 (defun conta-vicini (g r c rows cols)
   ;; conta le 8 celle adiacenti vive
@@ -2237,6 +2384,7 @@ controlla le 8 combinazioni vincenti hard-coded
 
 \label{sol:148}
 \begin{solbox}{148}
+\small\color{black!55}\hyperref[ex:148]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:148]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \textit{Soluzione di riferimento --- scheletro minimale per studenti.}
 
 \begin{ragionamentoBox}{148}
@@ -2302,4 +2450,5 @@ per semplicita': e' leggibile con \fn{read} senza parsing custom.
                           (fourth record))))))
 \end{lstlisting}
 \end{solbox}
+
 
