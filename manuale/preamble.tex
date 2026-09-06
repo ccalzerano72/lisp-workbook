@@ -185,13 +185,22 @@
   \fi
 }
 
+% ---- Comandi semantici per il testo degli esercizi ----
+% Testo discorsivo: grigio e piccolo
+\newcommand{\extext}[1]{{\small\color{black!70}#1}}
+% Etichette sezione interna: bold colorato
+\newcommand{\exlabel}[1]{\textbf{\textcolor{black!75}{#1}}}
+% Vincolo: evidenziato con colore
+\newcommand{\vincolo}[1]{\smallskip\noindent{\small\textcolor{boxMinFrame!80!black}{\textbf{Vincolo:}} \color{black!70}#1}}
+% Nota: come vincolo ma più neutro
+\newcommand{\exnota}[1]{\smallskip\noindent{\small\textcolor{black!60}{\textit{#1}}}}
+
 % ---- Box ESERCIZIO MINIMO ◆ (blu) ----
 % Uso: \begin{minbox}{n}{titolo}{stelle} ... \end{minbox}
 \newenvironment{minbox}[3]{%
   \medskip
   \begin{tcolorbox}[
     enhanced,
-    breakable,
     colframe=boxMinFrame,
     colback=boxMinBack,
     fonttitle=\bfseries\small,
@@ -199,8 +208,13 @@
       \hfill\ifcase#3\or\unaStella\or\dueStelle\or\treStelle\or\quattroStelle\or\cinqueStelle\fi},
     arc=3pt,
     boxrule=1.2pt,
-    left=6pt, right=6pt, top=4pt, bottom=4pt
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    toptitle=3pt, bottomtitle=3pt,
+    before skip=12pt plus 3pt,
+    after skip=12pt plus 3pt,
+    parskip=5pt
   ]
+  \small\color{black!75}%
 }{%
   \end{tcolorbox}
   \medskip
@@ -212,7 +226,6 @@
   \medskip
   \begin{tcolorbox}[
     enhanced,
-    breakable,
     colframe=boxStdFrame,
     colback=boxStdBack,
     fonttitle=\bfseries\small,
@@ -220,8 +233,13 @@
       \hfill\ifcase#3\or\unaStella\or\dueStelle\or\treStelle\or\quattroStelle\or\cinqueStelle\fi},
     arc=3pt,
     boxrule=1pt,
-    left=6pt, right=6pt, top=4pt, bottom=4pt
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    toptitle=3pt, bottomtitle=3pt,
+    before skip=12pt plus 3pt,
+    after skip=12pt plus 3pt,
+    parskip=5pt
   ]
+  \small\color{black!75}%
 }{%
   \end{tcolorbox}
   \medskip
@@ -233,7 +251,6 @@
   \medskip
   \begin{tcolorbox}[
     enhanced,
-    breakable,
     colframe=boxColFrame,
     colback=boxColBack,
     fonttitle=\bfseries\small,
@@ -242,8 +259,13 @@
     arc=3pt,
     boxrule=0.8pt,
     borderline={0.8pt}{0pt}{boxColFrame, dashed},
-    left=6pt, right=6pt, top=4pt, bottom=4pt
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    toptitle=3pt, bottomtitle=3pt,
+    before skip=12pt plus 3pt,
+    after skip=12pt plus 3pt,
+    parskip=5pt
   ]
+  \small\color{black!75}%
 }{%
   \end{tcolorbox}
   \medskip

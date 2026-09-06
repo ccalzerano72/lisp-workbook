@@ -18,7 +18,8 @@ condizionali (\fn{if}, \fn{cond}), binding locale (\fn{let},
 
 \label{ex:1}
 \begin{essbox}{1}{Somma}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (add a b)
 \end{lstlisting}
@@ -31,7 +32,8 @@ Implementare:
 
 \label{ex:2}
 \begin{stdbox}{2}{Geometria del cerchio}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (circle-area radius)
 (circle-circumference radius)
@@ -45,7 +47,8 @@ Usare la costante \fn{pi} per $\pi$.
 
 \label{ex:3}
 \begin{stdbox}{3}{Conversione Celsius/Fahrenheit}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (celsius->fahrenheit c)
 (fahrenheit->celsius f)
@@ -55,31 +58,34 @@ Formule: $F = C \times 9/5 + 32$;\quad $C = (F - 32) \times 5/9$.
 
 \label{ex:4}
 \begin{essbox}{4}{Ipotenusa}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (ipotenusa a b)
 \end{lstlisting}
 \begin{lstlisting}
 (ipotenusa 3 4)   ; -> 5.0
 \end{lstlisting}
-\textbf{Vincolo:} usare \fn{let} per i quadrati intermedi.
+\vincolo{usare \fn{let} per i quadrati intermedi.}
 \end{essbox}
 
 \label{ex:5}
 \begin{colbox}{5}{Distanza euclidea}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (distanza-euclidea x1 y1 x2 y2)
 \end{lstlisting}
 \begin{lstlisting}
 (distanza-euclidea 0 0 3 4)   ; -> 5.0
 \end{lstlisting}
-\textbf{Vincolo:} usare \fn{let} per i valori intermedi.
+\vincolo{usare \fn{let} per i valori intermedi.}
 \end{colbox}
 
 \label{ex:6}
 \begin{essbox}{6}{Pari o dispari}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (pari-p n)
 \end{lstlisting}
@@ -92,7 +98,8 @@ senza usare \fn{evenp}.
 
 \label{ex:7}
 \begin{colbox}{7}{Divisibilita'}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (divisibile-p a b)
 \end{lstlisting}
@@ -104,7 +111,8 @@ Implementare:
 
 \label{ex:8}
 \begin{essbox}{8}{Segno}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (segno n)
 \end{lstlisting}
@@ -114,21 +122,22 @@ che restituisce \fn{'positivo}, \fn{'negativo} o \fn{'zero}.
 (segno 0)    ; -> ZERO
 (segno 12)   ; -> POSITIVO
 \end{lstlisting}
-\textbf{Vincolo:} usare \fn{cond}.
+\vincolo{usare \fn{cond}.}
 \end{essbox}
 
 \label{ex:9}
 \begin{stdbox}{9}{Massimo di tre}{1}
-Implementare \fn{(max-tre a b c)} senza usare \fn{max}.
+\exlabel{Implementare} \fn{(max-tre a b c)} senza usare \fn{max}.
+\nopagebreak
 \begin{lstlisting}
 (max-tre 3 7 2)   ; -> 7
 \end{lstlisting}
-\textbf{Vincolo:} usare \fn{cond}.
+\vincolo{usare \fn{cond}.}
 \end{stdbox}
 
 \label{ex:10}
 \begin{colbox}{10}{Triangolo valido}{1}
-Implementare \fn{(triangolo-valido-p a b c)}.
+\exlabel{Implementare} \fn{(triangolo-valido-p a b c)}.
 Ogni lato deve essere minore della somma degli altri due.
 \begin{lstlisting}
 (triangolo-valido-p 3 4 5)   ; -> T
@@ -138,7 +147,8 @@ Ogni lato deve essere minore della somma degli altri due.
 
 \label{ex:11}
 \begin{essbox}{11}{Anno bisestile}{2}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (bisestile-p anno)
 \end{lstlisting}
@@ -148,12 +158,13 @@ Divisibile per 4, eccetto multipli di 100 che non siano anche di 400.
 (bisestile-p 1900)   ; -> NIL
 (bisestile-p 2024)   ; -> T
 \end{lstlisting}
-\textbf{Vincolo:} usare \fn{and}/\fn{or} senza \fn{cond}.
+\vincolo{usare \fn{and}/\fn{or} senza \fn{cond}.}
 \end{essbox}
 
 \label{ex:12}
 \begin{stdbox}{12}{Giorni del mese}{2}
-Implementare \fn{(giorni-mese mese anno)} con \fn{mese} da 1 a 12.
+\exlabel{Implementare} \fn{(giorni-mese mese anno)} con \fn{mese} da 1 a 12.
+\nopagebreak
 \begin{lstlisting}
 (giorni-mese 2 2024)   ; -> 29
 (giorni-mese 2 2023)   ; -> 28
@@ -164,17 +175,18 @@ Usare \fn{bisestile-p} per febbraio.
 
 \label{ex:13}
 \begin{colbox}{13}{Voto in lettere}{1}
-Implementare \fn{(voto->giudizio punteggio)}, punteggio 0--100.
+\exlabel{Implementare} \fn{(voto->giudizio punteggio)}, punteggio 0--100.
 
 90--100 $\to$ ``ottimo''; 75--89 $\to$ ``buono'';
 60--74 $\to$ ``sufficiente''; $<60$ $\to$ ``insufficiente''.
 
-\textbf{Vincolo:} usare \fn{cond}.
+\vincolo{usare \fn{cond}.}
 \end{colbox}
 
 \label{ex:14}
 \begin{colbox}{14}{Terna pitagorica}{1}
-Implementare \fn{(terna-pitagorica-p a b c)}.
+\exlabel{Implementare} \fn{(terna-pitagorica-p a b c)}.
+\nopagebreak
 \begin{lstlisting}
 (terna-pitagorica-p 3 4 5)    ; -> T
 (terna-pitagorica-p 1 2 3)    ; -> NIL
@@ -183,7 +195,8 @@ Implementare \fn{(terna-pitagorica-p a b c)}.
 
 \label{ex:15}
 \begin{essbox}{15}{Radici di equazione di secondo grado}{2}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (radici-quadratiche a b c)
 \end{lstlisting}
@@ -192,12 +205,12 @@ Restituire lista con le due radici reali, oppure \fn{NIL} se $\Delta < 0$.
 (radici-quadratiche 1 -5 6)   ; -> (3.0 2.0)
 (radici-quadratiche 1  0 1)   ; -> NIL
 \end{lstlisting}
-\textbf{Vincolo:} usare \fn{let*} per discriminante e radici.
+\vincolo{usare \fn{let*} per discriminante e radici.}
 \end{essbox}
 
 \label{ex:16}
 \begin{stdbox}{16}{Calcolatrice simbolica}{2}
-Implementare \fn{(calcola op a b)} dove \fn{op} e' un simbolo
+\exlabel{Implementare} \fn{(calcola op a b)} dove \fn{op} e' un simbolo
 \fn{'+}, \fn{'-}, \fn{'*}, \fn{'/}.
 \begin{lstlisting}
 (calcola '+ 3 4)   ; -> 7
@@ -208,7 +221,8 @@ Gestire la divisione per zero restituendo \fn{NIL}.
 
 \label{ex:17}
 \begin{essbox}{17}{Somma delle cifre}{2}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (somma-cifre n)
 \end{lstlisting}
@@ -222,7 +236,8 @@ Implementare:
 
 \label{ex:18}
 \begin{essbox}{18}{Conta fino a N}{1}
-Implementare \fn{(conta-fino-a n)} che stampa i numeri da 1 a \fn{n}.
+\exlabel{Implementare} \fn{(conta-fino-a n)} che stampa i numeri da 1 a \fn{n}.
+\nopagebreak
 \begin{lstlisting}
 (conta-fino-a 4)
 ; 1
@@ -230,12 +245,12 @@ Implementare \fn{(conta-fino-a n)} che stampa i numeri da 1 a \fn{n}.
 ; 3
 ; 4
 \end{lstlisting}
-\textbf{Vincolo:} usare \fn{dotimes} o \fn{loop}.
+\vincolo{usare \fn{dotimes} o \fn{loop}.}
 \end{essbox}
 
 \label{ex:19}
 \begin{colbox}{19}{Tabellina}{1}
-Implementare \fn{(tabellina n)} che stampa la tabellina di \fn{n}
+\exlabel{Implementare} \fn{(tabellina n)} che stampa la tabellina di \fn{n}
 da 1 a 10.
 \begin{lstlisting}
 (tabellina 3)
@@ -247,7 +262,7 @@ da 1 a 10.
 
 \label{ex:20}
 \begin{colbox}{20}{Sconto}{1}
-Implementare \fn{(sconto prezzo)}:
+\exlabel{Implementare} \fn{(sconto prezzo)}:
 $\geq 200$ $\to$ 20\%; $\geq 100$ $\to$ 10\%; altrimenti 0\%.
 \begin{lstlisting}
 (sconto 250)   ; -> 200.0
@@ -258,7 +273,7 @@ $\geq 200$ $\to$ 20\%; $\geq 100$ $\to$ 10\%; altrimenti 0\%.
 
 \label{ex:21}
 \begin{colbox}{21}{Paga settimanale}{1}
-Implementare \fn{(paga-settimanale ore tariffa)}.
+\exlabel{Implementare} \fn{(paga-settimanale ore tariffa)}.
 Fino a 40 ore: tariffa normale.
 Ore eccedenti: tariffa $\times$ 1.5.
 \begin{lstlisting}
@@ -301,7 +316,8 @@ usando solo \fn{car} e \fn{cdr} (non \fn{nth}, \fn{third}, ecc.).
 
 \label{ex:24}
 \begin{essbox}{24}{Primo e resto}{1}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (first-element lst)
 (rest-elements lst)
@@ -316,7 +332,7 @@ Gestire la lista vuota restituendo \fn{NIL}.
 
 \label{ex:25}
 \begin{colbox}{25}{Primo e ultimo}{1}
-Implementare \fn{(primo-e-ultimo lst)} che restituisce una lista
+\exlabel{Implementare} \fn{(primo-e-ultimo lst)} che restituisce una lista
 con il primo e l'ultimo elemento.
 \begin{lstlisting}
 (primo-e-ultimo '(a b c d))   ; -> (A D)
@@ -327,7 +343,8 @@ Gestire la lista vuota.
 
 \label{ex:26}
 \begin{colbox}{26}{Scambia i primi due}{1}
-Implementare \fn{(scambia-primi-due lst)}.
+\exlabel{Implementare} \fn{(scambia-primi-due lst)}.
+\nopagebreak
 \begin{lstlisting}
 (scambia-primi-due '(a b c d))   ; -> (B A C D)
 \end{lstlisting}
@@ -336,27 +353,30 @@ Gestire liste con meno di due elementi.
 
 \label{ex:27}
 \begin{essbox}{27}{Lunghezza}{2}
-Implementare \fn{(length* lst)} senza usare \fn{length}.
+\exlabel{Implementare} \fn{(length* lst)} senza usare \fn{length}.
+\nopagebreak
 \begin{lstlisting}
 (length* '())        ; -> 0
 (length* '(a b c))   ; -> 3
 \end{lstlisting}
-\textbf{Vincolo:} ricorsione.
+\vincolo{ricorsione.}
 \end{essbox}
 
 \label{ex:28}
 \begin{stdbox}{28}{Somma degli elementi}{2}
-Implementare \fn{(sum-list lst)}.
+\exlabel{Implementare} \fn{(sum-list lst)}.
+\nopagebreak
 \begin{lstlisting}
 (sum-list '(1 2 3 4))   ; -> 10
 (sum-list '())          ; -> 0
 \end{lstlisting}
-\textbf{Vincolo:} ricorsione.
+\vincolo{ricorsione.}
 \end{stdbox}
 
 \label{ex:29}
 \begin{colbox}{29}{Prodotto degli elementi}{2}
-Implementare \fn{(product-list lst)}.
+\exlabel{Implementare} \fn{(product-list lst)}.
+\nopagebreak
 \begin{lstlisting}
 (product-list '(2 3 4))   ; -> 24
 (product-list '())        ; -> 1
@@ -365,7 +385,8 @@ Implementare \fn{(product-list lst)}.
 
 \label{ex:30}
 \begin{colbox}{30}{Massimo di una lista}{2}
-Implementare \fn{(max-list lst)}.
+\exlabel{Implementare} \fn{(max-list lst)}.
+\nopagebreak
 \begin{lstlisting}
 (max-list '(4 8 2 9 1))   ; -> 9
 \end{lstlisting}
@@ -374,7 +395,8 @@ Definire il comportamento per la lista vuota.
 
 \label{ex:31}
 \begin{essbox}{31}{Appartenenza}{2}
-Implementare \fn{(member* item lst)} senza usare \fn{member}.
+\exlabel{Implementare} \fn{(member* item lst)} senza usare \fn{member}.
+\nopagebreak
 \begin{lstlisting}
 (member* 'b '(a b c))   ; -> T
 (member* 'x '(a b c))   ; -> NIL
@@ -383,7 +405,8 @@ Implementare \fn{(member* item lst)} senza usare \fn{member}.
 
 \label{ex:32}
 \begin{stdbox}{32}{Conta occorrenze}{2}
-Implementare \fn{(count-element item lst)} senza usare \fn{count}.
+\exlabel{Implementare} \fn{(count-element item lst)} senza usare \fn{count}.
+\nopagebreak
 \begin{lstlisting}
 (count-element 'a '(a b a c a))   ; -> 3
 \end{lstlisting}
@@ -391,7 +414,7 @@ Implementare \fn{(count-element item lst)} senza usare \fn{count}.
 
 \label{ex:33}
 \begin{colbox}{33}{Posizione}{2}
-Implementare \fn{(position* item lst)}: indice 0-based
+\exlabel{Implementare} \fn{(position* item lst)}: indice 0-based
 della prima occorrenza, oppure \fn{NIL}.
 \begin{lstlisting}
 (position* 'c '(a b c d))   ; -> 2
@@ -401,7 +424,8 @@ della prima occorrenza, oppure \fn{NIL}.
 
 \label{ex:34}
 \begin{colbox}{34}{Ultimo elemento}{2}
-Implementare \fn{(last-element lst)} senza usare \fn{last}.
+\exlabel{Implementare} \fn{(last-element lst)} senza usare \fn{last}.
+\nopagebreak
 \begin{lstlisting}
 (last-element '(a b c))   ; -> C
 \end{lstlisting}
@@ -409,30 +433,32 @@ Implementare \fn{(last-element lst)} senza usare \fn{last}.
 
 \label{ex:35}
 \begin{essbox}{35}{Incrementa tutti}{2}
-Implementare \fn{(incrementa-tutti lst)} che aggiunge 1
+\exlabel{Implementare} \fn{(incrementa-tutti lst)} che aggiunge 1
 a ogni elemento.
 \begin{lstlisting}
 (incrementa-tutti '(1 2 3))   ; -> (2 3 4)
 \end{lstlisting}
-\textbf{Vincolo:} ricorsione; non usare \fn{mapcar}.
+\vincolo{ricorsione; non usare \fn{mapcar}.}
 
-Obiettivo: capire il pattern di trasformazione, precursore di \fn{mapcar}.
+\exnota{Obiettivo: capire il pattern di trasformazione, precursore di \fn{mapcar}.}
 \end{essbox}
 
 \label{ex:36}
 \begin{stdbox}{36}{Filtra i pari}{2}
-Implementare \fn{(solo-pari lst)}.
+\exlabel{Implementare} \fn{(solo-pari lst)}.
+\nopagebreak
 \begin{lstlisting}
 (solo-pari '(1 2 3 4 5 6))   ; -> (2 4 6)
 \end{lstlisting}
-\textbf{Vincolo:} ricorsione; non usare \fn{remove-if}.
+\vincolo{ricorsione; non usare \fn{remove-if}.}
 
-Obiettivo: capire il pattern di filtraggio, precursore di \fn{remove-if-not}.
+\exnota{Obiettivo: capire il pattern di filtraggio, precursore di \fn{remove-if-not}.}
 \end{stdbox}
 
 \label{ex:37}
 \begin{stdbox}{37}{Elimina tutte le occorrenze}{2}
-Implementare \fn{(elimina-tutte item lst)} senza usare \fn{remove}.
+\exlabel{Implementare} \fn{(elimina-tutte item lst)} senza usare \fn{remove}.
+\nopagebreak
 \begin{lstlisting}
 (elimina-tutte 'a '(a b a c a))   ; -> (B C)
 \end{lstlisting}
@@ -440,7 +466,7 @@ Implementare \fn{(elimina-tutte item lst)} senza usare \fn{remove}.
 
 \label{ex:38}
 \begin{colbox}{38}{Seleziona posizioni dispari}{2}
-Implementare \fn{(seleziona-dispari lst)}: elementi in posizione
+\exlabel{Implementare} \fn{(seleziona-dispari lst)}: elementi in posizione
 1, 3, 5, \ldots (prima, terza, quinta, ecc.).
 \begin{lstlisting}
 (seleziona-dispari '(a b c d e))   ; -> (A C E)
@@ -449,7 +475,7 @@ Implementare \fn{(seleziona-dispari lst)}: elementi in posizione
 
 \label{ex:39}
 \begin{essbox}{39}{Reverse con accumulatore}{2}
-Implementare \fn{(reverse* lst)} senza usare \fn{reverse}.
+\exlabel{Implementare} \fn{(reverse* lst)} senza usare \fn{reverse}.
 
 Prima scrivere la versione ricorsiva semplice, poi quella
 con accumulatore (tail-recursive).
@@ -460,7 +486,8 @@ con accumulatore (tail-recursive).
 
 \label{ex:40}
 \begin{essbox}{40}{Append}{3}
-Implementare \fn{(append* lst1 lst2)} senza usare \fn{append}.
+\exlabel{Implementare} \fn{(append* lst1 lst2)} senza usare \fn{append}.
+\nopagebreak
 \begin{lstlisting}
 (append* '(a b) '(c d))   ; -> (A B C D)
 (append* '() '(a b))      ; -> (A B)
@@ -472,7 +499,7 @@ Non modificare le liste originali; ricorsione su \fn{lst1}.
 
 \label{ex:41}
 \begin{stdbox}{41}{Rimozione prima occorrenza}{3}
-Implementare \fn{(remove-first item lst)}: rimuove solo la
+\exlabel{Implementare} \fn{(remove-first item lst)}: rimuove solo la
 prima occorrenza.
 \begin{lstlisting}
 (remove-first 'b '(a b c b d))   ; -> (A C B D)
@@ -484,7 +511,8 @@ Non usare \fn{remove}; non modificare la lista originale.
 
 \label{ex:42}
 \begin{colbox}{42}{Sostituzione prima occorrenza}{2}
-Implementare \fn{(replace-first old new lst)}.
+\exlabel{Implementare} \fn{(replace-first old new lst)}.
+\nopagebreak
 \begin{lstlisting}
 (replace-first 'b 'x '(a b c b))   ; -> (A X C B)
 \end{lstlisting}
@@ -492,7 +520,8 @@ Implementare \fn{(replace-first old new lst)}.
 
 \label{ex:43}
 \begin{colbox}{43}{Lista palindroma}{2}
-Implementare \fn{(palindroma-p lst)}.
+\exlabel{Implementare} \fn{(palindroma-p lst)}.
+\nopagebreak
 \begin{lstlisting}
 (palindroma-p '(a b c b a))   ; -> T
 (palindroma-p '(a b c))       ; -> NIL
@@ -502,7 +531,8 @@ Usare \fn{reverse*} e \fn{equal}.
 
 \label{ex:44}
 \begin{stdbox}{44}{Range}{2}
-Implementare \fn{(range a b)}: interi da \fn{a} a \fn{b} inclusi.
+\exlabel{Implementare} \fn{(range a b)}: interi da \fn{a} a \fn{b} inclusi.
+\nopagebreak
 \begin{lstlisting}
 (range 1 5)    ; -> (1 2 3 4 5)
 (range 3 3)    ; -> (3)
@@ -512,7 +542,8 @@ Implementare \fn{(range a b)}: interi da \fn{a} a \fn{b} inclusi.
 
 \label{ex:45}
 \begin{colbox}{45}{Duplica elementi}{2}
-Implementare \fn{(duplica-elementi lst)}.
+\exlabel{Implementare} \fn{(duplica-elementi lst)}.
+\nopagebreak
 \begin{lstlisting}
 (duplica-elementi '(a b c))   ; -> (A A B B C C)
 \end{lstlisting}
@@ -520,7 +551,7 @@ Implementare \fn{(duplica-elementi lst)}.
 
 \label{ex:46}
 \begin{colbox}{46}{Estrai chiavi da alist}{2}
-Implementare \fn{(schiaccia-coppia alist)}: restituisce la
+\exlabel{Implementare} \fn{(schiaccia-coppia alist)}: restituisce la
 lista dei \fn{car} di ogni coppia puntata.
 \begin{lstlisting}
 (schiaccia-coppia '((a . 1) (b . 2) (c . 3)))
@@ -530,7 +561,8 @@ lista dei \fn{car} di ogni coppia puntata.
 
 \label{ex:47}
 \begin{colbox}{47}{Prefisso}{2}
-Implementare \fn{(prefisso-p sub lst)}.
+\exlabel{Implementare} \fn{(prefisso-p sub lst)}.
+\nopagebreak
 \begin{lstlisting}
 (prefisso-p '(a b) '(a b c d))   ; -> T
 (prefisso-p '(a c) '(a b c d))   ; -> NIL
@@ -540,7 +572,8 @@ Implementare \fn{(prefisso-p sub lst)}.
 
 \label{ex:48}
 \begin{colbox}{48}{Intercala}{2}
-Implementare \fn{(intercala lst1 lst2)} che alterna gli elementi.
+\exlabel{Implementare} \fn{(intercala lst1 lst2)} che alterna gli elementi.
+\nopagebreak
 \begin{lstlisting}
 (intercala '(1 2 3) '(a b c))   ; -> (1 A 2 B 3 C)
 \end{lstlisting}
@@ -562,7 +595,7 @@ Assumere lunghezze uguali.
 
 \label{ex:50}
 \begin{colbox}{50}{Rimozione duplicati}{3}
-Implementare \fn{(remove-duplicates* lst)}: mantiene la prima
+\exlabel{Implementare} \fn{(remove-duplicates* lst)}: mantiene la prima
 occorrenza, senza usare \fn{remove-duplicates}.
 \begin{lstlisting}
 (remove-duplicates* '(a b a c b a))   ; -> (A B C)
@@ -584,13 +617,13 @@ e primo uso degli array con il crivello di Eratostene.
 
 \label{ex:51}
 \begin{essbox}{51}{Fattoriale tail-recursive}{2}
-Implementare \fn{(fattoriale n)} in forma tail-recursive
+\exlabel{Implementare} \fn{(fattoriale n)} in forma tail-recursive
 con accumulatore, usando \fn{labels}.
 \begin{lstlisting}
 (fattoriale 0)   ; -> 1
 (fattoriale 5)   ; -> 120
 \end{lstlisting}
-Obiettivo: capire il pattern accumulatore.
+\exnota{Obiettivo: capire il pattern accumulatore.}
 \end{essbox}
 
 \label{ex:52}
@@ -600,7 +633,8 @@ Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 
 \label{ex:53}
 \begin{colbox}{53}{Somma di un intervallo}{2}
-Implementare \fn{(somma-range a b)} in forma tail-recursive.
+\exlabel{Implementare} \fn{(somma-range a b)} in forma tail-recursive.
+\nopagebreak
 \begin{lstlisting}
 (somma-range 1 100)   ; -> 5050
 \end{lstlisting}
@@ -608,7 +642,7 @@ Implementare \fn{(somma-range a b)} in forma tail-recursive.
 
 \label{ex:54}
 \begin{stdbox}{54}{Fibonacci O(n)}{3}
-Implementare \fn{(fibonacci-fast n)} con due accumulatori,
+\exlabel{Implementare} \fn{(fibonacci-fast n)} con due accumulatori,
 complessita' $O(n)$.
 \begin{lstlisting}
 (fibonacci-fast 10)   ; -> 55
@@ -617,7 +651,8 @@ complessita' $O(n)$.
 \hyperref[hint:54]{$\to$ Suggerimento}
 \end{stdbox}
 \begin{essbox}{55}{Flatten}{3}
-Implementare \fn{(flatten* tree)} che appiattisce strutture annidate.
+\exlabel{Implementare} \fn{(flatten* tree)} che appiattisce strutture annidate.
+\nopagebreak
 \begin{lstlisting}
 (flatten* '(a (b (c d) e) f))   ; -> (A B C D E F)
 (flatten* '((1 2) (3 (4 5))))   ; -> (1 2 3 4 5)
@@ -627,7 +662,8 @@ Implementare \fn{(flatten* tree)} che appiattisce strutture annidate.
 
 \label{ex:56}
 \begin{stdbox}{56}{Profondita' di una struttura}{3}
-Implementare \fn{(tree-depth tree)}: profondita' massima di nesting.
+\exlabel{Implementare} \fn{(tree-depth tree)}: profondita' massima di nesting.
+\nopagebreak
 \begin{lstlisting}
 (tree-depth '())             ; -> 0
 (tree-depth '(a b c))        ; -> 1
@@ -637,7 +673,8 @@ Implementare \fn{(tree-depth tree)}: profondita' massima di nesting.
 \hyperref[hint:56]{$\to$ Suggerimento}
 \end{stdbox}
 \begin{colbox}{57}{Conta atomi}{2}
-Implementare \fn{(count-atoms tree)}.
+\exlabel{Implementare} \fn{(count-atoms tree)}.
+\nopagebreak
 \begin{lstlisting}
 (count-atoms '(a (b c) ((d))))   ; -> 4
 \end{lstlisting}
@@ -645,7 +682,8 @@ Implementare \fn{(count-atoms tree)}.
 
 \label{ex:58}
 \begin{colbox}{58}{Somma profonda}{2}
-Implementare \fn{(sum-tree tree)}.
+\exlabel{Implementare} \fn{(sum-tree tree)}.
+\nopagebreak
 \begin{lstlisting}
 (sum-tree '(1 (2 3) ((4 5))))   ; -> 15
 \end{lstlisting}
@@ -653,7 +691,8 @@ Implementare \fn{(sum-tree tree)}.
 
 \label{ex:59}
 \begin{colbox}{59}{Ricerca in struttura annidata}{3}
-Implementare \fn{(tree-member-p item tree)}.
+\exlabel{Implementare} \fn{(tree-member-p item tree)}.
+\nopagebreak
 \begin{lstlisting}
 (tree-member-p 'c '(a (b c) d))   ; -> T
 (tree-member-p 'x '(a (b c) d))   ; -> NIL
@@ -662,7 +701,8 @@ Implementare \fn{(tree-member-p item tree)}.
 
 \label{ex:60}
 \begin{stdbox}{60}{Sostituzione profonda}{3}
-Implementare \fn{(sostituisci-profondo old new tree)}.
+\exlabel{Implementare} \fn{(sostituisci-profondo old new tree)}.
+\nopagebreak
 \begin{lstlisting}
 (sostituisci-profondo 'b 'x '(a (b (b c)) b))
 ; -> (A (X (X C)) X)
@@ -670,7 +710,7 @@ Implementare \fn{(sostituisci-profondo old new tree)}.
 \hyperref[hint:60]{$\to$ Suggerimento}
 \end{stdbox}
 \begin{stdbox}{61}{Potenza efficiente}{3}
-Implementare \fn{(power-fast base exp)} con complessita' $O(\log n)$:
+\exlabel{Implementare} \fn{(power-fast base exp)} con complessita' $O(\log n)$:
 \[
 x^n = \begin{cases}
   (x^{n/2})^2 & \text{se } n \text{ pari} \\
@@ -692,7 +732,8 @@ Implementare \fn{(mcd* a b)} e \fn{(mcm* a b)} senza usare
 \end{lstlisting}
 \end{stdbox}
 \begin{colbox}{63}{Numero primo}{2}
-Implementare \fn{(primo-p n)}.
+\exlabel{Implementare} \fn{(primo-p n)}.
+\nopagebreak
 \begin{lstlisting}
 (primo-p 17)   ; -> T
 (primo-p 18)   ; -> NIL
@@ -702,7 +743,8 @@ Gestire correttamente 0 e 1.
 
 \label{ex:64}
 \begin{essbox}{64}{Crivello di Eratostene}{3}
-Implementare \fn{(crivello n)}: lista di tutti i primi $\leq n$.
+\exlabel{Implementare} \fn{(crivello n)}: lista di tutti i primi $\leq n$.
+\nopagebreak
 \begin{lstlisting}
 (crivello 20)
 ; -> (2 3 5 7 11 13 17 19)
@@ -715,7 +757,8 @@ multipli con \fn{setf}/\fn{aref}.
 
 \label{ex:65}
 \begin{stdbox}{65}{Fattori primi}{3}
-Implementare \fn{(prime-factors n)}.
+\exlabel{Implementare} \fn{(prime-factors n)}.
+\nopagebreak
 \begin{lstlisting}
 (prime-factors 60)   ; -> (2 2 3 5)
 \end{lstlisting}
@@ -726,7 +769,7 @@ Risultato ordinato; $n > 1$.
 
 \label{ex:66}
 \begin{colbox}{66}{Sottolista per posizione}{2}
-Implementare \fn{(sublist lst inizio fine)} (indici 0-based,
+\exlabel{Implementare} \fn{(sublist lst inizio fine)} (indici 0-based,
 \fn{fine} escluso).
 \begin{lstlisting}
 (sublist '(a b c d e) 1 4)   ; -> (B C D)
@@ -735,7 +778,8 @@ Implementare \fn{(sublist lst inizio fine)} (indici 0-based,
 
 \label{ex:67}
 \begin{colbox}{67}{Raggruppa in blocchi}{3}
-Implementare \fn{(raggruppa lst n)}: sottoliste di lunghezza \fn{n}.
+\exlabel{Implementare} \fn{(raggruppa lst n)}: sottoliste di lunghezza \fn{n}.
+\nopagebreak
 \begin{lstlisting}
 (raggruppa '(a b c d e f g) 3)
 ; -> ((A B C) (D E F) (G))
@@ -745,7 +789,8 @@ Implementare \fn{(raggruppa lst n)}: sottoliste di lunghezza \fn{n}.
 
 \label{ex:68}
 \begin{colbox}{68}{Intersezione di insiemi}{2}
-Implementare \fn{(interseca lst1 lst2)} senza usare \fn{intersection}.
+\exlabel{Implementare} \fn{(interseca lst1 lst2)} senza usare \fn{intersection}.
+\nopagebreak
 \begin{lstlisting}
 (interseca '(a b c d) '(b d e))   ; -> (B D)
 \end{lstlisting}
@@ -765,7 +810,8 @@ catturano variabili dall'ambiente lessicale.
 
 \label{ex:69}
 \begin{essbox}{69}{Quadrato degli elementi con mapcar}{1}
-Implementare \fn{(square-list lst)} usando \fn{mapcar} e \fn{lambda}.
+\exlabel{Implementare} \fn{(square-list lst)} usando \fn{mapcar} e \fn{lambda}.
+\nopagebreak
 \begin{lstlisting}
 (square-list '(1 2 3 4))   ; -> (1 4 9 16)
 \end{lstlisting}
@@ -773,7 +819,8 @@ Implementare \fn{(square-list lst)} usando \fn{mapcar} e \fn{lambda}.
 
 \label{ex:70}
 \begin{stdbox}{70}{Filtro con remove-if-not}{1}
-Implementare \fn{(even-list lst)} usando \fn{remove-if-not}.
+\exlabel{Implementare} \fn{(even-list lst)} usando \fn{remove-if-not}.
+\nopagebreak
 \begin{lstlisting}
 (even-list '(1 2 3 4 5 6))   ; -> (2 4 6)
 \end{lstlisting}
@@ -781,7 +828,8 @@ Implementare \fn{(even-list lst)} usando \fn{remove-if-not}.
 
 \label{ex:71}
 \begin{colbox}{71}{Stringhe che iniziano con vocale}{2}
-Implementare \fn{(vocali-iniziali lst)} usando \fn{remove-if-not}.
+\exlabel{Implementare} \fn{(vocali-iniziali lst)} usando \fn{remove-if-not}.
+\nopagebreak
 \begin{lstlisting}
 (vocali-iniziali '("anna" "bob" "elena" "carlo"))
 ; -> ("anna" "elena")
@@ -790,7 +838,8 @@ Implementare \fn{(vocali-iniziali lst)} usando \fn{remove-if-not}.
 
 \label{ex:72}
 \begin{essbox}{72}{Somma con reduce}{2}
-Implementare \fn{(sum-reduce lst)} con \fn{reduce}.
+\exlabel{Implementare} \fn{(sum-reduce lst)} con \fn{reduce}.
+\nopagebreak
 \begin{lstlisting}
 (sum-reduce '(1 2 3 4))   ; -> 10
 (sum-reduce '())          ; -> 0
@@ -799,7 +848,8 @@ Implementare \fn{(sum-reduce lst)} con \fn{reduce}.
 
 \label{ex:73}
 \begin{colbox}{73}{Prodotto con reduce}{2}
-Implementare \fn{(product-reduce lst)} con \fn{reduce}.
+\exlabel{Implementare} \fn{(product-reduce lst)} con \fn{reduce}.
+\nopagebreak
 \begin{lstlisting}
 (product-reduce '(2 3 4))   ; -> 24
 \end{lstlisting}
@@ -807,7 +857,8 @@ Implementare \fn{(product-reduce lst)} con \fn{reduce}.
 
 \label{ex:74}
 \begin{colbox}{74}{Min e max con reduce}{2}
-Implementare \fn{(reduce-min lst)} e \fn{(reduce-max lst)}.
+\exlabel{Implementare} \fn{(reduce-min lst)} e \fn{(reduce-max lst)}.
+\nopagebreak
 \begin{lstlisting}
 (reduce-min '(8 3 5 1 9))   ; -> 1
 (reduce-max '(8 3 5 1 9))   ; -> 9
@@ -817,7 +868,8 @@ Gestire la lista vuota.
 
 \label{ex:75}
 \begin{stdbox}{75}{Lista di cifre in numero intero}{3}
-Implementare \fn{(cifre->intero lst)} con \fn{reduce}.
+\exlabel{Implementare} \fn{(cifre->intero lst)} con \fn{reduce}.
+\nopagebreak
 \begin{lstlisting}
 (cifre->intero '(1 5 3 4))   ; -> 1534
 \end{lstlisting}
@@ -829,7 +881,7 @@ e sommare la cifra corrente.
 
 \label{ex:76}
 \begin{colbox}{76}{Appiattisce un livello}{3}
-Implementare \fn{(appiattisci-un-livello lst)} con \fn{reduce}
+\exlabel{Implementare} \fn{(appiattisci-un-livello lst)} con \fn{reduce}
 e \fn{append}.
 \begin{lstlisting}
 (appiattisci-un-livello '((a b) (c d) (e)))
@@ -839,7 +891,7 @@ e \fn{append}.
 
 \label{ex:77}
 \begin{colbox}{77}{Regola di Horner}{3}
-Implementare \fn{(horner coefficienti x)} con \fn{reduce}.
+\exlabel{Implementare} \fn{(horner coefficienti x)} con \fn{reduce}.
 \[
 p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)
 \]
@@ -852,7 +904,8 @@ p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)
 
 \label{ex:78}
 \begin{stdbox}{78}{Prodotto scalare con apply}{2}
-Implementare \fn{(prodotto-scalare v1 v2)}.
+\exlabel{Implementare} \fn{(prodotto-scalare v1 v2)}.
+\nopagebreak
 \begin{lstlisting}
 (prodotto-scalare '(1 2 3) '(4 5 6))   ; -> 32
 \end{lstlisting}
@@ -862,7 +915,8 @@ poi \fn{apply} con \fn{+} per la somma.
 
 \label{ex:79}
 \begin{stdbox}{79}{mapcan}{2}
-Implementare \fn{(raddoppia lst)} con \fn{mapcan}.
+\exlabel{Implementare} \fn{(raddoppia lst)} con \fn{mapcan}.
+\nopagebreak
 \begin{lstlisting}
 (raddoppia '(1 2 3))   ; -> (1 1 2 2 3 3)
 \end{lstlisting}
@@ -871,7 +925,7 @@ Spiegare la differenza tra \fn{mapcan} e \fn{mapcar} in un commento.
 
 \label{ex:80}
 \begin{colbox}{80}{Ordina per chiave}{2}
-Implementare \fn{(ordina-per-punteggio lst)}: ordina coppie
+\exlabel{Implementare} \fn{(ordina-per-punteggio lst)}: ordina coppie
 \fn{(nome . punteggio)} in ordine decrescente.
 \begin{lstlisting}
 (ordina-per-punteggio
@@ -883,7 +937,7 @@ Vincolo: usare \fn{sort} con comparatore custom.
 
 \label{ex:81}
 \begin{colbox}{81}{Tutti e qualcuno}{2}
-Implementare \fn{(tutti-p pred lst)} e \fn{(qualcuno-p pred lst)}
+\exlabel{Implementare} \fn{(tutti-p pred lst)} e \fn{(qualcuno-p pred lst)}
 replicando \fn{every}/\fn{some} senza usarli.
 \begin{lstlisting}
 (tutti-p #'evenp '(2 4 6))    ; -> T
@@ -893,7 +947,8 @@ replicando \fn{every}/\fn{some} senza usarli.
 
 \label{ex:82}
 \begin{colbox}{82}{Conta con predicato}{2}
-Implementare \fn{(count-matching pred lst)} senza usare \fn{count-if}.
+\exlabel{Implementare} \fn{(count-matching pred lst)} senza usare \fn{count-if}.
+\nopagebreak
 \begin{lstlisting}
 (count-matching #'evenp '(1 2 3 4 5))   ; -> 2
 \end{lstlisting}
@@ -901,7 +956,7 @@ Implementare \fn{(count-matching pred lst)} senza usare \fn{count-if}.
 
 \label{ex:83}
 \begin{colbox}{83}{Raggruppa per chiave}{3}
-Implementare \fn{(raggruppa-per funzione lst)}: restituisce
+\exlabel{Implementare} \fn{(raggruppa-per funzione lst)}: restituisce
 una alist con chiave = risultato della funzione.
 \begin{lstlisting}
 (raggruppa-per #'evenp '(1 2 3 4 5))
@@ -912,7 +967,8 @@ una alist con chiave = risultato della funzione.
 
 \label{ex:84}
 \begin{colbox}{84}{Applica a tutti}{2}
-Implementare \fn{(applica-a-tutti funzioni x)}.
+\exlabel{Implementare} \fn{(applica-a-tutti funzioni x)}.
+\nopagebreak
 \begin{lstlisting}
 (applica-a-tutti (list #'1+ #'1- #'zerop) 0)
 ; -> (1 -1 T)
@@ -921,7 +977,8 @@ Implementare \fn{(applica-a-tutti funzioni x)}.
 
 \label{ex:85}
 \begin{essbox}{85}{Composizione di funzioni}{3}
-Implementare \fn{(compose f g)}: restituisce $f(g(x))$ come closure.
+\exlabel{Implementare} \fn{(compose f g)}: restituisce $f(g(x))$ come closure.
+\nopagebreak
 \begin{lstlisting}
 (defparameter *f* (compose #'1+ #'1+))
 (funcall *f* 10)   ; -> 12
@@ -931,7 +988,8 @@ Implementare \fn{(compose f g)}: restituisce $f(g(x))$ come closure.
 
 \label{ex:86}
 \begin{stdbox}{86}{Applicazione parziale}{3}
-Implementare \fn{(partial funzione \&rest argomenti)}.
+\exlabel{Implementare} \fn{(partial funzione \&rest argomenti)}.
+\nopagebreak
 \begin{lstlisting}
 (defparameter *add10* (partial #'+ 10))
 (funcall *add10* 5)    ; -> 15
@@ -942,7 +1000,8 @@ Implementare \fn{(partial funzione \&rest argomenti)}.
 
 \label{ex:87}
 \begin{essbox}{87}{Closure con stato: contatore}{3}
-Implementare \fn{(make-counter \&optional (start 0) (step 1))}.
+\exlabel{Implementare} \fn{(make-counter \&optional (start 0) (step 1))}.
+\nopagebreak
 \begin{lstlisting}
 (defparameter *c* (make-counter))
 (funcall *c*)   ; -> 1
@@ -957,7 +1016,7 @@ Implementare \fn{(make-counter \&optional (start 0) (step 1))}.
 
 \label{ex:88}
 \begin{colbox}{88}{Accumulatore}{3}
-Implementare \fn{(make-accumulator iniziale)}: ogni chiamata
+\exlabel{Implementare} \fn{(make-accumulator iniziale)}: ogni chiamata
 somma un valore al totale.
 \begin{lstlisting}
 (defparameter *acc* (make-accumulator 5))
@@ -968,7 +1027,7 @@ somma un valore al totale.
 
 \label{ex:89}
 \begin{colbox}{89}{Generatore Fibonacci con closure}{4}
-Implementare \fn{(make-fib-generator)}: restituisce una funzione
+\exlabel{Implementare} \fn{(make-fib-generator)}: restituisce una funzione
 che ad ogni chiamata produce il successivo numero di Fibonacci.
 \begin{lstlisting}
 (defparameter *fib* (make-fib-generator))
@@ -982,7 +1041,8 @@ che ad ogni chiamata produce il successivo numero di Fibonacci.
 
 \label{ex:90}
 \begin{colbox}{90}{Pipeline}{3}
-Implementare \fn{(pipeline valore funzioni)}.
+\exlabel{Implementare} \fn{(pipeline valore funzioni)}.
+\nopagebreak
 \begin{lstlisting}
 (pipeline 5 (list #'1+ #'1+ (lambda (x) (* x 2))))
 ; -> 14
@@ -991,7 +1051,7 @@ Implementare \fn{(pipeline valore funzioni)}.
 
 \label{ex:91}
 \begin{stdbox}{91}{Memoization}{4}
-Implementare \fn{(memoize funzione)} che restituisce una versione
+\exlabel{Implementare} \fn{(memoize funzione)} che restituisce una versione
 con cache.
 
 Vincoli: hash table nella closure; funzione originale invariata.
@@ -1027,7 +1087,8 @@ alberi binari e BST, pila e coda come ADT, grafi.
 
 \label{ex:93}
 \begin{essbox}{93}{Association list}{2}
-Implementare \fn{(lookup key alist)} e \fn{(set-key key value alist)}.
+\exlabel{Implementare} \fn{(lookup key alist)} e \fn{(set-key key value alist)}.
+\nopagebreak
 \begin{lstlisting}
 (lookup 'age '((name . "Mario") (age . 23)))
 ; -> 23
@@ -1039,7 +1100,8 @@ Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
 
 \label{ex:94}
 \begin{stdbox}{94}{Frequenza elementi}{2}
-Implementare \fn{(frequencies lst)}.
+\exlabel{Implementare} \fn{(frequencies lst)}.
+\nopagebreak
 \begin{lstlisting}
 (frequencies '(a b a c b a))
 ; -> ((A . 3) (B . 2) (C . 1))
@@ -1049,7 +1111,7 @@ Implementare \fn{(frequencies lst)}.
 
 \label{ex:95}
 \begin{essbox}{95}{Hash table: operazioni base}{2}
-Implementare \fn{(ht-get key ht)}, \fn{(ht-set key value ht)},
+\exlabel{Implementare} \fn{(ht-get key ht)}, \fn{(ht-set key value ht)},
 \fn{(ht-delete key ht)}, \fn{(ht-keys ht)}.
 \begin{lstlisting}
 (defparameter *ht* (make-hash-table))
@@ -1064,12 +1126,13 @@ Implementare \fn{(ht-get key ht)}, \fn{(ht-set key value ht)},
 \begin{colbox}{96}{Frequenza con hash table}{2}
 Riscrivere \fn{(frequencies-hash lst)} usando una hash table.
 
-Obiettivo: confrontare alist vs hash table.
+\exnota{Obiettivo: confrontare alist vs hash table.}
 \end{colbox}
 
 \label{ex:97}
 \begin{stdbox}{97}{Frequenza dei caratteri}{3}
-Implementare \fn{(frequenza-caratteri stringa)}.
+\exlabel{Implementare} \fn{(frequenza-caratteri stringa)}.
+\nopagebreak
 \begin{lstlisting}
 (frequenza-caratteri "banana")
 ; hash table: #\b->1, #\a->3, #\n->2
@@ -1079,7 +1142,7 @@ Implementare \fn{(frequenza-caratteri stringa)}.
 
 \label{ex:98}
 \begin{colbox}{98}{Unione di hash table}{3}
-Implementare \fn{(unisci-hash ht1 ht2)}: chiavi duplicate
+\exlabel{Implementare} \fn{(unisci-hash ht1 ht2)}: chiavi duplicate
 $\to$ somma dei valori.
 
 \hyperref[hint:98]{$\to$ Suggerimento}
@@ -1087,7 +1150,7 @@ $\to$ somma dei valori.
 
 \label{ex:99}
 \begin{colbox}{99}{Inverti hash table}{3}
-Implementare \fn{(inverti-hash ht)}: scambia chiavi e valori.
+\exlabel{Implementare} \fn{(inverti-hash ht)}: scambia chiavi e valori.
 Assumere valori unici.
 
 \hyperref[hint:99]{$\to$ Suggerimento}
@@ -1095,7 +1158,8 @@ Assumere valori unici.
 
 \label{ex:100}
 \begin{stdbox}{100}{Conversione alist/hash}{2}
-Implementare \fn{(alist->hash alist)} e \fn{(hash->alist ht)}.
+\exlabel{Implementare} \fn{(alist->hash alist)} e \fn{(hash->alist ht)}.
+\nopagebreak
 \begin{lstlisting}
 (alist->hash '((a . 1) (b . 2)))
 ; -> hash table a->1, b->2
@@ -1119,14 +1183,14 @@ Creare una matrice $3 \times 3$ con \fn{make-array} e implementare:
 
 \label{ex:102}
 \begin{colbox}{102}{Trasposta di matrice}{3}
-Implementare \fn{(trasposta m n)}: trasposta di una matrice $n \times n$.
+\exlabel{Implementare} \fn{(trasposta m n)}: trasposta di una matrice $n \times n$.
 
 \hyperref[hint:102]{$\to$ Suggerimento}
 \end{colbox}
 
 \label{ex:103}
 \begin{stdbox}{103}{Inversione array in loco}{2}
-Implementare \fn{(inverti-array! v)} che inverte il vettore
+\exlabel{Implementare} \fn{(inverti-array! v)} che inverte il vettore
 modificandolo con \fn{setf}/\fn{aref}, senza liste ausiliarie.
 \begin{lstlisting}
 (defparameter *v*
@@ -1138,7 +1202,7 @@ modificandolo con \fn{setf}/\fn{aref}, senza liste ausiliarie.
 
 \label{ex:104}
 \begin{colbox}{104}{Moltiplicazione di matrici \quattroStelle\ (opzionale)}{4}
-Implementare \fn{(moltiplica-matrici a b n)}: prodotto di
+\exlabel{Implementare} \fn{(moltiplica-matrici a b n)}: prodotto di
 matrici quadrate $n \times n$.
 
 \hyperref[hint:104]{$\to$ Suggerimento}
@@ -1153,7 +1217,7 @@ Definire:
   (eta 18)
   citta)
 \end{lstlisting}
-Implementare \fn{(crea-persona nome eta citta)} che valida l'eta'
+\exlabel{Implementare} \fn{(crea-persona nome eta citta)} che valida l'eta'
 (positiva) e segnala errore altrimenti.
 \begin{lstlisting}
 (crea-persona "Mario" 23 "Roma")
@@ -1206,7 +1270,7 @@ Implementare un albero binario di ricerca:
 
 \label{ex:109}
 \begin{stdbox}{109}{Traversal dell'albero}{3}
-Implementare \fn{(preorder tree)}, \fn{(inorder tree)},
+\exlabel{Implementare} \fn{(preorder tree)}, \fn{(inorder tree)},
 \fn{(postorder tree)}.
 
 Verificare che \fn{inorder} su un BST produca sequenza ordinata.
@@ -1218,7 +1282,8 @@ Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 
 \label{ex:110}
 \begin{colbox}{110}{Altezza e conteggio foglie}{3}
-Implementare \fn{(tree-height tree)} e \fn{(count-leaves tree)}.
+\exlabel{Implementare} \fn{(tree-height tree)} e \fn{(count-leaves tree)}.
+\nopagebreak
 \begin{lstlisting}
 (tree-height albero)    ; -> 3
 (count-leaves albero)   ; -> 3
@@ -1227,13 +1292,13 @@ Implementare \fn{(tree-height tree)} e \fn{(count-leaves tree)}.
 
 \label{ex:111}
 \begin{colbox}{111}{Specchia l'albero}{3}
-Implementare \fn{(specchia tree)}: scambia ricorsivamente
+\exlabel{Implementare} \fn{(specchia tree)}: scambia ricorsivamente
 sottoalberi sinistro e destro.
 \end{colbox}
 
 \label{ex:112}
 \begin{colbox}{112}{Albero bilanciato?}{4}
-Implementare \fn{(bilanciato-p tree)}: le altezze dei sottoalberi
+\exlabel{Implementare} \fn{(bilanciato-p tree)}: le altezze dei sottoalberi
 differiscono al piu' di 1 per ogni nodo.
 
 \hyperref[hint:112]{$\to$ Suggerimento}
@@ -1260,7 +1325,8 @@ Implementare con \fn{setf}:
 
 \label{ex:114}
 \begin{stdbox}{114}{Coda (queue) come ADT}{3}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (make-queue)
 (enqueue item queue)
@@ -1272,7 +1338,7 @@ Implementare:
 
 \label{ex:115}
 \begin{stdbox}{115}{Valida parentesi}{3}
-Implementare \fn{(valida-parentesi stringa)} per
+\exlabel{Implementare} \fn{(valida-parentesi stringa)} per
 \fn{()}, \fn{[]}, \fn{\{\}}.
 \begin{lstlisting}
 (valida-parentesi "([]{})")   ; -> T
@@ -1286,7 +1352,8 @@ Vincolo: usare una pila.
 
 \label{ex:116}
 \begin{colbox}{116}{Rubrica con hash table}{3}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (add-contact name phone)
 (find-contact name)
@@ -1298,7 +1365,8 @@ Gestire il caso contatto non trovato.
 
 \label{ex:117}
 \begin{stdbox}{117}{Grafo come lista di adiacenza}{3}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (neighbors node graph)
 (add-edge node1 node2 graph)
@@ -1311,7 +1379,8 @@ Implementare:
 
 \label{ex:118}
 \begin{colbox}{118}{DFS su grafo}{4}
-Implementare \fn{(dfs graph start)}: visita in profondita'.
+\exlabel{Implementare} \fn{(dfs graph start)}: visita in profondita'.
+\nopagebreak
 \begin{lstlisting}
 (dfs '((a b c) (b a d) (c a) (d b)) 'a)
 ; -> (A B D C)
@@ -1323,7 +1392,8 @@ Gestire i cicli con un insieme di nodi gia' visitati.
 
 \label{ex:119}
 \begin{colbox}{119}{BFS su grafo}{4}
-Implementare \fn{(bfs graph start)}: visita in ampiezza.
+\exlabel{Implementare} \fn{(bfs graph start)}: visita in ampiezza.
+\nopagebreak
 \begin{lstlisting}
 (bfs '((a b c) (b a d) (c a) (d b)) 'a)
 ; -> (A B C D)
@@ -1335,7 +1405,7 @@ Vincolo: usare una coda.
 
 \label{ex:120}
 \begin{colbox}{120}{Conta parole}{3}
-Implementare \fn{(conta-parole testo)} e
+\exlabel{Implementare} \fn{(conta-parole testo)} e
 \fn{(parola-piu-frequente testo)}.
 \begin{lstlisting}
 (conta-parole "il gatto e' sul tetto e il tetto")
@@ -1358,7 +1428,8 @@ nuove strutture di controllo.
 
 \label{ex:121}
 \begin{stdbox}{121}{Macro quando}{3}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (defmacro quando (test &body corpo))
 \end{lstlisting}
@@ -1370,14 +1441,15 @@ Si comporta come \fn{when}: esegue \fn{corpo} solo se \fn{test} e' vero.
 \end{lstlisting}
 Verificare l'espansione con \fn{macroexpand-1}.
 
-Obiettivo: capire la differenza macro/funzione.
+\exnota{Obiettivo: capire la differenza macro/funzione.}
 
 \hyperref[hint:121]{$\to$ Suggerimento}
 \end{stdbox}
 
 \label{ex:122}
 \begin{stdbox}{122}{Macro while}{3}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (defmacro mio-while (test &body corpo))
 \end{lstlisting}
@@ -1393,7 +1465,8 @@ Implementare:
 
 \label{ex:123}
 \begin{colbox}{123}{Macro for}{4}
-Implementare:
+\exlabel{Implementare:}
+\nopagebreak
 \begin{lstlisting}
 (defmacro mio-for ((var da a) &body corpo))
 \end{lstlisting}
@@ -1402,7 +1475,7 @@ Implementare:
   (format t "~A~%" i))
 ; stampa 1 2 3 4 5
 \end{lstlisting}
-Obiettivo: usare \fn{gensym} per evitare cattura della variabile.
+\exnota{Obiettivo: usare \fn{gensym} per evitare cattura della variabile.}
 
 \hyperref[hint:123]{$\to$ Suggerimento}
 \end{colbox}
@@ -1420,7 +1493,8 @@ combinazioni, ordinamento e problemi classici di backtracking.
 
 \label{ex:124}
 \begin{stdbox}{124}{Tutti i sottoinsiemi}{3}
-Implementare \fn{(subsets lst)}: genera tutti i $2^n$ sottoinsiemi.
+\exlabel{Implementare} \fn{(subsets lst)}: genera tutti i $2^n$ sottoinsiemi.
+\nopagebreak
 \begin{lstlisting}
 (subsets '(a b))
 ; -> (() (A) (B) (A B))
@@ -1430,7 +1504,8 @@ Implementare \fn{(subsets lst)}: genera tutti i $2^n$ sottoinsiemi.
 
 \label{ex:125}
 \begin{stdbox}{125}{Permutazioni}{4}
-Implementare \fn{(permutations lst)}.
+\exlabel{Implementare} \fn{(permutations lst)}.
+\nopagebreak
 \begin{lstlisting}
 (length (permutations '(a b c)))   ; -> 6
 \end{lstlisting}
@@ -1439,7 +1514,8 @@ Implementare \fn{(permutations lst)}.
 
 \label{ex:126}
 \begin{stdbox}{126}{Combinazioni}{3}
-Implementare \fn{(combinations lst k)}.
+\exlabel{Implementare} \fn{(combinations lst k)}.
+\nopagebreak
 \begin{lstlisting}
 (combinations '(a b c d) 2)
 ; -> ((A B) (A C) (A D) (B C) (B D) (C D))
@@ -1449,7 +1525,8 @@ Implementare \fn{(combinations lst k)}.
 
 \label{ex:127}
 \begin{stdbox}{127}{Somma a target}{3}
-Implementare \fn{(somma-a-target numeri target)}.
+\exlabel{Implementare} \fn{(somma-a-target numeri target)}.
+\nopagebreak
 \begin{lstlisting}
 (somma-a-target '(1 2 3 4 5) 6)
 ; -> ((1 5) (2 4) (1 2 3))
@@ -1459,7 +1536,8 @@ Implementare \fn{(somma-a-target numeri target)}.
 
 \label{ex:128}
 \begin{colbox}{128}{Parentesi bilanciate generate}{3}
-Implementare \fn{(genera-parentesi n)}.
+\exlabel{Implementare} \fn{(genera-parentesi n)}.
+\nopagebreak
 \begin{lstlisting}
 (genera-parentesi 3)
 ; -> ("((()))" "(()())" "(())()" "()(())" "()()()")
@@ -1469,7 +1547,8 @@ Implementare \fn{(genera-parentesi n)}.
 
 \label{ex:129}
 \begin{stdbox}{129}{Merge sort}{4}
-Implementare \fn{(merge-sorted lst1 lst2)} e \fn{(merge-sort* lst)}.
+\exlabel{Implementare} \fn{(merge-sorted lst1 lst2)} e \fn{(merge-sort* lst)}.
+\nopagebreak
 \begin{lstlisting}
 (merge-sort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
 \end{lstlisting}
@@ -1480,7 +1559,8 @@ Vincoli: non usare \fn{sort}; complessita' $O(n \log n)$.
 
 \label{ex:130}
 \begin{stdbox}{130}{Quicksort}{4}
-Implementare \fn{(quicksort* lst)} senza usare \fn{sort}.
+\exlabel{Implementare} \fn{(quicksort* lst)} senza usare \fn{sort}.
+\nopagebreak
 \begin{lstlisting}
 (quicksort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
 \end{lstlisting}
@@ -1489,7 +1569,8 @@ Implementare \fn{(quicksort* lst)} senza usare \fn{sort}.
 
 \label{ex:131}
 \begin{stdbox}{131}{Torri di Hanoi}{3}
-Implementare \fn{(hanoi n da a tramite)} che stampa le mosse.
+\exlabel{Implementare} \fn{(hanoi n da a tramite)} che stampa le mosse.
+\nopagebreak
 \begin{lstlisting}
 (hanoi 3 'A 'C 'B)
 ; Sposta disco 1: A -> C
@@ -1500,7 +1581,7 @@ Implementare \fn{(hanoi n da a tramite)} che stampa le mosse.
 
 \label{ex:132}
 \begin{colbox}{132}{Problema dello zaino}{4}
-Implementare \fn{(knapsack oggetti capacita)}.
+\exlabel{Implementare} \fn{(knapsack oggetti capacita)}.
 Oggetti: lista di \fn{(peso valore)}.
 \begin{lstlisting}
 (knapsack '((2 3) (3 4) (4 5) (5 8)) 5)
@@ -1512,7 +1593,8 @@ Oggetti: lista di \fn{(peso valore)}.
 \label{ex:133}
 \begin{colbox}{133}{Labirinto}{4}
 Rappresentare un labirinto come matrice 2D (0 libero, 1 muro).
-Implementare \fn{(find-path maze start goal)}.
+\exlabel{Implementare} \fn{(find-path maze start goal)}.
+\nopagebreak
 \begin{lstlisting}
 (find-path maze '(0 0) '(4 4))
 ; -> ((0 0) (1 0) ... (4 4))
@@ -1522,7 +1604,8 @@ Implementare \fn{(find-path maze start goal)}.
 
 \label{ex:134}
 \begin{stdbox}{134}{N-regine}{5}
-Implementare \fn{(n-queens n)}: tutte le configurazioni valide.
+\exlabel{Implementare} \fn{(n-queens n)}: tutte le configurazioni valide.
+\nopagebreak
 \begin{lstlisting}
 (length (n-queens 4))   ; -> 2
 (length (n-queens 8))   ; -> 92
@@ -1534,7 +1617,7 @@ Vincoli: backtracking con pruning; rappresentazione compatta.
 
 \label{ex:135}
 \begin{colbox}{135}{Sudoku}{5}
-Implementare \fn{(solve-sudoku board)}.
+\exlabel{Implementare} \fn{(solve-sudoku board)}.
 \fn{board}: array $9 \times 9$ con 0 per celle vuote.
 
 Algoritmo: per ogni cella vuota, provare i valori 1--9,
@@ -1545,7 +1628,7 @@ verificare vincoli riga/colonna/blocco, procedere ricorsivamente.
 
 \label{ex:136}
 \begin{colbox}{136}{Cammino del cavallo}{5}
-Implementare \fn{(knights-tour n)}: cammino del cavallo su
+\exlabel{Implementare} \fn{(knights-tour n)}: cammino del cavallo su
 scacchiera $n \times n$ visitando ogni casella esattamente una volta.
 \begin{lstlisting}
 (knights-tour 5)   ; -> lista di mosse, o NIL
@@ -1567,7 +1650,7 @@ Operazioni sulle stringhe e tecniche di I/O.
 
 \label{ex:137}
 \begin{stdbox}{137}{Inverti una stringa}{2}
-Implementare \fn{(reverse-string s)} senza applicare \fn{reverse}
+\exlabel{Implementare} \fn{(reverse-string s)} senza applicare \fn{reverse}
 direttamente; usare \fn{coerce}.
 \begin{lstlisting}
 (reverse-string "hello")   ; -> "olleh"
@@ -1576,7 +1659,8 @@ direttamente; usare \fn{coerce}.
 
 \label{ex:138}
 \begin{stdbox}{138}{Stringa palindroma}{2}
-Implementare \fn{(palindrome-p s)}.
+\exlabel{Implementare} \fn{(palindrome-p s)}.
+\nopagebreak
 \begin{lstlisting}
 (palindrome-p "anna")    ; -> T
 (palindrome-p "casa")    ; -> NIL
@@ -1585,7 +1669,7 @@ Implementare \fn{(palindrome-p s)}.
 
 \label{ex:139}
 \begin{colbox}{139}{Palindromo robusto}{3}
-Implementare \fn{(palindrome-robust-p s)}: ignora
+\exlabel{Implementare} \fn{(palindrome-robust-p s)}: ignora
 maiuscole/minuscole, spazi, punteggiatura.
 \begin{lstlisting}
 (palindrome-robust-p "I topi non avevano nipoti")
@@ -1596,7 +1680,8 @@ maiuscole/minuscole, spazi, punteggiatura.
 
 \label{ex:140}
 \begin{stdbox}{140}{Anagrammi}{3}
-Implementare \fn{(anagram-p s1 s2)}, ignorando maiuscole.
+\exlabel{Implementare} \fn{(anagram-p s1 s2)}, ignorando maiuscole.
+\nopagebreak
 \begin{lstlisting}
 (anagram-p "roma" "amor")   ; -> T
 \end{lstlisting}
@@ -1605,7 +1690,8 @@ Implementare \fn{(anagram-p s1 s2)}, ignorando maiuscole.
 
 \label{ex:141}
 \begin{colbox}{141}{Conta caratteri}{2}
-Implementare \fn{(count-char c s)}.
+\exlabel{Implementare} \fn{(count-char c s)}.
+\nopagebreak
 \begin{lstlisting}
 (count-char #\a "banana")   ; -> 3
 \end{lstlisting}
@@ -1624,7 +1710,7 @@ il codice come dato, pattern fondamentale di Lisp.
 
 \label{ex:142}
 \begin{stdbox}{142}{Calcolatrice RPN}{4}
-Implementare \fn{(rpn-eval espressione)}: valuta notazione
+\exlabel{Implementare} \fn{(rpn-eval espressione)}: valuta notazione
 polacca inversa.
 \begin{lstlisting}
 (rpn-eval '(3 4 +))          ; -> 7
@@ -1638,7 +1724,7 @@ Vincolo: usare una pila.
 
 \label{ex:143}
 \begin{stdbox}{143}{Valutatore di espressioni}{4}
-Implementare \fn{(evaluate-expression expr)}: espressioni
+\exlabel{Implementare} \fn{(evaluate-expression expr)}: espressioni
 in notazione prefissa, senza usare \fn{eval}.
 \begin{lstlisting}
 (evaluate-expression '(+ 2 3))        ; -> 5
@@ -1700,7 +1786,7 @@ Separare logica del gioco, verifica vittoria e I/O.
 
 \label{ex:147}
 \begin{colbox}{147}{Gioco della vita (Conway)}{4}
-Implementare \fn{(evolvi griglia)}: un passo di evoluzione.
+\exlabel{Implementare} \fn{(evolvi griglia)}: un passo di evoluzione.
 Griglia: array 2D di 0 (morto) e 1 (vivo).
 Regole: sopravvive con 2--3 vicini vivi; nasce con esattamente 3.
 \begin{lstlisting}
@@ -1735,3 +1821,6 @@ Struttura minima:
 
 \hyperref[hint:148]{$\to$ Suggerimento}
 \end{stdbox}
+
+
+
