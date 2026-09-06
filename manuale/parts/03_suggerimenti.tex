@@ -7,18 +7,12 @@
 % Numeri di sezione senza prefisso capitolo (es. "1" non "0.1")
 \renewcommand{\thesection}{\arabic{section}}
 
-\noindent
-Questa sezione contiene suggerimenti per gli esercizi di
-difficolta' \treStelle\ o superiore.
-Prima di leggere il suggerimento, fai almeno un tentativo
-autonomo: anche una soluzione parziale o sbagliata e' piu'
-utile di leggere subito la risposta.
+\noindent\small\color{black!65}
+Suggerimenti per gli esercizi \treStelle\ o superiore.
+Prima di leggere, fai almeno un tentativo autonomo: anche una soluzione parziale è più utile della risposta immediata.
+\color{black}
 
-\medskip
-\noindent
-Ogni suggerimento indica il percorso verso la soluzione
-senza svelare il codice. Per gli esercizi \quattroStelle/\cinqueStelle\
-e' presente anche una sezione di ragionamento esteso.
+\vspace{8pt}
 
 % =============================================================
 \setcounter{section}{0}
@@ -27,7 +21,7 @@ e' presente anche una sezione di ragionamento esteso.
 
 \label{hint:17}
 \begin{hintbox}{17}
-\textbf{Somma delle cifre} \quad \hyperref[ex:17]{$\leftarrow$ Esercizio} \quad \hyperref[sol:17]{$\rightarrow$ Soluzione}
+\hinttitle{Somma delle cifre} \quad \hyperref[ex:17]{$\leftarrow$ Esercizio} \quad \hyperref[sol:17]{$\rightarrow$ Soluzione}
 
 Estrai le cifre una alla volta con \fn{mod} e \fn{floor}:
 \fn{(mod n 10)} da' l'ultima cifra; \fn{(floor n 10)} rimuove
@@ -41,7 +35,7 @@ l'ultima cifra. Continua finche' \fn{n} e' zero.
 
 \label{hint:40}
 \begin{hintbox}{40}
-\textbf{Append} \quad \hyperref[ex:40]{$\leftarrow$ Esercizio} \quad \hyperref[sol:40]{$\rightarrow$ Soluzione}
+\hinttitle{Append} \quad \hyperref[ex:40]{$\leftarrow$ Esercizio} \quad \hyperref[sol:40]{$\rightarrow$ Soluzione}
 
 Casi: se \fn{lst1} e' vuota, restituisci \fn{lst2}.
 Altrimenti costruisci con \fn{cons}: il nuovo primo elemento
@@ -53,7 +47,7 @@ una nuova struttura automaticamente.
 
 \label{hint:41}
 \begin{hintbox}{41}
-\textbf{Remove-first} \quad \hyperref[ex:41]{$\leftarrow$ Esercizio} \quad \hyperref[sol:41]{$\rightarrow$ Soluzione}
+\hinttitle{Remove-first} \quad \hyperref[ex:41]{$\leftarrow$ Esercizio} \quad \hyperref[sol:41]{$\rightarrow$ Soluzione}
 
 Caso base 1: lista vuota $\to$ \fn{NIL}.
 Caso base 2: \fn{(car lst)} uguale a \fn{item} $\to$ restituisci
@@ -65,22 +59,22 @@ a cercare dopo aver trovato la prima.
 
 \label{hint:49}
 \begin{hintbox}{49}
-\textbf{Run-length encoding} \quad \hyperref[ex:49]{$\leftarrow$ Esercizio} \quad \hyperref[sol:49]{$\rightarrow$ Soluzione}
+\hinttitle{Run-length encoding} \quad \hyperref[ex:49]{$\leftarrow$ Esercizio} \quad \hyperref[sol:49]{$\rightarrow$ Soluzione}
 
-\textbf{Encode:} tieni traccia dell'elemento corrente e del contatore.
+\hintschema{Encode:} tieni traccia dell'elemento corrente e del contatore.
 Quando l'elemento cambia (o la lista e' finita), aggiungi
 la coppia \fn{(contatore elemento)} al risultato.
 Una struttura con accumulatori e' piu' naturale di una
 puramente ricorsiva.
 
-\textbf{Decode:} per ogni coppia \fn{(n elem)}, genera \fn{n}
+\hintschema{Decode:} per ogni coppia \fn{(n elem)}, genera \fn{n}
 copie di \fn{elem}. Usa un loop interno o una funzione ausiliaria
 che costruisce \fn{n} ripetizioni.
 \end{hintbox}
 
 \label{hint:50}
 \begin{hintbox}{50}
-\textbf{Remove-duplicates*} \quad \hyperref[ex:50]{$\leftarrow$ Esercizio} \quad \hyperref[sol:50]{$\rightarrow$ Soluzione}
+\hinttitle{Remove-duplicates*} \quad \hyperref[ex:50]{$\leftarrow$ Esercizio} \quad \hyperref[sol:50]{$\rightarrow$ Soluzione}
 
 Visita la lista da sinistra. Per ogni elemento, controllane
 la presenza nel risultato accumulato (o nella parte gia'
@@ -95,7 +89,7 @@ Usa \fn{member} (o la tua \fn{member*}) per il controllo.
 
 \label{hint:54}
 \begin{hintbox}{54}
-\textbf{Fibonacci O(n)} \quad \hyperref[ex:54]{$\leftarrow$ Esercizio} \quad \hyperref[sol:54]{$\rightarrow$ Soluzione}
+\hinttitle{Fibonacci O(n)} \quad \hyperref[ex:54]{$\leftarrow$ Esercizio} \quad \hyperref[sol:54]{$\rightarrow$ Soluzione}
 
 Usa due accumulatori \fn{a} e \fn{b} che rappresentano
 $F(i)$ e $F(i+1)$. A ogni passo: il nuovo \fn{a} diventa
@@ -108,7 +102,7 @@ Inizia con \fn{(iter n 0 1)}.
 
 \label{hint:55}
 \begin{hintbox}{55}
-\textbf{Flatten*} \quad \hyperref[ex:55]{$\leftarrow$ Esercizio} \quad \hyperref[sol:55]{$\rightarrow$ Soluzione}
+\hinttitle{Flatten*} \quad \hyperref[ex:55]{$\leftarrow$ Esercizio} \quad \hyperref[sol:55]{$\rightarrow$ Soluzione}
 
 Tratta ogni elemento della lista come il nodo di un albero binario
 implicito: se e' un \textit{atomo}, e' una foglia (mettila nel risultato);
@@ -123,13 +117,13 @@ Schema:
     (t (append (flatten* (car tree))
                (flatten* (cdr tree))))))
 \end{lstlisting}
-\textbf{Attenzione:} ricorrere su \fn{car} e \fn{cdr} separatamente,
+\hintschema{Attenzione:} ricorrere su \fn{car} e \fn{cdr} separatamente,
 non su \fn{(car tree)} e \fn{(cdr tree)} come lista.
 \end{hintbox}
 
 \label{hint:56}
 \begin{hintbox}{56}
-\textbf{Tree-depth} \quad \hyperref[ex:56]{$\leftarrow$ Esercizio} \quad \hyperref[sol:56]{$\rightarrow$ Soluzione}
+\hinttitle{Tree-depth} \quad \hyperref[ex:56]{$\leftarrow$ Esercizio} \quad \hyperref[sol:56]{$\rightarrow$ Soluzione}
 
 La profondita' di una lista vuota e' 0.
 La profondita' di una lista non vuota e' il massimo tra:
@@ -142,7 +136,7 @@ Usa \fn{max} per confrontare i due rami.
 
 \label{hint:60}
 \begin{hintbox}{60}
-\textbf{Sostituzione profonda} \quad \hyperref[ex:60]{$\leftarrow$ Esercizio} \quad \hyperref[sol:60]{$\rightarrow$ Soluzione}
+\hinttitle{Sostituzione profonda} \quad \hyperref[ex:60]{$\leftarrow$ Esercizio} \quad \hyperref[sol:60]{$\rightarrow$ Soluzione}
 
 Struttura simile a \fn{flatten*}: ricorri su \fn{car} e \fn{cdr}.
 Se il \fn{car} e' uguale a \fn{old}, sostituiscilo con \fn{new};
@@ -151,7 +145,7 @@ se e' una lista, ricorri dentro; altrimenti lascialo invariato.
 
 \label{hint:61}
 \begin{hintbox}{61}
-\textbf{Power-fast} \quad \hyperref[ex:61]{$\leftarrow$ Esercizio} \quad \hyperref[sol:61]{$\rightarrow$ Soluzione}
+\hinttitle{Power-fast} \quad \hyperref[ex:61]{$\leftarrow$ Esercizio} \quad \hyperref[sol:61]{$\rightarrow$ Soluzione}
 
 Tre casi: \fn{exp = 0} $\to$ 1; \fn{exp} pari $\to$ calcola
 \fn{(power-fast base (/ exp 2))} e metti al quadrato;
@@ -168,7 +162,7 @@ nel caso pari:
 
 \label{hint:64}
 \begin{hintbox}{64}
-\textbf{Crivello di Eratostene} \quad \hyperref[ex:64]{$\leftarrow$ Esercizio} \quad \hyperref[sol:64]{$\rightarrow$ Soluzione}
+\hinttitle{Crivello di Eratostene} \quad \hyperref[ex:64]{$\leftarrow$ Esercizio} \quad \hyperref[sol:64]{$\rightarrow$ Soluzione}
 
 \begin{enumerate}[leftmargin=2em]
   \item Crea un array booleano \fn{sieve} di dimensione $n+1$,
@@ -183,7 +177,7 @@ nel caso pari:
 
 \label{hint:65}
 \begin{hintbox}{65}
-\textbf{Fattori primi} \quad \hyperref[ex:65]{$\leftarrow$ Esercizio} \quad \hyperref[sol:65]{$\rightarrow$ Soluzione}
+\hinttitle{Fattori primi} \quad \hyperref[ex:65]{$\leftarrow$ Esercizio} \quad \hyperref[sol:65]{$\rightarrow$ Soluzione}
 
 Prova a dividere \fn{n} per ogni intero \fn{d} partendo da 2.
 Se \fn{(mod n d) = 0}, \fn{d} e' un fattore: aggiungilo al risultato
@@ -195,7 +189,7 @@ un fattore primo.
 
 \label{hint:67}
 \begin{hintbox}{67}
-\textbf{Raggruppa in blocchi} \quad \hyperref[ex:67]{$\leftarrow$ Esercizio} \quad \hyperref[sol:67]{$\rightarrow$ Soluzione}
+\hinttitle{Raggruppa in blocchi} \quad \hyperref[ex:67]{$\leftarrow$ Esercizio} \quad \hyperref[sol:67]{$\rightarrow$ Soluzione}
 
 Scrivi una funzione ausiliaria \fn{prendi-n lst n} che restituisce
 \fn{(primi-n resto)}: i primi \fn{n} elementi e il resto della lista.
@@ -210,7 +204,7 @@ e ricorre sul resto.
 
 \label{hint:75}
 \begin{hintbox}{75}
-\textbf{Cifre in intero} \quad \hyperref[ex:75]{$\leftarrow$ Esercizio} \quad \hyperref[sol:75]{$\rightarrow$ Soluzione}
+\hinttitle{Cifre in intero} \quad \hyperref[ex:75]{$\leftarrow$ Esercizio} \quad \hyperref[sol:75]{$\rightarrow$ Soluzione}
 
 Usa \fn{reduce} con una funzione che, dato l'accumulatore \fn{acc}
 e la cifra corrente \fn{d}, calcola \fn{(+ (* acc 10) d)}.
@@ -219,7 +213,7 @@ Con \fn{:initial-value 0} funziona anche per lista vuota.
 
 \label{hint:77}
 \begin{hintbox}{77}
-\textbf{Regola di Horner} \quad \hyperref[ex:77]{$\leftarrow$ Esercizio} \quad \hyperref[sol:77]{$\rightarrow$ Soluzione}
+\hinttitle{Regola di Horner} \quad \hyperref[ex:77]{$\leftarrow$ Esercizio} \quad \hyperref[sol:77]{$\rightarrow$ Soluzione}
 
 La regola di Horner valuta $p(x) = c_n x^n + \ldots + c_0$
 come $(\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)$.
@@ -233,7 +227,7 @@ al piu' basso.
 
 \label{hint:83}
 \begin{hintbox}{83}
-\textbf{Raggruppa per chiave} \quad \hyperref[ex:83]{$\leftarrow$ Esercizio} \quad \hyperref[sol:83]{$\rightarrow$ Soluzione}
+\hinttitle{Raggruppa per chiave} \quad \hyperref[ex:83]{$\leftarrow$ Esercizio} \quad \hyperref[sol:83]{$\rightarrow$ Soluzione}
 
 Per ogni elemento, calcola la chiave. Cerca nella alist risultato
 se quella chiave esiste gia'. Se si', aggiungici l'elemento;
@@ -244,7 +238,7 @@ o ricostruendola.
 
 \label{hint:85}
 \begin{hintbox}{85}
-\textbf{Compose} \quad \hyperref[ex:85]{$\leftarrow$ Esercizio} \quad \hyperref[sol:85]{$\rightarrow$ Soluzione}
+\hinttitle{Compose} \quad \hyperref[ex:85]{$\leftarrow$ Esercizio} \quad \hyperref[sol:85]{$\rightarrow$ Soluzione}
 
 Una closure cattura \fn{f} e \fn{g} nell'ambiente lessicale.
 Restituisce una \fn{lambda} che prende \fn{x}, applica prima
@@ -257,7 +251,7 @@ Ricorda che le funzioni si passano con \fn{\#'}.
 
 \label{hint:86}
 \begin{hintbox}{86}
-\textbf{Partial application} \quad \hyperref[ex:86]{$\leftarrow$ Esercizio} \quad \hyperref[sol:86]{$\rightarrow$ Soluzione}
+\hinttitle{Partial application} \quad \hyperref[ex:86]{$\leftarrow$ Esercizio} \quad \hyperref[sol:86]{$\rightarrow$ Soluzione}
 
 Cattura \fn{funzione} e \fn{argomenti} nella closure.
 La lambda restituita prende \fn{\&rest rest-args} e chiama
@@ -271,7 +265,7 @@ Usa \fn{apply} per passare la lista combinata:
 
 \label{hint:87}
 \begin{hintbox}{87}
-\textbf{Closure con stato} \quad \hyperref[ex:87]{$\leftarrow$ Esercizio} \quad \hyperref[sol:87]{$\rightarrow$ Soluzione}
+\hinttitle{Closure con stato} \quad \hyperref[ex:87]{$\leftarrow$ Esercizio} \quad \hyperref[sol:87]{$\rightarrow$ Soluzione}
 
 Lo stato vive in un \fn{let} attorno alla \fn{lambda}.
 Ogni chiamata alla lambda legge e aggiorna la variabile.
@@ -286,7 +280,7 @@ Ogni chiamata alla lambda legge e aggiorna la variabile.
 
 \label{hint:89}
 \begin{hintbox}{89}
-\textbf{Generatore Fibonacci con closure} \quad \hyperref[ex:89]{$\leftarrow$ Esercizio} \quad \hyperref[sol:89]{$\rightarrow$ Soluzione}
+\hinttitle{Generatore Fibonacci con closure} \quad \hyperref[ex:89]{$\leftarrow$ Esercizio} \quad \hyperref[sol:89]{$\rightarrow$ Soluzione}
 
 Due variabili nello stesso \fn{let} condividono la stessa closure:
 \begin{lstlisting}
@@ -301,7 +295,7 @@ che il nuovo valore di \fn{a} influenzi il calcolo di \fn{b}).
 
 \label{hint:91}
 \begin{hintbox}{91}
-\textbf{Memoize} \quad \hyperref[ex:91]{$\leftarrow$ Esercizio} \quad \hyperref[sol:91]{$\rightarrow$ Soluzione}
+\hinttitle{Memoize} \quad \hyperref[ex:91]{$\leftarrow$ Esercizio} \quad \hyperref[sol:91]{$\rightarrow$ Soluzione}
 
 La struttura base:
 \begin{lstlisting}
@@ -327,7 +321,7 @@ trovato'' da ``chiave non presente''.
 
 \label{hint:94}
 \begin{hintbox}{94}
-\textbf{Frequenze con alist} \quad \hyperref[ex:94]{$\leftarrow$ Esercizio} \quad \hyperref[sol:94]{$\rightarrow$ Soluzione}
+\hinttitle{Frequenze con alist} \quad \hyperref[ex:94]{$\leftarrow$ Esercizio} \quad \hyperref[sol:94]{$\rightarrow$ Soluzione}
 
 Per ogni elemento: cerca nella alist con \fn{assoc}.
 Se la coppia esiste, incrementa il \fn{cdr}; altrimenti,
@@ -338,7 +332,7 @@ trovata con \fn{assoc}: \fn{(setf (cdr coppia) (1+ (cdr coppia)))}.
 
 \label{hint:97}
 \begin{hintbox}{97}
-\textbf{Frequenza dei caratteri} \quad \hyperref[ex:97]{$\leftarrow$ Esercizio} \quad \hyperref[sol:97]{$\rightarrow$ Soluzione}
+\hinttitle{Frequenza dei caratteri} \quad \hyperref[ex:97]{$\leftarrow$ Esercizio} \quad \hyperref[sol:97]{$\rightarrow$ Soluzione}
 
 Crea una hash table con \fn{:test \#'eql} (i caratteri si
 confrontano con \fn{eql}).
@@ -350,7 +344,7 @@ Per ogni carattere: incrementa il valore nella tabella
 
 \label{hint:98}
 \begin{hintbox}{98}
-\textbf{Unione di hash table} \quad \hyperref[ex:98]{$\leftarrow$ Esercizio} \quad \hyperref[sol:98]{$\rightarrow$ Soluzione}
+\hinttitle{Unione di hash table} \quad \hyperref[ex:98]{$\leftarrow$ Esercizio} \quad \hyperref[sol:98]{$\rightarrow$ Soluzione}
 
 Crea una nuova hash table. Itera su \fn{ht1} con \fn{maphash}
 e copia tutte le coppie. Poi itera su \fn{ht2}: se la chiave
@@ -359,7 +353,7 @@ esiste gia', somma i valori; altrimenti inserisci.
 
 \label{hint:99}
 \begin{hintbox}{99}
-\textbf{Inverti hash table} \quad \hyperref[ex:99]{$\leftarrow$ Esercizio} \quad \hyperref[sol:99]{$\rightarrow$ Soluzione}
+\hinttitle{Inverti hash table} \quad \hyperref[ex:99]{$\leftarrow$ Esercizio} \quad \hyperref[sol:99]{$\rightarrow$ Soluzione}
 
 Crea una nuova hash table. Itera con \fn{maphash} sulla
 tabella originale: per ogni coppia \fn{(k v)}, inserisci
@@ -368,7 +362,7 @@ tabella originale: per ogni coppia \fn{(k v)}, inserisci
 
 \label{hint:102}
 \begin{hintbox}{102}
-\textbf{Trasposta di matrice} \quad \hyperref[ex:102]{$\leftarrow$ Esercizio} \quad \hyperref[sol:102]{$\rightarrow$ Soluzione}
+\hinttitle{Trasposta di matrice} \quad \hyperref[ex:102]{$\leftarrow$ Esercizio} \quad \hyperref[sol:102]{$\rightarrow$ Soluzione}
 
 Crea una nuova matrice $n \times n$. Con due loop annidati
 \fn{(loop for i ...)} e \fn{(loop for j ...)}:
@@ -377,7 +371,7 @@ Crea una nuova matrice $n \times n$. Con due loop annidati
 
 \label{hint:104}
 \begin{hintbox}{104}
-\textbf{Moltiplicazione di matrici (opzionale)} \quad \hyperref[ex:104]{$\leftarrow$ Esercizio} \quad \hyperref[sol:104]{$\rightarrow$ Soluzione}
+\hinttitle{Moltiplicazione di matrici (opzionale)} \quad \hyperref[ex:104]{$\leftarrow$ Esercizio} \quad \hyperref[sol:104]{$\rightarrow$ Soluzione}
 
 Il prodotto $C = A \times B$ con $C_{ij} = \sum_k A_{ik} \cdot B_{kj}$.
 Tre loop annidati: indici $i$, $j$, $k$.
@@ -393,7 +387,7 @@ Tre loop annidati: indici $i$, $j$, $k$.
 
 \label{hint:108}
 \begin{hintbox}{108}
-\textbf{BST: inserimento e ricerca} \quad \hyperref[ex:108]{$\leftarrow$ Esercizio} \quad \hyperref[sol:108]{$\rightarrow$ Soluzione}
+\hinttitle{BST: inserimento e ricerca} \quad \hyperref[ex:108]{$\leftarrow$ Esercizio} \quad \hyperref[sol:108]{$\rightarrow$ Soluzione}
 
 \textbf{Insert:} se l'albero e' \fn{nil}, crea un nodo foglia.
 Se il valore e' minore del nodo corrente, ricorri a sinistra;
@@ -406,7 +400,7 @@ Se minore, vai a sinistra; se maggiore, vai a destra.
 
 \label{hint:109}
 \begin{hintbox}{109}
-\textbf{Traversal dell'albero} \quad \hyperref[ex:109]{$\leftarrow$ Esercizio} \quad \hyperref[sol:109]{$\rightarrow$ Soluzione}
+\hinttitle{Traversal dell'albero} \quad \hyperref[ex:109]{$\leftarrow$ Esercizio} \quad \hyperref[sol:109]{$\rightarrow$ Soluzione}
 
 I tre traversal differiscono solo per l'ordine in cui si
 visita la radice rispetto ai sottoalberi:
@@ -420,7 +414,7 @@ Usa \fn{append} per concatenare i risultati dei due sottoalberi.
 
 \label{hint:112}
 \begin{hintbox}{112}
-\textbf{Albero bilanciato?} \quad \hyperref[ex:112]{$\leftarrow$ Esercizio} \quad \hyperref[sol:112]{$\rightarrow$ Soluzione}
+\hinttitle{Albero bilanciato?} \quad \hyperref[ex:112]{$\leftarrow$ Esercizio} \quad \hyperref[sol:112]{$\rightarrow$ Soluzione}
 
 Scrivi una funzione ausiliaria che restituisce l'altezza
 se l'albero e' bilanciato, oppure $-1$ come segnale di
@@ -441,7 +435,7 @@ sbilanciamento.
 
 \label{hint:114}
 \begin{hintbox}{114}
-\textbf{Coda FIFO} \quad \hyperref[ex:114]{$\leftarrow$ Esercizio} \quad \hyperref[sol:114]{$\rightarrow$ Soluzione}
+\hinttitle{Coda FIFO} \quad \hyperref[ex:114]{$\leftarrow$ Esercizio} \quad \hyperref[sol:114]{$\rightarrow$ Soluzione}
 
 Rappresenta la coda come una struttura con due liste:
 \fn{testa} (elementi da estrarre) e \fn{coda} (elementi aggiunti).
@@ -455,7 +449,7 @@ Questa rappresentazione da' dequeue ammortizzato $O(1)$.
 
 \label{hint:115}
 \begin{hintbox}{115}
-\textbf{Valida parentesi} \quad \hyperref[ex:115]{$\leftarrow$ Esercizio} \quad \hyperref[sol:115]{$\rightarrow$ Soluzione}
+\hinttitle{Valida parentesi} \quad \hyperref[ex:115]{$\leftarrow$ Esercizio} \quad \hyperref[sol:115]{$\rightarrow$ Soluzione}
 
 Itera sui caratteri della stringa. Per ogni carattere:
 \begin{itemize}[leftmargin=2em]
@@ -470,7 +464,7 @@ Usa una alist per mappare ogni chiusa alla corrispondente aperta.
 
 \label{hint:118}
 \begin{hintbox}{118}
-\textbf{DFS su grafo} \quad \hyperref[ex:118]{$\leftarrow$ Esercizio} \quad \hyperref[sol:118]{$\rightarrow$ Soluzione}
+\hinttitle{DFS su grafo} \quad \hyperref[ex:118]{$\leftarrow$ Esercizio} \quad \hyperref[sol:118]{$\rightarrow$ Soluzione}
 
 Usa una lista \fn{visitati} per tenere traccia dei nodi gia' visti.
 Schema ricorsivo:
@@ -486,7 +480,7 @@ catturata da una closure/\fn{labels}.
 
 \label{hint:119}
 \begin{hintbox}{119}
-\textbf{BFS su grafo} \quad \hyperref[ex:119]{$\leftarrow$ Esercizio} \quad \hyperref[sol:119]{$\rightarrow$ Soluzione}
+\hinttitle{BFS su grafo} \quad \hyperref[ex:119]{$\leftarrow$ Esercizio} \quad \hyperref[sol:119]{$\rightarrow$ Soluzione}
 
 Usa una coda (o semplicemente una lista come coda FIFO).
 Schema:
@@ -502,7 +496,7 @@ Con una lista, usa \fn{append} per aggiungere in coda e
 
 \label{hint:120}
 \begin{hintbox}{120}
-\textbf{Conta parole} \quad \hyperref[ex:120]{$\leftarrow$ Esercizio} \quad \hyperref[sol:120]{$\rightarrow$ Soluzione}
+\hinttitle{Conta parole} \quad \hyperref[ex:120]{$\leftarrow$ Esercizio} \quad \hyperref[sol:120]{$\rightarrow$ Soluzione}
 
 Per spezzare la stringa in parole, implementa un tokenizer
 semplice: scansiona carattere per carattere, accumulando
@@ -520,7 +514,7 @@ si confrontano con \fn{equal}) per contare le occorrenze.
 
 \label{hint:121}
 \begin{hintbox}{121}
-\textbf{Macro quando} \quad \hyperref[ex:121]{$\leftarrow$ Esercizio} \quad \hyperref[sol:121]{$\rightarrow$ Soluzione}
+\hinttitle{Macro quando} \quad \hyperref[ex:121]{$\leftarrow$ Esercizio} \quad \hyperref[sol:121]{$\rightarrow$ Soluzione}
 
 Lo schema base di una macro con body:
 \begin{lstlisting}
@@ -539,7 +533,7 @@ Verifica con: \fn{(macroexpand-1 '(quando (> x 0) (print x)))}.
 
 \label{hint:122}
 \begin{hintbox}{122}
-\textbf{Macro while} \quad \hyperref[ex:122]{$\leftarrow$ Esercizio} \quad \hyperref[sol:122]{$\rightarrow$ Soluzione}
+\hinttitle{Macro while} \quad \hyperref[ex:122]{$\leftarrow$ Esercizio} \quad \hyperref[sol:122]{$\rightarrow$ Soluzione}
 
 Un'implementazione semplice usa \fn{loop} nell'espansione:
 \begin{lstlisting}
@@ -563,7 +557,7 @@ usa \fn{tagbody}/\fn{go}:
 
 \label{hint:123}
 \begin{hintbox}{123}
-\textbf{Macro for} \quad \hyperref[ex:123]{$\leftarrow$ Esercizio} \quad \hyperref[sol:123]{$\rightarrow$ Soluzione}
+\hinttitle{Macro for} \quad \hyperref[ex:123]{$\leftarrow$ Esercizio} \quad \hyperref[sol:123]{$\rightarrow$ Soluzione}
 
 Usa \fn{gensym} per la variabile di ciclo e per evitare che
 valutazioni multiple di \fn{da}/\fn{a} causino effetti collaterali.
@@ -585,7 +579,7 @@ e' il nome che l'utente vuole usare nel corpo.
 
 \label{hint:124}
 \begin{hintbox}{124}
-\textbf{Subsets} \quad \hyperref[ex:124]{$\leftarrow$ Esercizio} \quad \hyperref[sol:124]{$\rightarrow$ Soluzione}
+\hinttitle{Subsets} \quad \hyperref[ex:124]{$\leftarrow$ Esercizio} \quad \hyperref[sol:124]{$\rightarrow$ Soluzione}
 
 Ogni elemento ha due scelte: incluso o non incluso.
 Schema ricorsivo:
@@ -599,7 +593,7 @@ Schema ricorsivo:
 
 \label{hint:125}
 \begin{hintbox}{125}
-\textbf{Permutazioni} \quad \hyperref[ex:125]{$\leftarrow$ Esercizio} \quad \hyperref[sol:125]{$\rightarrow$ Soluzione}
+\hinttitle{Permutazioni} \quad \hyperref[ex:125]{$\leftarrow$ Esercizio} \quad \hyperref[sol:125]{$\rightarrow$ Soluzione}
 
 Per generare le permutazioni di \fn{lst}:
 \begin{enumerate}[leftmargin=2em]
@@ -614,7 +608,7 @@ Usa una funzione ausiliaria che rimuove un elemento per posizione
 
 \label{hint:126}
 \begin{hintbox}{126}
-\textbf{Combinazioni} \quad \hyperref[ex:126]{$\leftarrow$ Esercizio} \quad \hyperref[sol:126]{$\rightarrow$ Soluzione}
+\hinttitle{Combinazioni} \quad \hyperref[ex:126]{$\leftarrow$ Esercizio} \quad \hyperref[sol:126]{$\rightarrow$ Soluzione}
 
 Per scegliere \fn{k} elementi da \fn{lst}:
 \begin{itemize}[leftmargin=2em]
@@ -629,7 +623,7 @@ Per scegliere \fn{k} elementi da \fn{lst}:
 
 \label{hint:127}
 \begin{hintbox}{127}
-\textbf{Somma a target} \quad \hyperref[ex:127]{$\leftarrow$ Esercizio} \quad \hyperref[sol:127]{$\rightarrow$ Soluzione}
+\hinttitle{Somma a target} \quad \hyperref[ex:127]{$\leftarrow$ Esercizio} \quad \hyperref[sol:127]{$\rightarrow$ Soluzione}
 
 Adatta il pattern dei sottoinsiemi: a ogni passo, scegli
 di includere o meno il numero corrente.
@@ -640,7 +634,7 @@ senza aver raggiunto 0, il ramo fallisce.
 
 \label{hint:128}
 \begin{hintbox}{128}
-\textbf{Parentesi bilanciate generate} \quad \hyperref[ex:128]{$\leftarrow$ Esercizio} \quad \hyperref[sol:128]{$\rightarrow$ Soluzione}
+\hinttitle{Parentesi bilanciate generate} \quad \hyperref[ex:128]{$\leftarrow$ Esercizio} \quad \hyperref[sol:128]{$\rightarrow$ Soluzione}
 
 Costruisci la stringa con due contatori: \fn{aperte} e \fn{chiuse}.
 A ogni passo puoi aggiungere \fn{(} se \fn{aperte < n};
@@ -650,7 +644,7 @@ Quando \fn{aperte = chiuse = n}, hai una stringa valida.
 
 \label{hint:129}
 \begin{hintbox}{129}
-\textbf{Merge sort} \quad \hyperref[ex:129]{$\leftarrow$ Esercizio} \quad \hyperref[sol:129]{$\rightarrow$ Soluzione}
+\hinttitle{Merge sort} \quad \hyperref[ex:129]{$\leftarrow$ Esercizio} \quad \hyperref[sol:129]{$\rightarrow$ Soluzione}
 
 \textbf{Merge-sorted:} due puntatori alle teste delle liste.
 Prendi il minore dei due \fn{car}, avanza il puntatore corrispondente.
@@ -663,7 +657,7 @@ ordina le due meta' ricorsivamente, poi unisci con \fn{merge-sorted}.
 
 \label{hint:130}
 \begin{hintbox}{130}
-\textbf{Quicksort} \quad \hyperref[ex:130]{$\leftarrow$ Esercizio} \quad \hyperref[sol:130]{$\rightarrow$ Soluzione}
+\hinttitle{Quicksort} \quad \hyperref[ex:130]{$\leftarrow$ Esercizio} \quad \hyperref[sol:130]{$\rightarrow$ Soluzione}
 
 Scegli il primo elemento come pivot.
 Con \fn{remove-if} (o la tua \fn{filter-list}), dividi
@@ -674,7 +668,7 @@ Ordina ricorsivamente le due parti e concatena:
 
 \label{hint:131}
 \begin{hintbox}{131}
-\textbf{Torri di Hanoi} \quad \hyperref[ex:131]{$\leftarrow$ Esercizio} \quad \hyperref[sol:131]{$\rightarrow$ Soluzione}
+\hinttitle{Torri di Hanoi} \quad \hyperref[ex:131]{$\leftarrow$ Esercizio} \quad \hyperref[sol:131]{$\rightarrow$ Soluzione}
 
 La soluzione e' elegantemente ricorsiva:
 \begin{enumerate}[leftmargin=2em]
@@ -688,7 +682,7 @@ Il numero di mosse e' $2^n - 1$.
 
 \label{hint:132}
 \begin{hintbox}{132}
-\textbf{Problema dello zaino} \quad \hyperref[ex:132]{$\leftarrow$ Esercizio} \quad \hyperref[sol:132]{$\rightarrow$ Soluzione}
+\hinttitle{Problema dello zaino} \quad \hyperref[ex:132]{$\leftarrow$ Esercizio} \quad \hyperref[sol:132]{$\rightarrow$ Soluzione}
 
 Schema di ricerca esaustiva:
 Per ogni oggetto, hai due scelte: prenderlo o lasciarlo.
@@ -704,7 +698,7 @@ la capacita' residua.
 
 \label{hint:133}
 \begin{hintbox}{133}
-\textbf{Labirinto} \quad \hyperref[ex:133]{$\leftarrow$ Esercizio} \quad \hyperref[sol:133]{$\rightarrow$ Soluzione}
+\hinttitle{Labirinto} \quad \hyperref[ex:133]{$\leftarrow$ Esercizio} \quad \hyperref[sol:133]{$\rightarrow$ Soluzione}
 
 Schema DFS con backtracking:
 \begin{enumerate}[leftmargin=2em]
@@ -721,13 +715,13 @@ Usa un array separato per i visitati, oppure marca nel labirinto stesso
 
 \label{hint:134}
 \begin{hintbox}{134}
-\textbf{N-regine} \quad \hyperref[ex:134]{$\leftarrow$ Esercizio} \quad \hyperref[sol:134]{$\rightarrow$ Soluzione}
+\hinttitle{N-regine} \quad \hyperref[ex:134]{$\leftarrow$ Esercizio} \quad \hyperref[sol:134]{$\rightarrow$ Soluzione}
 
-\textbf{Rappresentazione:} usa un vettore di \fn{n} elementi dove
+\hintschema{Rappresentazione:} usa un vettore di \fn{n} elementi dove
 \fn{(aref board col)} e' la riga in cui si trova la regina
 nella colonna \fn{col}. Stai posizionando una regina per colonna.
 
-\textbf{Pruning:} prima di posizionare la regina nella colonna \fn{col}
+\hintschema{Pruning:} prima di posizionare la regina nella colonna \fn{col}
 alla riga \fn{row}, verifica che nessuna delle regine gia'
 posizionate attacchi questa cella:
 \begin{itemize}[leftmargin=2em]
@@ -742,7 +736,7 @@ Se \fn{col = n}, hai trovato una soluzione.
 
 \label{hint:135}
 \begin{hintbox}{135}
-\textbf{Sudoku} \quad \hyperref[ex:135]{$\leftarrow$ Esercizio} \quad \hyperref[sol:135]{$\rightarrow$ Soluzione}
+\hinttitle{Sudoku} \quad \hyperref[ex:135]{$\leftarrow$ Esercizio} \quad \hyperref[sol:135]{$\rightarrow$ Soluzione}
 
 \begin{enumerate}[leftmargin=2em]
   \item Trova la prima cella vuota (valore 0).
@@ -760,7 +754,7 @@ Per ottimizzare, scegli la cella con meno valori possibili
 
 \label{hint:136}
 \begin{hintbox}{136}
-\textbf{Cammino del cavallo} \quad \hyperref[ex:136]{$\leftarrow$ Esercizio} \quad \hyperref[sol:136]{$\rightarrow$ Soluzione}
+\hinttitle{Cammino del cavallo} \quad \hyperref[ex:136]{$\leftarrow$ Esercizio} \quad \hyperref[sol:136]{$\rightarrow$ Soluzione}
 
 Le 8 mosse possibili del cavallo in termini di $(dx, dy)$:
 $(\pm 1, \pm 2)$ e $(\pm 2, \pm 1)$.
@@ -781,7 +775,7 @@ Riduce drasticamente il backtracking.
 
 \label{hint:139}
 \begin{hintbox}{139}
-\textbf{Palindromo robusto} \quad \hyperref[ex:139]{$\leftarrow$ Esercizio} \quad \hyperref[sol:139]{$\rightarrow$ Soluzione}
+\hinttitle{Palindromo robusto} \quad \hyperref[ex:139]{$\leftarrow$ Esercizio} \quad \hyperref[sol:139]{$\rightarrow$ Soluzione}
 
 \begin{enumerate}[leftmargin=2em]
   \item Converti in minuscolo con \fn{string-downcase}.
@@ -793,7 +787,7 @@ Riduce drasticamente il backtracking.
 
 \label{hint:140}
 \begin{hintbox}{140}
-\textbf{Anagrammi} \quad \hyperref[ex:140]{$\leftarrow$ Esercizio} \quad \hyperref[sol:140]{$\rightarrow$ Soluzione}
+\hinttitle{Anagrammi} \quad \hyperref[ex:140]{$\leftarrow$ Esercizio} \quad \hyperref[sol:140]{$\rightarrow$ Soluzione}
 
 Due stringhe sono anagrammi se, ordinate lettera per lettera,
 sono uguali. Converti entrambe in minuscolo, poi in lista
@@ -807,7 +801,7 @@ di caratteri con \fn{coerce}, ordina con \fn{sort}, e confronta.
 
 \label{hint:142}
 \begin{hintbox}{142}
-\textbf{Calcolatrice RPN} \quad \hyperref[ex:142]{$\leftarrow$ Esercizio} \quad \hyperref[sol:142]{$\rightarrow$ Soluzione}
+\hinttitle{Calcolatrice RPN} \quad \hyperref[ex:142]{$\leftarrow$ Esercizio} \quad \hyperref[sol:142]{$\rightarrow$ Soluzione}
 
 Itera sugli elementi dell'espressione:
 \begin{itemize}[leftmargin=2em]
@@ -822,7 +816,7 @@ usa una alist o \fn{case} per mappare simbolo $\to$ funzione.
 
 \label{hint:143}
 \begin{hintbox}{143}
-\textbf{Valutatore di espressioni} \quad \hyperref[ex:143]{$\leftarrow$ Esercizio} \quad \hyperref[sol:143]{$\rightarrow$ Soluzione}
+\hinttitle{Valutatore di espressioni} \quad \hyperref[ex:143]{$\leftarrow$ Esercizio} \quad \hyperref[sol:143]{$\rightarrow$ Soluzione}
 
 La struttura dell'espressione rispecchia la struttura del codice:
 \begin{itemize}[leftmargin=2em]
@@ -837,7 +831,7 @@ Usa \fn{funcall} con una funzione ricavata dal simbolo
 
 \label{hint:144}
 \begin{hintbox}{144}
-\textbf{Mini-interprete con variabili} \quad \hyperref[ex:144]{$\leftarrow$ Esercizio} \quad \hyperref[sol:144]{$\rightarrow$ Soluzione}
+\hinttitle{Mini-interprete con variabili} \quad \hyperref[ex:144]{$\leftarrow$ Esercizio} \quad \hyperref[sol:144]{$\rightarrow$ Soluzione}
 
 L'ambiente e' una alist \fn{((nome . valore) ...)}.
 
@@ -860,7 +854,7 @@ o restituito insieme al valore).
 
 \label{hint:146}
 \begin{hintbox}{146}
-\textbf{Tris} \quad \hyperref[ex:146]{$\leftarrow$ Esercizio} \quad \hyperref[sol:146]{$\rightarrow$ Soluzione}
+\hinttitle{Tris} \quad \hyperref[ex:146]{$\leftarrow$ Esercizio} \quad \hyperref[sol:146]{$\rightarrow$ Soluzione}
 
 Struttura consigliata:
 \begin{itemize}[leftmargin=2em]
@@ -876,7 +870,7 @@ Struttura consigliata:
 
 \label{hint:147}
 \begin{hintbox}{147}
-\textbf{Gioco della vita} \quad \hyperref[ex:147]{$\leftarrow$ Esercizio} \quad \hyperref[sol:147]{$\rightarrow$ Soluzione}
+\hinttitle{Gioco della vita} \quad \hyperref[ex:147]{$\leftarrow$ Esercizio} \quad \hyperref[sol:147]{$\rightarrow$ Soluzione}
 
 Per ogni cella $(r, c)$, conta i vicini vivi (le 8 celle adiacenti).
 Le regole:
@@ -891,7 +885,7 @@ modificare quello corrente mentre lo leggi).
 
 \label{hint:148}
 \begin{hintbox}{148}
-\textbf{Mini sistema gestionale} \quad \hyperref[ex:148]{$\leftarrow$ Esercizio} \quad \hyperref[sol:148]{$\rightarrow$ Soluzione}
+\hinttitle{Mini sistema gestionale} \quad \hyperref[ex:148]{$\leftarrow$ Esercizio} \quad \hyperref[sol:148]{$\rightarrow$ Soluzione}
 
 Struttura minima consigliata:
 
@@ -913,3 +907,4 @@ record come S-expression con \fn{print} (leggibile con \fn{read}).
 \textbf{Caricamento:} leggi le S-expression con \fn{read}
 in un loop finche' non si raggiunge \fn{EOF}.
 \end{hintbox}
+

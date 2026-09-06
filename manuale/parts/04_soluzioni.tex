@@ -7,16 +7,13 @@
 % Numeri di sezione senza prefisso capitolo
 \renewcommand{\thesection}{\arabic{section}}
 
-\noindent
-Le soluzioni sono organizzate per capitolo.
-Il livello di commento e' proporzionale alla difficolta':
-\unaStella/\dueStelle\ solo codice;
-\treStelle\ commenti inline;
-\quattroStelle/\cinqueStelle\ ragionamento esteso + codice commentato.
+\noindent\small\color{black!65}
+\unaStella/\dueStelle: solo codice.\enspace
+\treStelle: commenti inline.\enspace
+\quattroStelle/\cinqueStelle: box ragionamento + codice commentato.
+\color{black}
 
-Alcune soluzioni avanzate sono marcate come
-\textit{soluzione di riferimento --- non unica}: esistono approcci
-alternativi ugualmente validi.
+\vspace{8pt}
 
 % =============================================================
 \setcounter{section}{0}
@@ -1882,7 +1879,7 @@ per $n=8$ si trovano 92 soluzioni in poche ms.
 
 \label{sol:135}
 \begin{solbox}{135}
-\textit{Soluzione di riferimento --- non unica.}
+\solriferimento
 \begin{ragionamentoBox}{135}
 Backtracking con tre array di flag per righe, colonne e blocchi
 $3\times3$ per un check $O(1)$ dei vincoli.
@@ -1922,7 +1919,7 @@ $3\times3$ per un check $O(1)$ dei vincoli.
 
 \label{sol:136}
 \begin{solbox}{136}
-\textit{Soluzione di riferimento --- non unica.}
+\solriferimento
 \begin{ragionamentoBox}{136}
 Backtracking con euristica di Warnsdorff: tra le mosse
 disponibili, scegliamo sempre quella che porta alla cella
@@ -2305,3 +2302,4 @@ per semplicita': e' leggibile con \fn{read} senza parsing custom.
                           (fourth record))))))
 \end{lstlisting}
 \end{solbox}
+

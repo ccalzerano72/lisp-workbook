@@ -195,6 +195,20 @@
 % Nota: come vincolo ma più neutro
 \newcommand{\exnota}[1]{\smallskip\noindent{\small\textcolor{black!60}{\textit{#1}}}}
 
+% ---- Comandi semantici per suggerimenti ----
+% Titolo dell'esercizio nell'hint
+\newcommand{\hinttitle}[1]{\textbf{\textcolor{boxHintFrame!80!black}{#1}}}
+% Passo / step numerato
+\newcommand{\hintstep}[1]{\smallskip\noindent{\small\textcolor{boxHintFrame!70!black}{\textbf{#1}}}\enspace}
+% Schema/attenzione
+\newcommand{\hintschema}[1]{\smallskip\noindent{\small\textbf{\textcolor{black!65}{#1}}}\enspace}
+
+% ---- Comandi semantici per soluzioni ----
+% "Soluzione di riferimento"
+\newcommand{\solriferimento}{\noindent{\small\textit{\textcolor{black!55}{Soluzione di riferimento --- non unica.}}}\smallskip}
+% Sezione interna ragionamento (Rappresentazione, Complessità ecc.)
+\newcommand{\raglabel}[1]{\smallskip\noindent{\small\textbf{\textcolor{boxRagFrame!80!black}{#1}}}\enspace}
+
 % ---- Box ESERCIZIO MINIMO ◆ (blu) ----
 % Uso: \begin{minbox}{n}{titolo}{stelle} ... \end{minbox}
 \newenvironment{minbox}[3]{%
@@ -279,16 +293,19 @@
   \medskip
   \begin{tcolorbox}[
     enhanced,
-    breakable,
     colframe=boxHintFrame,
     colback=boxHintBack,
     fonttitle=\bfseries\small,
     title={Suggerimento --- Esercizio~#1},
     arc=3pt,
     boxrule=0.8pt,
-    left=6pt, right=6pt, top=4pt, bottom=4pt
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    toptitle=3pt, bottomtitle=3pt,
+    before skip=12pt plus 3pt,
+    after skip=12pt plus 3pt,
+    parskip=5pt
   ]
-  \small
+  \small\color{black!75}%
 }{%
   \end{tcolorbox}
   \medskip
@@ -299,16 +316,19 @@
   \medskip
   \begin{tcolorbox}[
     enhanced,
-    breakable,
     colframe=boxSolFrame,
     colback=boxSolBack,
     fonttitle=\bfseries\small,
     title={Soluzione --- Esercizio~#1},
     arc=3pt,
     boxrule=0.8pt,
-    left=6pt, right=6pt, top=4pt, bottom=4pt
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    toptitle=3pt, bottomtitle=3pt,
+    before skip=12pt plus 3pt,
+    after skip=12pt plus 3pt,
+    parskip=5pt
   ]
-  \small
+  \small\color{black!75}%
 }{%
   \end{tcolorbox}
   \medskip
@@ -316,22 +336,25 @@
 
 % ---- Box RAGIONAMENTO (per ★★★★/★★★★★) ----
 \newenvironment{ragionamentoBox}[1]{%
-  \medskip
+  \smallskip
   \begin{tcolorbox}[
     enhanced,
-    breakable,
     colframe=boxRagFrame,
     colback=boxRagBack,
     fonttitle=\bfseries\small,
     title={Ragionamento --- Esercizio~#1},
     arc=3pt,
     boxrule=0.8pt,
-    left=6pt, right=6pt, top=4pt, bottom=4pt
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    toptitle=3pt, bottomtitle=3pt,
+    before skip=8pt,
+    after skip=8pt,
+    parskip=5pt
   ]
-  \small
+  \small\color{black!70}%
 }{%
   \end{tcolorbox}
-  \medskip
+  \smallskip
 }
 
 % Alias brevi per compatibilita' (comandi -> ambienti)
