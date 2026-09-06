@@ -289,7 +289,8 @@
 \newenvironment{essbox}[3]{\begin{minbox}{#1}{#2}{#3}}{\end{minbox}}
 
 % ---- Box SUGGERIMENTO ----
-\newenvironment{hintbox}[1]{%
+% Uso: \begin{hintbox}{n}{titolo} ... \end{hintbox}
+\newenvironment{hintbox}[2]{%
   \medskip
   \begin{tcolorbox}[
     enhanced,
@@ -297,7 +298,7 @@
     colframe=boxHintFrame,
     colback=boxHintBack,
     fonttitle=\bfseries\small,
-    title={Suggerimento --- Esercizio~#1},
+    title={Suggerimento~#1\enspace---\enspace#2},
     arc=3pt,
     boxrule=0.8pt,
     left=10pt, right=10pt, top=8pt, bottom=8pt,
@@ -314,7 +315,8 @@
 }
 
 % ---- Box SOLUZIONE ----
-\newenvironment{solbox}[1]{%
+% Uso: \begin{solbox}{n}{titolo} ... \end{solbox}
+\newenvironment{solbox}[2]{%
   \medskip
   \begin{tcolorbox}[
     enhanced,
@@ -322,7 +324,7 @@
     colframe=boxSolFrame,
     colback=boxSolBack,
     fonttitle=\bfseries\small,
-    title={Soluzione --- Esercizio~#1},
+    title={Soluzione~#1\enspace---\enspace#2},
     arc=3pt,
     boxrule=0.8pt,
     left=10pt, right=10pt, top=8pt, bottom=8pt,
