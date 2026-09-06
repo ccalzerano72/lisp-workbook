@@ -20,7 +20,6 @@
   toptitle=4pt, bottomtitle=4pt,
   before skip=14pt plus 4pt,
   after skip=14pt plus 4pt,
-  fontupper=\small\color{black!75},
   parskip=6pt
 }
 
@@ -30,33 +29,35 @@
 
 \begin{introbox}[Principi fondamentali]{csBlue}
 
-\begin{tabular}{@{}p{3.8cm}p{9.5cm}@{}}
-\textbf{Codice = dati} & I programmi sono liste, la stessa struttura che manipolano. Puoi scrivere programmi che generano programmi.\\[6pt]
-\textbf{Valutazione} & Non si "eseguono istruzioni": si valutano espressioni. Ogni espressione restituisce un valore.\\[6pt]
-\textbf{Funzioni first-class} & Le funzioni sono valori: si passano, si restituiscono, si memorizzano.\\[6pt]
-\textbf{Composizione} & Si costruisce componendo funzioni piccole, non accumulando passi.\\[6pt]
-\textbf{Sintassi minima} & Poche regole, molte convenzioni. Le parentesi sono struttura, non rumore.\\[6pt]
-\textbf{REPL} & Sviluppo interattivo: esplora, testa, costruisci incrementalmente.\\
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textcolor{csBlue!80!black}{\textbf{Codice = dati}} & \small\color{black!70} I programmi sono liste. Puoi scrivere programmi che generano programmi.\\
+\textcolor{csBlue!80!black}{\textbf{Valutazione}} & \small\color{black!70} Non si "eseguono istruzioni": si \emph{valutano espressioni} che restituiscono valori.\\
+\textcolor{csBlue!80!black}{\textbf{Funzioni first-class}} & \small\color{black!70} Le funzioni sono valori: si passano, si restituiscono, si memorizzano.\\
+\textcolor{csBlue!80!black}{\textbf{Composizione}} & \small\color{black!70} Si costruisce componendo funzioni piccole, non accumulando passi.\\
+\textcolor{csBlue!80!black}{\textbf{Sintassi minima}} & \small\color{black!70} Poche regole, molte convenzioni. Le parentesi sono struttura, non rumore.\\
+\textcolor{csBlue!80!black}{\textbf{REPL}} & \small\color{black!70} Sviluppo interattivo: esplora, testa, costruisci incrementalmente.\\
 \end{tabular}
+\renewcommand{\arraystretch}{1.0}
 
 \end{introbox}
 
 \begin{introbox}[Imperativo vs Funzionale]{csOrange}
 
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.3}
 \centering
 \begin{tabular}{@{}p{6.2cm}p{6.2cm}@{}}
-\rowcolor{csOrange!10}
-\textbf{Imperativo (C, Java, Python)} & \textbf{Lisp / Funzionale} \\
-Istruzioni che modificano stato & Espressioni che producono valori \\
+\rowcolor{csOrange!12}
+\textcolor{csOrange!80!black}{\textbf{Imperativo (C, Java, Python)}} & \textcolor{csOrange!80!black}{\textbf{Lisp / Funzionale}} \\
+\small\color{black!70} Istruzioni che modificano stato & \small\color{black!70} Espressioni che producono valori \\
 \rowcolor{csOrange!5}
-Variabili = contenitori mutabili & Binding = nomi associati a valori \\
-Cicli (\texttt{for}, \texttt{while}) & Ricorsione e higher-order \\
+\small\color{black!70} Variabili = contenitori mutabili & \small\color{black!70} \emph{Binding} = nomi associati a valori \\
+\small\color{black!70} Cicli (\fn{for}, \fn{while}) & \small\color{black!70} Ricorsione e higher-order \\
 \rowcolor{csOrange!5}
-Strutture di controllo fisse & Macro: controllo definibile \\
-Sintassi specifica per costrutto & Sintassi uniforme (S-expression) \\
+\small\color{black!70} Strutture di controllo fisse & \small\color{black!70} \emph{Macro}: controllo definibile \\
+\small\color{black!70} Sintassi specifica per costrutto & \small\color{black!70} Sintassi uniforme (S-expression) \\
 \rowcolor{csOrange!5}
-Compilazione separata & Sviluppo interattivo nel REPL \\
+\small\color{black!70} Compilazione separata & \small\color{black!70} Sviluppo interattivo nel REPL \\
 \end{tabular}
 \renewcommand{\arraystretch}{1.0}
 
@@ -64,26 +65,29 @@ Compilazione separata & Sviluppo interattivo nel REPL \\
 
 \begin{introbox}[Concetti chiave]{csGreen}
 
-\begin{tabular}{@{}p{3cm}p{10.3cm}@{}}
-\textbf{S-expression} & Atomo o lista di S-expression. Tutto il codice ha questa forma.\\[4pt]
-\textbf{Valutazione} & Numeri/stringhe → se stessi. Simboli → loro valore. Liste → chiamata funzione.\\[4pt]
-\textbf{Ambiente} & I binding visibili in un punto. \fn{let} crea ambienti locali.\\[4pt]
-\textbf{Ricorsione} & Il modo naturale per elaborare liste e alberi.\\[4pt]
-\textbf{Higher-order} & Funzioni che accettano/restituiscono funzioni: \fn{mapcar}, \fn{reduce}.\\[4pt]
-\textbf{Macro} & Trasformazioni di codice a compile-time. Estendono il linguaggio.\\
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textcolor{csGreen!80!black}{\textbf{S-expression}} & \small\color{black!70} Atomo o lista di S-expression. \emph{Tutto} il codice ha questa forma.\\
+\textcolor{csGreen!80!black}{\textbf{Valutazione}} & \small\color{black!70} Numeri/stringhe → se stessi. Simboli → valore. Liste → chiamata funzione.\\
+\textcolor{csGreen!80!black}{\textbf{Ambiente}} & \small\color{black!70} I binding visibili in un punto. \fn{let} crea ambienti locali.\\
+\textcolor{csGreen!80!black}{\textbf{Ricorsione}} & \small\color{black!70} Il modo naturale per elaborare liste e alberi.\\
+\textcolor{csGreen!80!black}{\textbf{Higher-order}} & \small\color{black!70} Funzioni che accettano/restituiscono funzioni: \fn{mapcar}, \fn{reduce}.\\
+\textcolor{csGreen!80!black}{\textbf{Macro}} & \small\color{black!70} Trasformazioni di codice a compile-time. Estendono il linguaggio.\\
 \end{tabular}
+\renewcommand{\arraystretch}{1.0}
 
 \end{introbox}
 
 \begin{introbox}[Per chi viene da altri linguaggi]{csPurple}
 
-\begin{itemize}[leftmargin=1.2em, itemsep=3pt, topsep=0pt]
-  \item Le parentesi delimitano liste, non raggruppano. Leggile come struttura.
-  \item \fn{NIL} = falso = lista vuota = simbolo. Triplice natura intenzionale.
-  \item Nessun "return" implicito: il valore è quello dell'ultima espressione.
-  \item Indentazione semanticamente irrilevante, ma cruciale per leggibilità.
-  \item Errori nel REPL → debugger → ispeziona → correggi → riprova.
-  \item Funzione \emph{prima} degli argomenti: \fn{(+ 1 2)}, non \fn{1 + 2}.
+\small\color{black!70}
+\begin{itemize}[leftmargin=1.2em, itemsep=4pt, topsep=0pt]
+  \item Le parentesi \textcolor{csPurple!80!black}{\textbf{delimitano liste}}, non raggruppano. Leggile come struttura.
+  \item \fn{NIL} = \emph{falso} = \emph{lista vuota} = \emph{simbolo}. Triplice natura intenzionale.
+  \item Nessun "return" implicito: il valore è quello dell'\textbf{ultima espressione}.
+  \item Indentazione semanticamente irrilevante, ma \textbf{cruciale per leggibilità}.
+  \item Errori nel REPL → \emph{debugger} → ispeziona → correggi → riprova.
+  \item Funzione \textcolor{csPurple!80!black}{\textbf{prima}} degli argomenti: \fn{(+ 1 2)}, non \fn{1 + 2}.
 \end{itemize}
 
 \end{introbox}
@@ -94,19 +98,19 @@ Compilazione separata & Sviluppo interattivo nel REPL \\
 
 \begin{introbox}[Le 6 fasi]{csTeal}
 
-\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{@{}c@{\enspace}p{2.8cm}p{9.5cm}@{}}
-\rowcolor{csTeal!10}
-& \textbf{Fase} & \textbf{Obiettivi} \\
-\textbf{1} & Fondamenta & REPL, \fn{defun}, \fn{if}/\fn{cond}, \fn{let}, \fn{dotimes} \\
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}c@{\quad}l@{\quad}l@{}}
+\rowcolor{csTeal!12}
+& \textcolor{csTeal!80!black}{\textbf{Fase}} & \textcolor{csTeal!80!black}{\textbf{Obiettivi}} \\
+\textbf{1} & \textcolor{csTeal!70!black}{\textbf{Fondamenta}} & \small\color{black!70} REPL, \fn{defun}, \fn{if}/\fn{cond}, \fn{let}, \fn{dotimes} \\
 \rowcolor{csTeal!5}
-\textbf{2} & Liste & \fn{car}/\fn{cdr}/\fn{cons}, ricorsione su liste, pattern base \\
-\textbf{3} & Ricorsione & Lineare → alberi, accumulatori, tail recursion \\
+\textbf{2} & \textcolor{csTeal!70!black}{\textbf{Liste}} & \small\color{black!70} \fn{car}/\fn{cdr}/\fn{cons}, ricorsione su liste, pattern base \\
+\textbf{3} & \textcolor{csTeal!70!black}{\textbf{Ricorsione}} & \small\color{black!70} Lineare → alberi, accumulatori, tail recursion \\
 \rowcolor{csTeal!5}
-\textbf{4} & Higher-order & \fn{mapcar}, \fn{reduce}, \fn{lambda}, closure \\
-\textbf{5} & Strutture dati & Alist, plist, hash table, array, \fn{defstruct} \\
+\textbf{4} & \textcolor{csTeal!70!black}{\textbf{Higher-order}} & \small\color{black!70} \fn{mapcar}, \fn{reduce}, \fn{lambda}, closure \\
+\textbf{5} & \textcolor{csTeal!70!black}{\textbf{Strutture dati}} & \small\color{black!70} Alist, plist, hash table, array, \fn{defstruct} \\
 \rowcolor{csTeal!5}
-\textbf{6} & Macro e progetti & Backquote, macro semplici, algoritmi, I/O, progetti \\
+\textbf{6} & \textcolor{csTeal!70!black}{\textbf{Macro e progetti}} & \small\color{black!70} Backquote, macro, algoritmi, I/O, progetti \\
 \end{tabular}
 \renewcommand{\arraystretch}{1.0}
 
@@ -123,9 +127,10 @@ Compilazione separata & Sviluppo interattivo nel REPL \\
   left=12pt, right=12pt, top=10pt, bottom=10pt
 ]
 \centering
-\textbf{Tieni sempre aperto il REPL.}\\[4pt]
+\textbf{\textcolor{boxEssFrame}{Tieni sempre aperto il REPL.}}\\[4pt]
+\small\color{black!70}
 Ogni concetto va provato, modificato, rotto e riparato.\\
-L'apprendimento avviene attraverso l'interazione, non la memorizzazione.
+L'apprendimento avviene attraverso l'\emph{interazione}, non la memorizzazione.
 \end{tcolorbox}
 
 \clearpage
