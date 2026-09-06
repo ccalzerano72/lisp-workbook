@@ -283,6 +283,30 @@
 
 % --- Intestazioni capitolo ---
 \usepackage{titlesec}
+\usepackage{titletoc}   % per personalizzare il formato del TOC
+
+% --- Formato TOC ---
+% \part: prominente, colore primario, riga di separazione
+\titlecontents{part}[0em]
+  {\addvspace{1.5em}\bfseries\Large\color{boxEssFrame}}
+  {\partname~\thecontentslabel\enspace---\enspace}
+  {}
+  {\hfill\contentspage}
+  [\addvspace{0.2em}\hrule\addvspace{0.5em}]
+
+% \chapter numerato: rientro 2em, grassetto normale (piu' piccolo della parte)
+\titlecontents{chapter}[2em]
+  {\addvspace{0.3em}\bfseries\normalsize}
+  {\contentslabel{2em}}
+  {\hspace*{-2em}\bfseries}  % non numerati (Suggerimenti, Soluzioni): nessun offset
+  {\hfill\contentspage}
+
+% \section: rientro 4.5em, font piccolo, puntini
+\titlecontents{section}[4.5em]
+  {\small}
+  {\contentslabel{2em}}
+  {\hspace*{-2em}}
+  {\titlerule*[0.4pc]{.}\contentspage}
 \titleformat{\chapter}[display]
   {\normalfont\Large\bfseries\color{boxEssFrame}}
   {\chaptertitlename\ \thechapter}{10pt}{\Huge}

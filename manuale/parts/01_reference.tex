@@ -1,6 +1,8 @@
 % =============================================================
 %  01_reference.tex — Quick Reference dettagliata
-%  Ogni \section ha un \label usato dalla cheat sheet
+%  \section* = non numerate nel testo
+%  \addcontentsline selettivo: solo 7 macro-aree tematiche nell'indice
+%  I \label per la cheat sheet rimangono invariati
 % =============================================================
 \chapter*{Quick Reference}
 \addcontentsline{toc}{chapter}{Quick Reference}
@@ -12,9 +14,12 @@ in forma concisa. Per ogni argomento è indicata la sintassi,
 una spiegazione breve e almeno un esempio.
 
 % =============================================================
-\section{REPL e S-expression}
-\label{sec:repl}
+% MACRO-AREA 1: Basi del linguaggio
 % =============================================================
+\addcontentsline{toc}{section}{Basi del linguaggio}
+
+\section*{REPL e S-expression}
+\label{sec:repl}
 
 Common Lisp usa la notazione \textbf{S-expression} (prefix notation):
 il primo elemento di ogni lista è l'operatore; i successivi sono gli argomenti.
@@ -37,7 +42,7 @@ Ogni espressione digitata nel REPL viene \textit{letta}, \textit{valutata}
 e il risultato viene \textit{stampato}.
 
 % =============================================================
-\section{Valori fondamentali}
+\section*{Valori fondamentali}
 \label{sec:valori}
 % =============================================================
 
@@ -108,9 +113,12 @@ Un simbolo è un nome interned. La virgoletta singola previene la valutazione.
 \end{lstlisting}
 
 % =============================================================
-\section{Variabili}
-\label{sec:variabili}
+% MACRO-AREA 2: Definizioni e controllo del flusso
 % =============================================================
+\addcontentsline{toc}{section}{Definizioni e controllo del flusso}
+
+\section*{Variabili}
+\label{sec:variabili}
 
 \begin{lstlisting}
 (defparameter *contatore* 0)   ; variabile globale dinamica
@@ -141,7 +149,7 @@ costanti tra \texttt{+...+}.
 \end{lstlisting}
 
 % =============================================================
-\section{Funzioni}
+\section*{Funzioni}
 \label{sec:funzioni}
 % =============================================================
 
@@ -183,7 +191,7 @@ Il valore di ritorno è quello dell'ultima espressione del corpo.
 \end{lstlisting}
 
 % =============================================================
-\section{Funzioni anonime e higher-order}
+\section*{Funzioni anonime e higher-order}
 \label{sec:higherorder}
 % =============================================================
 
@@ -219,7 +227,7 @@ Il valore di ritorno è quello dell'ultima espressione del corpo.
 \end{lstlisting}
 
 % =============================================================
-\section{Condizioni}
+\section*{Condizioni}
 \label{sec:condizioni}
 % =============================================================
 
@@ -244,9 +252,12 @@ Il valore di ritorno è quello dell'ultima espressione del corpo.
 \end{lstlisting}
 
 % =============================================================
-\section{Liste}
-\label{sec:liste}
+% MACRO-AREA 3: Liste e sequenze
 % =============================================================
+\addcontentsline{toc}{section}{Liste e sequenze}
+
+\section*{Liste}
+\label{sec:liste}
 
 Una lista è una sequenza di \textit{cons-cell}; ogni cella ha un
 \fn{car} (valore) e un \fn{cdr} (resto). \fn{NIL} termina la lista.
@@ -284,7 +295,7 @@ Le coppie puntate (cons non terminanti in NIL) sono liste improprie:
 \end{lstlisting}
 
 % =============================================================
-\section{Predicati}
+\section*{Predicati}
 \label{sec:predicati}
 % =============================================================
 
@@ -312,7 +323,7 @@ Regola pratica: usare \fn{=} per numeri, \fn{equal} per strutture,
 \fn{eq} solo per simboli.
 
 % =============================================================
-\section{Ricorsione}
+\section*{Ricorsione}
 \label{sec:ricorsione}
 % =============================================================
 
@@ -343,7 +354,7 @@ i frame dallo stack (TCO — Tail Call Optimization). Non è garantito
 dallo standard, ma Allegro CL lo supporta.
 
 % =============================================================
-\section{Iterazione}
+\section*{Iterazione}
 \label{sec:iterazione}
 % =============================================================
 
@@ -370,8 +381,11 @@ dallo standard, ma Allegro CL lo supporta.
 \end{lstlisting}
 
 % =============================================================
-\section{Strutture dati composte}
+% MACRO-AREA 4: Strutture dati
 % =============================================================
+\addcontentsline{toc}{section}{Strutture dati}
+
+\section*{Strutture dati composte}
 
 \subsection*{Association list (alist)}
 \label{sec:alist}
@@ -429,7 +443,7 @@ Usare \fn{multiple-value-bind} per riceverli entrambi.
 \end{lstlisting}
 
 % =============================================================
-\section{Strutture con defstruct}
+\section*{Strutture con defstruct}
 \label{sec:strutture}
 % =============================================================
 
@@ -451,7 +465,7 @@ Usare \fn{multiple-value-bind} per riceverli entrambi.
 accessi (\fn{nome-slot}), predicato (\fn{nome-p}), copia (\fn{copy-nome}).
 
 % =============================================================
-\section{Multiple values}
+\section*{Multiple values}
 \label{sec:multival}
 % =============================================================
 
@@ -466,7 +480,7 @@ accessi (\fn{nome-slot}), predicato (\fn{nome-p}), copia (\fn{copy-nome}).
 \end{lstlisting}
 
 % =============================================================
-\section{Destructuring}
+\section*{Destructuring}
 \label{sec:destructuring}
 % =============================================================
 
@@ -482,9 +496,12 @@ accessi (\fn{nome-slot}), predicato (\fn{nome-p}), copia (\fn{copy-nome}).
 \end{lstlisting}
 
 % =============================================================
-\section{I/O}
-\label{sec:io}
+% MACRO-AREA 5: I/O e funzioni avanzate
 % =============================================================
+\addcontentsline{toc}{section}{I/O, closures e macro}
+
+\section*{I/O}
+\label{sec:io}
 
 \begin{lstlisting}
 (read)             ; legge una S-expression dallo stdin
@@ -528,7 +545,7 @@ Direttive principali: \texttt{\textasciitilde A} (generico),
 \end{lstlisting}
 
 % =============================================================
-\section{Closures}
+\section*{Closures}
 \label{sec:closures}
 % =============================================================
 
@@ -553,7 +570,7 @@ La variabile \fn{n} è privata alla closure: ogni istanza creata
 da \fn{crea-contatore} ha il proprio stato indipendente.
 
 % =============================================================
-\section{Macro}
+\section*{Macro}
 \label{sec:macro}
 % =============================================================
 
@@ -587,9 +604,12 @@ gli elementi di una lista al livello corrente).
 \end{lstlisting}
 
 % =============================================================
-\section{CLOS — Object-Oriented}
-\label{sec:clos}
+% MACRO-AREA 6: CLOS, errori e funzionalità avanzate
 % =============================================================
+\addcontentsline{toc}{section}{CLOS, errori e funzionalità avanzate}
+
+\section*{CLOS --- Object-Oriented}
+\label{sec:clos}
 
 \begin{lstlisting}
 (defclass animale ()
@@ -616,7 +636,7 @@ gli elementi di una lista al livello corrente).
 definire metodi \fn{:before}/\fn{:after}/\fn{:around}.
 
 % =============================================================
-\section{Gestione errori}
+\section*{Gestione errori}
 \label{sec:errori}
 % =============================================================
 
@@ -637,7 +657,7 @@ definire metodi \fn{:before}/\fn{:after}/\fn{:around}.
 \end{lstlisting}
 
 % =============================================================
-\section{Tail call e \texttt{labels}/\texttt{flet}}
+\section*{Tail call e \texttt{labels}/\texttt{flet}}
 \label{sec:labels}
 % =============================================================
 
@@ -657,7 +677,7 @@ Con \fn{labels} la funzione locale può chiamare se stessa.
 Con \fn{flet} no: usare \fn{labels} per la ricorsione locale.
 
 % =============================================================
-\section{Sequenze: \texttt{coerce} e funzioni generali}
+\section*{Sequenze: \texttt{coerce} e funzioni generali}
 \label{sec:sequenze}
 % =============================================================
 
@@ -676,9 +696,12 @@ funzioni su liste funzionano anche su stringhe e vettori.
 \end{lstlisting}
 
 % =============================================================
-\section{Pattern essenziali}
-\label{sec:pattern}
+% MACRO-AREA 7: Pattern e convenzioni
 % =============================================================
+\addcontentsline{toc}{section}{Pattern e convenzioni}
+
+\section*{Pattern essenziali}
+\label{sec:pattern}
 
 \noindent\textbf{Elaborazione di una lista:}
 \begin{lstlisting}
@@ -732,7 +755,7 @@ funzioni su liste funzionano anche su stringhe e vettori.
 \end{lstlisting}
 
 % =============================================================
-\section{Convenzioni di stile}
+\section*{Convenzioni di stile}
 \label{sec:stile}
 % =============================================================
 
@@ -749,7 +772,7 @@ funzioni su liste funzionano anche su stringhe e vettori.
 \end{itemize}
 
 % =============================================================
-\section{Package}
+\section*{Package}
 \label{sec:package}
 % =============================================================
 

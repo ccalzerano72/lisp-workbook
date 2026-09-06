@@ -113,11 +113,50 @@ complessità algoritmica.
 \clearpage
 
 % ---- Sezioni principali --------------------------------------
+\setcounter{part}{0}
+
+% =============
+% Parte I: Riferimento
+% =============
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\part{Riferimento}
+
 \input{parts/00_cheatsheet}
 \input{parts/00b_ambiente}
 \input{parts/01_reference}
+
+% =============
+% Parte II: Pratica
+% =============
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\part{Pratica}
+
+% --- Esercizi ---
+\chapter*{Esercizi}
+\addcontentsline{toc}{chapter}{Esercizi}
+\markboth{Esercizi}{Esercizi}
+\renewcommand{\thesection}{\arabic{section}}
+
+\vspace*{0.5cm}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\essential\ \textbf{Essenziale} & introduce un costrutto o pattern nuovo --- da svolgere sempre \\[4pt]
+\optional\ \textbf{Collaterale} & consolida quanto visto --- consigliato per padronanza completa \\[6pt]
+\unaStella\ Facile \quad
+\dueStelle\ Medio \quad
+\treStelle\ Difficile \quad
+\quattroStelle\ Avanzato \quad
+\cinqueStelle\ Progetto \\
+\end{tabular}
+\end{center}
+\vspace*{0.5cm}
+
 \input{parts/02_esercizi}
+
+% --- Suggerimenti ---
 \input{parts/03_suggerimenti}
+
+% --- Soluzioni ---
 \input{parts/04_soluzioni}
 
 \end{document}
