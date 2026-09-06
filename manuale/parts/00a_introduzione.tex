@@ -1,0 +1,154 @@
+% =============================================================
+%  00a_introduzione.tex — Filosofia e percorso di apprendimento
+% =============================================================
+
+\chapter*{Introduzione}
+\addcontentsline{toc}{chapter}{Introduzione}
+\markboth{Introduzione}{Introduzione}
+
+% =============================================================
+\section*{Filosofia del linguaggio}
+% =============================================================
+
+\subsection*{Cosa rende Lisp diverso}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+  \item \textbf{Codice = dati.} I programmi Lisp sono liste, la stessa struttura dati che il linguaggio manipola. Questa omogeneità (omoiconicità) permette di scrivere programmi che generano o trasformano altri programmi.
+
+  \item \textbf{Valutazione, non esecuzione.} Non si ``eseguono istruzioni'': si valutano espressioni. Ogni espressione restituisce un valore.
+
+  \item \textbf{Funzioni come cittadini di prima classe.} Le funzioni sono valori: si possono passare come argomenti, restituire come risultati, memorizzare in variabili.
+
+  \item \textbf{Composizione invece di sequenza.} Si costruiscono programmi componendo funzioni più piccole, non accumulando passi uno dopo l'altro.
+
+  \item \textbf{Minimalismo sintattico.} Poche regole sintattiche, molte convenzioni. La parentesi non è un ostacolo: è l'uniformità che rende possibile la metaprogrammazione.
+
+  \item \textbf{REPL come ambiente di sviluppo.} Il ciclo Read-Eval-Print non è solo un terminale: è il modo naturale di esplorare, testare e costruire incrementalmente.
+\end{itemize}
+
+\subsection*{Differenze con l'approccio imperativo}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{6.5cm}p{6.5cm}@{}}
+\toprule
+\textbf{Imperativo (C, Java, Python)} & \textbf{Lisp / Funzionale} \\
+\midrule
+Sequenze di istruzioni che modificano stato & Espressioni che producono valori \\
+Variabili come contenitori mutabili & Binding: nomi associati a valori \\
+Cicli (\texttt{for}, \texttt{while}) & Ricorsione e funzioni higher-order \\
+Strutture di controllo fisse & Macro: controllo definibile dall'utente \\
+Sintassi specifica per ogni costrutto & Sintassi uniforme (S-expression) \\
+Compilazione separata da esecuzione & Sviluppo interattivo nel REPL \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Concetti fondamentali}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+  \item \textbf{S-expression.} L'unità sintattica: atomo oppure lista di S-expression. Tutto il codice ha questa forma.
+
+  \item \textbf{Valutazione.} Le regole sono poche: numeri e stringhe si autovalutano; i simboli si risolvono nel loro valore; le liste si valutano come chiamate a funzione (o forme speciali).
+
+  \item \textbf{Ambiente.} L'insieme dei binding visibili in un punto del programma. \texttt{let} crea ambienti locali; \texttt{defun} aggiunge funzioni all'ambiente globale.
+
+  \item \textbf{Ricorsione.} Il meccanismo naturale per elaborare strutture annidate (liste, alberi). Sostituisce i cicli nella maggior parte dei casi.
+
+  \item \textbf{Higher-order.} Funzioni che accettano o restituiscono funzioni. Permettono di astrarre pattern ricorrenti (\texttt{mapcar}, \texttt{reduce}, \texttt{remove-if}).
+
+  \item \textbf{Macro.} Trasformazioni di codice a tempo di compilazione. Estendono il linguaggio senza modificare l'interprete.
+\end{itemize}
+
+\subsection*{Caveats per chi viene da altri linguaggi}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+  \item Le parentesi non raggruppano: delimitano liste. Abituarsi a leggerle come struttura, non come rumore.
+
+  \item \texttt{NIL} è contemporaneamente falso, la lista vuota e un simbolo. Questa triplice natura è intenzionale.
+
+  \item Non esiste un ``return'' implicito a metà funzione: il valore restituito è quello dell'ultima espressione valutata.
+
+  \item L'indentazione non ha significato sintattico, ma è cruciale per la leggibilità. L'editor la gestisce automaticamente.
+
+  \item Gli errori nel REPL non interrompono la sessione: si entra nel debugger, si ispeziona, si corregge e si riprova.
+
+  \item Il nome della funzione viene \emph{prima} degli argomenti, sempre: \texttt{(+ 1 2)}, non \texttt{1 + 2}.
+\end{itemize}
+
+\vspace{1em}
+
+% =============================================================
+\section*{Percorso di apprendimento}
+% =============================================================
+
+\subsection*{Fase 1 — Fondamenta (cap.~1)}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Familiarizzare con il REPL: valutare espressioni, vedere risultati immediati
+  \item Definire funzioni semplici con \texttt{defun}
+  \item Usare condizionali: \texttt{if}, \texttt{cond}, \texttt{when}
+  \item Creare binding locali con \texttt{let}
+  \item Iterare con \texttt{dotimes} e \texttt{loop} base
+\end{itemize}
+
+\subsection*{Fase 2 — Liste e ricorsione (cap.~2--3)}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Capire la struttura cons-cell: \texttt{car}, \texttt{cdr}, \texttt{cons}
+  \item Scrivere funzioni ricorsive su liste
+  \item Riconoscere i pattern: caso base, passo ricorsivo, accumulatore
+  \item Passare dalla ricorsione lineare a quella su alberi
+\end{itemize}
+
+\subsection*{Fase 3 — Astrazione con funzioni (cap.~4)}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Usare \texttt{mapcar}, \texttt{reduce}, \texttt{remove-if}
+  \item Passare funzioni come argomenti
+  \item Creare funzioni anonime con \texttt{lambda}
+  \item Capire le closure: funzioni che catturano l'ambiente
+\end{itemize}
+
+\subsection*{Fase 4 — Strutture dati (cap.~5)}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Association list e property list
+  \item Hash table per lookup efficiente
+  \item Array e matrici
+  \item Strutture definite con \texttt{defstruct}
+\end{itemize}
+
+\subsection*{Fase 5 — Macro e metaprogrammazione (cap.~6)}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Capire la differenza tra funzione e macro
+  \item Usare backquote, comma e comma-at
+  \item Scrivere macro semplici che generano codice
+  \item Evitare le trappole: cattura di variabili, valutazione multipla
+\end{itemize}
+
+\subsection*{Fase 6 — Algoritmi e progetti (cap.~7--10)}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Applicare backtracking a problemi combinatori
+  \item Gestire I/O: file, stringhe, parsing
+  \item Costruire un piccolo interprete
+  \item Integrare tutto in progetti completi
+\end{itemize}
+
+\vspace{1.5em}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=boxEssBack,
+  colframe=boxEssFrame,
+  boxrule=0.8pt,
+  arc=4pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt
+]
+\textbf{Consiglio pratico}\\[4pt]
+Non leggere passivamente: tieni sempre aperto il REPL. Ogni concetto va provato, modificato, rotto e riparato. L'apprendimento avviene attraverso l'interazione, non la memorizzazione.
+\end{tcolorbox}
+
+\clearpage
