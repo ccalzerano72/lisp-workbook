@@ -293,6 +293,7 @@
   \medskip
   \begin{tcolorbox}[
     enhanced,
+    breakable,
     colframe=boxHintFrame,
     colback=boxHintBack,
     fonttitle=\bfseries\small,
@@ -303,7 +304,8 @@
     toptitle=3pt, bottomtitle=3pt,
     before skip=12pt plus 3pt,
     after skip=12pt plus 3pt,
-    parskip=5pt
+    parskip=5pt,
+    lines before break=3
   ]
   \small\color{black!75}%
 }{%
@@ -316,6 +318,7 @@
   \medskip
   \begin{tcolorbox}[
     enhanced,
+    breakable,
     colframe=boxSolFrame,
     colback=boxSolBack,
     fonttitle=\bfseries\small,
@@ -326,7 +329,9 @@
     toptitle=3pt, bottomtitle=3pt,
     before skip=12pt plus 3pt,
     after skip=12pt plus 3pt,
-    parskip=5pt
+    parskip=5pt,
+    break at=15cm,
+    lines before break=4
   ]
   \small\color{black!75}%
 }{%
@@ -339,6 +344,7 @@
   \smallskip
   \begin{tcolorbox}[
     enhanced,
+    breakable,
     colframe=boxRagFrame,
     colback=boxRagBack,
     fonttitle=\bfseries\small,
@@ -349,7 +355,8 @@
     toptitle=3pt, bottomtitle=3pt,
     before skip=8pt,
     after skip=8pt,
-    parskip=5pt
+    parskip=5pt,
+    lines before break=3
   ]
   \small\color{black!70}%
 }{%
