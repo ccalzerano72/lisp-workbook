@@ -7,36 +7,43 @@
 
 % --- Box per le macro-aree della reference ---
 % Usa gli stessi colori semantici del cheatsheet
+% Testo interno: grigio e più piccolo per non competere col codice
+% UNBREAKABLE per evitare rotture interne
 \newtcolorbox{refbox}[2][]{%
   enhanced,
-  breakable,
-  colback=#2!5,
-  colframe=#2!80!black,
+  colback=#2!4,
+  colframe=#2!70!black,
   fonttitle=\bfseries\sffamily\normalsize,
   coltitle=white,
-  title=#1,
-  boxrule=0.9pt,
+  title={#1},
+  boxrule=0.8pt,
   arc=4pt,
-  left=8pt, right=8pt, top=6pt, bottom=6pt,
-  toptitle=3pt, bottomtitle=3pt,
-  before skip=12pt,
-  after skip=12pt
+  left=12pt, right=12pt, top=10pt, bottom=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+  before skip=14pt plus 4pt,
+  after skip=14pt plus 4pt,
+  fontupper=\small\color{black!75},  % testo grigio, più piccolo
+  parskip=6pt                         % spazio tra paragrafi interni
 }
 
 % Box per note/avvertimenti interni alle sezioni
 \newtcolorbox{refnote}[1][]{%
   enhanced,
-  colback=black!4,
-  colframe=black!35,
+  colback=black!3,
+  colframe=black!30,
   fonttitle=\bfseries\small,
-  coltitle=black,
+  coltitle=black!70,
   title={#1},
-  boxrule=0.5pt,
+  boxrule=0.4pt,
   arc=3pt,
-  left=6pt, right=6pt, top=4pt, bottom=4pt,
-  before skip=6pt,
-  after skip=6pt
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=10pt,
+  after skip=10pt,
+  fontupper=\small\color{black!65}   % testo ancora più leggero
 }
+
+% Comando per sottotitoli interni ai box (evita break dopo)
+\newcommand{\reftitle}[1]{\textbf{#1}\nopagebreak\par\nopagebreak}
 
 \noindent
 Questa sezione descrive i costrutti fondamentali di Common Lisp
@@ -89,7 +96,7 @@ Common Lisp distingue interi, razionali, float e complessi:
 #C(1 2)          ; complesso 1+2i
 \end{lstlisting}
 
-\textbf{Operatori aritmetici:}
+\textbf{Operatori aritmetici:}\nopagebreak
 
 \begin{lstlisting}
 (+ a b)   (- a b)   (* a b)   (/ a b)
@@ -109,7 +116,7 @@ Common Lisp distingue interi, razionali, float e complessi:
 (min 3 1 4)    ; -> 1
 \end{lstlisting}
 
-\textbf{Confronti numerici} (usare \fn{=}, non \fn{eq}/\fn{equal}):
+\textbf{Confronti numerici} (usare \fn{=}, non \fn{eq}/\fn{equal}):\nopagebreak
 
 \begin{lstlisting}
 (= a b)  (/= a b)  (< a b)  (> a b)  (<= a b)  (>= a b)
@@ -146,14 +153,14 @@ non necessariamente \fn{T} o \fn{NIL}.
 \label{sec:simboli}
 
 \textbf{Simboli:} nomi interned. La virgoletta singola \fn{'} previene
-la valutazione:
+la valutazione:\nopagebreak
 
 \begin{lstlisting}
 'foo          ; simbolo FOO
 (eq 'a 'a)   ; -> T  (stessa identita')
 \end{lstlisting}
 
-\textbf{Stringhe:}
+\textbf{Stringhe:}\nopagebreak
 
 \begin{lstlisting}
 "hello"
@@ -168,7 +175,7 @@ la valutazione:
 (parse-integer "42")       ; -> 42
 \end{lstlisting}
 
-\textbf{Caratteri:}
+\textbf{Caratteri:}\nopagebreak
 
 \begin{lstlisting}
 #\A  #\space  #\newline  #\tab
@@ -185,7 +192,7 @@ la valutazione:
 \begin{refbox}[Variabili e binding]{csBlue}
 \label{sec:variabili}
 
-\textbf{Globali:}
+\textbf{Globali:}\nopagebreak
 \begin{lstlisting}
 (defparameter *contatore* 0)  ; globale, sovrascritta al reload
 (defvar *debug* nil)          ; globale, non sovrascritta se gia' legata
@@ -197,7 +204,7 @@ costanti tra \fn{+...+}.
 
 \medskip
 \textbf{Binding locale — \fn{let}:} tutte le variabili sono
-inizializzate in parallelo, non possono riferirsi l'una all'altra:
+inizializzate in parallelo, non possono riferirsi l'una all'altra:\nopagebreak
 \begin{lstlisting}
 (let ((x 10)
       (y 20))
@@ -205,14 +212,14 @@ inizializzate in parallelo, non possono riferirsi l'una all'altra:
 \end{lstlisting}
 
 \textbf{Binding sequenziale — \fn{let*}:} ogni variabile può
-usare quelle definite prima:
+usare quelle definite prima:\nopagebreak
 \begin{lstlisting}
 (let* ((r 5)
        (area (* pi r r)))
   area)       ; -> 78.539...
 \end{lstlisting}
 
-\textbf{Assegnamento:}
+\textbf{Assegnamento:}\nopagebreak
 \begin{lstlisting}
 (setf *contatore* (1+ *contatore*))
 (incf *contatore*)      ; equivalente piu' conciso
@@ -243,7 +250,7 @@ Il valore di ritorno è quello dell'ultima espressione.
       (return-from cerca t))))
 \end{lstlisting}
 
-\textbf{Argomenti opzionali, rest, keyword:}
+\textbf{Argomenti opzionali, rest, keyword:}\nopagebreak
 \begin{lstlisting}
 ; &optional con valore di default
 (defun saluta (&optional (nome "mondo"))
@@ -259,7 +266,7 @@ Il valore di ritorno è quello dell'ultima espressione.
 (crea-rettangolo :w 3 :h 4)   ; -> 12
 \end{lstlisting}
 
-\textbf{Funzioni locali} con \fn{flet} e \fn{labels}:
+\textbf{Funzioni locali} con \fn{flet} e \fn{labels}:\nopagebreak
 \begin{lstlisting}
 ; flet: funzioni locali non ricorsive
 (flet ((doppio (x) (* 2 x)))
@@ -271,7 +278,7 @@ Il valore di ritorno è quello dell'ultima espressione.
   (pari-p 4))    ; -> T
 \end{lstlisting}
 
-\textbf{\fn{progn}, \fn{prog1}, \fn{prog2}:} valutano sequenze di espressioni:
+\textbf{\fn{progn}, \fn{prog1}, \fn{prog2}:} valutano sequenze di espressioni:\nopagebreak
 \begin{lstlisting}
 (progn e1 e2 e3)   ; ritorna e3
 (prog1 e1 e2 e3)   ; ritorna e1
@@ -324,7 +331,7 @@ Il valore di ritorno è quello dell'ultima espressione.
 \begin{refbox}[Iterazione]{csOrange}
 \label{sec:iterazione}
 
-\textbf{\fn{dotimes} e \fn{dolist}:}
+\textbf{\fn{dotimes} e \fn{dolist}:}\nopagebreak
 \begin{lstlisting}
 (dotimes (i 5)          ; i da 0 a 4
   (print i))
@@ -333,7 +340,7 @@ Il valore di ritorno è quello dell'ultima espressione.
   (print x))
 \end{lstlisting}
 
-\textbf{\fn{loop} — forme comuni:}
+\textbf{\fn{loop} — forme comuni:}\nopagebreak
 \begin{lstlisting}
 ; iterazione su lista
 (loop for x in '(1 2 3)
@@ -370,7 +377,7 @@ Il valore di ritorno è quello dell'ultima espressione.
 \begin{refbox}[Ricorsione]{csOrange}
 \label{sec:ricorsione}
 
-\textbf{Schema base su lista:}
+\textbf{Schema base su lista:}\nopagebreak
 \begin{lstlisting}
 (defun lunghezza (lst)
   (if (null lst)
@@ -378,7 +385,7 @@ Il valore di ritorno è quello dell'ultima espressione.
       (1+ (lunghezza (cdr lst)))))     ; passo ricorsivo
 \end{lstlisting}
 
-\textbf{Tail recursion con accumulatore} (evita stack overflow):
+\textbf{Tail recursion con accumulatore} (evita stack overflow):\nopagebreak
 \begin{lstlisting}
 (defun lunghezza (lst)
   (labels ((iter (lst acc)
@@ -423,12 +430,12 @@ un valore (\fn{car}) e il puntatore al resto (\fn{cdr}).
 (cdr '(a b c))     ; -> (B C)
 \end{lstlisting}
 
-\textbf{Coppia puntata} (cons non terminante in NIL):
+\textbf{Coppia puntata} (cons non terminante in NIL):\nopagebreak
 \begin{lstlisting}
 (cons 'a 'b)       ; -> (A . B)  lista impropria
 \end{lstlisting}
 
-\textbf{Accesso:}
+\textbf{Accesso:}\nopagebreak
 \begin{lstlisting}
 (first lst)  (rest lst)             ; = car, cdr
 (second lst) (third lst)            ; cadr, caddr
@@ -438,7 +445,7 @@ un valore (\fn{car}) e il puntatore al resto (\fn{cdr}).
 (butlast lst)                       ; tutti tranne l'ultimo
 \end{lstlisting}
 
-\textbf{Costruzione e modifica:}
+\textbf{Costruzione e modifica:}\nopagebreak
 \begin{lstlisting}
 (list 'a 'b 'c)             ; -> (A B C)
 (append '(a b) '(c d))      ; -> (A B C D)  (non distruttivo)
@@ -447,13 +454,13 @@ un valore (\fn{car}) e il puntatore al resto (\fn{cdr}).
 (copy-list lst)             ; copia superficiale
 \end{lstlisting}
 
-\textbf{Push e pop:}
+\textbf{Push e pop:}\nopagebreak
 \begin{lstlisting}
 (push 'x lst)    ; aggiunge in testa (modifica lst)
 (pop lst)        ; rimuove e restituisce la testa
 \end{lstlisting}
 
-\textbf{Ricerca e test:}
+\textbf{Ricerca e test:}\nopagebreak
 \begin{lstlisting}
 (length '(a b c))           ; -> 3
 (member 'b '(a b c))        ; -> (B C)  (non solo T!)
@@ -462,7 +469,7 @@ un valore (\fn{car}) e il puntatore al resto (\fn{cdr}).
 (position 'b '(a b c))      ; -> 1
 \end{lstlisting}
 
-\textbf{Sostituzione:}
+\textbf{Sostituzione:}\nopagebreak
 \begin{lstlisting}
 (subst 'x 'b '(a b (b c)))  ; -> (A X (X C))  ricorsivo
 (remove 'b '(a b b c))      ; -> (A C)
@@ -475,7 +482,7 @@ un valore (\fn{car}) e il puntatore al resto (\fn{cdr}).
 \begin{refbox}[Predicati]{csGreen}
 \label{sec:predicati}
 
-\textbf{Predicati di tipo:}
+\textbf{Predicati di tipo:}\nopagebreak
 \begin{lstlisting}
 (null '())       ; -> T   (lista vuota o NIL)
 (atom 'a)        ; -> T   (atomo = non-cons)
@@ -490,7 +497,7 @@ un valore (\fn{car}) e il puntatore al resto (\fn{cdr}).
 (characterp #\a) ; -> T
 \end{lstlisting}
 
-\textbf{Uguaglianza:}
+\textbf{Uguaglianza:}\nopagebreak
 \begin{lstlisting}
 (eq 'a 'a)              ; T -- identita' oggetto (simboli, T, NIL)
 (eql 3 3)               ; T -- eq + numeri e caratteri
@@ -577,7 +584,7 @@ Molte funzioni funzionano su qualsiasi sequenza:
 (cons '(anna . "333-3333") *rubrica*)  ; aggiunge coppia in testa
 \end{lstlisting}
 
-\textbf{Property list (plist):} chiavi e valori alternati nella stessa lista:
+\textbf{Property list (plist):} chiavi e valori alternati nella stessa lista:\nopagebreak
 \begin{lstlisting}
 (defparameter *p* '(:nome "Mario" :eta 23))
 (getf *p* :nome)           ; -> "Mario"
@@ -751,7 +758,7 @@ Una funzione può restituire più di un valore con \fn{values}:
 (apply #'max 3 '(1 5 2))       ; -> 5  (argomenti misti)
 \end{lstlisting}
 
-\textbf{Funzioni sulle liste:}
+\textbf{Funzioni sulle liste:}\nopagebreak
 \begin{lstlisting}
 (mapcar #'quadrato '(1 2 3 4))          ; -> (1 4 9 16)
 (mapcar #'+ '(1 2 3) '(10 20 30))       ; -> (11 22 33)
@@ -799,7 +806,7 @@ incapsulare stato privato:
 (funcall *c2*)   ; -> 1  (contatore separato)
 \end{lstlisting}
 
-\textbf{Closure con più operazioni:}
+\textbf{Closure con più operazioni:}\nopagebreak
 \begin{lstlisting}
 (defun crea-generatore (start step)
   (let ((curr start))
@@ -844,7 +851,7 @@ Le macro trasformano codice \textit{prima} della valutazione
   \item \fn{,@} (splicing) --- inserisce gli elementi di una lista
 \end{itemize}
 
-\textbf{Igiene con \fn{gensym}:} evita la cattura accidentale di variabili:
+\textbf{Igiene con \fn{gensym}:} evita la cattura accidentale di variabili:\nopagebreak
 \begin{lstlisting}
 (defmacro my-swap (a b)
   (let ((tmp (gensym "TMP")))  ; genera simbolo unico
@@ -864,14 +871,14 @@ Le macro trasformano codice \textit{prima} della valutazione
 \begin{refbox}[Input/Output]{csTeal}
 \label{sec:io}
 
-\textbf{Lettura:}
+\textbf{Lettura:}\nopagebreak
 \begin{lstlisting}
 (read)             ; legge una S-expression da stdin
 (read-line)        ; legge una riga come stringa
 (read-char)        ; legge un singolo carattere
 \end{lstlisting}
 
-\textbf{Stampa:}
+\textbf{Stampa:}\nopagebreak
 \begin{lstlisting}
 (print x)          ; stampa con quote + newline prima
 (princ x)          ; stampa senza quote (leggibile)
@@ -880,7 +887,7 @@ Le macro trasformano codice \textit{prima} della valutazione
 (fresh-line)       ; newline solo se non gia' a inizio riga
 \end{lstlisting}
 
-\textbf{format:} funzione di output formattato:
+\textbf{format:} funzione di output formattato:\nopagebreak
 \begin{lstlisting}
 (format t "~A~%"     x)    ; generico + newline
 (format t "~D~%"     n)    ; intero decimale
@@ -908,7 +915,7 @@ Le macro trasformano codice \textit{prima} della valutazione
 \end{tabular}
 
 \medskip
-\textbf{File:}
+\textbf{File:}\nopagebreak
 \begin{lstlisting}
 ; lettura riga per riga
 (with-open-file (s "dati.txt" :direction :input)
@@ -1012,7 +1019,7 @@ senza sovrascrivere il metodo principale.
 \begin{refbox}[Pattern essenziali]{csOrange}
 \label{sec:pattern}
 
-\textbf{Elaborazione ricorsiva di lista:}
+\textbf{Elaborazione ricorsiva di lista:}\nopagebreak
 \begin{lstlisting}
 (defun trasforma-lista (lst)
   (if (null lst)
@@ -1021,7 +1028,7 @@ senza sovrascrivere il metodo principale.
             (trasforma-lista (cdr lst)))))
 \end{lstlisting}
 
-\textbf{Accumulatore tail-recursive:}
+\textbf{Accumulatore tail-recursive:}\nopagebreak
 \begin{lstlisting}
 (defun somma (lst)
   (labels ((iter (lst acc)
@@ -1031,7 +1038,7 @@ senza sovrascrivere il metodo principale.
     (iter lst 0)))
 \end{lstlisting}
 
-\textbf{Memoization:}
+\textbf{Memoization:}\nopagebreak
 \begin{lstlisting}
 (defun memoize (f)
   (let ((cache (make-hash-table :test #'equal)))
@@ -1043,7 +1050,7 @@ senza sovrascrivere il metodo principale.
                   (apply f args)))))))
 \end{lstlisting}
 
-\textbf{Backtracking:}
+\textbf{Backtracking:}\nopagebreak
 \begin{lstlisting}
 (defun risolvi (stato)
   (cond
