@@ -1,0 +1,331 @@
+% =============================================================
+%  PREAMBLE — Common Lisp: Guida Pratica
+%  Compilare con: pdflatex main  (x2)
+% =============================================================
+
+% --- Encoding e lingua ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+
+% --- Font ---
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% --- Layout pagina ---
+\usepackage[
+  a4paper,
+  top=2.5cm, bottom=2.8cm,
+  inner=2.8cm, outer=2.2cm,
+  marginparwidth=1.5cm
+]{geometry}
+
+% --- Colori ---
+\usepackage[dvipsnames,svgnames,table]{xcolor}
+
+\definecolor{clBg}{RGB}{248,248,248}       % sfondo listing
+\definecolor{clKeyword}{RGB}{0,0,180}      % keyword Lisp
+\definecolor{clComment}{RGB}{100,100,100}  % commenti
+\definecolor{clString}{RGB}{0,120,0}       % stringhe
+
+% Colori difficoltà
+\definecolor{colOne}{RGB}{130,130,130}     % ★      grigio
+\definecolor{colTwo}{RGB}{34,110,34}       % ★★     verde
+\definecolor{colThree}{RGB}{30,80,160}     % ★★★    blu
+\definecolor{colFour}{RGB}{200,100,0}      % ★★★★   arancio
+\definecolor{colFive}{RGB}{180,30,30}      % ★★★★★  rosso
+
+% Colori box
+\definecolor{boxEssFrame}{RGB}{30,80,160}
+\definecolor{boxEssBack}{RGB}{235,241,252}
+\definecolor{boxColFrame}{RGB}{110,110,110}
+\definecolor{boxColBack}{RGB}{245,245,245}
+\definecolor{boxHintFrame}{RGB}{180,130,0}
+\definecolor{boxHintBack}{RGB}{255,252,220}
+\definecolor{boxSolFrame}{RGB}{34,110,34}
+\definecolor{boxSolBack}{RGB}{236,248,236}
+\definecolor{boxRagFrame}{RGB}{140,50,140}
+\definecolor{boxRagBack}{RGB}{248,236,248}
+
+% --- Matematica ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% --- Listings (codice Lisp) ---
+\usepackage{listings}
+
+\lstdefinelanguage{CommonLisp}{%
+  sensitive=false,
+  morecomment=[l]{;},
+  morestring=[b]",
+  morekeywords=[1]{%
+    defun, defmacro, defparameter, defvar, defconstant,
+    defstruct, defclass, defmethod, defgeneric,
+    let, let*, flet, labels, setf, setq,
+    if, cond, when, unless, case, ecase,
+    and, or, not,
+    progn, prog1, prog2,
+    loop, dotimes, dolist, do, do*,
+    lambda, function,
+    funcall, apply,
+    mapcar, maplist, mapcan, mapc,
+    remove-if, remove-if-not, find-if, find-if-not,
+    every, some, notany, notevery,
+    reduce, count-if, count,
+    sort, stable-sort,
+    return, return-from,
+    values, multiple-value-bind, multiple-value-list,
+    destructuring-bind,
+    handler-case, handler-bind, error, warn, signal,
+    with-open-file, open, close,
+    format, print, princ, prin1, terpri, fresh-line,
+    read, read-line, read-char,
+    car, cdr, cons, list, append, reverse, length,
+    first, second, third, fourth, fifth,
+    rest, last, nth, nthcdr, butlast,
+    null, atom, listp, consp, numberp, stringp,
+    symbolp, functionp, integerp, floatp, characterp,
+    eq, eql, equal, equalp,
+    quote, backquote,
+    make-hash-table, gethash, remhash, maphash, hash-table-count,
+    make-array, aref, array-dimensions,
+    make-instance, slot-value, initialize-instance,
+    in-package, defpackage, use-package, export, import,
+    compile, load, require, provide,
+    t, nil%
+  },
+  morekeywords=[2]{%
+    +, -, *, /, mod, rem, expt, sqrt, abs,
+    floor, ceiling, truncate, round,
+    min, max, 1+, 1-,
+    =, /=, <, >, <=, >=,
+    char, char-code, code-char, char-upcase, char-downcase,
+    string, string-upcase, string-downcase, string-length,
+    coerce, type-of, typep, check-type%
+  }
+}
+
+\lstdefinestyle{lispstyle}{%
+  language=CommonLisp,
+  basicstyle=\ttfamily\small,
+  keywordstyle=[1]{\color{clKeyword}\bfseries},
+  keywordstyle=[2]{\color{clKeyword}},
+  commentstyle=\itshape\color{clComment},
+  stringstyle=\color{clString},
+  backgroundcolor=\color{clBg},
+  frame=single,
+  framesep=4pt,
+  framerule=0.4pt,
+  rulecolor=\color{gray!50},
+  xleftmargin=8pt,
+  xrightmargin=4pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  tabsize=2,
+  numbers=none,
+  upquote=true,
+  extendedchars=true,
+  literate=
+    {→}{{$\rightarrow$}}1
+    {★}{{\textcolor{colOne}{$\bigstar$}}}1
+    {à}{{\`a}}1  {è}{{\`e}}1  {é}{{\'{e}}}1  {ì}{{\`{\i}}}1
+    {ò}{{\`o}}1  {ù}{{\`u}}1
+    {À}{{\`A}}1  {È}{{\`E}}1  {É}{{\'{E}}}1
+    {Ì}{{\`I}}1  {Ò}{{\`O}}1  {Ù}{{\`U}}1
+}
+
+\lstset{style=lispstyle}
+
+% Shorthand per listing inline
+\newcommand{\cl}[1]{\lstinline[style=lispstyle]{#1}}
+
+% --- tcolorbox ---
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{listings, breakable, skins}
+
+% Stelle di difficoltà
+\newcommand{\unaStella}{\textcolor{colOne}{$\bigstar$}}
+\newcommand{\dueStelle}{\textcolor{colTwo}{$\bigstar\bigstar$}}
+\newcommand{\treStelle}{\textcolor{colThree}{$\bigstar\bigstar\bigstar$}}
+\newcommand{\quattroStelle}{\textcolor{colFour}{$\bigstar\bigstar\bigstar\bigstar$}}
+\newcommand{\cinqueStelle}{\textcolor{colFive}{$\bigstar\bigstar\bigstar\bigstar\bigstar$}}
+
+% Mappa numero di stelle → colore frame
+\newcommand{\starcolor}[1]{%
+  \ifcase#1
+    \color{colOne}%   0 (non usato)
+  \or\color{colOne}%  1
+  \or\color{colTwo}%  2
+  \or\color{colThree}% 3
+  \or\color{colFour}% 4
+  \else\color{colFive}% 5
+  \fi
+}
+
+% ---- Box ESERCIZIO ESSENZIALE ◆ ----
+% Uso: \begin{essbox}{n}{titolo}{stelle} ... \end{essbox}
+\newenvironment{essbox}[3]{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colframe=boxEssFrame,
+    colback=boxEssBack,
+    fonttitle=\bfseries\small,
+    title={{\small\textcolor{boxEssFrame}{$\blacklozenge$}}\enspace Esercizio~#1\enspace---\enspace#2\enspace
+      \hfill\ifcase#3\or\unaStella\or\dueStelle\or\treStelle\or\quattroStelle\or\cinqueStelle\fi},
+    arc=3pt,
+    boxrule=1.2pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt
+  ]
+}{%
+  \end{tcolorbox}
+  \medskip
+}
+
+% ---- Box ESERCIZIO COLLATERALE ○ ----
+% Uso: \begin{colbox}{n}{titolo}{stelle} ... \end{colbox}
+\newenvironment{colbox}[3]{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colframe=boxColFrame,
+    colback=boxColBack,
+    fonttitle=\bfseries\small,
+    title={{\small\textcolor{boxColFrame}{$\circ$}}\enspace Esercizio~#1\enspace---\enspace#2\enspace
+      \hfill\ifcase#3\or\unaStella\or\dueStelle\or\treStelle\or\quattroStelle\or\cinqueStelle\fi},
+    arc=3pt,
+    boxrule=0.8pt,
+    borderline={0.8pt}{0pt}{boxColFrame, dashed},
+    left=6pt, right=6pt, top=4pt, bottom=4pt
+  ]
+}{%
+  \end{tcolorbox}
+  \medskip
+}
+
+% ---- Box SUGGERIMENTO ----
+\newenvironment{hintbox}[1]{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colframe=boxHintFrame,
+    colback=boxHintBack,
+    fonttitle=\bfseries\small,
+    title={Suggerimento --- Esercizio~#1},
+    arc=3pt,
+    boxrule=0.8pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt
+  ]
+  \small
+}{%
+  \end{tcolorbox}
+  \medskip
+}
+
+% ---- Box SOLUZIONE ----
+\newenvironment{solbox}[1]{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colframe=boxSolFrame,
+    colback=boxSolBack,
+    fonttitle=\bfseries\small,
+    title={Soluzione --- Esercizio~#1},
+    arc=3pt,
+    boxrule=0.8pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt
+  ]
+  \small
+}{%
+  \end{tcolorbox}
+  \medskip
+}
+
+% ---- Box RAGIONAMENTO (per ★★★★/★★★★★) ----
+\newenvironment{ragionamentoBox}[1]{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colframe=boxRagFrame,
+    colback=boxRagBack,
+    fonttitle=\bfseries\small,
+    title={Ragionamento --- Esercizio~#1},
+    arc=3pt,
+    boxrule=0.8pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt
+  ]
+  \small
+}{%
+  \end{tcolorbox}
+  \medskip
+}
+
+% Alias brevi per compatibilita' (comandi -> ambienti)
+% Non usare questi per listing, usare direttamente gli ambienti
+\newcommand{\essenzialeBox}[4]{\begin{essbox}{#1}{#2}{#3}#4\end{essbox}}
+\newcommand{\collateraleBox}[4]{\begin{colbox}{#1}{#2}{#3}#4\end{colbox}}
+\newcommand{\hintBox}[2]{\begin{hintbox}{#1}#2\end{hintbox}}
+\newcommand{\soluzioneBox}[2]{\begin{solbox}{#1}#2\end{solbox}}
+
+% --- Intestazioni capitolo ---
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\Large\bfseries\color{boxEssFrame}}
+  {\chaptertitlename\ \thechapter}{10pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{20pt}{30pt}
+
+% --- Header/Footer ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[LO]{\small\nouppercase{\rightmark}}
+\fancyhead[RE]{\small\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyfoot[C]{\small\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% --- Hyperref (deve essere quasi l'ultimo) ---
+\usepackage[
+  colorlinks=true,
+  linkcolor=boxEssFrame,
+  urlcolor=colTwo,
+  citecolor=colThree,
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  pdftitle={Common Lisp --- Guida Pratica},
+  pdfauthor={},
+  pdfsubject={Common Lisp},
+  pdfkeywords={Common Lisp, programmazione funzionale, esercizi}
+]{hyperref}
+
+% --- Multicol per cheat sheet ---
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+% Impaginazione: evita vedove e orfane
+\widowpenalty=10000
+\clubpenalty=10000
+
+% Etichette esercizi, hint, soluzioni
+% Uso: \label{ex:42}  \label{hint:42}  \label{sol:42}
+
+% Comandi utili
+\newcommand{\kw}[1]{\texttt{\bfseries #1}}  % keyword inline
+\newcommand{\fn}[1]{\texttt{#1}}            % funzione inline
+\newcommand{\result}{{\color{clComment}; $\rightarrow$\ }}
+
+% Nomi simboli
+\newcommand{\essential}{{\color{boxEssFrame}$\blacklozenge$}}
+\newcommand{\optional}{{\color{boxColFrame}$\circ$}}

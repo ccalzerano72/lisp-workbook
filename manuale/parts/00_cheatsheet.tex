@@ -1,0 +1,208 @@
+% =============================================================
+%  00_cheatsheet.tex — Common Lisp Cheat Sheet
+%  1-2 pagine dense, due colonne, link interni alla reference
+% =============================================================
+\chapter*{Cheat Sheet}
+\addcontentsline{toc}{chapter}{Cheat Sheet}
+\markboth{Cheat Sheet}{Cheat Sheet}
+
+{\small
+\begin{multicols}{2}
+
+% ---- Aritmetica --------------------------------------------
+\noindent\textbf{\hyperref[sec:numeri]{Aritmetica}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(+ a b \ldots)}    & somma \\
+\fn{(- a b)}           & differenza \\
+\fn{(* a b \ldots)}    & prodotto \\
+\fn{(/ a b)}           & quoziente (esatto) \\
+\fn{(mod a b)}         & resto (segno di \texttt{b}) \\
+\fn{(rem a b)}         & resto (segno di \texttt{a}) \\
+\fn{(expt b e)}        & $b^e$ \\
+\fn{(sqrt x)}          & radice quadrata \\
+\fn{(abs x)}           & valore assoluto \\
+\fn{(1+ x)} / \fn{(1- x)} & inc/dec \\
+\fn{(floor x)}         & parte intera $\lfloor x \rfloor$ \\
+\fn{(ceiling x)}       & $\lceil x \rceil$ \\
+\fn{(round x)}         & arrotonda \\
+\fn{(max a b)} / \fn{(min a b)} & massimo/minimo \\
+\end{tabular}
+
+\medskip
+% ---- Confronti --------------------------------------------
+\noindent\textbf{\hyperref[sec:numeri]{Confronti numerici}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(= a b)}  & uguale \\
+\fn{(/= a b)} & diverso \\
+\fn{(< a b)}  \fn{(> a b)} \fn{(<= a b)} \fn{(>= a b)} & ordine \\
+\end{tabular}
+
+\medskip
+% ---- Booleani ---------------------------------------------
+\noindent\textbf{\hyperref[sec:booleani]{Booleani}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{T} / \fn{NIL}    & vero / falso (e lista vuota) \\
+\fn{(and a b \ldots)} & e logico (short-circuit) \\
+\fn{(or a b \ldots)}  & o logico (short-circuit) \\
+\fn{(not x)}          & negazione \\
+\end{tabular}
+
+\medskip
+% ---- Variabili e binding ----------------------------------
+\noindent\textbf{\hyperref[sec:variabili]{Definizioni e binding}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(defun nome (p\ldots) corpo)} & funzione \\
+\fn{(defparameter *x* val)}       & variabile globale \\
+\fn{(defvar *x* val)}             & globale (no-overwrite) \\
+\fn{(defconstant +k+ val)}        & costante \\
+\fn{(let ((x v)\ldots) corpo)}    & binding locale \\
+\fn{(let* ((x v)\ldots) corpo)}   & binding sequenziale \\
+\fn{(setf x val)}                 & assegnamento \\
+\end{tabular}
+
+\medskip
+% ---- Condizioni -------------------------------------------
+\noindent\textbf{\hyperref[sec:condizioni]{Condizioni}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(if test then else)}   & ramo singolo \\
+\fn{(cond (t1 e1)\ldots)}  & rami multipli \\
+\fn{(when test corpo\ldots)}   & solo se vero \\
+\fn{(unless test corpo\ldots)} & solo se falso \\
+\fn{(case val (k e)\ldots)}    & switch su valore \\
+\end{tabular}
+
+\columnbreak
+
+% ---- Liste ------------------------------------------------
+\noindent\textbf{\hyperref[sec:liste]{Liste — costruzione e accesso}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(cons x lst)}        & prependi \\
+\fn{(list a b \ldots)}   & crea lista \\
+\fn{(append l1 l2)}      & concatena \\
+\fn{(reverse lst)}       & inverti \\
+\fn{(car lst)} / \fn{(first lst)}  & primo \\
+\fn{(cdr lst)} / \fn{(rest lst)}   & resto \\
+\fn{(cadr lst)} / \fn{(second lst)}& secondo \\
+\fn{(nth n lst)}         & n-esimo (0-based) \\
+\fn{(last lst)}          & ultima cons-cell \\
+\fn{(length lst)}        & lunghezza \\
+\fn{(null lst)}          & lista vuota? \\
+\fn{(member x lst)}      & appartiene? \\
+\end{tabular}
+
+\medskip
+% ---- Higher-order -----------------------------------------
+\noindent\textbf{\hyperref[sec:higherorder]{Higher-order}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(mapcar \#'f lst)}       & trasforma \\
+\fn{(mapcan \#'f lst)}       & trasforma+appiattisce \\
+\fn{(remove-if \#'p lst)}    & rimuovi se vero \\
+\fn{(remove-if-not \#'p lst)}& tieni se vero \\
+\fn{(find-if \#'p lst)}      & primo match \\
+\fn{(every \#'p lst)}        & tutti veri? \\
+\fn{(some \#'p lst)}         & almeno uno vero? \\
+\fn{(reduce \#'f lst)}       & fold sinistro \\
+\fn{(sort lst \#'<)}         & ordina (distruttivo) \\
+\fn{(count-if \#'p lst)}     & conta match \\
+\fn{(funcall f a b)}         & chiama f \\
+\fn{(apply f args)}          & chiama f con lista args \\
+\fn{\#'nome}                 & oggetto funzione \\
+\fn{(lambda (x) corpo)}      & funzione anonima \\
+\end{tabular}
+
+\medskip
+% ---- Iterazione -------------------------------------------
+\noindent\textbf{\hyperref[sec:iterazione]{Iterazione}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(dotimes (i n) corpo)}         & 0..n-1 \\
+\fn{(dolist (x lst) corpo)}        & su lista \\
+\fn{(loop for x in lst do \ldots)} & loop su lista \\
+\fn{(loop for i from a to b do \ldots)} & loop numerico \\
+\fn{(loop \ldots collect e)}       & raccogli risultati \\
+\fn{(loop \ldots sum e)}           & somma \\
+\end{tabular}
+
+\medskip
+% ---- Strutture dati specializzate -------------------------
+\noindent\textbf{\hyperref[sec:hashtable]{Hash table}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(make-hash-table)}              & crea \\
+\fn{(gethash k ht)}                 & leggi \\
+\fn{(setf (gethash k ht) v)}        & scrivi \\
+\fn{(remhash k ht)}                 & elimina \\
+\fn{(maphash \#'f ht)}              & itera \\
+\end{tabular}
+
+\medskip
+% ---- Array ------------------------------------------------
+\noindent\textbf{\hyperref[sec:array]{Array e vettori}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{\#(1 2 3)}                    & vettore letterale \\
+\fn{(make-array n)}               & crea vettore \\
+\fn{(make-array '(r c))}          & crea matrice \\
+\fn{(aref a i)} / \fn{(aref m r c)} & accesso \\
+\fn{(setf (aref a i) v)}          & assegna \\
+\fn{(length a)}                   & dimensione \\
+\end{tabular}
+
+\medskip
+% ---- Defstruct --------------------------------------------
+\noindent\textbf{\hyperref[sec:strutture]{Strutture (defstruct)}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(defstruct nome slot\ldots)}       & definisci \\
+\fn{(make-nome :slot val)}             & crea istanza \\
+\fn{(nome-slot ist)}                   & accedi \\
+\fn{(setf (nome-slot ist) v)}          & modifica \\
+\end{tabular}
+
+\medskip
+% ---- I/O --------------------------------------------------
+\noindent\textbf{\hyperref[sec:io]{I/O}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(read)}                    & leggi da stdin \\
+\fn{(read-line)}               & leggi riga \\
+\fn{(print x)}                 & stampa + newline \\
+\fn{(princ x)}                 & stampa senza quote \\
+\fn{(format t "\textasciitilde A\textasciitilde \%"\ x)} & formattato \\
+\fn{\textasciitilde A} \fn{\textasciitilde D} \fn{\textasciitilde F} \fn{\textasciitilde \%} & gen/int/float/newline \\
+\end{tabular}
+
+\medskip
+% ---- Macro ------------------------------------------------
+\noindent\textbf{\hyperref[sec:macro]{Macro}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(defmacro nome (p\ldots) corpo)} & definisci \\
+\fn{`(lista ,expr ,@lista)}          & backquote/unquote \\
+\fn{(gensym)}                        & simbolo unico \\
+\end{tabular}
+
+\medskip
+% ---- Predicati --------------------------------------------
+\noindent\textbf{\hyperref[sec:predicati]{Predicati comuni}}\\
+\begin{tabular}{@{}ll@{}}
+\fn{(null x)}      & NIL? \\
+\fn{(atom x)}      & atomo (non cons)? \\
+\fn{(listp x)}     & lista? \\
+\fn{(numberp x)}   & numero? \\
+\fn{(symbolp x)}   & simbolo? \\
+\fn{(stringp x)}   & stringa? \\
+\fn{(eq a b)}      & identità oggetto \\
+\fn{(eql a b)}     & identità + numeri/char \\
+\fn{(equal a b)}   & uguaglianza strutturale \\
+\end{tabular}
+
+\end{multicols}
+
+\vfill
+\noindent\rule{\textwidth}{0.4pt}\\[2pt]
+{\footnotesize
+\textbf{Legenda:}
+\essential\ = esercizio essenziale\quad
+\optional\ = esercizio collaterale\quad
+\unaStella\ facile\quad
+\dueStelle\ medio\quad
+\treStelle\ difficile\quad
+\quattroStelle\ avanzato\quad
+\cinqueStelle\ progetto
+}
+} % fine \small

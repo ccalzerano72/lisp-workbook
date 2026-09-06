@@ -1,0 +1,119 @@
+% =============================================================
+%  MAIN — Common Lisp: Guida Pratica
+%  Compilare con:  pdflatex main  (due volte per i riferimenti)
+% =============================================================
+\documentclass[a4paper,11pt,twoside,openright]{book}
+
+\input{preamble}
+
+\begin{document}
+
+% ---- Copertina -----------------------------------------------
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries\color{boxEssFrame} Common Lisp}\\[0.6cm]
+  {\LARGE\itshape Guida Pratica}\\[0.4cm]
+  {\large con 148 esercizi graduali}\\[3cm]
+  \rule{0.4\textwidth}{1pt}\\[1cm]
+  {\large\itshape Per studenti con basi di programmazione imperativa}\\[0.5cm]
+  {\normalsize Ambiente consigliato: Allegro CL Free Express Edition}\\[2cm]
+  \rule{0.4\textwidth}{0.4pt}\\[0.8cm]
+  {\large\the\year}
+  \vfill
+\end{titlepage}
+
+% ---- Pagina crediti ------------------------------------------
+\thispagestyle{empty}
+\vspace*{4cm}
+\noindent\textbf{Note sull'ambiente}\\[0.3em]
+Gli esempi e le soluzioni di questo manuale sono conformi allo
+standard \textbf{ANSI Common Lisp} e sono stati sviluppati e
+testati con \textbf{Allegro CL Free Express Edition}.
+Qualsiasi implementazione conforme allo standard (SBCL, CCL,
+CLISP, ECL, ecc.) è igualmente compatibile.
+
+\vspace{1.5em}
+\noindent\textbf{Uso del manuale}\\[0.3em]
+Questo materiale è pensato per l'uso didattico in classe e per
+lo studio individuale.
+
+\vspace{1.5em}
+\noindent\textit{Compilato con \LaTeX.}
+
+\clearpage
+
+% ---- Come leggere questo manuale ----------------------------
+\chapter*{Come leggere questo manuale}
+\addcontentsline{toc}{chapter}{Come leggere questo manuale}
+
+\noindent
+Il manuale è diviso in quattro sezioni:
+
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{Cheat sheet} — una o due pagine da tenere
+        aperte durante gli esercizi, con i costrutti
+        più usati e link alle sezioni della reference.
+  \item \textbf{Quick reference} — descrizione concisa di
+        tutti i costrutti del linguaggio, con esempi.
+  \item \textbf{Esercizi} — 148 esercizi in 10 capitoli,
+        dalla sintassi base ai progetti complessi.
+  \item \textbf{Suggerimenti e soluzioni} — hint per gli
+        esercizi più difficili e soluzioni commentate.
+\end{enumerate}
+
+\bigskip
+\noindent\textbf{Legenda simboli}
+
+\medskip
+\begin{tabular}{@{}lp{10cm}@{}}
+  \essential & \textbf{Esercizio essenziale} --- introduce un costrutto
+               o un pattern nuovo. Da svolgere sempre.\\[6pt]
+  \optional  & \textbf{Esercizio collaterale} --- consolida o approfondisce
+               quanto già visto. Consigliato per chi vuole
+               padronanza completa del capitolo.\\[6pt]
+  \unaStella & Facile\\[2pt]
+  \dueStelle & Medio\\[2pt]
+  \treStelle & Difficile\\[2pt]
+  \quattroStelle & Avanzato\\[2pt]
+  \cinqueStelle  & Progetto\\
+\end{tabular}
+
+\bigskip
+\noindent\textbf{Percorso minimo (53 esercizi)}\\
+Svolgi solo gli esercizi \essential: sono sufficienti a
+coprire tutti i concetti fondamentali del linguaggio.
+
+\noindent\textbf{Percorso completo (148 esercizi)}\\
+Svolgi anche i collaterali \optional\ per consolidare
+ogni argomento e acquisire una padronanza più solida.
+
+\bigskip
+\noindent\textbf{Suggerimenti}\\
+Gli esercizi di difficoltà \treStelle\ o superiore hanno
+un suggerimento nella sezione apposita. Cercalo prima di
+guardare la soluzione.
+
+\bigskip
+\noindent\textbf{Soluzioni}\\
+Le soluzioni sono nella sezione finale. Per gli esercizi
+\unaStella/\dueStelle\ è riportato solo il codice.
+Per \treStelle\ ci sono commenti inline.
+Per \quattroStelle/\cinqueStelle\ c'è anche una sezione di
+\textit{ragionamento} che spiega la strategia e la
+complessità algoritmica.
+
+\clearpage
+
+% ---- Indice --------------------------------------------------
+\tableofcontents
+\clearpage
+
+% ---- Sezioni principali --------------------------------------
+\input{parts/00_cheatsheet}
+\input{parts/01_reference}
+\input{parts/02_esercizi}
+\input{parts/03_suggerimenti}
+\input{parts/04_soluzioni}
+
+\end{document}

@@ -1,0 +1,768 @@
+% =============================================================
+%  01_reference.tex — Quick Reference dettagliata
+%  Ogni \section ha un \label usato dalla cheat sheet
+% =============================================================
+\chapter*{Quick Reference}
+\addcontentsline{toc}{chapter}{Quick Reference}
+\markboth{Quick Reference}{Quick Reference}
+
+\noindent
+Questa sezione descrive i costrutti fondamentali di Common Lisp
+in forma concisa. Per ogni argomento è indicata la sintassi,
+una spiegazione breve e almeno un esempio.
+
+% =============================================================
+\section{REPL e S-expression}
+\label{sec:repl}
+% =============================================================
+
+Common Lisp usa la notazione \textbf{S-expression} (prefix notation):
+il primo elemento di ogni lista è l'operatore; i successivi sono gli argomenti.
+
+\begin{lstlisting}
+(+ 1 2 3)          ; -> 6
+(* 2 (+ 3 4))      ; -> 14
+\end{lstlisting}
+
+Un commento su una riga inizia con \texttt{;}; un commento multi-riga
+è delimitato da \texttt{\#|} e \texttt{|\#}.
+
+\begin{lstlisting}
+; commento su una riga
+#| commento
+   su piu' righe |#
+\end{lstlisting}
+
+Ogni espressione digitata nel REPL viene \textit{letta}, \textit{valutata}
+e il risultato viene \textit{stampato}.
+
+% =============================================================
+\section{Valori fondamentali}
+\label{sec:valori}
+% =============================================================
+
+\subsection*{Numeri}
+\label{sec:numeri}
+
+Common Lisp distingue interi, razionali, float e complessi.
+\begin{lstlisting}
+42        ; intero
+-7        ; intero negativo
+3.14      ; float
+1/3       ; razionale esatto
+\end{lstlisting}
+
+Operatori aritmetici: \fn{+}, \fn{-}, \fn{*}, \fn{/}, \fn{mod}, \fn{rem},
+\fn{1+}, \fn{1-}, \fn{expt}, \fn{sqrt}, \fn{abs}, \fn{floor}, \fn{ceiling},
+\fn{round}, \fn{truncate}, \fn{max}, \fn{min}.
+
+\begin{lstlisting}
+(mod 10 3)         ; -> 1   (segno uguale al divisore)
+(rem 10 3)         ; -> 1   (segno uguale al dividendo)
+(expt 2 10)        ; -> 1024
+(floor 7/2)        ; -> 3
+\end{lstlisting}
+
+Confronti numerici: \fn{=}, \fn{/=}, \fn{<}, \fn{>}, \fn{<=}, \fn{>=}.
+Usare \fn{=} per numeri (non \fn{eq} o \fn{equal}).
+
+\subsection*{Booleani}
+\label{sec:booleani}
+
+\begin{lstlisting}
+T    ; vero
+NIL  ; falso (e lista vuota)
+\end{lstlisting}
+
+\fn{NIL} è l'unico valore falso; tutto il resto è considerato vero.
+
+\begin{lstlisting}
+(and T NIL)   ; -> NIL
+(or  NIL 42)  ; -> 42    (restituisce il primo valore non-NIL)
+(not NIL)     ; -> T
+\end{lstlisting}
+
+\fn{and} e \fn{or} usano la \textit{short-circuit evaluation} e
+restituiscono il valore che ha determinato il risultato, non \fn{T}/\fn{NIL}.
+
+\subsection*{Simboli}
+
+Un simbolo è un nome interned. La virgoletta singola previene la valutazione.
+\begin{lstlisting}
+'foo          ; simbolo FOO
+(eq 'a 'a)   ; -> T
+\end{lstlisting}
+
+\subsection*{Stringhe e caratteri}
+
+\begin{lstlisting}
+"hello"           ; stringa
+#\A               ; carattere A
+#\Space           ; carattere spazio
+#\Newline         ; a capo
+
+(length "hello")         ; -> 5
+(char "hello" 0)         ; -> #\h
+(string-upcase "ciao")   ; -> "CIAO"
+(coerce "abc" 'list)     ; -> (#\a #\b #\c)
+\end{lstlisting}
+
+% =============================================================
+\section{Variabili}
+\label{sec:variabili}
+% =============================================================
+
+\begin{lstlisting}
+(defparameter *contatore* 0)   ; variabile globale dinamica
+(defvar *debug* nil)           ; globale, non sovrascritta se gia' legata
+(defconstant +pi+ 3.14159)     ; costante (convenzione: +nome+)
+\end{lstlisting}
+
+Convenzione: variabili globali dinamiche tra \texttt{*...*} (earmuffs);
+costanti tra \texttt{+...+}.
+
+\textbf{Binding locale con \fn{let}:}
+\begin{lstlisting}
+(let ((x 10)
+      (y 20))
+  (+ x y))       ; -> 30
+\end{lstlisting}
+
+\textbf{Binding sequenziale con \fn{let*}} (ogni variabile può usare le precedenti):
+\begin{lstlisting}
+(let* ((r 5)
+       (area (* pi r r)))
+  area)           ; -> 78.539...
+\end{lstlisting}
+
+\textbf{Assegnamento:}
+\begin{lstlisting}
+(setf *contatore* (1+ *contatore*))
+\end{lstlisting}
+
+% =============================================================
+\section{Funzioni}
+\label{sec:funzioni}
+% =============================================================
+
+\begin{lstlisting}
+(defun quadrato (x)
+  (* x x))
+
+(quadrato 5)   ; -> 25
+\end{lstlisting}
+
+Il valore di ritorno è quello dell'ultima espressione del corpo.
+\fn{return-from} permette un'uscita esplicita anticipata:
+\begin{lstlisting}
+(defun cerca (item lst)
+  (dolist (x lst)
+    (when (equal x item)
+      (return-from cerca T)))
+  NIL)
+\end{lstlisting}
+
+\textbf{Argomenti opzionali, rest e keyword:}
+\begin{lstlisting}
+(defun saluta (&optional (nome "mondo"))
+  (format t "Ciao, ~A!~%" nome))
+
+(defun somma (&rest numeri)
+  (reduce #'+ numeri :initial-value 0))
+
+(defun crea-rect (&key (w 1) (h 1))
+  (* w h))
+(crea-rect :w 3 :h 4)   ; -> 12
+\end{lstlisting}
+
+\textbf{Documenting string:}
+\begin{lstlisting}
+(defun quadrato (x)
+  "Restituisce il quadrato di X."
+  (* x x))
+\end{lstlisting}
+
+% =============================================================
+\section{Funzioni anonime e higher-order}
+\label{sec:higherorder}
+% =============================================================
+
+\begin{lstlisting}
+(lambda (x) (* x x))        ; funzione anonima
+
+(funcall (lambda (x) (* x x)) 5)   ; -> 25
+(apply #'+ '(1 2 3))               ; -> 6
+\end{lstlisting}
+
+\fn{\#'} (o \fn{function}) ottiene l'oggetto funzione:
+\begin{lstlisting}
+#'quadrato          ; equivale a (function quadrato)
+\end{lstlisting}
+
+\textbf{Funzioni principali su sequenze:}
+\begin{lstlisting}
+(mapcar #'quadrato '(1 2 3 4))        ; -> (1 4 9 16)
+(mapcan #'list '(1 2 3))              ; -> (1 2 3)
+(remove-if #'evenp '(1 2 3 4 5))      ; -> (1 3 5)
+(remove-if-not #'oddp '(1 2 3 4 5))   ; -> (1 3 5)
+(find-if #'evenp '(1 3 4 5))          ; -> 4
+(every #'numberp '(1 2 3))            ; -> T
+(some #'null '(1 NIL 3))              ; -> T
+(reduce #'+ '(1 2 3 4))               ; -> 10
+(count-if #'evenp '(1 2 3 4))         ; -> 2
+(sort '(3 1 2) #'<)                   ; -> (1 2 3)  (distruttivo!)
+\end{lstlisting}
+
+\fn{reduce} con \fn{:initial-value} gestisce le liste vuote:
+\begin{lstlisting}
+(reduce #'+ '() :initial-value 0)   ; -> 0
+\end{lstlisting}
+
+% =============================================================
+\section{Condizioni}
+\label{sec:condizioni}
+% =============================================================
+
+\begin{lstlisting}
+(if (> x 0) 'positivo 'non-positivo)
+
+(cond
+  ((< x 0) 'negativo)
+  ((= x 0) 'zero)
+  (t        'positivo))      ; t e' il caso default
+
+(when (> x 0)
+  (print "positivo"))        ; nil se falso, non ha ramo else
+
+(unless (null lst)
+  (car lst))
+
+(case giorno
+  (1 "lunedi")
+  (2 "martedi")
+  (otherwise "altro"))
+\end{lstlisting}
+
+% =============================================================
+\section{Liste}
+\label{sec:liste}
+% =============================================================
+
+Una lista è una sequenza di \textit{cons-cell}; ogni cella ha un
+\fn{car} (valore) e un \fn{cdr} (resto). \fn{NIL} termina la lista.
+
+\begin{lstlisting}
+(cons 'a '(b c))   ; -> (A B C)
+(car '(a b c))     ; -> A
+(cdr '(a b c))     ; -> (B C)
+'(a b c)           ; lista letterale
+\end{lstlisting}
+
+Le coppie puntate (cons non terminanti in NIL) sono liste improprie:
+\begin{lstlisting}
+(cons 'a 'b)       ; -> (A . B)
+\end{lstlisting}
+
+\textbf{Abbreviazioni:}
+\begin{lstlisting}
+(first lst)  = (car lst)
+(rest lst)   = (cdr lst)
+(second lst) = (cadr lst)
+(third lst)  = (caddr lst)
+(nth 2 lst)  ; terzo elemento (0-based)
+(last lst)   ; ultima cons-cell, non l'elemento!
+\end{lstlisting}
+
+\textbf{Costruzione e manipolazione:}
+\begin{lstlisting}
+(list 'a 'b 'c)             ; -> (A B C)
+(append '(a b) '(c d))      ; -> (A B C D)
+(reverse '(a b c))          ; -> (C B A)
+(length '(a b c))           ; -> 3
+(member 'b '(a b c))        ; -> (B C)  (non solo T/NIL)
+(subst 'x 'b '(a b c b))    ; -> (A X C X)
+\end{lstlisting}
+
+% =============================================================
+\section{Predicati}
+\label{sec:predicati}
+% =============================================================
+
+\begin{lstlisting}
+(null '())       ; -> T
+(null 'a)        ; -> NIL
+(atom 'a)        ; -> T   (atomo = non-cons)
+(listp '(a))     ; -> T
+(consp '(a))     ; -> T
+(numberp 3)      ; -> T
+(symbolp 'foo)   ; -> T
+(stringp "x")    ; -> T
+(functionp #'+)  ; -> T
+\end{lstlisting}
+
+\textbf{Uguaglianza:}
+\begin{lstlisting}
+(eq 'a 'a)                 ; T  -- identita' oggetto (simboli, NIL, T)
+(eql 3 3)                  ; T  -- identita' + numeri e caratteri
+(equal '(a b) '(a b))      ; T  -- uguaglianza strutturale
+(equalp "Ciao" "ciao")     ; T  -- strutturale, case-insensitive
+\end{lstlisting}
+
+Regola pratica: usare \fn{=} per numeri, \fn{equal} per strutture,
+\fn{eq} solo per simboli.
+
+% =============================================================
+\section{Ricorsione}
+\label{sec:ricorsione}
+% =============================================================
+
+Schema tipico su lista:
+\begin{lstlisting}
+(defun lunghezza (lst)
+  (if (null lst)
+      0                              ; caso base
+      (1+ (lunghezza (cdr lst)))))   ; caso ricorsivo
+\end{lstlisting}
+
+\textbf{Tail recursion con accumulatore:}
+Una funzione è \textit{tail-recursive} se la chiamata ricorsiva è
+l'ultima operazione. Usare \fn{labels} per definire la funzione
+ausiliaria localmente:
+
+\begin{lstlisting}
+(defun lunghezza (lst)
+  (labels ((iter (lst acc)
+             (if (null lst)
+                 acc
+                 (iter (cdr lst) (1+ acc)))))
+    (iter lst 0)))
+\end{lstlisting}
+
+Alcune implementazioni CL ottimizzano la tail recursion eliminando
+i frame dallo stack (TCO — Tail Call Optimization). Non è garantito
+dallo standard, ma Allegro CL lo supporta.
+
+% =============================================================
+\section{Iterazione}
+\label{sec:iterazione}
+% =============================================================
+
+\begin{lstlisting}
+(dotimes (i 5)
+  (print i))                ; stampa 0 1 2 3 4
+
+(dolist (x '(a b c))
+  (print x))
+
+(loop for x in '(1 2 3)
+      collect (* x x))      ; -> (1 4 9)
+
+(loop for i from 1 to 5
+      sum i)                 ; -> 15
+
+(loop for i from 0 below 10 by 2
+      collect i)             ; -> (0 2 4 6 8)
+
+(loop with acc = 0
+      for x in '(1 2 3 4)
+      do (setf acc (+ acc x))
+      finally (return acc))  ; -> 10
+\end{lstlisting}
+
+% =============================================================
+\section{Strutture dati composte}
+% =============================================================
+
+\subsection*{Association list (alist)}
+\label{sec:alist}
+
+Una alist è una lista di coppie \fn{(chiave . valore)}:
+\begin{lstlisting}
+(defparameter *rubrica*
+  '((mario . "333-1111")
+    (luigi . "333-2222")))
+
+(assoc 'mario *rubrica*)    ; -> (MARIO . "333-1111")
+(cdr (assoc 'mario *rubrica*))  ; -> "333-1111"
+\end{lstlisting}
+
+\subsection*{Property list (plist)}
+
+Una plist alterna chiavi keyword e valori nello stesso livello:
+\begin{lstlisting}
+(defparameter *p* '(:nome "Mario" :eta 23))
+(getf *p* :nome)    ; -> "Mario"
+\end{lstlisting}
+
+\subsection*{Hash table}
+\label{sec:hashtable}
+
+\begin{lstlisting}
+(defparameter *ht* (make-hash-table))
+(setf (gethash 'foo *ht*) 42)
+(gethash 'foo *ht*)        ; -> 42, T
+(gethash 'bar *ht*)        ; -> NIL, NIL  (secondo valore = trovato?)
+(remhash 'foo *ht*)
+(hash-table-count *ht*)    ; -> 0
+(maphash (lambda (k v)
+           (format t "~A -> ~A~%" k v))
+         *ht*)
+\end{lstlisting}
+
+\fn{gethash} restituisce due valori: il valore e un flag booleano.
+Usare \fn{multiple-value-bind} per riceverli entrambi.
+
+\subsection*{Array e vettori}
+\label{sec:array}
+
+\begin{lstlisting}
+#(10 20 30)                    ; vettore letterale (immutabile)
+(make-array 5 :initial-element 0)      ; vettore di 5 zeri
+(make-array '(3 3) :initial-element 0) ; matrice 3x3
+
+(aref #(10 20 30) 1)           ; -> 20
+(setf (aref v 0) 99)           ; modifica elemento
+
+(make-array 5 :fill-pointer 0 :adjustable t) ; vettore dinamico
+(vector-push 42 v)
+(vector-pop v)
+\end{lstlisting}
+
+% =============================================================
+\section{Strutture con defstruct}
+\label{sec:strutture}
+% =============================================================
+
+\begin{lstlisting}
+(defstruct persona
+  nome
+  (eta 18)         ; valore di default
+  citta)
+
+(make-persona :nome "Mario" :eta 23 :citta "Roma")
+; -> #S(PERSONA :NOME "Mario" :ETA 23 :CITTA "Roma")
+
+(persona-nome p)          ; accesso slot
+(setf (persona-eta p) 24) ; modifica slot
+(persona-p p)             ; predicato automatico -> T
+\end{lstlisting}
+
+\fn{defstruct} genera automaticamente costruttore (\fn{make-nome}),
+accessi (\fn{nome-slot}), predicato (\fn{nome-p}), copia (\fn{copy-nome}).
+
+% =============================================================
+\section{Multiple values}
+\label{sec:multival}
+% =============================================================
+
+\begin{lstlisting}
+(values 3 4)           ; restituisce due valori
+
+(multiple-value-bind (q r)
+    (floor 17 5)
+  (format t "~A resto ~A~%" q r))   ; "3 resto 2"
+
+(multiple-value-list (floor 17 5))  ; -> (3 2)
+\end{lstlisting}
+
+% =============================================================
+\section{Destructuring}
+\label{sec:destructuring}
+% =============================================================
+
+\begin{lstlisting}
+(destructuring-bind (a b c) '(1 2 3)
+  (+ a b c))    ; -> 6
+
+(destructuring-bind (head . tail) '(1 2 3)
+  tail)         ; -> (2 3)
+
+(destructuring-bind (a (b c) d) '(1 (2 3) 4)
+  (list a b c d))   ; -> (1 2 3 4)
+\end{lstlisting}
+
+% =============================================================
+\section{I/O}
+\label{sec:io}
+% =============================================================
+
+\begin{lstlisting}
+(read)             ; legge una S-expression dallo stdin
+(read-line)        ; legge una riga come stringa
+(read-char)        ; legge un carattere
+
+(print x)          ; stampa con quote, + newline prima
+(princ x)          ; stampa senza quote
+(prin1 x)          ; stampa con quote, senza newline prima
+(terpri)           ; solo newline
+(fresh-line)       ; newline solo se non gia' a inizio riga
+\end{lstlisting}
+
+\textbf{format} è la funzione di formattazione principale:
+\begin{lstlisting}
+(format t "~A~%"   x)    ; generica, newline
+(format t "~D~%"   n)    ; intero decimale
+(format t "~,2F~%" f)    ; float con 2 decimali
+(format t "~S~%"   x)    ; con quote (come print)
+(format t "~{~A ~}~%" lst)  ; itera su lista
+(format t "Nome: ~A, Eta: ~D~%" nome eta)
+\end{lstlisting}
+
+Direttive principali: \texttt{\textasciitilde A} (generico),
+\texttt{\textasciitilde D} (intero), \texttt{\textasciitilde F} (float),
+\texttt{\textasciitilde S} (con quote), \texttt{\textasciitilde\%} (newline),
+\texttt{\textasciitilde\&} (fresh-line),
+\texttt{\textasciitilde\textasciitilde} (tilde letterale).
+
+\textbf{File:}
+\begin{lstlisting}
+(with-open-file (s "dati.txt" :direction :input)
+  (loop for riga = (read-line s nil nil)
+        while riga
+        collect riga))
+
+(with-open-file (s "out.txt"
+                   :direction :output
+                   :if-exists :supersede)
+  (format s "Ciao~%"))
+\end{lstlisting}
+
+% =============================================================
+\section{Closures}
+\label{sec:closures}
+% =============================================================
+
+Una \textit{closure} è una funzione che cattura le variabili del
+proprio ambiente lessicale. È il meccanismo principale per
+incapsulare stato in Common Lisp.
+
+\begin{lstlisting}
+(defun crea-contatore ()
+  (let ((n 0))
+    (lambda ()
+      (setf n (1+ n))
+      n)))
+
+(defparameter *c* (crea-contatore))
+(funcall *c*)   ; -> 1
+(funcall *c*)   ; -> 2
+(funcall *c*)   ; -> 3
+\end{lstlisting}
+
+La variabile \fn{n} è privata alla closure: ogni istanza creata
+da \fn{crea-contatore} ha il proprio stato indipendente.
+
+% =============================================================
+\section{Macro}
+\label{sec:macro}
+% =============================================================
+
+Le macro trasformano codice \textit{prima} della valutazione.
+A differenza delle funzioni, ricevono le forme non valutate.
+
+\begin{lstlisting}
+(defmacro my-when (test &body body)
+  `(if ,test
+       (progn ,@body)
+       nil))
+
+(my-when (> x 0)
+  (print "positivo")
+  (print "ancora"))
+\end{lstlisting}
+
+Il \textit{backquote} (\texttt{`}) costruisce una lista quasi-letterale;
+\texttt{,} valuta un'espressione; \texttt{,@} la \textit{splices} (inserisce
+gli elementi di una lista al livello corrente).
+
+\textbf{Igiene:} usare \fn{gensym} per evitare cattura accidentale di variabili:
+\begin{lstlisting}
+(defmacro my-while (test &body body)
+  (let ((tag (gensym)))
+    `(block ,tag
+       (tagbody
+         (when (not ,test) (return-from ,tag nil))
+         ,@body
+         (go ,(gensym))))))
+\end{lstlisting}
+
+% =============================================================
+\section{CLOS — Object-Oriented}
+\label{sec:clos}
+% =============================================================
+
+\begin{lstlisting}
+(defclass animale ()
+  ((nome :initarg :nome :accessor animale-nome)
+   (verso :initarg :verso :reader animale-verso)))
+
+(defclass cane (animale)
+  ())
+
+(defgeneric descrivi (a))
+
+(defmethod descrivi ((a animale))
+  (format t "~A dice ~A~%"
+          (animale-nome a)
+          (animale-verso a)))
+
+(defparameter *fido*
+  (make-instance 'cane :nome "Fido" :verso "Bau"))
+
+(descrivi *fido*)   ; "Fido dice Bau"
+\end{lstlisting}
+
+\fn{defmethod} può specializzare su tipo, su valore (\fn{eql}), o
+definire metodi \fn{:before}/\fn{:after}/\fn{:around}.
+
+% =============================================================
+\section{Gestione errori}
+\label{sec:errori}
+% =============================================================
+
+\begin{lstlisting}
+(error "Valore non valido: ~A" x)   ; segnala errore
+
+(handler-case
+    (/ 10 0)
+  (division-by-zero (e)
+    (format t "Divisione per zero: ~A~%" e))
+  (error (e)
+    (format t "Errore generico: ~A~%" e)))
+
+(ignore-errors
+  (/ 10 0))   ; -> NIL, condizione
+
+(warn "Attenzione: ~A" msg)   ; segnalazione non fatale
+\end{lstlisting}
+
+% =============================================================
+\section{Tail call e \texttt{labels}/\texttt{flet}}
+\label{sec:labels}
+% =============================================================
+
+\fn{labels} definisce funzioni locali mutuamente ricorsive;
+\fn{flet} definisce funzioni locali non ricorsive.
+
+\begin{lstlisting}
+(defun fibonacci (n)
+  (labels ((fib-iter (i a b)
+             (if (= i 0)
+                 a
+                 (fib-iter (1- i) b (+ a b)))))
+    (fib-iter n 0 1)))
+\end{lstlisting}
+
+Con \fn{labels} la funzione locale può chiamare se stessa.
+Con \fn{flet} no: usare \fn{labels} per la ricorsione locale.
+
+% =============================================================
+\section{Sequenze: \texttt{coerce} e funzioni generali}
+\label{sec:sequenze}
+% =============================================================
+
+Stringa, vettore e lista sono tutte \textit{sequenze}. Molte
+funzioni su liste funzionano anche su stringhe e vettori.
+
+\begin{lstlisting}
+(coerce '(#\a #\b #\c) 'string)  ; -> "abc"
+(coerce "abc" 'list)              ; -> (#\a #\b #\c)
+(coerce #(1 2 3) 'list)           ; -> (1 2 3)
+
+(elt '(a b c) 1)      ; -> B  (funziona su tutte le sequenze)
+(subseq "hello" 1 3)  ; -> "el"
+(concatenate 'string "foo" "bar")  ; -> "foobar"
+(position #\l "hello")             ; -> 2
+\end{lstlisting}
+
+% =============================================================
+\section{Pattern essenziali}
+\label{sec:pattern}
+% =============================================================
+
+\noindent\textbf{Elaborazione di una lista:}
+\begin{lstlisting}
+(defun elabora (lst)
+  (if (null lst)
+      '()
+      (cons (trasforma (car lst))
+            (elabora (cdr lst)))))
+\end{lstlisting}
+
+\noindent\textbf{Accumulatore (tail-recursive):}
+\begin{lstlisting}
+(defun somma (lst)
+  (labels ((iter (lst acc)
+             (if (null lst)
+                 acc
+                 (iter (cdr lst) (+ acc (car lst))))))
+    (iter lst 0)))
+\end{lstlisting}
+
+\noindent\textbf{Closure con stato:}
+\begin{lstlisting}
+(defun crea-generatore (start step)
+  (let ((curr start))
+    (lambda ()
+      (prog1 curr
+        (incf curr step)))))
+\end{lstlisting}
+
+\noindent\textbf{Backtracking:}
+\begin{lstlisting}
+; schema generale
+(defun risolvi (stato)
+  (if (soluzione-p stato)
+      (lista stato)
+      (loop for mossa in (mosse-valide stato)
+            append (risolvi (applica mossa stato)))))
+\end{lstlisting}
+
+\noindent\textbf{Memoization:}
+\begin{lstlisting}
+(defun memoize (f)
+  (let ((cache (make-hash-table :test #'equal)))
+    (lambda (&rest args)
+      (multiple-value-bind (val trovato)
+          (gethash args cache)
+        (if trovato
+            val
+            (setf (gethash args cache)
+                  (apply f args)))))))
+\end{lstlisting}
+
+% =============================================================
+\section{Convenzioni di stile}
+\label{sec:stile}
+% =============================================================
+
+\begin{itemize}[leftmargin=2em, itemsep=2pt]
+  \item Nomi con \textbf{kebab-case}: \fn{mia-funzione}, \fn{conta-elementi}.
+  \item Variabili globali dinamiche con \textbf{earmuffs}: \fn{*contatore*}.
+  \item Costanti con \textbf{più segni}: \fn{+max-size+}.
+  \item Predicati terminano in \textbf{-p}: \fn{null}, \fn{evenp}, \fn{palindromo-p}.
+  \item Reimplementazioni di built-in: aggiungere \textbf{*}: \fn{length*}, \fn{reverse*}.
+  \item Funzioni piccole e composabili; evitare stato globale.
+  \item Separare logica, I/O e presentazione.
+  \item Gestire esplicitamente i casi limite (lista vuota, \fn{nil}, zero).
+  \item Ogni funzione pubblica dovrebbe avere una \textit{docstring}.
+\end{itemize}
+
+% =============================================================
+\section{Package}
+\label{sec:package}
+% =============================================================
+
+\begin{lstlisting}
+(defpackage :mio-progetto
+  (:use :cl)
+  (:export :funzione-pubblica))
+
+(in-package :mio-progetto)
+
+; accesso dall'esterno:
+(mio-progetto:funzione-pubblica ...)
+\end{lstlisting}
+
+Durante la fase di apprendimento è sufficiente lavorare nel
+package \fn{:cl-user} (il default al REPL).

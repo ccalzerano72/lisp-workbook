@@ -1,0 +1,1741 @@
+% =============================================================
+%  02_esercizi.tex — Tutti gli esercizi (148 totali, 10 capitoli)
+%  Label: \label{ex:N}
+%  Ambienti: \begin{essbox}{N}{Titolo}{stelle} ... \end{essbox}
+%            \begin{colbox}{N}{Titolo}{stelle} ... \end{colbox}
+%  Policy listing: accentati come ASCII (es. gia', e', identita')
+% =============================================================
+\part{Esercizi}
+
+% =============================================================
+\chapter{Fondamenti}
+% =============================================================
+
+\noindent
+In questo capitolo si prendono confidenza con la sintassi di
+Common Lisp: S-expression, \fn{defun}, aritmetica, predicati,
+condizionali (\fn{if}, \fn{cond}), binding locale (\fn{let},
+\fn{let*}) e iterazione base (\fn{dotimes}, \fn{loop}).
+
+\bigskip
+
+\label{ex:1}
+\begin{essbox}{1}{Somma}{1}
+Implementare:
+\begin{lstlisting}
+(add a b)
+\end{lstlisting}
+\begin{lstlisting}
+(add 3 5)      ; -> 8
+(add -2 7)     ; -> 5
+(add 1.5 2.5)  ; -> 4.0
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:2}
+\begin{essbox}{2}{Geometria del cerchio}{1}
+Implementare:
+\begin{lstlisting}
+(circle-area radius)
+(circle-circumference radius)
+\end{lstlisting}
+Usare la costante \fn{pi} per $\pi$.
+\begin{lstlisting}
+(circle-area 2)           ; -> 12.566...
+(circle-circumference 2)  ; -> 12.566...
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:3}
+\begin{colbox}{3}{Conversione Celsius/Fahrenheit}{1}
+Implementare:
+\begin{lstlisting}
+(celsius->fahrenheit c)
+(fahrenheit->celsius f)
+\end{lstlisting}
+Formule: $F = C \times 9/5 + 32$;\quad $C = (F - 32) \times 5/9$.
+\end{colbox}
+
+\label{ex:4}
+\begin{essbox}{4}{Ipotenusa}{1}
+Implementare:
+\begin{lstlisting}
+(ipotenusa a b)
+\end{lstlisting}
+\begin{lstlisting}
+(ipotenusa 3 4)   ; -> 5.0
+\end{lstlisting}
+\textbf{Vincolo:} usare \fn{let} per i quadrati intermedi.
+\end{essbox}
+
+\label{ex:5}
+\begin{colbox}{5}{Distanza euclidea}{1}
+Implementare:
+\begin{lstlisting}
+(distanza-euclidea x1 y1 x2 y2)
+\end{lstlisting}
+\begin{lstlisting}
+(distanza-euclidea 0 0 3 4)   ; -> 5.0
+\end{lstlisting}
+\textbf{Vincolo:} usare \fn{let} per i valori intermedi.
+\end{colbox}
+
+\label{ex:6}
+\begin{essbox}{6}{Pari o dispari}{1}
+Implementare:
+\begin{lstlisting}
+(pari-p n)
+\end{lstlisting}
+senza usare \fn{evenp}.
+\begin{lstlisting}
+(pari-p 8)    ; -> T
+(pari-p 7)    ; -> NIL
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:7}
+\begin{colbox}{7}{Divisibilita'}{1}
+Implementare:
+\begin{lstlisting}
+(divisibile-p a b)
+\end{lstlisting}
+\begin{lstlisting}
+(divisibile-p 12 4)   ; -> T
+(divisibile-p 7  3)   ; -> NIL
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:8}
+\begin{essbox}{8}{Segno}{1}
+Implementare:
+\begin{lstlisting}
+(segno n)
+\end{lstlisting}
+che restituisce \fn{'positivo}, \fn{'negativo} o \fn{'zero}.
+\begin{lstlisting}
+(segno -7)   ; -> NEGATIVO
+(segno 0)    ; -> ZERO
+(segno 12)   ; -> POSITIVO
+\end{lstlisting}
+\textbf{Vincolo:} usare \fn{cond}.
+\end{essbox}
+
+\label{ex:9}
+\begin{colbox}{9}{Massimo di tre}{1}
+Implementare \fn{(max-tre a b c)} senza usare \fn{max}.
+\begin{lstlisting}
+(max-tre 3 7 2)   ; -> 7
+\end{lstlisting}
+\textbf{Vincolo:} usare \fn{cond}.
+\end{colbox}
+
+\label{ex:10}
+\begin{colbox}{10}{Triangolo valido}{1}
+Implementare \fn{(triangolo-valido-p a b c)}.
+Ogni lato deve essere minore della somma degli altri due.
+\begin{lstlisting}
+(triangolo-valido-p 3 4 5)   ; -> T
+(triangolo-valido-p 1 2 10)  ; -> NIL
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:11}
+\begin{essbox}{11}{Anno bisestile}{2}
+Implementare:
+\begin{lstlisting}
+(bisestile-p anno)
+\end{lstlisting}
+Divisibile per 4, eccetto multipli di 100 che non siano anche di 400.
+\begin{lstlisting}
+(bisestile-p 2000)   ; -> T
+(bisestile-p 1900)   ; -> NIL
+(bisestile-p 2024)   ; -> T
+\end{lstlisting}
+\textbf{Vincolo:} usare \fn{and}/\fn{or} senza \fn{cond}.
+\end{essbox}
+
+\label{ex:12}
+\begin{colbox}{12}{Giorni del mese}{2}
+Implementare \fn{(giorni-mese mese anno)} con \fn{mese} da 1 a 12.
+\begin{lstlisting}
+(giorni-mese 2 2024)   ; -> 29
+(giorni-mese 2 2023)   ; -> 28
+(giorni-mese 7 2024)   ; -> 31
+\end{lstlisting}
+Usare \fn{bisestile-p} per febbraio.
+\end{colbox}
+
+\label{ex:13}
+\begin{colbox}{13}{Voto in lettere}{1}
+Implementare \fn{(voto->giudizio punteggio)}, punteggio 0--100.
+
+90--100 $\to$ ``ottimo''; 75--89 $\to$ ``buono'';
+60--74 $\to$ ``sufficiente''; $<60$ $\to$ ``insufficiente''.
+
+\textbf{Vincolo:} usare \fn{cond}.
+\end{colbox}
+
+\label{ex:14}
+\begin{colbox}{14}{Terna pitagorica}{1}
+Implementare \fn{(terna-pitagorica-p a b c)}.
+\begin{lstlisting}
+(terna-pitagorica-p 3 4 5)    ; -> T
+(terna-pitagorica-p 1 2 3)    ; -> NIL
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:15}
+\begin{essbox}{15}{Radici di equazione di secondo grado}{2}
+Implementare:
+\begin{lstlisting}
+(radici-quadratiche a b c)
+\end{lstlisting}
+Restituire lista con le due radici reali, oppure \fn{NIL} se $\Delta < 0$.
+\begin{lstlisting}
+(radici-quadratiche 1 -5 6)   ; -> (3.0 2.0)
+(radici-quadratiche 1  0 1)   ; -> NIL
+\end{lstlisting}
+\textbf{Vincolo:} usare \fn{let*} per discriminante e radici.
+\end{essbox}
+
+\label{ex:16}
+\begin{colbox}{16}{Calcolatrice simbolica}{2}
+Implementare \fn{(calcola op a b)} dove \fn{op} e' un simbolo
+\fn{'+}, \fn{'-}, \fn{'*}, \fn{'/}.
+\begin{lstlisting}
+(calcola '+ 3 4)   ; -> 7
+(calcola '* 5 6)   ; -> 30
+\end{lstlisting}
+Gestire la divisione per zero restituendo \fn{NIL}.
+\end{colbox}
+
+\label{ex:17}
+\begin{essbox}{17}{Somma delle cifre}{2}
+Implementare:
+\begin{lstlisting}
+(somma-cifre n)
+\end{lstlisting}
+\begin{lstlisting}
+(somma-cifre 1234)   ; -> 10
+(somma-cifre 99)     ; -> 18
+\end{lstlisting}
+\textbf{Suggerimento:} estrarre le cifre con \fn{mod} e \fn{floor}.
+\quad\hyperref[hint:17]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:18}
+\begin{essbox}{18}{Conta fino a N}{1}
+Implementare \fn{(conta-fino-a n)} che stampa i numeri da 1 a \fn{n}.
+\begin{lstlisting}
+(conta-fino-a 4)
+; 1
+; 2
+; 3
+; 4
+\end{lstlisting}
+\textbf{Vincolo:} usare \fn{dotimes} o \fn{loop}.
+\end{essbox}
+
+\label{ex:19}
+\begin{colbox}{19}{Tabellina}{1}
+Implementare \fn{(tabellina n)} che stampa la tabellina di \fn{n}
+da 1 a 10.
+\begin{lstlisting}
+(tabellina 3)
+; 3 x 1 = 3
+; 3 x 2 = 6
+; ...
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:20}
+\begin{colbox}{20}{Sconto}{1}
+Implementare \fn{(sconto prezzo)}:
+$\geq 200$ $\to$ 20\%; $\geq 100$ $\to$ 10\%; altrimenti 0\%.
+\begin{lstlisting}
+(sconto 250)   ; -> 200.0
+(sconto 120)   ; -> 108.0
+(sconto 50)    ; -> 50
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:21}
+\begin{colbox}{21}{Paga settimanale}{1}
+Implementare \fn{(paga-settimanale ore tariffa)}.
+Fino a 40 ore: tariffa normale.
+Ore eccedenti: tariffa $\times$ 1.5.
+\begin{lstlisting}
+(paga-settimanale 35 10)   ; -> 350
+(paga-settimanale 45 10)   ; -> 475
+\end{lstlisting}
+\end{colbox}
+
+% =============================================================
+\chapter{Liste}
+% =============================================================
+
+\noindent
+Le liste sono la struttura dati fondamentale di Common Lisp.
+In questo capitolo si implementano da zero le operazioni
+principali usando \fn{car}, \fn{cdr}, \fn{cons} e la ricorsione.
+\textbf{Non usare} le funzioni built-in che risolvono direttamente
+l'esercizio, salvo diversa indicazione.
+
+\bigskip
+
+\label{ex:22}
+\begin{essbox}{22}{Costruire liste con cons e list}{1}
+\textbf{Parte A.} Costruire \fn{'(a (b c) d)} usando solo \fn{cons}.
+
+\textbf{Parte B.} Costruire la stessa lista con \fn{list}.
+
+Verificare che le due espressioni siano \fn{equal}.
+\end{essbox}
+
+\label{ex:23}
+\begin{colbox}{23}{Accesso con car e cdr}{1}
+Data \fn{'(a b c d e)}, estrarre il terzo elemento
+usando solo \fn{car} e \fn{cdr} (non \fn{nth}, \fn{third}, ecc.).
+\begin{lstlisting}
+; risultato atteso: C
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:24}
+\begin{essbox}{24}{Primo e resto}{1}
+Implementare:
+\begin{lstlisting}
+(first-element lst)
+(rest-elements lst)
+\end{lstlisting}
+Gestire la lista vuota restituendo \fn{NIL}.
+\begin{lstlisting}
+(first-element '(a b c))    ; -> A
+(rest-elements '(a b c))    ; -> (B C)
+(first-element '())         ; -> NIL
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:25}
+\begin{colbox}{25}{Primo e ultimo}{1}
+Implementare \fn{(primo-e-ultimo lst)} che restituisce una lista
+con il primo e l'ultimo elemento.
+\begin{lstlisting}
+(primo-e-ultimo '(a b c d))   ; -> (A D)
+(primo-e-ultimo '(a))         ; -> (A A)
+\end{lstlisting}
+Gestire la lista vuota.
+\end{colbox}
+
+\label{ex:26}
+\begin{colbox}{26}{Scambia i primi due}{1}
+Implementare \fn{(scambia-primi-due lst)}.
+\begin{lstlisting}
+(scambia-primi-due '(a b c d))   ; -> (B A C D)
+\end{lstlisting}
+Gestire liste con meno di due elementi.
+\end{colbox}
+
+\label{ex:27}
+\begin{essbox}{27}{Lunghezza}{2}
+Implementare \fn{(length* lst)} senza usare \fn{length}.
+\begin{lstlisting}
+(length* '())        ; -> 0
+(length* '(a b c))   ; -> 3
+\end{lstlisting}
+\textbf{Vincolo:} ricorsione.
+\end{essbox}
+
+\label{ex:28}
+\begin{colbox}{28}{Somma degli elementi}{2}
+Implementare \fn{(sum-list lst)}.
+\begin{lstlisting}
+(sum-list '(1 2 3 4))   ; -> 10
+(sum-list '())          ; -> 0
+\end{lstlisting}
+\textbf{Vincolo:} ricorsione.
+\end{colbox}
+
+\label{ex:29}
+\begin{colbox}{29}{Prodotto degli elementi}{2}
+Implementare \fn{(product-list lst)}.
+\begin{lstlisting}
+(product-list '(2 3 4))   ; -> 24
+(product-list '())        ; -> 1
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:30}
+\begin{colbox}{30}{Massimo di una lista}{2}
+Implementare \fn{(max-list lst)}.
+\begin{lstlisting}
+(max-list '(4 8 2 9 1))   ; -> 9
+\end{lstlisting}
+Definire il comportamento per la lista vuota.
+\end{colbox}
+
+\label{ex:31}
+\begin{essbox}{31}{Appartenenza}{2}
+Implementare \fn{(member* item lst)} senza usare \fn{member}.
+\begin{lstlisting}
+(member* 'b '(a b c))   ; -> T
+(member* 'x '(a b c))   ; -> NIL
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:32}
+\begin{colbox}{32}{Conta occorrenze}{2}
+Implementare \fn{(count-element item lst)} senza usare \fn{count}.
+\begin{lstlisting}
+(count-element 'a '(a b a c a))   ; -> 3
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:33}
+\begin{colbox}{33}{Posizione}{2}
+Implementare \fn{(position* item lst)}: indice 0-based
+della prima occorrenza, oppure \fn{NIL}.
+\begin{lstlisting}
+(position* 'c '(a b c d))   ; -> 2
+(position* 'x '(a b c d))   ; -> NIL
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:34}
+\begin{colbox}{34}{Ultimo elemento}{2}
+Implementare \fn{(last-element lst)} senza usare \fn{last}.
+\begin{lstlisting}
+(last-element '(a b c))   ; -> C
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:35}
+\begin{essbox}{35}{Incrementa tutti}{2}
+Implementare \fn{(incrementa-tutti lst)} che aggiunge 1
+a ogni elemento.
+\begin{lstlisting}
+(incrementa-tutti '(1 2 3))   ; -> (2 3 4)
+\end{lstlisting}
+\textbf{Vincolo:} ricorsione; non usare \fn{mapcar}.
+
+Obiettivo: capire il pattern di trasformazione, precursore di \fn{mapcar}.
+\end{essbox}
+
+\label{ex:36}
+\begin{essbox}{36}{Filtra i pari}{2}
+Implementare \fn{(solo-pari lst)}.
+\begin{lstlisting}
+(solo-pari '(1 2 3 4 5 6))   ; -> (2 4 6)
+\end{lstlisting}
+\textbf{Vincolo:} ricorsione; non usare \fn{remove-if}.
+
+Obiettivo: capire il pattern di filtraggio, precursore di \fn{remove-if-not}.
+\end{essbox}
+
+\label{ex:37}
+\begin{colbox}{37}{Elimina tutte le occorrenze}{2}
+Implementare \fn{(elimina-tutte item lst)} senza usare \fn{remove}.
+\begin{lstlisting}
+(elimina-tutte 'a '(a b a c a))   ; -> (B C)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:38}
+\begin{colbox}{38}{Seleziona posizioni dispari}{2}
+Implementare \fn{(seleziona-dispari lst)}: elementi in posizione
+1, 3, 5, \ldots (prima, terza, quinta, ecc.).
+\begin{lstlisting}
+(seleziona-dispari '(a b c d e))   ; -> (A C E)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:39}
+\begin{essbox}{39}{Reverse con accumulatore}{2}
+Implementare \fn{(reverse* lst)} senza usare \fn{reverse}.
+
+Prima scrivere la versione ricorsiva semplice, poi quella
+con accumulatore (tail-recursive).
+\begin{lstlisting}
+(reverse* '(a b c d))   ; -> (D C B A)
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:40}
+\begin{essbox}{40}{Append}{3}
+Implementare \fn{(append* lst1 lst2)} senza usare \fn{append}.
+\begin{lstlisting}
+(append* '(a b) '(c d))   ; -> (A B C D)
+(append* '() '(a b))      ; -> (A B)
+\end{lstlisting}
+Non modificare le liste originali; ricorsione su \fn{lst1}.
+
+\hyperref[hint:40]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:41}
+\begin{colbox}{41}{Rimozione prima occorrenza}{3}
+Implementare \fn{(remove-first item lst)}: rimuove solo la
+prima occorrenza.
+\begin{lstlisting}
+(remove-first 'b '(a b c b d))   ; -> (A C B D)
+\end{lstlisting}
+Non usare \fn{remove}; non modificare la lista originale.
+
+\hyperref[hint:41]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:42}
+\begin{colbox}{42}{Sostituzione prima occorrenza}{2}
+Implementare \fn{(replace-first old new lst)}.
+\begin{lstlisting}
+(replace-first 'b 'x '(a b c b))   ; -> (A X C B)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:43}
+\begin{colbox}{43}{Lista palindroma}{2}
+Implementare \fn{(palindroma-p lst)}.
+\begin{lstlisting}
+(palindroma-p '(a b c b a))   ; -> T
+(palindroma-p '(a b c))       ; -> NIL
+\end{lstlisting}
+Usare \fn{reverse*} e \fn{equal}.
+\end{colbox}
+
+\label{ex:44}
+\begin{essbox}{44}{Range}{2}
+Implementare \fn{(range a b)}: interi da \fn{a} a \fn{b} inclusi.
+\begin{lstlisting}
+(range 1 5)    ; -> (1 2 3 4 5)
+(range 3 3)    ; -> (3)
+(range 5 3)    ; -> NIL
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:45}
+\begin{colbox}{45}{Duplica elementi}{2}
+Implementare \fn{(duplica-elementi lst)}.
+\begin{lstlisting}
+(duplica-elementi '(a b c))   ; -> (A A B B C C)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:46}
+\begin{colbox}{46}{Estrai chiavi da alist}{2}
+Implementare \fn{(schiaccia-coppia alist)}: restituisce la
+lista dei \fn{car} di ogni coppia puntata.
+\begin{lstlisting}
+(schiaccia-coppia '((a . 1) (b . 2) (c . 3)))
+; -> (A B C)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:47}
+\begin{colbox}{47}{Prefisso}{2}
+Implementare \fn{(prefisso-p sub lst)}.
+\begin{lstlisting}
+(prefisso-p '(a b) '(a b c d))   ; -> T
+(prefisso-p '(a c) '(a b c d))   ; -> NIL
+(prefisso-p '() '(a b))          ; -> T
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:48}
+\begin{colbox}{48}{Intercala}{2}
+Implementare \fn{(intercala lst1 lst2)} che alterna gli elementi.
+\begin{lstlisting}
+(intercala '(1 2 3) '(a b c))   ; -> (1 A 2 B 3 C)
+\end{lstlisting}
+Assumere lunghezze uguali.
+\end{colbox}
+
+\label{ex:49}
+\begin{colbox}{49}{Run-length encoding}{3}
+\textbf{Parte A.} Implementare \fn{(rle-encode lst)}.
+\begin{lstlisting}
+(rle-encode '(a a a b b c))   ; -> ((3 A) (2 B) (1 C))
+\end{lstlisting}
+\textbf{Parte B.} Implementare \fn{(rle-decode lst)}: l'inverso.
+\begin{lstlisting}
+(rle-decode '((3 A) (2 B) (1 C)))   ; -> (A A A B B C)
+\end{lstlisting}
+\hyperref[hint:49]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:50}
+\begin{colbox}{50}{Rimozione duplicati}{3}
+Implementare \fn{(remove-duplicates* lst)}: mantiene la prima
+occorrenza, senza usare \fn{remove-duplicates}.
+\begin{lstlisting}
+(remove-duplicates* '(a b a c b a))   ; -> (A B C)
+\end{lstlisting}
+\hyperref[hint:50]{$\to$ Suggerimento}
+\end{colbox}
+
+% =============================================================
+\chapter{Ricorsione avanzata}
+% =============================================================
+
+\noindent
+Tail recursion con accumulatori espliciti, ricorsione su strutture
+annidate (alberi impliciti), esponenziazione per quadratura
+e primo uso degli array con il crivello di Eratostene.
+
+\bigskip
+
+\label{ex:51}
+\begin{essbox}{51}{Fattoriale tail-recursive}{2}
+Implementare \fn{(fattoriale n)} in forma tail-recursive
+con accumulatore, usando \fn{labels}.
+\begin{lstlisting}
+(fattoriale 0)   ; -> 1
+(fattoriale 5)   ; -> 120
+\end{lstlisting}
+Obiettivo: capire il pattern accumulatore.
+\end{essbox}
+
+\label{ex:52}
+\begin{colbox}{52}{Reverse tail-recursive}{2}
+Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
+\end{colbox}
+
+\label{ex:53}
+\begin{colbox}{53}{Somma di un intervallo}{2}
+Implementare \fn{(somma-range a b)} in forma tail-recursive.
+\begin{lstlisting}
+(somma-range 1 100)   ; -> 5050
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:54}
+\begin{essbox}{54}{Fibonacci O(n)}{3}
+Implementare \fn{(fibonacci-fast n)} con due accumulatori,
+complessita' $O(n)$.
+\begin{lstlisting}
+(fibonacci-fast 10)   ; -> 55
+(fibonacci-fast 50)   ; -> 12586269025
+\end{lstlisting}
+\hyperref[hint:54]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:55}
+\begin{essbox}{55}{Flatten}{3}
+Implementare \fn{(flatten* tree)} che appiattisce strutture annidate.
+\begin{lstlisting}
+(flatten* '(a (b (c d) e) f))   ; -> (A B C D E F)
+(flatten* '((1 2) (3 (4 5))))   ; -> (1 2 3 4 5)
+\end{lstlisting}
+\hyperref[hint:55]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:56}
+\begin{essbox}{56}{Profondita' di una struttura}{3}
+Implementare \fn{(tree-depth tree)}: profondita' massima di nesting.
+\begin{lstlisting}
+(tree-depth '())             ; -> 0
+(tree-depth '(a b c))        ; -> 1
+(tree-depth '(a (b c)))      ; -> 2
+(tree-depth '(a (b (c d))))  ; -> 3
+\end{lstlisting}
+\hyperref[hint:56]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:57}
+\begin{colbox}{57}{Conta atomi}{2}
+Implementare \fn{(count-atoms tree)}.
+\begin{lstlisting}
+(count-atoms '(a (b c) ((d))))   ; -> 4
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:58}
+\begin{colbox}{58}{Somma profonda}{2}
+Implementare \fn{(sum-tree tree)}.
+\begin{lstlisting}
+(sum-tree '(1 (2 3) ((4 5))))   ; -> 15
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:59}
+\begin{colbox}{59}{Ricerca in struttura annidata}{3}
+Implementare \fn{(tree-member-p item tree)}.
+\begin{lstlisting}
+(tree-member-p 'c '(a (b c) d))   ; -> T
+(tree-member-p 'x '(a (b c) d))   ; -> NIL
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:60}
+\begin{colbox}{60}{Sostituzione profonda}{3}
+Implementare \fn{(sostituisci-profondo old new tree)}.
+\begin{lstlisting}
+(sostituisci-profondo 'b 'x '(a (b (b c)) b))
+; -> (A (X (X C)) X)
+\end{lstlisting}
+\hyperref[hint:60]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:61}
+\begin{essbox}{61}{Potenza efficiente}{3}
+Implementare \fn{(power-fast base exp)} con complessita' $O(\log n)$:
+\[
+x^n = \begin{cases}
+  (x^{n/2})^2 & \text{se } n \text{ pari} \\
+  x \cdot x^{n-1} & \text{se } n \text{ dispari}
+\end{cases}
+\]
+\begin{lstlisting}
+(power-fast 2 10)   ; -> 1024
+(power-fast 3  0)   ; -> 1
+\end{lstlisting}
+\hyperref[hint:61]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:62}
+\begin{colbox}{62}{MCD e MCM}{2}
+Implementare \fn{(mcd* a b)} e \fn{(mcm* a b)} senza usare
+\fn{gcd}/\fn{lcm}.
+\begin{lstlisting}
+(mcd* 48 18)   ; -> 6
+(mcm* 4  6)    ; -> 12
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:63}
+\begin{colbox}{63}{Numero primo}{2}
+Implementare \fn{(primo-p n)}.
+\begin{lstlisting}
+(primo-p 17)   ; -> T
+(primo-p 18)   ; -> NIL
+\end{lstlisting}
+Gestire correttamente 0 e 1.
+\end{colbox}
+
+\label{ex:64}
+\begin{essbox}{64}{Crivello di Eratostene}{3}
+Implementare \fn{(crivello n)}: lista di tutti i primi $\leq n$.
+\begin{lstlisting}
+(crivello 20)
+; -> (2 3 5 7 11 13 17 19)
+\end{lstlisting}
+Vincoli: usare array booleano di lunghezza $n+1$; marcare i
+multipli con \fn{setf}/\fn{aref}.
+
+\hyperref[hint:64]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:65}
+\begin{colbox}{65}{Fattori primi}{3}
+Implementare \fn{(prime-factors n)}.
+\begin{lstlisting}
+(prime-factors 60)   ; -> (2 2 3 5)
+\end{lstlisting}
+Risultato ordinato; $n > 1$.
+
+\hyperref[hint:65]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:66}
+\begin{colbox}{66}{Sottolista per posizione}{2}
+Implementare \fn{(sublist lst inizio fine)} (indici 0-based,
+\fn{fine} escluso).
+\begin{lstlisting}
+(sublist '(a b c d e) 1 4)   ; -> (B C D)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:67}
+\begin{colbox}{67}{Raggruppa in blocchi}{3}
+Implementare \fn{(raggruppa lst n)}: sottoliste di lunghezza \fn{n}.
+\begin{lstlisting}
+(raggruppa '(a b c d e f g) 3)
+; -> ((A B C) (D E F) (G))
+\end{lstlisting}
+\hyperref[hint:67]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:68}
+\begin{colbox}{68}{Intersezione di insiemi}{2}
+Implementare \fn{(interseca lst1 lst2)} senza usare \fn{intersection}.
+\begin{lstlisting}
+(interseca '(a b c d) '(b d e))   ; -> (B D)
+\end{lstlisting}
+\end{colbox}
+
+% =============================================================
+\chapter{Higher-order e closure}
+% =============================================================
+
+\noindent
+Funzioni di ordine superiore (\fn{mapcar}, \fn{remove-if},
+\fn{reduce}, \fn{apply}, \fn{mapcan}) e closure: funzioni che
+catturano variabili dall'ambiente lessicale.
+
+\bigskip
+
+\label{ex:69}
+\begin{essbox}{69}{Quadrato degli elementi con mapcar}{1}
+Implementare \fn{(square-list lst)} usando \fn{mapcar} e \fn{lambda}.
+\begin{lstlisting}
+(square-list '(1 2 3 4))   ; -> (1 4 9 16)
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:70}
+\begin{essbox}{70}{Filtro con remove-if-not}{1}
+Implementare \fn{(even-list lst)} usando \fn{remove-if-not}.
+\begin{lstlisting}
+(even-list '(1 2 3 4 5 6))   ; -> (2 4 6)
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:71}
+\begin{colbox}{71}{Stringhe che iniziano con vocale}{2}
+Implementare \fn{(vocali-iniziali lst)} usando \fn{remove-if-not}.
+\begin{lstlisting}
+(vocali-iniziali '("anna" "bob" "elena" "carlo"))
+; -> ("anna" "elena")
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:72}
+\begin{essbox}{72}{Somma con reduce}{2}
+Implementare \fn{(sum-reduce lst)} con \fn{reduce}.
+\begin{lstlisting}
+(sum-reduce '(1 2 3 4))   ; -> 10
+(sum-reduce '())          ; -> 0
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:73}
+\begin{colbox}{73}{Prodotto con reduce}{2}
+Implementare \fn{(product-reduce lst)} con \fn{reduce}.
+\begin{lstlisting}
+(product-reduce '(2 3 4))   ; -> 24
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:74}
+\begin{colbox}{74}{Min e max con reduce}{2}
+Implementare \fn{(reduce-min lst)} e \fn{(reduce-max lst)}.
+\begin{lstlisting}
+(reduce-min '(8 3 5 1 9))   ; -> 1
+(reduce-max '(8 3 5 1 9))   ; -> 9
+\end{lstlisting}
+Gestire la lista vuota.
+\end{colbox}
+
+\label{ex:75}
+\begin{essbox}{75}{Lista di cifre in numero intero}{3}
+Implementare \fn{(cifre->intero lst)} con \fn{reduce}.
+\begin{lstlisting}
+(cifre->intero '(1 5 3 4))   ; -> 1534
+\end{lstlisting}
+Suggerimento: a ogni passo moltiplicare l'accumulatore per 10
+e sommare la cifra corrente.
+
+\hyperref[hint:75]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:76}
+\begin{colbox}{76}{Appiattisce un livello}{3}
+Implementare \fn{(appiattisci-un-livello lst)} con \fn{reduce}
+e \fn{append}.
+\begin{lstlisting}
+(appiattisci-un-livello '((a b) (c d) (e)))
+; -> (A B C D E)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:77}
+\begin{colbox}{77}{Regola di Horner}{3}
+Implementare \fn{(horner coefficienti x)} con \fn{reduce}.
+\[
+p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)
+\]
+\begin{lstlisting}
+; 2x^2 + 3x + 1  con x=2  -> 15
+(horner '(2 3 1) 2)   ; -> 15
+\end{lstlisting}
+\hyperref[hint:77]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:78}
+\begin{essbox}{78}{Prodotto scalare con apply}{2}
+Implementare \fn{(prodotto-scalare v1 v2)}.
+\begin{lstlisting}
+(prodotto-scalare '(1 2 3) '(4 5 6))   ; -> 32
+\end{lstlisting}
+Vincolo: usare \fn{mapcar} per i prodotti componente per componente,
+poi \fn{apply} con \fn{+} per la somma.
+\end{essbox}
+
+\label{ex:79}
+\begin{essbox}{79}{mapcan}{2}
+Implementare \fn{(raddoppia lst)} con \fn{mapcan}.
+\begin{lstlisting}
+(raddoppia '(1 2 3))   ; -> (1 1 2 2 3 3)
+\end{lstlisting}
+Spiegare la differenza tra \fn{mapcan} e \fn{mapcar} in un commento.
+\end{essbox}
+
+\label{ex:80}
+\begin{colbox}{80}{Ordina per chiave}{2}
+Implementare \fn{(ordina-per-punteggio lst)}: ordina coppie
+\fn{(nome . punteggio)} in ordine decrescente.
+\begin{lstlisting}
+(ordina-per-punteggio
+  '((mario . 85) (anna . 92) (luca . 78)))
+; -> ((ANNA . 92) (MARIO . 85) (LUCA . 78))
+\end{lstlisting}
+Vincolo: usare \fn{sort} con comparatore custom.
+\end{colbox}
+
+\label{ex:81}
+\begin{colbox}{81}{Tutti e qualcuno}{2}
+Implementare \fn{(tutti-p pred lst)} e \fn{(qualcuno-p pred lst)}
+replicando \fn{every}/\fn{some} senza usarli.
+\begin{lstlisting}
+(tutti-p #'evenp '(2 4 6))    ; -> T
+(qualcuno-p #'oddp '(2 3 4))  ; -> T
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:82}
+\begin{colbox}{82}{Conta con predicato}{2}
+Implementare \fn{(count-matching pred lst)} senza usare \fn{count-if}.
+\begin{lstlisting}
+(count-matching #'evenp '(1 2 3 4 5))   ; -> 2
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:83}
+\begin{colbox}{83}{Raggruppa per chiave}{3}
+Implementare \fn{(raggruppa-per funzione lst)}: restituisce
+una alist con chiave = risultato della funzione.
+\begin{lstlisting}
+(raggruppa-per #'evenp '(1 2 3 4 5))
+; -> ((NIL 1 3 5) (T 2 4))
+\end{lstlisting}
+\hyperref[hint:83]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:84}
+\begin{colbox}{84}{Applica a tutti}{2}
+Implementare \fn{(applica-a-tutti funzioni x)}.
+\begin{lstlisting}
+(applica-a-tutti (list #'1+ #'1- #'zerop) 0)
+; -> (1 -1 T)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:85}
+\begin{essbox}{85}{Composizione di funzioni}{3}
+Implementare \fn{(compose f g)}: restituisce $f(g(x))$ come closure.
+\begin{lstlisting}
+(defparameter *f* (compose #'1+ #'1+))
+(funcall *f* 10)   ; -> 12
+\end{lstlisting}
+\hyperref[hint:85]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:86}
+\begin{essbox}{86}{Applicazione parziale}{3}
+Implementare \fn{(partial funzione \&rest argomenti)}.
+\begin{lstlisting}
+(defparameter *add10* (partial #'+ 10))
+(funcall *add10* 5)    ; -> 15
+(funcall *add10* 20)   ; -> 30
+\end{lstlisting}
+\hyperref[hint:86]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:87}
+\begin{essbox}{87}{Closure con stato: contatore}{3}
+Implementare \fn{(make-counter \&optional (start 0) (step 1))}.
+\begin{lstlisting}
+(defparameter *c* (make-counter))
+(funcall *c*)   ; -> 1
+(funcall *c*)   ; -> 2
+
+(defparameter *c2* (make-counter 10 5))
+(funcall *c2*)  ; -> 10
+(funcall *c2*)  ; -> 15
+\end{lstlisting}
+\hyperref[hint:87]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:88}
+\begin{colbox}{88}{Accumulatore}{3}
+Implementare \fn{(make-accumulator iniziale)}: ogni chiamata
+somma un valore al totale.
+\begin{lstlisting}
+(defparameter *acc* (make-accumulator 5))
+(funcall *acc* 10)   ; -> 15
+(funcall *acc* 3)    ; -> 18
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:89}
+\begin{colbox}{89}{Generatore Fibonacci con closure}{4}
+Implementare \fn{(make-fib-generator)}: restituisce una funzione
+che ad ogni chiamata produce il successivo numero di Fibonacci.
+\begin{lstlisting}
+(defparameter *fib* (make-fib-generator))
+(funcall *fib*)   ; -> 0
+(funcall *fib*)   ; -> 1
+(funcall *fib*)   ; -> 1
+(funcall *fib*)   ; -> 2
+\end{lstlisting}
+\hyperref[hint:89]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:90}
+\begin{colbox}{90}{Pipeline}{3}
+Implementare \fn{(pipeline valore funzioni)}.
+\begin{lstlisting}
+(pipeline 5 (list #'1+ #'1+ (lambda (x) (* x 2))))
+; -> 14
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:91}
+\begin{essbox}{91}{Memoization}{4}
+Implementare \fn{(memoize funzione)} che restituisce una versione
+con cache.
+
+Vincoli: hash table nella closure; funzione originale invariata.
+\begin{lstlisting}
+(defparameter *fib-m*
+  (memoize #'fibonacci))
+(funcall *fib-m* 35)   ; veloce
+\end{lstlisting}
+\hyperref[hint:91]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:92}
+\begin{colbox}{92}{Mini libreria funzionale}{4}
+Raccogliere in un unico file, con docstring:
+\fn{map-list}, \fn{filter-list}, \fn{count-matching},
+\fn{find-matching}, \fn{compose}, \fn{partial}.
+
+Aggiungere almeno 3 funzioni a scelta (es.\ \fn{take}, \fn{drop}, \fn{zip}).
+
+Requisiti: nessuno stato globale; almeno un test per funzione.
+\end{colbox}
+
+% =============================================================
+\chapter{Strutture dati}
+% =============================================================
+
+\noindent
+Association list, hash table, array 2D, \fn{defstruct},
+alberi binari e BST, pila e coda come ADT, grafi.
+
+\bigskip
+
+\label{ex:93}
+\begin{essbox}{93}{Association list}{2}
+Implementare \fn{(lookup key alist)} e \fn{(set-key key value alist)}.
+\begin{lstlisting}
+(lookup 'age '((name . "Mario") (age . 23)))
+; -> 23
+(set-key 'age 24 '((name . "Mario") (age . 23)))
+; -> ((NAME . "Mario") (AGE . 24))
+\end{lstlisting}
+Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
+\end{essbox}
+
+\label{ex:94}
+\begin{colbox}{94}{Frequenze con alist}{3}
+Implementare \fn{(frequencies lst)}.
+\begin{lstlisting}
+(frequencies '(a b a c b a))
+; -> ((A . 3) (B . 2) (C . 1))
+\end{lstlisting}
+\hyperref[hint:94]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:95}
+\begin{essbox}{95}{Hash table: operazioni base}{2}
+Implementare \fn{(ht-get key ht)}, \fn{(ht-set key value ht)},
+\fn{(ht-delete key ht)}, \fn{(ht-keys ht)}.
+\begin{lstlisting}
+(defparameter *ht* (make-hash-table))
+(ht-set 'foo 42 *ht*)
+(ht-get 'foo *ht*)     ; -> 42
+(ht-delete 'foo *ht*)
+(ht-get 'foo *ht*)     ; -> NIL
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:96}
+\begin{colbox}{96}{Frequenze con hash table}{3}
+Riscrivere \fn{(frequencies-hash lst)} usando una hash table.
+
+Obiettivo: confrontare alist vs hash table.
+\end{colbox}
+
+\label{ex:97}
+\begin{colbox}{97}{Frequenza dei caratteri}{3}
+Implementare \fn{(frequenza-caratteri stringa)}.
+\begin{lstlisting}
+(frequenza-caratteri "banana")
+; hash table: #\b->1, #\a->3, #\n->2
+\end{lstlisting}
+\hyperref[hint:97]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:98}
+\begin{colbox}{98}{Unione di hash table}{3}
+Implementare \fn{(unisci-hash ht1 ht2)}: chiavi duplicate
+$\to$ somma dei valori.
+
+\hyperref[hint:98]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:99}
+\begin{colbox}{99}{Inverti hash table}{3}
+Implementare \fn{(inverti-hash ht)}: scambia chiavi e valori.
+Assumere valori unici.
+
+\hyperref[hint:99]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:100}
+\begin{colbox}{100}{Conversione alist/hash}{2}
+Implementare \fn{(alist->hash alist)} e \fn{(hash->alist ht)}.
+\begin{lstlisting}
+(alist->hash '((a . 1) (b . 2)))
+; -> hash table a->1, b->2
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:101}
+\begin{essbox}{101}{Matrice con array 2D}{2}
+Creare una matrice $3 \times 3$ con \fn{make-array} e implementare:
+\begin{lstlisting}
+(mat-get m r c)
+(mat-set m r c val)
+(stampa-matrice m)
+\end{lstlisting}
+\begin{lstlisting}
+(defparameter *m* (make-array '(3 3) :initial-element 0))
+(mat-set *m* 1 1 5)
+(mat-get *m* 1 1)   ; -> 5
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:102}
+\begin{colbox}{102}{Trasposta di matrice}{3}
+Implementare \fn{(trasposta m n)}: trasposta di una matrice $n \times n$.
+
+\hyperref[hint:102]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:103}
+\begin{essbox}{103}{Inversione array in loco}{2}
+Implementare \fn{(inverti-array! v)} che inverte il vettore
+modificandolo con \fn{setf}/\fn{aref}, senza liste ausiliarie.
+\begin{lstlisting}
+(defparameter *v*
+  (make-array 5 :initial-contents '(1 2 3 4 5)))
+(inverti-array! *v*)
+; *v* ora e': #(5 4 3 2 1)
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:104}
+\begin{colbox}{104}{Moltiplicazione di matrici \quattroStelle\ (opzionale)}{4}
+Implementare \fn{(moltiplica-matrici a b n)}: prodotto di
+matrici quadrate $n \times n$.
+
+\hyperref[hint:104]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:105}
+\begin{essbox}{105}{Struttura con defstruct}{2}
+Definire:
+\begin{lstlisting}
+(defstruct persona
+  nome
+  (eta 18)
+  citta)
+\end{lstlisting}
+Implementare \fn{(crea-persona nome eta citta)} che valida l'eta'
+(positiva) e segnala errore altrimenti.
+\begin{lstlisting}
+(crea-persona "Mario" 23 "Roma")
+; -> #S(PERSONA :NOME "Mario" :ETA 23 :CITTA "Roma")
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:106}
+\begin{colbox}{106}{Struttura nodo-albero}{2}
+Definire:
+\begin{lstlisting}
+(defstruct nodo
+  valore
+  (sinistra nil)
+  (destra   nil))
+\end{lstlisting}
+Costruire manualmente l'albero:
+\begin{lstlisting}
+;       5
+;      / \
+;     3   8
+;    / \
+;   1   4
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:107}
+\begin{colbox}{107}{Albero con liste}{2}
+Rappresentare lo stesso albero con la notazione
+\fn{(valore sinistra destra)} e implementare:
+\begin{lstlisting}
+(make-leaf v)
+(make-node v left right)
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:108}
+\begin{essbox}{108}{BST: inserimento e ricerca}{4}
+Implementare un albero binario di ricerca:
+\begin{lstlisting}
+(bst-insert value tree)
+(bst-find value tree)
+\end{lstlisting}
+\begin{lstlisting}
+(bst-find 4 (bst-insert 4 (bst-insert 5 nil)))
+; -> T
+\end{lstlisting}
+\hyperref[hint:108]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:109}
+\begin{colbox}{109}{Traversal dell'albero}{3}
+Implementare \fn{(preorder tree)}, \fn{(inorder tree)},
+\fn{(postorder tree)}.
+
+Verificare che \fn{inorder} su un BST produca sequenza ordinata.
+\begin{lstlisting}
+(inorder albero)   ; -> (1 3 4 5 8)
+\end{lstlisting}
+\hyperref[hint:109]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:110}
+\begin{colbox}{110}{Altezza e conteggio foglie}{3}
+Implementare \fn{(tree-height tree)} e \fn{(count-leaves tree)}.
+\begin{lstlisting}
+(tree-height albero)    ; -> 3
+(count-leaves albero)   ; -> 3
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:111}
+\begin{colbox}{111}{Specchia l'albero}{3}
+Implementare \fn{(specchia tree)}: scambia ricorsivamente
+sottoalberi sinistro e destro.
+\end{colbox}
+
+\label{ex:112}
+\begin{colbox}{112}{Albero bilanciato?}{4}
+Implementare \fn{(bilanciato-p tree)}: le altezze dei sottoalberi
+differiscono al piu' di 1 per ogni nodo.
+
+\hyperref[hint:112]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:113}
+\begin{essbox}{113}{Pila (stack) come ADT}{2}
+Implementare con \fn{setf}:
+\begin{lstlisting}
+(make-stack)
+(stack-push item stack)
+(stack-pop stack)
+(stack-peek stack)
+(stack-empty-p stack)
+\end{lstlisting}
+\begin{lstlisting}
+(defparameter *s* (make-stack))
+(stack-push 1 *s*)
+(stack-push 2 *s*)
+(stack-pop *s*)    ; -> 2
+(stack-peek *s*)   ; -> 1
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:114}
+\begin{colbox}{114}{Coda (queue) come ADT}{3}
+Implementare:
+\begin{lstlisting}
+(make-queue)
+(enqueue item queue)
+(dequeue queue)
+(queue-empty-p queue)
+\end{lstlisting}
+\hyperref[hint:114]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:115}
+\begin{essbox}{115}{Valida parentesi}{3}
+Implementare \fn{(valida-parentesi stringa)} per
+\fn{()}, \fn{[]}, \fn{\{\}}.
+\begin{lstlisting}
+(valida-parentesi "([]{})")   ; -> T
+(valida-parentesi "([)]")     ; -> NIL
+(valida-parentesi "((")       ; -> NIL
+\end{lstlisting}
+Vincolo: usare una pila.
+
+\hyperref[hint:115]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:116}
+\begin{colbox}{116}{Rubrica con hash table}{3}
+Implementare:
+\begin{lstlisting}
+(add-contact name phone)
+(find-contact name)
+(remove-contact name)
+(list-contacts)
+\end{lstlisting}
+Gestire il caso contatto non trovato.
+\end{colbox}
+
+\label{ex:117}
+\begin{essbox}{117}{Grafo come lista di adiacenza}{3}
+Implementare:
+\begin{lstlisting}
+(neighbors node graph)
+(add-edge node1 node2 graph)
+\end{lstlisting}
+\begin{lstlisting}
+(neighbors 'a '((a b c) (b a d) (c a d) (d b c)))
+; -> (B C)
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:118}
+\begin{colbox}{118}{DFS su grafo}{4}
+Implementare \fn{(dfs graph start)}: visita in profondita'.
+\begin{lstlisting}
+(dfs '((a b c) (b a d) (c a) (d b)) 'a)
+; -> (A B D C)
+\end{lstlisting}
+Gestire i cicli con un insieme di nodi gia' visitati.
+
+\hyperref[hint:118]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:119}
+\begin{colbox}{119}{BFS su grafo}{4}
+Implementare \fn{(bfs graph start)}: visita in ampiezza.
+\begin{lstlisting}
+(bfs '((a b c) (b a d) (c a) (d b)) 'a)
+; -> (A B C D)
+\end{lstlisting}
+Vincolo: usare una coda.
+
+\hyperref[hint:119]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:120}
+\begin{colbox}{120}{Conta parole}{3}
+Implementare \fn{(conta-parole testo)} e
+\fn{(parola-piu-frequente testo)}.
+\begin{lstlisting}
+(conta-parole "il gatto e' sul tetto e il tetto")
+; hash table: "il"->2, ...
+\end{lstlisting}
+\hyperref[hint:120]{$\to$ Suggerimento}
+\end{colbox}
+
+% =============================================================
+\chapter{Macro}
+% =============================================================
+
+\noindent
+Le macro operano a livello sintattico: trasformano codice
+prima che venga valutato. Questo capitolo mostra come costruire
+nuove strutture di controllo.
+
+\bigskip
+
+\label{ex:121}
+\begin{essbox}{121}{Macro quando}{3}
+Implementare:
+\begin{lstlisting}
+(defmacro quando (test &body corpo))
+\end{lstlisting}
+Si comporta come \fn{when}: esegue \fn{corpo} solo se \fn{test} e' vero.
+\begin{lstlisting}
+(quando (> x 0)
+  (print "positivo")
+  (print "ok"))
+\end{lstlisting}
+Verificare l'espansione con \fn{macroexpand-1}.
+
+Obiettivo: capire la differenza macro/funzione.
+
+\hyperref[hint:121]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:122}
+\begin{essbox}{122}{Macro while}{3}
+Implementare:
+\begin{lstlisting}
+(defmacro mio-while (test &body corpo))
+\end{lstlisting}
+\begin{lstlisting}
+(let ((i 0))
+  (mio-while (< i 5)
+    (print i)
+    (setf i (1+ i))))
+; stampa 0 1 2 3 4
+\end{lstlisting}
+\hyperref[hint:122]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:123}
+\begin{colbox}{123}{Macro for}{4}
+Implementare:
+\begin{lstlisting}
+(defmacro mio-for ((var da a) &body corpo))
+\end{lstlisting}
+\begin{lstlisting}
+(mio-for (i 1 5)
+  (format t "~A~%" i))
+; stampa 1 2 3 4 5
+\end{lstlisting}
+Obiettivo: usare \fn{gensym} per evitare cattura della variabile.
+
+\hyperref[hint:123]{$\to$ Suggerimento}
+\end{colbox}
+
+% =============================================================
+\chapter{Backtracking e algoritmi}
+% =============================================================
+
+\noindent
+Algoritmi che esplorano uno spazio di ricerca: generazione di
+combinazioni, ordinamento e problemi classici di backtracking.
+
+\bigskip
+
+\label{ex:124}
+\begin{essbox}{124}{Tutti i sottoinsiemi}{3}
+Implementare \fn{(subsets lst)}: genera tutti i $2^n$ sottoinsiemi.
+\begin{lstlisting}
+(subsets '(a b))
+; -> (() (A) (B) (A B))
+\end{lstlisting}
+\hyperref[hint:124]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:125}
+\begin{essbox}{125}{Permutazioni}{4}
+Implementare \fn{(permutations lst)}.
+\begin{lstlisting}
+(length (permutations '(a b c)))   ; -> 6
+\end{lstlisting}
+\hyperref[hint:125]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:126}
+\begin{colbox}{126}{Combinazioni}{3}
+Implementare \fn{(combinations lst k)}.
+\begin{lstlisting}
+(combinations '(a b c d) 2)
+; -> ((A B) (A C) (A D) (B C) (B D) (C D))
+\end{lstlisting}
+\hyperref[hint:126]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:127}
+\begin{colbox}{127}{Somma a target}{3}
+Implementare \fn{(somma-a-target numeri target)}.
+\begin{lstlisting}
+(somma-a-target '(1 2 3 4 5) 6)
+; -> ((1 5) (2 4) (1 2 3))
+\end{lstlisting}
+\hyperref[hint:127]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:128}
+\begin{colbox}{128}{Parentesi bilanciate generate}{3}
+Implementare \fn{(genera-parentesi n)}.
+\begin{lstlisting}
+(genera-parentesi 3)
+; -> ("((()))" "(()())" "(())()" "()(())" "()()()")
+\end{lstlisting}
+\hyperref[hint:128]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:129}
+\begin{essbox}{129}{Merge sort}{4}
+Implementare \fn{(merge-sorted lst1 lst2)} e \fn{(merge-sort* lst)}.
+\begin{lstlisting}
+(merge-sort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
+\end{lstlisting}
+Vincoli: non usare \fn{sort}; complessita' $O(n \log n)$.
+
+\hyperref[hint:129]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:130}
+\begin{colbox}{130}{Quicksort}{4}
+Implementare \fn{(quicksort* lst)} senza usare \fn{sort}.
+\begin{lstlisting}
+(quicksort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
+\end{lstlisting}
+\hyperref[hint:130]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:131}
+\begin{essbox}{131}{Torri di Hanoi}{3}
+Implementare \fn{(hanoi n da a tramite)} che stampa le mosse.
+\begin{lstlisting}
+(hanoi 3 'A 'C 'B)
+; Sposta disco 1: A -> C
+; ...
+\end{lstlisting}
+\hyperref[hint:131]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:132}
+\begin{colbox}{132}{Problema dello zaino}{4}
+Implementare \fn{(knapsack oggetti capacita)}.
+Oggetti: lista di \fn{(peso valore)}.
+\begin{lstlisting}
+(knapsack '((2 3) (3 4) (4 5) (5 8)) 5)
+; -> 7
+\end{lstlisting}
+\hyperref[hint:132]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:133}
+\begin{colbox}{133}{Labirinto}{4}
+Rappresentare un labirinto come matrice 2D (0 libero, 1 muro).
+Implementare \fn{(find-path maze start goal)}.
+\begin{lstlisting}
+(find-path maze '(0 0) '(4 4))
+; -> ((0 0) (1 0) ... (4 4))
+\end{lstlisting}
+\hyperref[hint:133]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:134}
+\begin{essbox}{134}{N-regine}{5}
+Implementare \fn{(n-queens n)}: tutte le configurazioni valide.
+\begin{lstlisting}
+(length (n-queens 4))   ; -> 2
+(length (n-queens 8))   ; -> 92
+\end{lstlisting}
+Vincoli: backtracking con pruning; rappresentazione compatta.
+
+\hyperref[hint:134]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:135}
+\begin{colbox}{135}{Sudoku}{5}
+Implementare \fn{(solve-sudoku board)}.
+\fn{board}: array $9 \times 9$ con 0 per celle vuote.
+
+Algoritmo: per ogni cella vuota, provare i valori 1--9,
+verificare vincoli riga/colonna/blocco, procedere ricorsivamente.
+
+\hyperref[hint:135]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:136}
+\begin{colbox}{136}{Cammino del cavallo}{5}
+Implementare \fn{(knights-tour n)}: cammino del cavallo su
+scacchiera $n \times n$ visitando ogni casella esattamente una volta.
+\begin{lstlisting}
+(knights-tour 5)   ; -> lista di mosse, o NIL
+\end{lstlisting}
+Suggerimento: euristica di Warnsdorff.
+
+\hyperref[hint:136]{$\to$ Suggerimento}
+\end{colbox}
+
+% =============================================================
+\chapter{Stringhe e I/O}
+% =============================================================
+
+\noindent
+Operazioni sulle stringhe e tecniche di I/O.
+
+\bigskip
+
+\label{ex:137}
+\begin{essbox}{137}{Inverti una stringa}{2}
+Implementare \fn{(reverse-string s)} senza applicare \fn{reverse}
+direttamente; usare \fn{coerce}.
+\begin{lstlisting}
+(reverse-string "hello")   ; -> "olleh"
+\end{lstlisting}
+\end{essbox}
+
+\label{ex:138}
+\begin{colbox}{138}{Stringa palindroma}{2}
+Implementare \fn{(palindrome-p s)}.
+\begin{lstlisting}
+(palindrome-p "anna")    ; -> T
+(palindrome-p "casa")    ; -> NIL
+\end{lstlisting}
+\end{colbox}
+
+\label{ex:139}
+\begin{colbox}{139}{Palindromo robusto}{3}
+Implementare \fn{(palindrome-robust-p s)}: ignora
+maiuscole/minuscole, spazi, punteggiatura.
+\begin{lstlisting}
+(palindrome-robust-p "I topi non avevano nipoti")
+; -> T
+\end{lstlisting}
+\hyperref[hint:139]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:140}
+\begin{colbox}{140}{Anagrammi}{3}
+Implementare \fn{(anagram-p s1 s2)}, ignorando maiuscole.
+\begin{lstlisting}
+(anagram-p "roma" "amor")   ; -> T
+\end{lstlisting}
+\hyperref[hint:140]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:141}
+\begin{colbox}{141}{Conta caratteri}{2}
+Implementare \fn{(count-char c s)}.
+\begin{lstlisting}
+(count-char #\a "banana")   ; -> 3
+\end{lstlisting}
+\end{colbox}
+
+% =============================================================
+\chapter{Parsing e interprete}
+% =============================================================
+
+\noindent
+Un valutatore di espressioni simboliche senza usare \fn{eval}:
+il codice come dato, pattern fondamentale di Lisp.
+
+\bigskip
+
+\label{ex:142}
+\begin{essbox}{142}{Calcolatrice RPN}{4}
+Implementare \fn{(rpn-eval espressione)}: valuta notazione
+polacca inversa.
+\begin{lstlisting}
+(rpn-eval '(3 4 +))          ; -> 7
+(rpn-eval '(3 4 * 2 +))      ; -> 14
+(rpn-eval '(5 1 2 + 4 * + 3 -)) ; -> 14
+\end{lstlisting}
+Vincolo: usare una pila.
+
+\hyperref[hint:142]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:143}
+\begin{essbox}{143}{Valutatore di espressioni}{4}
+Implementare \fn{(evaluate-expression expr)}: espressioni
+in notazione prefissa, senza usare \fn{eval}.
+\begin{lstlisting}
+(evaluate-expression '(+ 2 3))        ; -> 5
+(evaluate-expression '(* 4 (+ 2 3)))  ; -> 20
+\end{lstlisting}
+\hyperref[hint:143]{$\to$ Suggerimento}
+\end{essbox}
+
+\label{ex:144}
+\begin{colbox}{144}{Mini-interprete con variabili}{5}
+Estendere l'es.~143 con variabili (\fn{set x 10}) e riferimenti.
+\begin{lstlisting}
+(mio-eval '(set x 10) env)
+(mio-eval '(+ x 5) env)   ; -> 15
+\end{lstlisting}
+Ambiente separato come alist; non usare \fn{eval}.
+
+\hyperref[hint:144]{$\to$ Suggerimento}
+\end{colbox}
+
+% =============================================================
+\chapter{Progetti}
+% =============================================================
+
+\noindent
+Progetti completi che integrano strutture dati, I/O, gestione
+degli errori e organizzazione del codice.
+
+\bigskip
+
+\label{ex:145}
+\begin{essbox}{145}{Indovina il numero}{3}
+Il programma sceglie un numero casuale tra 1 e 100,
+l'utente lo indovina con feedback troppo alto/troppo basso.
+\begin{lstlisting}
+(gioca)
+; Indovina il numero (1-100):
+; > 50
+; Troppo alto!
+; ...
+; Esatto! Ci hai messo 5 tentativi.
+\end{lstlisting}
+Vincolo: \fn{loop} per il ciclo; \fn{random} per la generazione.
+\end{essbox}
+
+\label{ex:146}
+\begin{colbox}{146}{Tris (tic-tac-toe)}{4}
+Gioco del tris a due giocatori da tastiera.
+\begin{itemize}[leftmargin=2em]
+  \item Griglia $3 \times 3$ con array.
+  \item Verifica vittoria: righe, colonne, diagonali.
+  \item Turno alternato; rilevamento pareggio.
+\end{itemize}
+Separare logica del gioco, verifica vittoria e I/O.
+
+\hyperref[hint:146]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:147}
+\begin{colbox}{147}{Gioco della vita (Conway)}{4}
+Implementare \fn{(evolvi griglia)}: un passo di evoluzione.
+Griglia: array 2D di 0 (morto) e 1 (vivo).
+Regole: sopravvive con 2--3 vicini vivi; nasce con esattamente 3.
+\begin{lstlisting}
+(loop repeat 5
+      do (setf g (evolvi g))
+         (stampa-griglia g))
+\end{lstlisting}
+\hyperref[hint:147]{$\to$ Suggerimento}
+\end{colbox}
+
+\label{ex:148}
+\begin{essbox}{148}{Mini sistema gestionale}{5}
+Programma completo (studenti, libri, prodotti, film o contatti).
+
+Requisiti minimi:
+\begin{itemize}[leftmargin=2em]
+  \item \fn{defstruct} o CLOS;
+  \item hash table o lista come archivio;
+  \item inserimento, ricerca, modifica, eliminazione,
+        filtraggio, ordinamento;
+  \item salvataggio e caricamento da file;
+  \item gestione degli errori;
+  \item docstring su ogni funzione pubblica.
+\end{itemize}
+
+Struttura minima:
+\begin{lstlisting}
+;; MODEL  -- strutture dati
+;; LOGIC  -- operazioni
+;; IO     -- input/output e file
+\end{lstlisting}
+
+\hyperref[hint:148]{$\to$ Suggerimento}
+\end{essbox}

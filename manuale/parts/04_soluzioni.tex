@@ -1,0 +1,2300 @@
+% =============================================================
+%  04_soluzioni.tex — Soluzioni (148 esercizi)
+%  Label: \label{sol:N}
+%  Ambienti: solbox (★/★★ solo codice)
+%            solbox + commenti inline (★★★)
+%            ragionamentoBox + solbox (★★★★/★★★★★)
+%  Policy listing: accentati come ASCII
+% =============================================================
+\chapter*{Soluzioni}
+\addcontentsline{toc}{chapter}{Soluzioni}
+\markboth{Soluzioni}{Soluzioni}
+
+\noindent
+Le soluzioni sono organizzate per capitolo.
+Il livello di commento e' proporzionale alla difficolta':
+\unaStella/\dueStelle\ solo codice;
+\treStelle\ commenti inline;
+\quattroStelle/\cinqueStelle\ ragionamento esteso + codice commentato.
+
+Alcune soluzioni avanzate sono marcate come
+\textit{soluzione di riferimento --- non unica}: esistono approcci
+alternativi ugualmente validi.
+
+% =============================================================
+\section*{Capitolo 1 — Fondamenti}
+% =============================================================
+
+\label{sol:1}
+\begin{solbox}{1}
+\begin{lstlisting}
+(defun add (a b) (+ a b))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:2}
+\begin{solbox}{2}
+\begin{lstlisting}
+(defun circle-area (r)
+  (* pi r r))
+
+(defun circle-circumference (r)
+  (* 2 pi r))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:3}
+\begin{solbox}{3}
+\begin{lstlisting}
+(defun celsius->fahrenheit (c)
+  (+ (* c 9/5) 32))
+
+(defun fahrenheit->celsius (f)
+  (* (- f 32) 5/9))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:4}
+\begin{solbox}{4}
+\begin{lstlisting}
+(defun ipotenusa (a b)
+  (let ((a2 (* a a))
+        (b2 (* b b)))
+    (sqrt (+ a2 b2))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:5}
+\begin{solbox}{5}
+\begin{lstlisting}
+(defun distanza-euclidea (x1 y1 x2 y2)
+  (let ((dx (- x2 x1))
+        (dy (- y2 y1)))
+    (sqrt (+ (* dx dx) (* dy dy)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:6}
+\begin{solbox}{6}
+\begin{lstlisting}
+(defun pari-p (n)   (= (mod n 2) 0))
+(defun dispari-p (n) (= (mod n 2) 1))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:7}
+\begin{solbox}{7}
+\begin{lstlisting}
+(defun divisibile-p (a b)
+  (= (mod a b) 0))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:8}
+\begin{solbox}{8}
+\begin{lstlisting}
+(defun segno (n)
+  (cond ((< n 0) 'negativo)
+        ((= n 0) 'zero)
+        (t       'positivo)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:9}
+\begin{solbox}{9}
+\begin{lstlisting}
+(defun max-tre (a b c)
+  (cond ((and (>= a b) (>= a c)) a)
+        ((>= b c)                 b)
+        (t                        c)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:10}
+\begin{solbox}{10}
+\begin{lstlisting}
+(defun triangolo-valido-p (a b c)
+  (and (< a (+ b c))
+       (< b (+ a c))
+       (< c (+ a b))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:11}
+\begin{solbox}{11}
+\begin{lstlisting}
+(defun bisestile-p (anno)
+  (or (and (= (mod anno 4)   0)
+           (/= (mod anno 100) 0))
+      (= (mod anno 400) 0)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:12}
+\begin{solbox}{12}
+\begin{lstlisting}
+(defun giorni-mese (mese anno)
+  (cond ((member mese '(1 3 5 7 8 10 12)) 31)
+        ((member mese '(4 6 9 11))        30)
+        ((bisestile-p anno)               29)
+        (t                                28)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:13}
+\begin{solbox}{13}
+\begin{lstlisting}
+(defun voto->giudizio (p)
+  (cond ((>= p 90) "ottimo")
+        ((>= p 75) "buono")
+        ((>= p 60) "sufficiente")
+        (t         "insufficiente")))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:14}
+\begin{solbox}{14}
+\begin{lstlisting}
+(defun terna-pitagorica-p (a b c)
+  (= (* c c) (+ (* a a) (* b b))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:15}
+\begin{solbox}{15}
+\begin{lstlisting}
+(defun radici-quadratiche (a b c)
+  (let* ((delta (- (* b b) (* 4 a c))))
+    (if (< delta 0)
+        nil
+        (let* ((sd (sqrt delta))
+               (r1 (/ (+ (- b) sd) (* 2 a)))
+               (r2 (/ (- (- b) sd) (* 2 a))))
+          (list r1 r2)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:16}
+\begin{solbox}{16}
+\begin{lstlisting}
+(defun calcola (op a b)
+  (case op
+    (+  (+ a b))
+    (-  (- a b))
+    (*  (* a b))
+    (/  (if (= b 0) nil (/ a b)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:17}
+\begin{solbox}{17}
+\begin{lstlisting}
+(defun somma-cifre (n)
+  (if (= n 0)
+      0
+      (+ (mod n 10)
+         (somma-cifre (floor n 10)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:18}
+\begin{solbox}{18}
+\begin{lstlisting}
+(defun conta-fino-a (n)
+  (dotimes (i n)
+    (print (1+ i))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:19}
+\begin{solbox}{19}
+\begin{lstlisting}
+(defun tabellina (n)
+  (dotimes (i 10)
+    (format t "~D x ~D = ~D~%"
+            n (1+ i) (* n (1+ i)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:20}
+\begin{solbox}{20}
+\begin{lstlisting}
+(defun sconto (prezzo)
+  (cond ((>= prezzo 200) (* prezzo 0.8))
+        ((>= prezzo 100) (* prezzo 0.9))
+        (t               prezzo)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:21}
+\begin{solbox}{21}
+\begin{lstlisting}
+(defun paga-settimanale (ore tariffa)
+  (if (<= ore 40)
+      (* ore tariffa)
+      (+ (* 40 tariffa)
+         (* (- ore 40) tariffa 3/2))))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 2 — Liste}
+% =============================================================
+
+\label{sol:22}
+\begin{solbox}{22}
+\begin{lstlisting}
+;; Parte A: con cons
+(cons 'a (cons (cons 'b (cons 'c nil)) (cons 'd nil)))
+; -> (A (B C) D)
+
+;; Parte B: con list
+(list 'a (list 'b 'c) 'd)
+; -> (A (B C) D)
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:23}
+\begin{solbox}{23}
+\begin{lstlisting}
+(car (cdr (cdr '(a b c d e))))
+; -> C
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:24}
+\begin{solbox}{24}
+\begin{lstlisting}
+(defun first-element (lst)
+  (if (null lst) nil (nth 0 lst)))
+
+(defun rest-elements (lst)
+  (if (null lst) nil (nthcdr 1 lst)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:25}
+\begin{solbox}{25}
+\begin{lstlisting}
+(defun primo-e-ultimo (lst)
+  (if (null lst)
+      nil
+      (list (car lst) (car (last lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:26}
+\begin{solbox}{26}
+\begin{lstlisting}
+(defun scambia-primi-due (lst)
+  (if (or (null lst) (null (cdr lst)))
+      lst
+      (cons (cadr lst)
+            (cons (car lst)
+                  (cddr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:27}
+\begin{solbox}{27}
+\begin{lstlisting}
+(defun length* (lst)
+  (if (null lst)
+      0
+      (1+ (length* (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:28}
+\begin{solbox}{28}
+\begin{lstlisting}
+(defun sum-list (lst)
+  (if (null lst)
+      0
+      (+ (car lst) (sum-list (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:29}
+\begin{solbox}{29}
+\begin{lstlisting}
+(defun product-list (lst)
+  (if (null lst)
+      1
+      (* (car lst) (product-list (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:30}
+\begin{solbox}{30}
+\begin{lstlisting}
+(defun max-list (lst)
+  (cond ((null lst) (error "lista vuota"))
+        ((null (cdr lst)) (car lst))
+        (t (max (car lst) (max-list (cdr lst))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:31}
+\begin{solbox}{31}
+\begin{lstlisting}
+(defun member* (item lst)
+  (cond ((null lst)          nil)
+        ((equal (car lst) item) t)
+        (t (member* item (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:32}
+\begin{solbox}{32}
+\begin{lstlisting}
+(defun count-element (item lst)
+  (cond ((null lst) 0)
+        ((equal (car lst) item)
+         (1+ (count-element item (cdr lst))))
+        (t (count-element item (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:33}
+\begin{solbox}{33}
+\begin{lstlisting}
+(defun position* (item lst)
+  (labels ((iter (lst i)
+             (cond ((null lst) nil)
+                   ((equal (car lst) item) i)
+                   (t (iter (cdr lst) (1+ i))))))
+    (iter lst 0)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:34}
+\begin{solbox}{34}
+\begin{lstlisting}
+(defun last-element (lst)
+  (cond ((null lst) nil)
+        ((null (cdr lst)) (car lst))
+        (t (last-element (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:35}
+\begin{solbox}{35}
+\begin{lstlisting}
+(defun incrementa-tutti (lst)
+  (if (null lst)
+      nil
+      (cons (1+ (car lst))
+            (incrementa-tutti (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:36}
+\begin{solbox}{36}
+\begin{lstlisting}
+(defun solo-pari (lst)
+  (cond ((null lst) nil)
+        ((evenp (car lst))
+         (cons (car lst) (solo-pari (cdr lst))))
+        (t (solo-pari (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:37}
+\begin{solbox}{37}
+\begin{lstlisting}
+(defun elimina-tutte (item lst)
+  (cond ((null lst) nil)
+        ((equal (car lst) item)
+         (elimina-tutte item (cdr lst)))
+        (t (cons (car lst)
+                 (elimina-tutte item (cdr lst))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:38}
+\begin{solbox}{38}
+\begin{lstlisting}
+(defun seleziona-dispari (lst)
+  (cond ((null lst)       nil)
+        ((null (cdr lst)) (list (car lst)))
+        (t (cons (car lst)
+                 (seleziona-dispari (cddr lst))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:39}
+\begin{solbox}{39}
+\begin{lstlisting}
+;; Versione ricorsiva semplice (non tail-recursive)
+(defun reverse*-naive (lst)
+  (if (null lst)
+      nil
+      (append (reverse*-naive (cdr lst))
+              (list (car lst)))))
+
+;; Versione con accumulatore (tail-recursive)
+(defun reverse* (lst)
+  (labels ((iter (lst acc)
+             (if (null lst)
+                 acc
+                 (iter (cdr lst) (cons (car lst) acc)))))
+    (iter lst nil)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:40}
+\begin{solbox}{40}
+\begin{lstlisting}
+(defun append* (lst1 lst2)
+  (if (null lst1)
+      lst2
+      (cons (car lst1)
+            (append* (cdr lst1) lst2))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:41}
+\begin{solbox}{41}
+\begin{lstlisting}
+(defun remove-first (item lst)
+  (cond ((null lst) nil)
+        ((equal (car lst) item) (cdr lst))
+        (t (cons (car lst)
+                 (remove-first item (cdr lst))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:42}
+\begin{solbox}{42}
+\begin{lstlisting}
+(defun replace-first (old new lst)
+  (cond ((null lst) nil)
+        ((equal (car lst) old)
+         (cons new (cdr lst)))
+        (t (cons (car lst)
+                 (replace-first old new (cdr lst))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:43}
+\begin{solbox}{43}
+\begin{lstlisting}
+(defun palindroma-p (lst)
+  (equal lst (reverse* lst)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:44}
+\begin{solbox}{44}
+\begin{lstlisting}
+(defun range (a b)
+  (if (> a b)
+      nil
+      (cons a (range (1+ a) b))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:45}
+\begin{solbox}{45}
+\begin{lstlisting}
+(defun duplica-elementi (lst)
+  (if (null lst)
+      nil
+      (cons (car lst)
+            (cons (car lst)
+                  (duplica-elementi (cdr lst))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:46}
+\begin{solbox}{46}
+\begin{lstlisting}
+(defun schiaccia-coppia (alist)
+  (mapcar #'car alist))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:47}
+\begin{solbox}{47}
+\begin{lstlisting}
+(defun prefisso-p (sub lst)
+  (cond ((null sub) t)
+        ((null lst)  nil)
+        ((equal (car sub) (car lst))
+         (prefisso-p (cdr sub) (cdr lst)))
+        (t nil)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:48}
+\begin{solbox}{48}
+\begin{lstlisting}
+(defun intercala (lst1 lst2)
+  (if (null lst1)
+      nil
+      (cons (car lst1)
+            (cons (car lst2)
+                  (intercala (cdr lst1) (cdr lst2))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:49}
+\begin{solbox}{49}
+\begin{lstlisting}
+(defun rle-encode (lst)
+  (if (null lst)
+      nil
+      (labels ((iter (lst curr count acc)
+                 (cond
+                   ((null lst)
+                    (reverse (cons (list count curr) acc)))
+                   ((equal (car lst) curr)
+                    (iter (cdr lst) curr (1+ count) acc))
+                   (t
+                    (iter (cdr lst) (car lst) 1
+                          (cons (list count curr) acc))))))
+        (iter (cdr lst) (car lst) 1 nil))))
+
+(defun rle-decode (lst)
+  (if (null lst)
+      nil
+      (let ((n (caar lst))
+            (e (cadar lst)))
+        (append (loop repeat n collect e)
+                (rle-decode (cdr lst))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:50}
+\begin{solbox}{50}
+\begin{lstlisting}
+(defun remove-duplicates* (lst)
+  (labels ((iter (lst seen)
+             (cond
+               ((null lst) nil)
+               ((member (car lst) seen)
+                (iter (cdr lst) seen))
+               (t (cons (car lst)
+                        (iter (cdr lst)
+                              (cons (car lst) seen)))))))
+    (iter lst nil)))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 3 — Ricorsione avanzata}
+% =============================================================
+
+\label{sol:51}
+\begin{solbox}{51}
+\begin{lstlisting}
+(defun fattoriale (n)
+  ;; labels definisce iter localmente (tail-recursive)
+  (labels ((iter (n acc)
+             (if (= n 0)
+                 acc                        ; caso base: restituisci acc
+                 (iter (1- n) (* n acc))))) ; accumula n nel prodotto
+    (iter n 1)))                            ; avvia con acc = 1
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:52}
+\begin{solbox}{52}
+\begin{lstlisting}
+(defun reverse-tr (lst)
+  ;; l'accumulatore accumula in ordine inverso
+  (labels ((iter (lst acc)
+             (if (null lst)
+                 acc
+                 (iter (cdr lst) (cons (car lst) acc)))))
+    (iter lst nil)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:53}
+\begin{solbox}{53}
+\begin{lstlisting}
+(defun somma-range (a b)
+  (labels ((iter (i acc)
+             (if (> i b)
+                 acc
+                 (iter (1+ i) (+ acc i)))))
+    (iter a 0)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:54}
+\begin{solbox}{54}
+\begin{lstlisting}
+(defun fibonacci-fast (n)
+  ;; a = F(i), b = F(i+1); a ogni passo a <- b, b <- a+b
+  (labels ((iter (i a b)
+             (if (= i 0)
+                 a
+                 (iter (1- i) b (+ a b)))))
+    (iter n 0 1)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:55}
+\begin{solbox}{55}
+\begin{lstlisting}
+(defun flatten* (tree)
+  (cond
+    ((null tree) nil)
+    ;; atomo (foglia): avvolgilo in lista
+    ((atom tree) (list tree))
+    ;; nodo interno: appiattisci car e cdr separatamente
+    (t (append (flatten* (car tree))
+               (flatten* (cdr tree))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:56}
+\begin{solbox}{56}
+\begin{lstlisting}
+(defun tree-depth (tree)
+  (cond
+    ((null tree) 0)
+    ((atom tree) 0)
+    ;; profondita' = max(1 + profondita' car, profondita' cdr)
+    (t (max (1+ (tree-depth (car tree)))
+            (tree-depth (cdr tree))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:57}
+\begin{solbox}{57}
+\begin{lstlisting}
+(defun count-atoms (tree)
+  (cond ((null tree) 0)
+        ((atom tree) 1)
+        (t (+ (count-atoms (car tree))
+              (count-atoms (cdr tree))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:58}
+\begin{solbox}{58}
+\begin{lstlisting}
+(defun sum-tree (tree)
+  (cond ((null tree)   0)
+        ((numberp tree) tree)
+        ((atom tree)    0)
+        (t (+ (sum-tree (car tree))
+              (sum-tree (cdr tree))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:59}
+\begin{solbox}{59}
+\begin{lstlisting}
+(defun tree-member-p (item tree)
+  (cond ((null tree) nil)
+        ((equal tree item) t)
+        ((atom tree) nil)
+        (t (or (tree-member-p item (car tree))
+               (tree-member-p item (cdr tree))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:60}
+\begin{solbox}{60}
+\begin{lstlisting}
+(defun sostituisci-profondo (old new tree)
+  (cond ((null tree) nil)
+        ((equal tree old) new)   ; sostituzione
+        ((atom tree) tree)       ; atomo diverso: lascia invariato
+        (t (cons (sostituisci-profondo old new (car tree))
+                 (sostituisci-profondo old new (cdr tree))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:61}
+\begin{solbox}{61}
+\begin{lstlisting}
+(defun power-fast (base exp)
+  (cond ((= exp 0) 1)
+        ((evenp exp)
+         ;; evita doppia ricorsione con let
+         (let ((half (power-fast base (/ exp 2))))
+           (* half half)))
+        (t (* base (power-fast base (1- exp))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:62}
+\begin{solbox}{62}
+\begin{lstlisting}
+(defun mcd* (a b)
+  (if (= b 0) a (mcd* b (mod a b))))
+
+(defun mcm* (a b)
+  (/ (* a b) (mcd* a b)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:63}
+\begin{solbox}{63}
+\begin{lstlisting}
+(defun primo-p (n)
+  (if (< n 2)
+      nil
+      (loop for d from 2 to (isqrt n)
+            never (= (mod n d) 0))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:64}
+\begin{solbox}{64}
+\begin{lstlisting}
+(defun crivello (n)
+  ;; array di candidati: T = possibile primo
+  (let ((sieve (make-array (1+ n) :initial-element t)))
+    (setf (aref sieve 0) nil
+          (aref sieve 1) nil)
+    ;; elimina multipli di ogni primo trovato
+    (loop for i from 2 to (isqrt n)
+          when (aref sieve i)
+          do (loop for j from (* i i) to n by i
+                   do (setf (aref sieve j) nil)))
+    ;; raccogli gli indici rimasti T
+    (loop for i from 2 to n
+          when (aref sieve i) collect i)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:65}
+\begin{solbox}{65}
+\begin{lstlisting}
+(defun prime-factors (n)
+  ;; prova divisori da 2 in su; non avanzare d se divide
+  (labels ((iter (n d)
+             (cond ((> (* d d) n)
+                    (if (> n 1) (list n) nil))
+                   ((= (mod n d) 0)
+                    (cons d (iter (/ n d) d)))
+                   (t (iter n (1+ d))))))
+    (iter n 2)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:66}
+\begin{solbox}{66}
+\begin{lstlisting}
+(defun sublist (lst inizio fine)
+  (let ((len (- fine inizio)))
+    (if (<= len 0)
+        nil
+        (loop for i from inizio below fine
+              collect (nth i lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:67}
+\begin{solbox}{67}
+\begin{lstlisting}
+(defun raggruppa (lst n)
+  (if (null lst)
+      nil
+      (cons (loop for x in lst
+                  for i below n collect x)
+            (raggruppa (nthcdr n lst) n))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:68}
+\begin{solbox}{68}
+\begin{lstlisting}
+(defun interseca (lst1 lst2)
+  (remove-if-not (lambda (x) (member x lst2)) lst1))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 4 — Higher-order e closure}
+% =============================================================
+
+\label{sol:69}
+\begin{solbox}{69}
+\begin{lstlisting}
+(defun square-list (lst)
+  (mapcar (lambda (x) (* x x)) lst))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:70}
+\begin{solbox}{70}
+\begin{lstlisting}
+(defun even-list (lst)
+  (remove-if-not #'evenp lst))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:71}
+\begin{solbox}{71}
+\begin{lstlisting}
+(defun vocali-iniziali (lst)
+  (remove-if-not
+   (lambda (s)
+     (member (char-downcase (char s 0))
+             '(#\a #\e #\i #\o #\u)))
+   lst))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:72}
+\begin{solbox}{72}
+\begin{lstlisting}
+(defun sum-reduce (lst)
+  (reduce #'+ lst :initial-value 0))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:73}
+\begin{solbox}{73}
+\begin{lstlisting}
+(defun product-reduce (lst)
+  (reduce #'* lst :initial-value 1))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:74}
+\begin{solbox}{74}
+\begin{lstlisting}
+(defun reduce-min (lst)
+  (if (null lst)
+      (error "lista vuota")
+      (reduce #'min lst)))
+
+(defun reduce-max (lst)
+  (if (null lst)
+      (error "lista vuota")
+      (reduce #'max lst)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:75}
+\begin{solbox}{75}
+\begin{lstlisting}
+(defun cifre->intero (lst)
+  ;; a ogni passo: acc = acc*10 + cifra
+  (reduce (lambda (acc d) (+ (* acc 10) d))
+          lst :initial-value 0))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:76}
+\begin{solbox}{76}
+\begin{lstlisting}
+(defun appiattisci-un-livello (lst)
+  (reduce #'append lst :initial-value nil))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:77}
+\begin{solbox}{77}
+\begin{lstlisting}
+(defun horner (coefficienti x)
+  ;; fold: acc = acc*x + c
+  (reduce (lambda (acc c) (+ (* acc x) c))
+          coefficienti :initial-value 0))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:78}
+\begin{solbox}{78}
+\begin{lstlisting}
+(defun prodotto-scalare (v1 v2)
+  (apply #'+ (mapcar #'* v1 v2)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:79}
+\begin{solbox}{79}
+\begin{lstlisting}
+;; mapcan applica f a ogni elemento e concatena le liste risultanti;
+;; mapcar le raccoglie senza appiattire.
+(defun raddoppia (lst)
+  (mapcan (lambda (x) (list x x)) lst))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:80}
+\begin{solbox}{80}
+\begin{lstlisting}
+(defun ordina-per-punteggio (lst)
+  (sort (copy-list lst)
+        (lambda (a b) (> (cdr a) (cdr b)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:81}
+\begin{solbox}{81}
+\begin{lstlisting}
+(defun tutti-p (pred lst)
+  (cond ((null lst) t)
+        ((funcall pred (car lst))
+         (tutti-p pred (cdr lst)))
+        (t nil)))
+
+(defun qualcuno-p (pred lst)
+  (cond ((null lst) nil)
+        ((funcall pred (car lst)) t)
+        (t (qualcuno-p pred (cdr lst)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:82}
+\begin{solbox}{82}
+\begin{lstlisting}
+(defun count-matching (pred lst)
+  (reduce (lambda (acc x)
+            (if (funcall pred x) (1+ acc) acc))
+          lst :initial-value 0))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:83}
+\begin{solbox}{83}
+\begin{lstlisting}
+(defun raggruppa-per (f lst)
+  ;; per ogni elemento, trova o crea il gruppo nella alist
+  (let ((result nil))
+    (dolist (x lst result)
+      (let* ((k (funcall f x))
+             (bucket (assoc k result)))
+        (if bucket
+            (setf (cdr bucket) (append (cdr bucket) (list x)))
+            (push (cons k (list x)) result))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:84}
+\begin{solbox}{84}
+\begin{lstlisting}
+(defun applica-a-tutti (funzioni x)
+  (mapcar (lambda (f) (funcall f x)) funzioni))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:85}
+\begin{solbox}{85}
+\begin{lstlisting}
+(defun compose (f g)
+  ;; cattura f e g nella closure
+  (lambda (x) (funcall f (funcall g x))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:86}
+\begin{solbox}{86}
+\begin{lstlisting}
+(defun partial (funzione &rest argomenti)
+  ;; cattura funzione e argomenti nella closure
+  (lambda (&rest rest-args)
+    (apply funzione (append argomenti rest-args))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:87}
+\begin{solbox}{87}
+\begin{lstlisting}
+(defun make-counter (&optional (start 0) (step 1))
+  ;; curr e' privato alla closure
+  (let ((curr start))
+    (lambda ()
+      (prog1 curr       ; restituisce curr prima dell'incremento
+        (incf curr step)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:88}
+\begin{solbox}{88}
+\begin{lstlisting}
+(defun make-accumulator (iniziale)
+  (let ((totale iniziale))
+    (lambda (x)
+      (incf totale x))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:89}
+\begin{solbox}{89}
+\begin{lstlisting}
+(defun make-fib-generator ()
+  ;; a e b condividono la stessa closure
+  (let ((a 0) (b 1))
+    (lambda ()
+      (prog1 a
+        (psetf a b           ; aggiorna simultaneamente
+               b (+ a b))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:90}
+\begin{solbox}{90}
+\begin{lstlisting}
+(defun pipeline (valore funzioni)
+  (reduce (lambda (v f) (funcall f v))
+          funzioni :initial-value valore))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:91}
+\begin{solbox}{91}
+\begin{lstlisting}
+(defun memoize (funzione)
+  ;; la cache e' privata alla closure
+  (let ((cache (make-hash-table :test #'equal)))
+    (lambda (&rest args)
+      (multiple-value-bind (val found)
+          (gethash args cache)
+        (if found
+            val
+            ;; calcola e memorizza
+            (setf (gethash args cache)
+                  (apply funzione args)))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:92}
+\begin{solbox}{92}
+\begin{lstlisting}
+;; Mini libreria funzionale (estratto)
+(defun map-list (f lst)
+  "Applica F a ogni elemento di LST."
+  (mapcar f lst))
+
+(defun filter-list (pred lst)
+  "Filtra LST mantenendo gli elementi per cui PRED e' vero."
+  (remove-if-not pred lst))
+
+(defun find-matching (pred lst)
+  "Restituisce il primo elemento che soddisfa PRED."
+  (find-if pred lst))
+
+(defun take (n lst)
+  "Restituisce i primi N elementi di LST."
+  (if (or (= n 0) (null lst))
+      nil
+      (cons (car lst) (take (1- n) (cdr lst)))))
+
+(defun drop (n lst)
+  "Rimuove i primi N elementi di LST."
+  (if (or (= n 0) (null lst))
+      lst
+      (drop (1- n) (cdr lst))))
+
+(defun zip (lst1 lst2)
+  "Combina due liste in lista di coppie."
+  (if (or (null lst1) (null lst2))
+      nil
+      (cons (list (car lst1) (car lst2))
+            (zip (cdr lst1) (cdr lst2)))))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 5 — Strutture dati}
+% =============================================================
+
+\label{sol:93}
+\begin{solbox}{93}
+\begin{lstlisting}
+(defun lookup (key alist)
+  (let ((pair (assoc key alist)))
+    (if pair (cdr pair) nil)))
+
+(defun set-key (key value alist)
+  ;; costruisce nuova alist senza modificare l'originale
+  (cons (cons key value)
+        (remove-if (lambda (p) (equal (car p) key))
+                   alist)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:94}
+\begin{solbox}{94}
+\begin{lstlisting}
+(defun frequencies (lst)
+  ;; per ogni elemento, aggiorna o aggiunge la coppia
+  (let ((result nil))
+    (dolist (x lst result)
+      (let ((pair (assoc x result)))
+        (if pair
+            (incf (cdr pair))
+            (push (cons x 1) result))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:95}
+\begin{solbox}{95}
+\begin{lstlisting}
+(defun ht-get (key ht)
+  (gethash key ht))
+
+(defun ht-set (key value ht)
+  (setf (gethash key ht) value))
+
+(defun ht-delete (key ht)
+  (remhash key ht))
+
+(defun ht-keys (ht)
+  (loop for k being the hash-keys of ht collect k))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:96}
+\begin{solbox}{96}
+\begin{lstlisting}
+(defun frequencies-hash (lst)
+  (let ((ht (make-hash-table)))
+    (dolist (x lst ht)
+      (incf (gethash x ht 0)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:97}
+\begin{solbox}{97}
+\begin{lstlisting}
+(defun frequenza-caratteri (stringa)
+  (let ((ht (make-hash-table :test #'eql)))
+    (loop for c across stringa
+          do (incf (gethash c ht 0)))
+    ht))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:98}
+\begin{solbox}{98}
+\begin{lstlisting}
+(defun unisci-hash (ht1 ht2)
+  (let ((result (make-hash-table :test (hash-table-test ht1))))
+    (maphash (lambda (k v) (setf (gethash k result) v)) ht1)
+    (maphash (lambda (k v)
+               (incf (gethash k result 0) v))
+             ht2)
+    result))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:99}
+\begin{solbox}{99}
+\begin{lstlisting}
+(defun inverti-hash (ht)
+  (let ((result (make-hash-table :test #'equal)))
+    (maphash (lambda (k v) (setf (gethash v result) k)) ht)
+    result))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:100}
+\begin{solbox}{100}
+\begin{lstlisting}
+(defun alist->hash (alist)
+  (let ((ht (make-hash-table)))
+    (dolist (pair alist ht)
+      (setf (gethash (car pair) ht) (cdr pair)))))
+
+(defun hash->alist (ht)
+  (loop for k being the hash-keys of ht
+        collect (cons k (gethash k ht))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:101}
+\begin{solbox}{101}
+\begin{lstlisting}
+(defun mat-get (m r c) (aref m r c))
+
+(defun mat-set (m r c val) (setf (aref m r c) val))
+
+(defun stampa-matrice (m)
+  (let ((n (car (array-dimensions m))))
+    (dotimes (r n)
+      (dotimes (c n)
+        (format t "~4D" (aref m r c)))
+      (terpri))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:102}
+\begin{solbox}{102}
+\begin{lstlisting}
+(defun trasposta (m n)
+  ;; t[i][j] = m[j][i]
+  (let ((result (make-array (list n n))))
+    (dotimes (i n result)
+      (dotimes (j n)
+        (setf (aref result i j)
+              (aref m j i))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:103}
+\begin{solbox}{103}
+\begin{lstlisting}
+(defun inverti-array! (v)
+  ;; scambia elementi simmetrici senza lista ausiliaria
+  (let ((len (length v)))
+    (dotimes (i (floor len 2))
+      (let ((tmp (aref v i)))
+        (setf (aref v i) (aref v (- len 1 i))
+              (aref v (- len 1 i)) tmp)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:104}
+\begin{solbox}{104}
+\begin{lstlisting}
+(defun moltiplica-matrici (a b n)
+  (let ((c (make-array (list n n) :initial-element 0)))
+    (dotimes (i n c)
+      (dotimes (j n)
+        (dotimes (k n)
+          (incf (aref c i j)
+                (* (aref a i k) (aref b k j))))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:105}
+\begin{solbox}{105}
+\begin{lstlisting}
+(defstruct persona
+  nome
+  (eta 18)
+  citta)
+
+(defun crea-persona (nome eta citta)
+  (when (not (and (integerp eta) (> eta 0)))
+    (error "Eta' non valida: ~A" eta))
+  (make-persona :nome nome :eta eta :citta citta))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:106}
+\begin{solbox}{106}
+\begin{lstlisting}
+(defstruct nodo
+  valore
+  (sinistra nil)
+  (destra   nil))
+
+;; albero:     5
+;;            / \
+;;           3   8
+;;          / \
+;;         1   4
+(defparameter *albero*
+  (make-nodo :valore 5
+    :sinistra (make-nodo :valore 3
+                :sinistra (make-nodo :valore 1)
+                :destra   (make-nodo :valore 4))
+    :destra   (make-nodo :valore 8)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:107}
+\begin{solbox}{107}
+\begin{lstlisting}
+;; Rappresentazione: (valore sinistra destra)
+;; NIL = albero vuoto
+(defun make-leaf (v) (list v nil nil))
+(defun make-node (v l r) (list v l r))
+(defun node-val  (n) (car n))
+(defun node-left (n) (cadr n))
+(defun node-right (n) (caddr n))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:108}
+\begin{solbox}{108}
+\begin{lstlisting}
+(defun bst-insert (value tree)
+  ;; restituisce il nuovo albero (non modifica in loco)
+  (if (null tree)
+      (make-nodo :valore value)
+      (cond ((< value (nodo-valore tree))
+             (make-nodo
+               :valore (nodo-valore tree)
+               :sinistra (bst-insert value (nodo-sinistra tree))
+               :destra   (nodo-destra tree)))
+            ((> value (nodo-valore tree))
+             (make-nodo
+               :valore (nodo-valore tree)
+               :sinistra (nodo-sinistra tree)
+               :destra   (bst-insert value (nodo-destra tree))))
+            ;; duplicato: non inserire
+            (t tree))))
+
+(defun bst-find (value tree)
+  (cond ((null tree) nil)
+        ((= value (nodo-valore tree)) t)
+        ((< value (nodo-valore tree))
+         (bst-find value (nodo-sinistra tree)))
+        (t (bst-find value (nodo-destra tree)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:109}
+\begin{solbox}{109}
+\begin{lstlisting}
+(defun preorder (tree)
+  (if (null tree) nil
+      (append (list (nodo-valore tree))
+              (preorder (nodo-sinistra tree))
+              (preorder (nodo-destra tree)))))
+
+(defun inorder (tree)
+  (if (null tree) nil
+      (append (inorder (nodo-sinistra tree))
+              (list (nodo-valore tree))
+              (inorder (nodo-destra tree)))))
+
+(defun postorder (tree)
+  (if (null tree) nil
+      (append (postorder (nodo-sinistra tree))
+              (postorder (nodo-destra tree))
+              (list (nodo-valore tree)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:110}
+\begin{solbox}{110}
+\begin{lstlisting}
+(defun tree-height (tree)
+  (if (null tree) 0
+      (1+ (max (tree-height (nodo-sinistra tree))
+               (tree-height (nodo-destra tree))))))
+
+(defun count-leaves (tree)
+  (cond ((null tree) 0)
+        ((and (null (nodo-sinistra tree))
+              (null (nodo-destra tree))) 1)
+        (t (+ (count-leaves (nodo-sinistra tree))
+              (count-leaves (nodo-destra tree))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:111}
+\begin{solbox}{111}
+\begin{lstlisting}
+(defun specchia (tree)
+  (if (null tree) nil
+      (make-nodo :valore   (nodo-valore tree)
+                 :sinistra (specchia (nodo-destra tree))
+                 :destra   (specchia (nodo-sinistra tree)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:112}
+\begin{solbox}{112}
+\begin{lstlisting}
+(defun bilanciato-p (tree)
+  ;; ritorna altezza se bilanciato, -1 come segnale di errore
+  (labels ((check (t)
+             (if (null t)
+                 0
+                 (let ((hl (check (nodo-sinistra t)))
+                       (hr (check (nodo-destra t))))
+                   (if (or (= hl -1) (= hr -1)
+                           (> (abs (- hl hr)) 1))
+                       -1
+                       (1+ (max hl hr)))))))
+    (/= (check tree) -1)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:113}
+\begin{solbox}{113}
+\begin{lstlisting}
+;; Pila come lista avvolta in cons-cell per mutabilita'
+(defun make-stack () (list nil))
+
+(defun stack-push (item stack)
+  (setf (car stack) (cons item (car stack))))
+
+(defun stack-pop (stack)
+  (prog1 (caar stack)
+    (setf (car stack) (cdar stack))))
+
+(defun stack-peek (stack) (caar stack))
+
+(defun stack-empty-p (stack) (null (car stack)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:114}
+\begin{solbox}{114}
+\begin{lstlisting}
+;; Coda con due liste: testa (estrai) e fondo (aggiungi)
+(defstruct queue (head nil) (tail nil))
+
+(defun enqueue (item q)
+  (setf (queue-tail q) (cons item (queue-tail q))))
+
+(defun dequeue (q)
+  ;; se testa vuota, ribalta il fondo
+  (when (null (queue-head q))
+    (setf (queue-head q) (reverse (queue-tail q))
+          (queue-tail q) nil))
+  (prog1 (car (queue-head q))
+    (setf (queue-head q) (cdr (queue-head q)))))
+
+(defun queue-empty-p (q)
+  (and (null (queue-head q))
+       (null (queue-tail q))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:115}
+\begin{solbox}{115}
+\begin{lstlisting}
+(defun valida-parentesi (stringa)
+  ;; mappa ogni chiusa alla corrispondente aperta
+  (let ((match '((#\) . #\()
+                 (#\] . #\[)
+                 (#\} . #\{)))
+        (stack (make-stack)))
+    (loop for c across stringa
+          do (cond
+               ;; aperta: push
+               ((member c '(#\( #\[ #\{))
+                (stack-push c stack))
+               ;; chiusa: verifica top
+               ((assoc c match)
+                (if (or (stack-empty-p stack)
+                        (not (char= (stack-pop stack)
+                                    (cdr (assoc c match)))))
+                    (return-from valida-parentesi nil)))))
+    (stack-empty-p stack)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:116}
+\begin{solbox}{116}
+\begin{lstlisting}
+(defparameter *rubrica* (make-hash-table :test #'equal))
+
+(defun add-contact (name phone)
+  (setf (gethash name *rubrica*) phone))
+
+(defun find-contact (name)
+  (or (gethash name *rubrica*)
+      (error "Contatto non trovato: ~A" name)))
+
+(defun remove-contact (name)
+  (remhash name *rubrica*))
+
+(defun list-contacts ()
+  (maphash (lambda (n p) (format t "~A: ~A~%" n p))
+           *rubrica*))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:117}
+\begin{solbox}{117}
+\begin{lstlisting}
+(defun neighbors (node graph)
+  (cdr (assoc node graph)))
+
+(defun add-edge (n1 n2 graph)
+  ;; aggiunge arco bidirezionale
+  (let ((g (copy-tree graph)))
+    (let ((entry1 (assoc n1 g))
+          (entry2 (assoc n2 g)))
+      (when entry1 (setf (cdr entry1) (cons n2 (cdr entry1))))
+      (when entry2 (setf (cdr entry2) (cons n1 (cdr entry2))))
+      g)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:118}
+\begin{solbox}{118}
+\begin{lstlisting}
+(defun dfs (graph start)
+  ;; visited e' condivisa dalla closure tramite let
+  (let ((visited nil))
+    (labels ((visit (node)
+               (unless (member node visited)
+                 (push node visited)
+                 (dolist (n (neighbors node graph))
+                   (visit n)))))
+      (visit start)
+      (reverse visited))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:119}
+\begin{solbox}{119}
+\begin{lstlisting}
+(defun bfs (graph start)
+  (let ((visited nil)
+        (queue   (list start)))
+    (loop while queue
+          for node = (pop queue)
+          unless (member node visited)
+          do (push node visited)
+             (setf queue
+                   (append queue
+                           (remove-if (lambda (n) (member n visited))
+                                      (neighbors node graph)))))
+    (reverse visited)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:120}
+\begin{solbox}{120}
+\begin{lstlisting}
+(defun tokenize (testo)
+  ;; divide per spazi
+  (let ((parole nil) (corrente ""))
+    (loop for c across testo
+          do (if (char= c #\Space)
+                 (unless (string= corrente "")
+                   (push corrente parole)
+                   (setf corrente ""))
+                 (setf corrente (concatenate 'string corrente (string c)))))
+    (unless (string= corrente "")
+      (push corrente parole))
+    (reverse parole)))
+
+(defun conta-parole (testo)
+  (let ((ht (make-hash-table :test #'equal)))
+    (dolist (w (tokenize testo) ht)
+      (incf (gethash w ht 0)))))
+
+(defun parola-piu-frequente (testo)
+  (let ((ht (conta-parole testo))
+        (best-w nil) (best-n 0))
+    (maphash (lambda (w n)
+               (when (> n best-n)
+                 (setf best-w w best-n n)))
+             ht)
+    best-w))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 6 — Macro}
+% =============================================================
+
+\label{sol:121}
+\begin{solbox}{121}
+\begin{lstlisting}
+(defmacro quando (test &body corpo)
+  ;; backquote: ,test inserisce il valore di test
+  ;; ,@corpo: splice della lista corpo nel progn
+  `(if ,test
+       (progn ,@corpo)
+       nil))
+
+;; Verifica espansione:
+;; (macroexpand-1 '(quando (> x 0) (print "ok") x))
+;; -> (IF (> X 0) (PROGN (PRINT "ok") X) NIL)
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:122}
+\begin{solbox}{122}
+\begin{lstlisting}
+(defmacro mio-while (test &body corpo)
+  ;; usa loop nell'espansione: semplice ed idiomatico
+  `(loop while ,test do ,@corpo))
+
+;; Alternativa con tagbody/go (piu' primitiva):
+;; (defmacro mio-while (test &body corpo)
+;;   (let ((inizio (gensym)) (fine (gensym)))
+;;     `(tagbody
+;;        ,inizio
+;;        (unless ,test (go ,fine))
+;;        ,@corpo
+;;        (go ,inizio)
+;;        ,fine)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:123}
+\begin{solbox}{123}
+\begin{lstlisting}
+(defmacro mio-for ((var da a) &body corpo)
+  ;; gensym per start/end: evita valutazioni multiple
+  ;; di da e a (effetti collaterali)
+  (let ((start (gensym "START"))
+        (end   (gensym "END")))
+    `(let ((,start ,da)
+           (,end   ,a))
+       (loop for ,var from ,start to ,end
+             do ,@corpo))))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 7 — Backtracking e algoritmi}
+% =============================================================
+
+\label{sol:124}
+\begin{solbox}{124}
+\begin{lstlisting}
+(defun subsets (lst)
+  ;; ogni elemento: incluso o non incluso
+  (if (null lst)
+      '(())
+      (let ((rest (subsets (cdr lst))))
+        (append rest
+                (mapcar (lambda (s)
+                          (cons (car lst) s))
+                        rest)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:125}
+\begin{solbox}{125}
+\begin{lstlisting}
+(defun permutations (lst)
+  (if (null lst)
+      '(())
+      ;; per ogni elemento x: costruisci le permutazioni del resto
+      (mapcan (lambda (x)
+                (let ((rest (remove x lst :count 1)))
+                  (mapcar (lambda (p) (cons x p))
+                          (permutations rest))))
+              lst)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:126}
+\begin{solbox}{126}
+\begin{lstlisting}
+(defun combinations (lst k)
+  (cond ((= k 0)    '(()))
+        ((null lst)  nil)
+        ;; con (car lst): combina k-1 dal resto; senza: combina k dal resto
+        (t (append
+            (mapcar (lambda (c) (cons (car lst) c))
+                    (combinations (cdr lst) (1- k)))
+            (combinations (cdr lst) k)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:127}
+\begin{solbox}{127}
+\begin{lstlisting}
+(defun somma-a-target (numeri target)
+  (cond ((= target 0) '(()))
+        ((or (null numeri) (< target 0)) nil)
+        (t (let ((x (car numeri))
+                 (rest (cdr numeri)))
+             ;; includi x
+             (append
+              (mapcar (lambda (s) (cons x s))
+                      (somma-a-target rest (- target x)))
+              ;; non includere x
+              (somma-a-target rest target))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:128}
+\begin{solbox}{128}
+\begin{lstlisting}
+(defun genera-parentesi (n)
+  (let ((risultati nil))
+    (labels ((gen (s aperte chiuse)
+               (cond
+                 ((= (length s) (* 2 n))
+                  (push s risultati))
+                 (t
+                  (when (< aperte n)
+                    (gen (concatenate 'string s "(")
+                         (1+ aperte) chiuse))
+                  (when (< chiuse aperte)
+                    (gen (concatenate 'string s ")")
+                         aperte (1+ chiuse)))))))
+      (gen "" 0 0)
+      (reverse risultati))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:129}
+\begin{solbox}{129}
+\begin{lstlisting}
+(defun merge-sorted (lst1 lst2)
+  (cond ((null lst1) lst2)
+        ((null lst2) lst1)
+        ((< (car lst1) (car lst2))
+         (cons (car lst1) (merge-sorted (cdr lst1) lst2)))
+        (t
+         (cons (car lst2) (merge-sorted lst1 (cdr lst2))))))
+
+(defun merge-sort* (lst)
+  (let ((len (length lst)))
+    (if (< len 2)
+        lst
+        (let* ((mid  (floor len 2))
+               (left  (subseq lst 0 mid))
+               (right (subseq lst mid)))
+          (merge-sorted (merge-sort* left)
+                        (merge-sort* right))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:130}
+\begin{solbox}{130}
+\begin{lstlisting}
+(defun quicksort* (lst)
+  (if (or (null lst) (null (cdr lst)))
+      lst
+      (let* ((pivot   (car lst))
+             (resto   (cdr lst))
+             (minori  (remove-if-not (lambda (x) (< x pivot)) resto))
+             (maggiori (remove-if (lambda (x) (< x pivot)) resto)))
+        (append (quicksort* minori)
+                (list pivot)
+                (quicksort* maggiori)))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:131}
+\begin{solbox}{131}
+\begin{lstlisting}
+(defun hanoi (n da a tramite)
+  (when (> n 0)
+    ;; passo 1: sposta n-1 da DA a TRAMITE (usando A)
+    (hanoi (1- n) da tramite a)
+    ;; passo 2: sposta il disco n da DA ad A
+    (format t "Sposta disco ~D: ~A -> ~A~%" n da a)
+    ;; passo 3: sposta n-1 da TRAMITE ad A (usando DA)
+    (hanoi (1- n) tramite a da)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:132}
+\begin{solbox}{132}
+\begin{ragionamentoBox}{132}
+La soluzione ricorsiva esplora tutte le $2^n$ combinazioni.
+Per ogni oggetto ci sono due scelte: prenderlo o lasciarlo.
+Restituiamo il valore massimo tra i due rami.
+Complessita': $O(2^n)$ — accettabile per la versione didattica.
+Per prestazioni migliori si userebbe la programmazione
+dinamica con una tabella $n \times W$.
+\end{ragionamentoBox}
+\begin{lstlisting}
+(defun knapsack (oggetti capacita)
+  ;; oggetti: lista di (peso valore)
+  (if (or (null oggetti) (= capacita 0))
+      0
+      (let* ((obj   (car oggetti))
+             (resto (cdr oggetti))
+             (peso  (car obj))
+             (val   (cadr obj))
+             ;; senza questo oggetto
+             (senza (knapsack resto capacita)))
+        (if (> peso capacita)
+            senza
+            ;; massimo tra prendere e non prendere
+            (max senza
+                 (+ val (knapsack resto (- capacita peso))))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:133}
+\begin{solbox}{133}
+\begin{ragionamentoBox}{133}
+DFS con backtracking su griglia. Usiamo un array separato
+per i visitati per non modificare il labirinto originale.
+La funzione restituisce il percorso se trovato, \fn{NIL} altrimenti.
+\end{ragionamentoBox}
+\begin{lstlisting}
+(defun find-path (maze start goal)
+  (let* ((rows (array-dimension maze 0))
+         (cols (array-dimension maze 1))
+         (visited (make-array (list rows cols) :initial-element nil)))
+    (labels
+      ((dfs (r c path)
+         (cond
+           ;; fuori dai bordi o muro o gia' visitata
+           ((or (< r 0) (>= r rows) (< c 0) (>= c cols)
+                (= (aref maze r c) 1)
+                (aref visited r c))
+            nil)
+           ;; goal raggiunto
+           ((equal (list r c) goal)
+            (reverse (cons (list r c) path)))
+           (t
+            (setf (aref visited r c) t)
+            ;; prova le 4 direzioni
+            (let ((result (or (dfs (1+ r) c (cons (list r c) path))
+                              (dfs (1- r) c (cons (list r c) path))
+                              (dfs r (1+ c) (cons (list r c) path))
+                              (dfs r (1- c) (cons (list r c) path)))))
+              (setf (aref visited r c) nil) ; backtrack
+              result)))))
+      (dfs (car start) (cadr start) nil))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:134}
+\begin{solbox}{134}
+\begin{ragionamentoBox}{134}
+\textbf{Rappresentazione:} vettore \fn{board} di \fn{n} interi, dove
+\fn{(aref board col)} e' la riga della regina nella colonna \fn{col}.
+Posizioniamo una regina per colonna, eliminando subito i conflitti.
+
+\textbf{Pruning:} per la colonna \fn{col} e la riga \fn{row},
+verifichiamo che nessuna colonna precedente \fn{pc} abbia:
+\begin{itemize}[leftmargin=2em]
+  \item stessa riga: \fn{(= (aref board pc) row)};
+  \item stessa diagonale: \fn{(= (abs (- row (aref board pc))) (- col pc))}.
+\end{itemize}
+\textbf{Complessita':} con pruning, molto meglio di $O(n^n)$;
+per $n=8$ si trovano 92 soluzioni in poche ms.
+\end{ragionamentoBox}
+\begin{lstlisting}
+(defun n-queens (n)
+  (let ((board (make-array n :initial-element 0))
+        (solutions nil))
+    (labels
+      ((safe-p (col row)
+         ;; nessun conflitto con le regine gia' posizionate
+         (loop for pc below col
+               never (let ((pr (aref board pc)))
+                       (or (= pr row)
+                           (= (abs (- row pr))
+                              (- col pc))))))
+       (place (col)
+         (if (= col n)
+             ;; soluzione trovata: registra una copia
+             (push (coerce board 'list) solutions)
+             (dotimes (row n)
+               (when (safe-p col row)
+                 (setf (aref board col) row)
+                 (place (1+ col)))))))
+      (place 0)
+      solutions)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:135}
+\begin{solbox}{135}
+\textit{Soluzione di riferimento --- non unica.}
+\begin{ragionamentoBox}{135}
+Backtracking con tre array di flag per righe, colonne e blocchi
+$3\times3$ per un check $O(1)$ dei vincoli.
+\end{ragionamentoBox}
+\begin{lstlisting}
+(defun solve-sudoku (board)
+  ;; trova prima cella vuota
+  (labels
+    ((find-empty ()
+       (loop for r below 9 do
+         (loop for c below 9
+               when (= (aref board r c) 0)
+               do (return-from find-empty (list r c))))
+       nil)
+     (valid-p (r c val)
+       ;; controlla riga, colonna, blocco 3x3
+       (and (loop for i below 9 always (/= (aref board r i) val))
+            (loop for i below 9 always (/= (aref board i c) val))
+            (let ((br (* 3 (floor r 3)))
+                  (bc (* 3 (floor c 3))))
+              (loop for dr below 3 always
+                (loop for dc below 3 always
+                  (/= (aref board (+ br dr) (+ bc dc)) val)))))))
+    (let ((empty (find-empty)))
+      (if (null empty)
+          board   ; risolto
+          (let ((r (car empty)) (c (cadr empty)))
+            (loop for val from 1 to 9
+                  when (valid-p r c val)
+                  do (setf (aref board r c) val)
+                     (let ((result (solve-sudoku board)))
+                       (when result (return-from solve-sudoku result)))
+                     (setf (aref board r c) 0))
+            nil))))) ; backtrack
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:136}
+\begin{solbox}{136}
+\textit{Soluzione di riferimento --- non unica.}
+\begin{ragionamentoBox}{136}
+Backtracking con euristica di Warnsdorff: tra le mosse
+disponibili, scegliamo sempre quella che porta alla cella
+con meno uscite (mosse future disponibili).
+Riduce drasticamente il backtracking rispetto al DFS puro.
+\end{ragionamentoBox}
+\begin{lstlisting}
+(defparameter *moves*
+  '((2 1)(2 -1)(-2 1)(-2 -1)(1 2)(1 -2)(-1 2)(-1 -2)))
+
+(defun knights-tour (n)
+  (let ((board (make-array (list n n) :initial-element 0)))
+    (labels
+      ((valid (r c)
+         (and (>= r 0) (< r n) (>= c 0) (< c n)
+              (= (aref board r c) 0)))
+       (degree (r c)
+         (count-if (lambda (m)
+                     (valid (+ r (car m)) (+ c (cadr m))))
+                   *moves*))
+       (solve (r c step)
+         (setf (aref board r c) step)
+         (if (= step (* n n))
+             t
+             (let* ((next (remove-if-not
+                           (lambda (m)
+                             (valid (+ r (car m)) (+ c (cadr m))))
+                           *moves*))
+                    (sorted (sort next #'<
+                                  :key (lambda (m)
+                                         (degree (+ r (car m))
+                                                 (+ c (cadr m)))))))
+               (or (loop for m in sorted
+                         thereis (solve (+ r (car m))
+                                        (+ c (cadr m))
+                                        (1+ step)))
+                   (progn (setf (aref board r c) 0) nil))))))
+      (when (solve 0 0 1) board))))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 8 — Stringhe e I/O}
+% =============================================================
+
+\label{sol:137}
+\begin{solbox}{137}
+\begin{lstlisting}
+(defun reverse-string (s)
+  (coerce (reverse (coerce s 'list)) 'string))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:138}
+\begin{solbox}{138}
+\begin{lstlisting}
+(defun palindrome-p (s)
+  (equal s (reverse-string s)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:139}
+\begin{solbox}{139}
+\begin{lstlisting}
+(defun palindrome-robust-p (s)
+  ;; normalizza: minuscolo, solo caratteri alfabetici
+  (let ((clean (coerce
+                (remove-if-not #'alpha-char-p
+                               (coerce (string-downcase s) 'list))
+                'string)))
+    (equal clean (reverse-string clean))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:140}
+\begin{solbox}{140}
+\begin{lstlisting}
+(defun anagram-p (s1 s2)
+  ;; ordina le lettere di entrambe e confronta
+  (equal (sort (coerce (string-downcase s1) 'list) #'char<)
+         (sort (coerce (string-downcase s2) 'list) #'char<)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:141}
+\begin{solbox}{141}
+\begin{lstlisting}
+(defun count-char (c s)
+  (count c s))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 9 — Parsing e interprete}
+% =============================================================
+
+\label{sol:142}
+\begin{solbox}{142}
+\begin{lstlisting}
+(defun rpn-eval (expr)
+  (let ((stack (make-stack)))
+    (dolist (token expr (stack-pop stack))
+      (case token
+        ((+ - * /)
+         (let* ((b (stack-pop stack))
+                (a (stack-pop stack)))
+           (stack-push
+            (case token
+              (+ (+ a b)) (- (- a b))
+              (* (* a b)) (/ (/ a b)))
+            stack)))
+        (otherwise
+         (stack-push token stack))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:143}
+\begin{solbox}{143}
+\begin{lstlisting}
+(defun evaluate-expression (expr)
+  ;; atomo numerico: restituisci direttamente
+  (cond ((numberp expr) expr)
+        ((symbolp expr) (error "variabile non supportata: ~A" expr))
+        ;; lista: (operatore arg1 arg2)
+        (t (let ((op  (car expr))
+                 (a1  (evaluate-expression (cadr expr)))
+                 (a2  (evaluate-expression (caddr expr))))
+             (case op
+               (+ (+ a1 a2))
+               (- (- a1 a2))
+               (* (* a1 a2))
+               (/ (if (= a2 0)
+                      (error "divisione per zero")
+                      (/ a1 a2)))
+               (otherwise (error "operatore sconosciuto: ~A" op)))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:144}
+\begin{solbox}{144}
+\begin{ragionamentoBox}{144}
+L'ambiente e' una alist \fn{((simbolo . valore) ...)}.
+Il valutatore e' un'estensione dell'es.~143 con due nuovi casi:
+simbolo (lookup) e forma \fn{set} (binding).
+L'ambiente e' passato per valore; per modificarlo
+permanentemente, \fn{set} deve restituire il nuovo ambiente
+oppure usare un contenitore mutabile.
+\end{ragionamentoBox}
+\begin{lstlisting}
+(defun mio-eval (expr env)
+  "Valuta EXPR nell'ambiente ENV (alist simbolo->valore).
+   Restituisce (valori . nuovo-env)."
+  (cond
+    ;; numero: restituisce se stesso
+    ((numberp expr) (cons expr env))
+    ;; simbolo: lookup nell'ambiente
+    ((symbolp expr)
+     (let ((binding (assoc expr env)))
+       (if binding
+           (cons (cdr binding) env)
+           (error "variabile non definita: ~A" expr))))
+    ;; forma (set var val)
+    ((and (listp expr) (eq (car expr) 'set))
+     (let* ((var (cadr expr))
+            (res (mio-eval (caddr expr) env))
+            (val (car res))
+            (e2  (cdr res)))
+       (cons val (acons var val e2))))
+    ;; espressione aritmetica
+    ((listp expr)
+     (let* ((op (car expr))
+            (r1 (mio-eval (cadr expr)  env))
+            (r2 (mio-eval (caddr expr) (cdr r1)))
+            (a  (car r1))
+            (b  (car r2))
+            (e2 (cdr r2)))
+       (cons (case op
+               (+ (+ a b)) (- (- a b))
+               (* (* a b)) (/ (/ a b)))
+             e2)))
+    (t (error "espressione non riconosciuta: ~A" expr))))
+\end{lstlisting}
+\end{solbox}
+
+% =============================================================
+\section*{Capitolo 10 — Progetti}
+% =============================================================
+
+\label{sol:145}
+\begin{solbox}{145}
+\begin{lstlisting}
+(defun gioca ()
+  (let ((segreto (1+ (random 100)))
+        (tentativi 0))
+    (format t "Indovina il numero (1-100):~%")
+    (loop
+      (format t "> ")
+      (let ((guess (read)))
+        (incf tentativi)
+        (cond ((< guess segreto) (format t "Troppo basso!~%"))
+              ((> guess segreto) (format t "Troppo alto!~%"))
+              (t (format t "Esatto! Tentativi: ~D~%" tentativi)
+                 (return)))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:146}
+\begin{solbox}{146}
+\begin{ragionamentoBox}{146}
+Separazione netta tra Model (griglia), Logic (verifica vittoria,
+mossa valida) e IO (input/output). La funzione \fn{vinto-p}
+controlla le 8 combinazioni vincenti hard-coded
+--- semplice e sufficiente per una griglia $3\times3$.
+\end{ragionamentoBox}
+\begin{lstlisting}
+;;; MODEL
+(defun crea-griglia () (make-array '(3 3) :initial-element nil))
+
+;;; LOGIC
+(defun mossa-valida-p (g r c)
+  (null (aref g r c)))
+
+(defun fai-mossa (g r c giocatore)
+  (setf (aref g r c) giocatore))
+
+(defun vinto-p (g p)
+  (or ;; righe
+      (loop for r below 3 thereis
+        (loop for c below 3 always (eq (aref g r c) p)))
+      ;; colonne
+      (loop for c below 3 thereis
+        (loop for r below 3 always (eq (aref g r c) p)))
+      ;; diagonali
+      (loop for i below 3 always (eq (aref g i i) p))
+      (loop for i below 3 always (eq (aref g i (- 2 i)) p))))
+
+(defun pareggio-p (g)
+  (loop for r below 3 always
+    (loop for c below 3 always (not (null (aref g r c))))))
+
+;;; IO
+(defun stampa-griglia (g)
+  (dotimes (r 3)
+    (dotimes (c 3)
+      (format t "~A " (or (aref g r c) ".")))
+    (terpri)))
+
+;;; LOOP DI GIOCO
+(defun gioca-tris ()
+  (let ((g (crea-griglia))
+        (turno 0))
+    (loop
+      (stampa-griglia g)
+      (let ((p (if (evenp turno) 'X 'O)))
+        (format t "Turno di ~A. Riga colonna: " p)
+        (let ((r (read)) (c (read)))
+          (if (mossa-valida-p g r c)
+              (progn
+                (fai-mossa g r c p)
+                (cond ((vinto-p g p)
+                       (stampa-griglia g)
+                       (format t "~A vince!~%" p)
+                       (return))
+                      ((pareggio-p g)
+                       (stampa-griglia g)
+                       (format t "Pareggio!~%")
+                       (return))
+                      (t (incf turno))))
+              (format t "Mossa non valida.~%")))))))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:147}
+\begin{solbox}{147}
+\begin{lstlisting}
+(defun conta-vicini (g r c rows cols)
+  ;; conta le 8 celle adiacenti vive
+  (let ((count 0))
+    (loop for dr from -1 to 1 do
+      (loop for dc from -1 to 1
+            unless (and (= dr 0) (= dc 0))
+            do (let ((nr (+ r dr)) (nc (+ c dc)))
+                 (when (and (>= nr 0) (< nr rows)
+                            (>= nc 0) (< nc cols)
+                            (= (aref g nr nc) 1))
+                   (incf count)))))
+    count))
+
+(defun evolvi (griglia)
+  (let* ((rows (array-dimension griglia 0))
+         (cols (array-dimension griglia 1))
+         (nuova (make-array (list rows cols) :initial-element 0)))
+    (dotimes (r rows nuova)
+      (dotimes (c cols)
+        (let ((v  (aref griglia r c))
+              (n  (conta-vicini griglia r c rows cols)))
+          (setf (aref nuova r c)
+                (if (= v 1)
+                    (if (member n '(2 3)) 1 0)
+                    (if (= n 3) 1 0))))))))
+
+(defun stampa-griglia-vita (g)
+  (let ((rows (array-dimension g 0))
+        (cols (array-dimension g 1)))
+    (dotimes (r rows)
+      (dotimes (c cols)
+        (format t "~A" (if (= (aref g r c) 1) "#" ".")))
+      (terpri))
+    (terpri)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:148}
+\begin{solbox}{148}
+\textit{Soluzione di riferimento --- scheletro minimale per studenti.}
+
+\begin{ragionamentoBox}{148}
+Struttura a tre strati: MODEL (defstruct), LOGIC (operazioni),
+IO (file e interazione). Il salvataggio usa \fn{print} (S-expression)
+per semplicita': e' leggibile con \fn{read} senza parsing custom.
+\end{ragionamentoBox}
+\begin{lstlisting}
+;;; MODEL
+(defstruct studente nome cognome voto)
+
+;;; ARCHIVIO
+(defparameter *db* (make-hash-table :test #'equal))
+
+;;; LOGIC
+(defun inserisci (nome cognome voto)
+  "Aggiunge o aggiorna uno studente."
+  (let ((id (format nil "~A ~A" nome cognome)))
+    (setf (gethash id *db*)
+          (make-studente :nome nome :cognome cognome :voto voto))
+    id))
+
+(defun cerca (nome cognome)
+  "Cerca uno studente; segnala errore se non esiste."
+  (let ((id (format nil "~A ~A" nome cognome)))
+    (or (gethash id *db*)
+        (error "Studente non trovato: ~A" id))))
+
+(defun elimina (nome cognome)
+  "Rimuove uno studente."
+  (remhash (format nil "~A ~A" nome cognome) *db*))
+
+(defun filtra-per-voto (minimo)
+  "Restituisce gli studenti con voto >= MINIMO."
+  (loop for s being the hash-values of *db*
+        when (>= (studente-voto s) minimo) collect s))
+
+(defun ordina-per-voto ()
+  "Restituisce la lista degli studenti ordinata per voto."
+  (sort (loop for s being the hash-values of *db* collect s)
+        #'> :key #'studente-voto))
+
+;;; IO
+(defun salva (file)
+  "Salva il database su FILE come S-expressions."
+  (with-open-file (s file :direction :output :if-exists :supersede)
+    (maphash (lambda (k v)
+               (print (list k (studente-nome v)
+                              (studente-cognome v)
+                              (studente-voto v))
+                      s))
+             *db*)))
+
+(defun carica (file)
+  "Carica il database da FILE."
+  (clrhash *db*)
+  (with-open-file (s file :direction :input :if-does-not-exist nil)
+    (when s
+      (loop for record = (read s nil nil)
+            while record
+            do (inserisci (second record)
+                          (third record)
+                          (fourth record))))))
+\end{lstlisting}
+\end{solbox}

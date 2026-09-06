@@ -1,0 +1,906 @@
+% =============================================================
+%  03_suggerimenti.tex — Suggerimenti per esercizi ★★★ e superiori
+%  Label: \label{hint:N}
+%  Link bidirezionali: ogni hint -> esercizio e soluzione
+%  Policy listing: accentati come ASCII
+% =============================================================
+\chapter*{Suggerimenti}
+\addcontentsline{toc}{chapter}{Suggerimenti}
+\markboth{Suggerimenti}{Suggerimenti}
+
+\noindent
+Questa sezione contiene suggerimenti per gli esercizi di
+difficolta' \treStelle\ o superiore.
+Prima di leggere il suggerimento, fai almeno un tentativo
+autonomo: anche una soluzione parziale o sbagliata e' piu'
+utile di leggere subito la risposta.
+
+\medskip
+\noindent
+Ogni suggerimento indica il percorso verso la soluzione
+senza svelare il codice. Per gli esercizi \quattroStelle/\cinqueStelle\
+e' presente anche una sezione di ragionamento esteso.
+
+% =============================================================
+\section*{Capitolo 1 — Fondamenti}
+% =============================================================
+
+\label{hint:17}
+\begin{hintbox}{17}
+\textbf{Somma delle cifre} \quad \hyperref[ex:17]{$\leftarrow$ Esercizio} \quad \hyperref[sol:17]{$\rightarrow$ Soluzione}
+
+Estrai le cifre una alla volta con \fn{mod} e \fn{floor}:
+\fn{(mod n 10)} da' l'ultima cifra; \fn{(floor n 10)} rimuove
+l'ultima cifra. Continua finche' \fn{n} e' zero.
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 2 — Liste}
+% =============================================================
+
+\label{hint:40}
+\begin{hintbox}{40}
+\textbf{Append} \quad \hyperref[ex:40]{$\leftarrow$ Esercizio} \quad \hyperref[sol:40]{$\rightarrow$ Soluzione}
+
+Casi: se \fn{lst1} e' vuota, restituisci \fn{lst2}.
+Altrimenti costruisci con \fn{cons}: il nuovo primo elemento
+e' \fn{(car lst1)}, il resto e' la ricorsione su \fn{(cdr lst1)}
+e \fn{lst2}.
+Non modificare \fn{lst2}: non servono copie, \fn{cons} crea
+una nuova struttura automaticamente.
+\end{hintbox}
+
+\label{hint:41}
+\begin{hintbox}{41}
+\textbf{Remove-first} \quad \hyperref[ex:41]{$\leftarrow$ Esercizio} \quad \hyperref[sol:41]{$\rightarrow$ Soluzione}
+
+Caso base 1: lista vuota $\to$ \fn{NIL}.
+Caso base 2: \fn{(car lst)} uguale a \fn{item} $\to$ restituisci
+\fn{(cdr lst)} (salta solo questo elemento).
+Caso ricorsivo: \fn{cons} di \fn{(car lst)} con la ricorsione
+sul resto. Non rimuovere altre occorrenze: basta non continuare
+a cercare dopo aver trovato la prima.
+\end{hintbox}
+
+\label{hint:49}
+\begin{hintbox}{49}
+\textbf{Run-length encoding} \quad \hyperref[ex:49]{$\leftarrow$ Esercizio} \quad \hyperref[sol:49]{$\rightarrow$ Soluzione}
+
+\textbf{Encode:} tieni traccia dell'elemento corrente e del contatore.
+Quando l'elemento cambia (o la lista e' finita), aggiungi
+la coppia \fn{(contatore elemento)} al risultato.
+Una struttura con accumulatori e' piu' naturale di una
+puramente ricorsiva.
+
+\textbf{Decode:} per ogni coppia \fn{(n elem)}, genera \fn{n}
+copie di \fn{elem}. Usa un loop interno o una funzione ausiliaria
+che costruisce \fn{n} ripetizioni.
+\end{hintbox}
+
+\label{hint:50}
+\begin{hintbox}{50}
+\textbf{Remove-duplicates*} \quad \hyperref[ex:50]{$\leftarrow$ Esercizio} \quad \hyperref[sol:50]{$\rightarrow$ Soluzione}
+
+Visita la lista da sinistra. Per ogni elemento, controllane
+la presenza nel risultato accumulato (o nella parte gia'
+processata). Se non e' presente, includilo; altrimenti saltalo.
+Usa \fn{member} (o la tua \fn{member*}) per il controllo.
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 3 — Ricorsione avanzata}
+% =============================================================
+
+\label{hint:54}
+\begin{hintbox}{54}
+\textbf{Fibonacci O(n)} \quad \hyperref[ex:54]{$\leftarrow$ Esercizio} \quad \hyperref[sol:54]{$\rightarrow$ Soluzione}
+
+Usa due accumulatori \fn{a} e \fn{b} che rappresentano
+$F(i)$ e $F(i+1)$. A ogni passo: il nuovo \fn{a} diventa
+il vecchio \fn{b}; il nuovo \fn{b} diventa \fn{a+b}.
+Alla fine, \fn{a} e' $F(n)$.
+
+Caso base: se \fn{n = 0}, restituisci \fn{a} (inizializzato a 0).
+Inizia con \fn{(iter n 0 1)}.
+\end{hintbox}
+
+\label{hint:55}
+\begin{hintbox}{55}
+\textbf{Flatten*} \quad \hyperref[ex:55]{$\leftarrow$ Esercizio} \quad \hyperref[sol:55]{$\rightarrow$ Soluzione}
+
+Tratta ogni elemento della lista come il nodo di un albero binario
+implicito: se e' un \textit{atomo}, e' una foglia (mettila nel risultato);
+se e' una \textit{lista}, e' un sottoalbero (appiattiscila ricorsivamente).
+
+Schema:
+\begin{lstlisting}
+(defun flatten* (tree)
+  (cond
+    ((null tree) '())
+    ((atom tree) (list tree))
+    (t (append (flatten* (car tree))
+               (flatten* (cdr tree))))))
+\end{lstlisting}
+\textbf{Attenzione:} ricorrere su \fn{car} e \fn{cdr} separatamente,
+non su \fn{(car tree)} e \fn{(cdr tree)} come lista.
+\end{hintbox}
+
+\label{hint:56}
+\begin{hintbox}{56}
+\textbf{Tree-depth} \quad \hyperref[ex:56]{$\leftarrow$ Esercizio} \quad \hyperref[sol:56]{$\rightarrow$ Soluzione}
+
+La profondita' di una lista vuota e' 0.
+La profondita' di una lista non vuota e' il massimo tra:
+\begin{itemize}[leftmargin=2em]
+  \item la profondita' del \fn{car} $+1$ (se il \fn{car} e' una lista);
+  \item la profondita' del \fn{cdr}.
+\end{itemize}
+Usa \fn{max} per confrontare i due rami.
+\end{hintbox}
+
+\label{hint:60}
+\begin{hintbox}{60}
+\textbf{Sostituzione profonda} \quad \hyperref[ex:60]{$\leftarrow$ Esercizio} \quad \hyperref[sol:60]{$\rightarrow$ Soluzione}
+
+Struttura simile a \fn{flatten*}: ricorri su \fn{car} e \fn{cdr}.
+Se il \fn{car} e' uguale a \fn{old}, sostituiscilo con \fn{new};
+se e' una lista, ricorri dentro; altrimenti lascialo invariato.
+\end{hintbox}
+
+\label{hint:61}
+\begin{hintbox}{61}
+\textbf{Power-fast} \quad \hyperref[ex:61]{$\leftarrow$ Esercizio} \quad \hyperref[sol:61]{$\rightarrow$ Soluzione}
+
+Tre casi: \fn{exp = 0} $\to$ 1; \fn{exp} pari $\to$ calcola
+\fn{(power-fast base (/ exp 2))} e metti al quadrato;
+\fn{exp} dispari $\to$ moltiplica per \fn{base} e richiama
+con \fn{(1- exp)}.
+
+Con \fn{let} puoi evitare la doppia chiamata ricorsiva
+nel caso pari:
+\begin{lstlisting}
+(let ((half (power-fast base (/ exp 2))))
+  (* half half))
+\end{lstlisting}
+\end{hintbox}
+
+\label{hint:64}
+\begin{hintbox}{64}
+\textbf{Crivello di Eratostene} \quad \hyperref[ex:64]{$\leftarrow$ Esercizio} \quad \hyperref[sol:64]{$\rightarrow$ Soluzione}
+
+\begin{enumerate}[leftmargin=2em]
+  \item Crea un array booleano \fn{sieve} di dimensione $n+1$,
+        inizializzato a \fn{T} (tutti candidati).
+  \item Marca 0 e 1 come non-primi.
+  \item Per ogni \fn{i} da 2 a $\sqrt{n}$: se \fn{(aref sieve i)}
+        e' \fn{T}, marca tutti i multipli di \fn{i} (da $i^2$)
+        come \fn{NIL}.
+  \item Raccogli tutti gli indici per cui il valore e' ancora \fn{T}.
+\end{enumerate}
+\end{hintbox}
+
+\label{hint:65}
+\begin{hintbox}{65}
+\textbf{Fattori primi} \quad \hyperref[ex:65]{$\leftarrow$ Esercizio} \quad \hyperref[sol:65]{$\rightarrow$ Soluzione}
+
+Prova a dividere \fn{n} per ogni intero \fn{d} partendo da 2.
+Se \fn{(mod n d) = 0}, \fn{d} e' un fattore: aggiungilo al risultato
+e continua con \fn{n/d} (non avanzare \fn{d}!).
+Se \fn{d} non divide, avanza \fn{d} di 1.
+Termina quando \fn{d * d > n}: se \fn{n > 1} e' rimasto
+un fattore primo.
+\end{hintbox}
+
+\label{hint:67}
+\begin{hintbox}{67}
+\textbf{Raggruppa in blocchi} \quad \hyperref[ex:67]{$\leftarrow$ Esercizio} \quad \hyperref[sol:67]{$\rightarrow$ Soluzione}
+
+Scrivi una funzione ausiliaria \fn{prendi-n lst n} che restituisce
+\fn{(primi-n resto)}: i primi \fn{n} elementi e il resto della lista.
+Poi \fn{raggruppa} chiama \fn{prendi-n}, prende il primo gruppo,
+e ricorre sul resto.
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 4 — Higher-order e closure}
+% =============================================================
+
+\label{hint:75}
+\begin{hintbox}{75}
+\textbf{Cifre in intero} \quad \hyperref[ex:75]{$\leftarrow$ Esercizio} \quad \hyperref[sol:75]{$\rightarrow$ Soluzione}
+
+Usa \fn{reduce} con una funzione che, dato l'accumulatore \fn{acc}
+e la cifra corrente \fn{d}, calcola \fn{(+ (* acc 10) d)}.
+Con \fn{:initial-value 0} funziona anche per lista vuota.
+\end{hintbox}
+
+\label{hint:77}
+\begin{hintbox}{77}
+\textbf{Regola di Horner} \quad \hyperref[ex:77]{$\leftarrow$ Esercizio} \quad \hyperref[sol:77]{$\rightarrow$ Soluzione}
+
+La regola di Horner valuta $p(x) = c_n x^n + \ldots + c_0$
+come $(\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)$.
+
+Con \fn{reduce}: la funzione riceve l'accumulatore \fn{acc}
+(che parte da $c_n$) e il coefficiente corrente \fn{c},
+e calcola \fn{(+ (* acc x) c)}.
+I coefficienti devono essere nell'ordine dal grado piu' alto
+al piu' basso.
+\end{hintbox}
+
+\label{hint:83}
+\begin{hintbox}{83}
+\textbf{Raggruppa per chiave} \quad \hyperref[ex:83]{$\leftarrow$ Esercizio} \quad \hyperref[sol:83]{$\rightarrow$ Soluzione}
+
+Per ogni elemento, calcola la chiave. Cerca nella alist risultato
+se quella chiave esiste gia'. Se si', aggiungici l'elemento;
+se no, crea una nuova coppia \fn{(chiave elemento)}.
+Usa \fn{assoc} per la ricerca e aggiorna la alist con \fn{setf}/\fn{aref}
+o ricostruendola.
+\end{hintbox}
+
+\label{hint:85}
+\begin{hintbox}{85}
+\textbf{Compose} \quad \hyperref[ex:85]{$\leftarrow$ Esercizio} \quad \hyperref[sol:85]{$\rightarrow$ Soluzione}
+
+Una closure cattura \fn{f} e \fn{g} nell'ambiente lessicale.
+Restituisce una \fn{lambda} che prende \fn{x}, applica prima
+\fn{g}, poi \fn{f}:
+\begin{lstlisting}
+(lambda (x) (funcall f (funcall g x)))
+\end{lstlisting}
+Ricorda che le funzioni si passano con \fn{\#'}.
+\end{hintbox}
+
+\label{hint:86}
+\begin{hintbox}{86}
+\textbf{Partial application} \quad \hyperref[ex:86]{$\leftarrow$ Esercizio} \quad \hyperref[sol:86]{$\rightarrow$ Soluzione}
+
+Cattura \fn{funzione} e \fn{argomenti} nella closure.
+La lambda restituita prende \fn{\&rest rest-args} e chiama
+\fn{funzione} con la lista \fn{(append argomenti rest-args)}.
+Usa \fn{apply} per passare la lista combinata:
+\begin{lstlisting}
+(lambda (&rest rest-args)
+  (apply funzione (append argomenti rest-args)))
+\end{lstlisting}
+\end{hintbox}
+
+\label{hint:87}
+\begin{hintbox}{87}
+\textbf{Closure con stato} \quad \hyperref[ex:87]{$\leftarrow$ Esercizio} \quad \hyperref[sol:87]{$\rightarrow$ Soluzione}
+
+Lo stato vive in un \fn{let} attorno alla \fn{lambda}.
+Ogni chiamata alla lambda legge e aggiorna la variabile.
+\begin{lstlisting}
+(let ((curr start))
+  (lambda ()
+    (prog1 curr
+      (incf curr step))))
+\end{lstlisting}
+\fn{prog1} restituisce il valore prima dell'incremento.
+\end{hintbox}
+
+\label{hint:89}
+\begin{hintbox}{89}
+\textbf{Generatore Fibonacci con closure} \quad \hyperref[ex:89]{$\leftarrow$ Esercizio} \quad \hyperref[sol:89]{$\rightarrow$ Soluzione}
+
+Due variabili nello stesso \fn{let} condividono la stessa closure:
+\begin{lstlisting}
+(let ((a 0) (b 1))
+  (lambda ()
+    (prog1 a
+      (psetf a b b (+ a b)))))
+\end{lstlisting}
+\fn{psetf} aggiorna le variabili simultaneamente (senza
+che il nuovo valore di \fn{a} influenzi il calcolo di \fn{b}).
+\end{hintbox}
+
+\label{hint:91}
+\begin{hintbox}{91}
+\textbf{Memoize} \quad \hyperref[ex:91]{$\leftarrow$ Esercizio} \quad \hyperref[sol:91]{$\rightarrow$ Soluzione}
+
+La struttura base:
+\begin{lstlisting}
+(let ((cache (make-hash-table :test #'equal)))
+  (lambda (&rest args)
+    (multiple-value-bind (val found)
+        (gethash args cache)
+      (if found
+          val
+          (setf (gethash args cache)
+                (apply funzione args))))))
+\end{lstlisting}
+La chiave della cache e' la lista degli argomenti: usa
+\fn{:test \#'equal} per confrontare liste.
+\fn{multiple-value-bind} permette di distinguere ``valore NIL
+trovato'' da ``chiave non presente''.
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 5 — Strutture dati}
+% =============================================================
+
+\label{hint:94}
+\begin{hintbox}{94}
+\textbf{Frequenze con alist} \quad \hyperref[ex:94]{$\leftarrow$ Esercizio} \quad \hyperref[sol:94]{$\rightarrow$ Soluzione}
+
+Per ogni elemento: cerca nella alist con \fn{assoc}.
+Se la coppia esiste, incrementa il \fn{cdr}; altrimenti,
+aggiungi una nuova coppia \fn{(elemento . 1)}.
+Con \fn{setf} puoi modificare il \fn{cdr} di una coppia
+trovata con \fn{assoc}: \fn{(setf (cdr coppia) (1+ (cdr coppia)))}.
+\end{hintbox}
+
+\label{hint:97}
+\begin{hintbox}{97}
+\textbf{Frequenza dei caratteri} \quad \hyperref[ex:97]{$\leftarrow$ Esercizio} \quad \hyperref[sol:97]{$\rightarrow$ Soluzione}
+
+Crea una hash table con \fn{:test \#'eql} (i caratteri si
+confrontano con \fn{eql}).
+Itera sui caratteri con \fn{(coerce stringa 'list)}
+o \fn{(loop for c across stringa ...)}.
+Per ogni carattere: incrementa il valore nella tabella
+(\fn{(incf (gethash c ht 0))}).
+\end{hintbox}
+
+\label{hint:98}
+\begin{hintbox}{98}
+\textbf{Unione di hash table} \quad \hyperref[ex:98]{$\leftarrow$ Esercizio} \quad \hyperref[sol:98]{$\rightarrow$ Soluzione}
+
+Crea una nuova hash table. Itera su \fn{ht1} con \fn{maphash}
+e copia tutte le coppie. Poi itera su \fn{ht2}: se la chiave
+esiste gia', somma i valori; altrimenti inserisci.
+\end{hintbox}
+
+\label{hint:99}
+\begin{hintbox}{99}
+\textbf{Inverti hash table} \quad \hyperref[ex:99]{$\leftarrow$ Esercizio} \quad \hyperref[sol:99]{$\rightarrow$ Soluzione}
+
+Crea una nuova hash table. Itera con \fn{maphash} sulla
+tabella originale: per ogni coppia \fn{(k v)}, inserisci
+\fn{(v k)} nella nuova tabella.
+\end{hintbox}
+
+\label{hint:102}
+\begin{hintbox}{102}
+\textbf{Trasposta di matrice} \quad \hyperref[ex:102]{$\leftarrow$ Esercizio} \quad \hyperref[sol:102]{$\rightarrow$ Soluzione}
+
+Crea una nuova matrice $n \times n$. Con due loop annidati
+\fn{(loop for i ...)} e \fn{(loop for j ...)}:
+\fn{(setf (aref risultato i j) (aref originale j i))}.
+\end{hintbox}
+
+\label{hint:104}
+\begin{hintbox}{104}
+\textbf{Moltiplicazione di matrici (opzionale)} \quad \hyperref[ex:104]{$\leftarrow$ Esercizio} \quad \hyperref[sol:104]{$\rightarrow$ Soluzione}
+
+Il prodotto $C = A \times B$ con $C_{ij} = \sum_k A_{ik} \cdot B_{kj}$.
+Tre loop annidati: indici $i$, $j$, $k$.
+\begin{lstlisting}
+(loop for i below n do
+  (loop for j below n do
+    (setf (aref c i j)
+      (loop for k below n
+            sum (* (aref a i k)
+                   (aref b k j))))))
+\end{lstlisting}
+\end{hintbox}
+
+\label{hint:108}
+\begin{hintbox}{108}
+\textbf{BST: inserimento e ricerca} \quad \hyperref[ex:108]{$\leftarrow$ Esercizio} \quad \hyperref[sol:108]{$\rightarrow$ Soluzione}
+
+\textbf{Insert:} se l'albero e' \fn{nil}, crea un nodo foglia.
+Se il valore e' minore del nodo corrente, ricorri a sinistra;
+altrimenti a destra. Costruisci il nuovo albero con \fn{make-nodo}.
+
+\textbf{Find:} se l'albero e' \fn{nil}, non trovato.
+Se il valore e' uguale al nodo, trovato.
+Se minore, vai a sinistra; se maggiore, vai a destra.
+\end{hintbox}
+
+\label{hint:109}
+\begin{hintbox}{109}
+\textbf{Traversal dell'albero} \quad \hyperref[ex:109]{$\leftarrow$ Esercizio} \quad \hyperref[sol:109]{$\rightarrow$ Soluzione}
+
+I tre traversal differiscono solo per l'ordine in cui si
+visita la radice rispetto ai sottoalberi:
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{preorder:} radice, sinistra, destra.
+  \item \textbf{inorder:} sinistra, radice, destra.
+  \item \textbf{postorder:} sinistra, destra, radice.
+\end{itemize}
+Usa \fn{append} per concatenare i risultati dei due sottoalberi.
+\end{hintbox}
+
+\label{hint:112}
+\begin{hintbox}{112}
+\textbf{Albero bilanciato?} \quad \hyperref[ex:112]{$\leftarrow$ Esercizio} \quad \hyperref[sol:112]{$\rightarrow$ Soluzione}
+
+Scrivi una funzione ausiliaria che restituisce l'altezza
+se l'albero e' bilanciato, oppure $-1$ come segnale di
+sbilanciamento.
+\begin{lstlisting}
+; ritorna altezza se bilanciato, -1 altrimenti
+(defun check (tree)
+  (if (null tree)
+      0
+      (let ((hl (check (nodo-sinistra tree)))
+            (hr (check (nodo-destra tree))))
+        (if (or (= hl -1) (= hr -1)
+                (> (abs (- hl hr)) 1))
+            -1
+            (1+ (max hl hr))))))
+\end{lstlisting}
+\end{hintbox}
+
+\label{hint:114}
+\begin{hintbox}{114}
+\textbf{Coda FIFO} \quad \hyperref[ex:114]{$\leftarrow$ Esercizio} \quad \hyperref[sol:114]{$\rightarrow$ Soluzione}
+
+Rappresenta la coda come una struttura con due liste:
+\fn{testa} (elementi da estrarre) e \fn{coda} (elementi aggiunti).
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{Enqueue:} aggiungi in \fn{coda} con \fn{cons}.
+  \item \textbf{Dequeue:} prendi da \fn{testa}. Se \fn{testa}
+        e' vuota, ribalta \fn{coda} in \fn{testa} con \fn{reverse}.
+\end{itemize}
+Questa rappresentazione da' dequeue ammortizzato $O(1)$.
+\end{hintbox}
+
+\label{hint:115}
+\begin{hintbox}{115}
+\textbf{Valida parentesi} \quad \hyperref[ex:115]{$\leftarrow$ Esercizio} \quad \hyperref[sol:115]{$\rightarrow$ Soluzione}
+
+Itera sui caratteri della stringa. Per ogni carattere:
+\begin{itemize}[leftmargin=2em]
+  \item parentesi aperta \fn{(}, \fn{[}, \fn{\{}: push sulla pila.
+  \item parentesi chiusa \fn{)}, \fn{]}, \fn{\}}: se la pila
+        e' vuota o il top non corrisponde, restituisci \fn{NIL}.
+        Altrimenti pop.
+\end{itemize}
+Alla fine, la stringa e' valida se e solo se la pila e' vuota.
+Usa una alist per mappare ogni chiusa alla corrispondente aperta.
+\end{hintbox}
+
+\label{hint:118}
+\begin{hintbox}{118}
+\textbf{DFS su grafo} \quad \hyperref[ex:118]{$\leftarrow$ Esercizio} \quad \hyperref[sol:118]{$\rightarrow$ Soluzione}
+
+Usa una lista \fn{visitati} per tenere traccia dei nodi gia' visti.
+Schema ricorsivo:
+\begin{enumerate}[leftmargin=2em]
+  \item Se il nodo e' gia' visitato, restituisci \fn{NIL}.
+  \item Aggiungi il nodo a \fn{visitati}.
+  \item Per ogni vicino non ancora visitato, ricorri.
+  \item Accumula l'ordine di visita.
+\end{enumerate}
+Passa \fn{visitati} come parametro o usala come variabile
+catturata da una closure/\fn{labels}.
+\end{hintbox}
+
+\label{hint:119}
+\begin{hintbox}{119}
+\textbf{BFS su grafo} \quad \hyperref[ex:119]{$\leftarrow$ Esercizio} \quad \hyperref[sol:119]{$\rightarrow$ Soluzione}
+
+Usa una coda (o semplicemente una lista come coda FIFO).
+Schema:
+\begin{enumerate}[leftmargin=2em]
+  \item Inserisci il nodo di partenza nella coda.
+  \item Finche' la coda non e' vuota:
+        estrai il primo nodo; se non ancora visitato,
+        aggiungilo ai visitati e inserisci i suoi vicini in coda.
+\end{enumerate}
+Con una lista, usa \fn{append} per aggiungere in coda e
+\fn{car}/\fn{cdr} per estrarre dalla testa.
+\end{hintbox}
+
+\label{hint:120}
+\begin{hintbox}{120}
+\textbf{Conta parole} \quad \hyperref[ex:120]{$\leftarrow$ Esercizio} \quad \hyperref[sol:120]{$\rightarrow$ Soluzione}
+
+Per spezzare la stringa in parole, implementa un tokenizer
+semplice: scansiona carattere per carattere, accumulando
+caratteri non-spazio in una parola corrente.
+Quando trovi uno spazio (o la fine), se la parola corrente
+non e' vuota, aggiungila alla lista.
+Poi usa una hash table con \fn{:test \#'equal} (le stringhe
+si confrontano con \fn{equal}) per contare le occorrenze.
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 6 — Macro}
+% =============================================================
+
+\label{hint:121}
+\begin{hintbox}{121}
+\textbf{Macro quando} \quad \hyperref[ex:121]{$\leftarrow$ Esercizio} \quad \hyperref[sol:121]{$\rightarrow$ Soluzione}
+
+Lo schema base di una macro con body:
+\begin{lstlisting}
+(defmacro quando (test &body corpo)
+  `(if ,test
+       (progn ,@corpo)
+       nil))
+\end{lstlisting}
+Il backquote costruisce la lista quasi-letteralmente;
+\fn{,test} inserisce il valore di \fn{test};
+\fn{,@corpo} inserisce gli elementi di \fn{corpo}
+al livello corrente (splice).
+
+Verifica con: \fn{(macroexpand-1 '(quando (> x 0) (print x)))}.
+\end{hintbox}
+
+\label{hint:122}
+\begin{hintbox}{122}
+\textbf{Macro while} \quad \hyperref[ex:122]{$\leftarrow$ Esercizio} \quad \hyperref[sol:122]{$\rightarrow$ Soluzione}
+
+Un'implementazione semplice usa \fn{loop} nell'espansione:
+\begin{lstlisting}
+(defmacro mio-while (test &body corpo)
+  `(loop while ,test do ,@corpo))
+\end{lstlisting}
+Oppure, per capire meglio il meccanismo di basso livello,
+usa \fn{tagbody}/\fn{go}:
+\begin{lstlisting}
+(defmacro mio-while (test &body corpo)
+  (let ((inizio (gensym)) (fine (gensym)))
+    `(tagbody
+       ,inizio
+       (unless ,test (go ,fine))
+       ,@corpo
+       (go ,inizio)
+       ,fine)))
+\end{lstlisting}
+\fn{gensym} genera simboli unici per evitare conflitti di nomi.
+\end{hintbox}
+
+\label{hint:123}
+\begin{hintbox}{123}
+\textbf{Macro for} \quad \hyperref[ex:123]{$\leftarrow$ Esercizio} \quad \hyperref[sol:123]{$\rightarrow$ Soluzione}
+
+Usa \fn{gensym} per la variabile di ciclo e per evitare che
+valutazioni multiple di \fn{da}/\fn{a} causino effetti collaterali.
+\begin{lstlisting}
+(defmacro mio-for ((var da a) &body corpo)
+  (let ((start (gensym)) (end (gensym)))
+    `(let ((,start ,da) (,end ,a))
+       (loop for ,var from ,start to ,end
+             do ,@corpo))))
+\end{lstlisting}
+Nota: qui \fn{var} non e' avvolto in \fn{gensym} perche'
+e' il nome che l'utente vuole usare nel corpo.
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 7 — Backtracking e algoritmi}
+% =============================================================
+
+\label{hint:124}
+\begin{hintbox}{124}
+\textbf{Subsets} \quad \hyperref[ex:124]{$\leftarrow$ Esercizio} \quad \hyperref[sol:124]{$\rightarrow$ Soluzione}
+
+Ogni elemento ha due scelte: incluso o non incluso.
+Schema ricorsivo:
+\begin{itemize}[leftmargin=2em]
+  \item Caso base: lista vuota $\to$ \fn{'(())}.
+  \item Caso ricorsivo: calcola i sottoinsiemi del \fn{cdr}.
+        I sottoinsiemi totali sono quelli senza \fn{(car lst)},
+        piu' quelli con \fn{(car lst)} aggiunto in testa.
+\end{itemize}
+\end{hintbox}
+
+\label{hint:125}
+\begin{hintbox}{125}
+\textbf{Permutazioni} \quad \hyperref[ex:125]{$\leftarrow$ Esercizio} \quad \hyperref[sol:125]{$\rightarrow$ Soluzione}
+
+Per generare le permutazioni di \fn{lst}:
+\begin{enumerate}[leftmargin=2em]
+  \item Per ogni elemento \fn{x} nella lista:
+  \item Rimuovi \fn{x} dalla lista (ottenendo \fn{rest}).
+  \item Genera le permutazioni di \fn{rest}.
+  \item Aggiungi \fn{x} in testa a ogni permutazione.
+\end{enumerate}
+Usa una funzione ausiliaria che rimuove un elemento per posizione
+(non per valore, per gestire duplicati correttamente).
+\end{hintbox}
+
+\label{hint:126}
+\begin{hintbox}{126}
+\textbf{Combinazioni} \quad \hyperref[ex:126]{$\leftarrow$ Esercizio} \quad \hyperref[sol:126]{$\rightarrow$ Soluzione}
+
+Per scegliere \fn{k} elementi da \fn{lst}:
+\begin{itemize}[leftmargin=2em]
+  \item Se \fn{k = 0}: restituisci \fn{'(())}.
+  \item Se la lista e' vuota: \fn{NIL}.
+  \item Altrimenti: unisci le combinazioni che \textit{includono}
+        \fn{(car lst)} (combinazioni di \fn{k-1} dal resto)
+        con quelle che \textit{non lo includono} (combinazioni
+        di \fn{k} dal resto).
+\end{itemize}
+\end{hintbox}
+
+\label{hint:127}
+\begin{hintbox}{127}
+\textbf{Somma a target} \quad \hyperref[ex:127]{$\leftarrow$ Esercizio} \quad \hyperref[sol:127]{$\rightarrow$ Soluzione}
+
+Adatta il pattern dei sottoinsiemi: a ogni passo, scegli
+di includere o meno il numero corrente.
+Se il \fn{target} diventa 0, hai trovato una soluzione.
+Se il \fn{target} diventa negativo o la lista e' vuota
+senza aver raggiunto 0, il ramo fallisce.
+\end{hintbox}
+
+\label{hint:128}
+\begin{hintbox}{128}
+\textbf{Parentesi bilanciate generate} \quad \hyperref[ex:128]{$\leftarrow$ Esercizio} \quad \hyperref[sol:128]{$\rightarrow$ Soluzione}
+
+Costruisci la stringa con due contatori: \fn{aperte} e \fn{chiuse}.
+A ogni passo puoi aggiungere \fn{(} se \fn{aperte < n};
+puoi aggiungere \fn{)} se \fn{chiuse < aperte}.
+Quando \fn{aperte = chiuse = n}, hai una stringa valida.
+\end{hintbox}
+
+\label{hint:129}
+\begin{hintbox}{129}
+\textbf{Merge sort} \quad \hyperref[ex:129]{$\leftarrow$ Esercizio} \quad \hyperref[sol:129]{$\rightarrow$ Soluzione}
+
+\textbf{Merge-sorted:} due puntatori alle teste delle liste.
+Prendi il minore dei due \fn{car}, avanza il puntatore corrispondente.
+Caso base: quando una lista e' vuota, aggiungi il resto dell'altra.
+
+\textbf{Merge-sort:} dividi la lista a meta' (usa \fn{length} e
+\fn{nthcdr} per trovare il punto di divisione),
+ordina le due meta' ricorsivamente, poi unisci con \fn{merge-sorted}.
+\end{hintbox}
+
+\label{hint:130}
+\begin{hintbox}{130}
+\textbf{Quicksort} \quad \hyperref[ex:130]{$\leftarrow$ Esercizio} \quad \hyperref[sol:130]{$\rightarrow$ Soluzione}
+
+Scegli il primo elemento come pivot.
+Con \fn{remove-if} (o la tua \fn{filter-list}), dividi
+il resto in elementi minori e maggiori-o-uguali al pivot.
+Ordina ricorsivamente le due parti e concatena:
+\fn{minori ++ [pivot] ++ maggiori}.
+\end{hintbox}
+
+\label{hint:131}
+\begin{hintbox}{131}
+\textbf{Torri di Hanoi} \quad \hyperref[ex:131]{$\leftarrow$ Esercizio} \quad \hyperref[sol:131]{$\rightarrow$ Soluzione}
+
+La soluzione e' elegantemente ricorsiva:
+\begin{enumerate}[leftmargin=2em]
+  \item Sposta $n-1$ dischi da \fn{da} a \fn{tramite} (usando \fn{a}).
+  \item Sposta il disco $n$ da \fn{da} a \fn{a}.
+  \item Sposta $n-1$ dischi da \fn{tramite} a \fn{a} (usando \fn{da}).
+\end{enumerate}
+Caso base: \fn{n = 0}, non fare nulla.
+Il numero di mosse e' $2^n - 1$.
+\end{hintbox}
+
+\label{hint:132}
+\begin{hintbox}{132}
+\textbf{Problema dello zaino} \quad \hyperref[ex:132]{$\leftarrow$ Esercizio} \quad \hyperref[sol:132]{$\rightarrow$ Soluzione}
+
+Schema di ricerca esaustiva:
+Per ogni oggetto, hai due scelte: prenderlo o lasciarlo.
+\begin{itemize}[leftmargin=2em]
+  \item Prenderlo: sottrai il peso dalla capacita', aggiungi
+        il valore, ricorri sul resto degli oggetti.
+  \item Non prenderlo: ricorri sul resto con capacita' invariata.
+\end{itemize}
+Restituisci il massimo tra i due rami.
+Attenzione: prendi l'oggetto solo se il suo peso non supera
+la capacita' residua.
+\end{hintbox}
+
+\label{hint:133}
+\begin{hintbox}{133}
+\textbf{Labirinto} \quad \hyperref[ex:133]{$\leftarrow$ Esercizio} \quad \hyperref[sol:133]{$\rightarrow$ Soluzione}
+
+Schema DFS con backtracking:
+\begin{enumerate}[leftmargin=2em]
+  \item Se la cella corrente e' il goal, restituisci il percorso.
+  \item Marca la cella come visitata.
+  \item Per ogni direzione (su, giu', sinistra, destra):
+        se la cella adiacente e' valida, libera e non visitata,
+        ricorri. Se restituisce un percorso, propagalo.
+  \item Se nessuna direzione funziona, demarks e restituisci \fn{NIL}.
+\end{enumerate}
+Usa un array separato per i visitati, oppure marca nel labirinto stesso
+(ricordando di ripristinare al backtrack).
+\end{hintbox}
+
+\label{hint:134}
+\begin{hintbox}{134}
+\textbf{N-regine} \quad \hyperref[ex:134]{$\leftarrow$ Esercizio} \quad \hyperref[sol:134]{$\rightarrow$ Soluzione}
+
+\textbf{Rappresentazione:} usa un vettore di \fn{n} elementi dove
+\fn{(aref board col)} e' la riga in cui si trova la regina
+nella colonna \fn{col}. Stai posizionando una regina per colonna.
+
+\textbf{Pruning:} prima di posizionare la regina nella colonna \fn{col}
+alla riga \fn{row}, verifica che nessuna delle regine gia'
+posizionate attacchi questa cella:
+\begin{itemize}[leftmargin=2em]
+  \item stessa riga: \fn{(= (aref board prev-col) row)};
+  \item stessa diagonale: \fn{(= (abs (- row (aref board prev-col))) (- col prev-col))}.
+\end{itemize}
+
+\textbf{Struttura:} per ogni colonna, prova tutte le righe 0..(n-1).
+Se valida, assegna e ricorri sulla colonna successiva.
+Se \fn{col = n}, hai trovato una soluzione.
+\end{hintbox}
+
+\label{hint:135}
+\begin{hintbox}{135}
+\textbf{Sudoku} \quad \hyperref[ex:135]{$\leftarrow$ Esercizio} \quad \hyperref[sol:135]{$\rightarrow$ Soluzione}
+
+\begin{enumerate}[leftmargin=2em]
+  \item Trova la prima cella vuota (valore 0).
+  \item Se non ce ne sono, il puzzle e' risolto.
+  \item Per ogni valore da 1 a 9:
+        verifica che non compaia nella stessa riga, colonna,
+        e blocco $3 \times 3$.
+        Se valido, assegna il valore e ricorri.
+        Se la ricorsione fallisce, rimetti 0 (backtrack).
+\end{enumerate}
+
+Per ottimizzare, scegli la cella con meno valori possibili
+(``minimum remaining values heuristic'').
+\end{hintbox}
+
+\label{hint:136}
+\begin{hintbox}{136}
+\textbf{Cammino del cavallo} \quad \hyperref[ex:136]{$\leftarrow$ Esercizio} \quad \hyperref[sol:136]{$\rightarrow$ Soluzione}
+
+Le 8 mosse possibili del cavallo in termini di $(dx, dy)$:
+$(\pm 1, \pm 2)$ e $(\pm 2, \pm 1)$.
+
+\textbf{Backtracking puro:} prova ogni mossa valida (dentro la
+scacchiera e non gia' visitata); se porta a una soluzione,
+propagala; altrimenti annulla e prova la successiva.
+
+\textbf{Euristica di Warnsdorff:} ordina le mosse in base al numero
+di uscite disponibili dalla cella successiva (meno uscite = prima).
+Riduce drasticamente il backtracking.
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 8 — Stringhe e I/O}
+% =============================================================
+
+\label{hint:139}
+\begin{hintbox}{139}
+\textbf{Palindromo robusto} \quad \hyperref[ex:139]{$\leftarrow$ Esercizio} \quad \hyperref[sol:139]{$\rightarrow$ Soluzione}
+
+\begin{enumerate}[leftmargin=2em]
+  \item Converti in minuscolo con \fn{string-downcase}.
+  \item Filtra i soli caratteri alfabetici con \fn{remove-if-not}
+        e \fn{alpha-char-p}.
+  \item Confronta la stringa filtrata con la sua inversa.
+\end{enumerate}
+\end{hintbox}
+
+\label{hint:140}
+\begin{hintbox}{140}
+\textbf{Anagrammi} \quad \hyperref[ex:140]{$\leftarrow$ Esercizio} \quad \hyperref[sol:140]{$\rightarrow$ Soluzione}
+
+Due stringhe sono anagrammi se, ordinate lettera per lettera,
+sono uguali. Converti entrambe in minuscolo, poi in lista
+di caratteri con \fn{coerce}, ordina con \fn{sort}, e confronta.
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 9 — Parsing e interprete}
+% =============================================================
+
+\label{hint:142}
+\begin{hintbox}{142}
+\textbf{Calcolatrice RPN} \quad \hyperref[ex:142]{$\leftarrow$ Esercizio} \quad \hyperref[sol:142]{$\rightarrow$ Soluzione}
+
+Itera sugli elementi dell'espressione:
+\begin{itemize}[leftmargin=2em]
+  \item Se e' un numero: push sulla pila.
+  \item Se e' un operatore: pop due valori, applica
+        l'operatore, push il risultato.
+\end{itemize}
+Alla fine, la pila contiene un solo elemento: il risultato.
+Usa \fn{numberp} per distinguere numeri da operatori;
+usa una alist o \fn{case} per mappare simbolo $\to$ funzione.
+\end{hintbox}
+
+\label{hint:143}
+\begin{hintbox}{143}
+\textbf{Valutatore di espressioni} \quad \hyperref[ex:143]{$\leftarrow$ Esercizio} \quad \hyperref[sol:143]{$\rightarrow$ Soluzione}
+
+La struttura dell'espressione rispecchia la struttura del codice:
+\begin{itemize}[leftmargin=2em]
+  \item Se e' un numero: restituiscilo direttamente.
+  \item Se e' una lista: il \fn{car} e' l'operatore,
+        il \fn{cadr} e il \fn{caddr} sono i due operandi.
+        Valutali ricorsivamente, poi applica l'operatore.
+\end{itemize}
+Usa \fn{funcall} con una funzione ricavata dal simbolo
+(es. \fn{(symbol-function operator)}) oppure un \fn{case}.
+\end{hintbox}
+
+\label{hint:144}
+\begin{hintbox}{144}
+\textbf{Mini-interprete con variabili} \quad \hyperref[ex:144]{$\leftarrow$ Esercizio} \quad \hyperref[sol:144]{$\rightarrow$ Soluzione}
+
+L'ambiente e' una alist \fn{((nome . valore) ...)}.
+
+Estendi il valutatore dell'es.~143:
+\begin{itemize}[leftmargin=2em]
+  \item Se l'espressione e' un simbolo: cercalo nell'ambiente
+        con \fn{assoc}.
+  \item Se e' \fn{(set var val)}: valuta \fn{val}, aggiorna
+        l'ambiente (aggiungi o modifica la coppia).
+  \item Operatori aritmetici: come prima.
+\end{itemize}
+Gestisci l'ambiente come parametro (passato per riferimento
+o restituito insieme al valore).
+\end{hintbox}
+
+% =============================================================
+\section*{Capitolo 10 — Progetti}
+% =============================================================
+
+\label{hint:146}
+\begin{hintbox}{146}
+\textbf{Tris} \quad \hyperref[ex:146]{$\leftarrow$ Esercizio} \quad \hyperref[sol:146]{$\rightarrow$ Soluzione}
+
+Struttura consigliata:
+\begin{itemize}[leftmargin=2em]
+  \item \fn{crea-griglia}: array $3 \times 3$ di \fn{NIL}.
+  \item \fn{fai-mossa griglia riga col giocatore}: verifica
+        che la cella sia libera e assegna.
+  \item \fn{vinto-p griglia giocatore}: controlla le 8
+        combinazioni vincenti (3 righe, 3 colonne, 2 diagonali).
+  \item \fn{pareggio-p griglia}: nessuna cella vuota e nessuno ha vinto.
+  \item \fn{gioca}: loop che alterna i turni fino a vittoria o pareggio.
+\end{itemize}
+\end{hintbox}
+
+\label{hint:147}
+\begin{hintbox}{147}
+\textbf{Gioco della vita} \quad \hyperref[ex:147]{$\leftarrow$ Esercizio} \quad \hyperref[sol:147]{$\rightarrow$ Soluzione}
+
+Per ogni cella $(r, c)$, conta i vicini vivi (le 8 celle adiacenti).
+Le regole:
+\begin{itemize}[leftmargin=2em]
+  \item Viva con 2 o 3 vicini $\to$ sopravvive.
+  \item Morta con esattamente 3 vicini $\to$ nasce.
+  \item Altrimenti $\to$ muore/resta morta.
+\end{itemize}
+Calcola la nuova generazione in un array separato (non
+modificare quello corrente mentre lo leggi).
+\end{hintbox}
+
+\label{hint:148}
+\begin{hintbox}{148}
+\textbf{Mini sistema gestionale} \quad \hyperref[ex:148]{$\leftarrow$ Esercizio} \quad \hyperref[sol:148]{$\rightarrow$ Soluzione}
+
+Struttura minima consigliata:
+
+\textbf{Model:} definisci la struttura con \fn{defstruct}.
+
+\textbf{Archivio:} una hash table globale \fn{*archivio*}
+con chiave = identificatore univoco.
+
+\textbf{Salvataggio:} con \fn{with-open-file} scrivi ogni
+record come S-expression con \fn{print} (leggibile con \fn{read}).
+\begin{lstlisting}
+(with-open-file (s file :direction :output
+                        :if-exists :supersede)
+  (maphash (lambda (k v)
+             (print (list k v) s))
+           *archivio*))
+\end{lstlisting}
+
+\textbf{Caricamento:} leggi le S-expression con \fn{read}
+in un loop finche' non si raggiunge \fn{EOF}.
+\end{hintbox}
