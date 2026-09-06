@@ -6,13 +6,18 @@
 \addcontentsline{toc}{chapter}{Cheat Sheet}
 \markboth{Cheat Sheet}{Cheat Sheet}
 
-% --- Stili per il cheat sheet ---
+% --- Colori semantici per il cheat sheet ---
+\definecolor{csBlue}{RGB}{30,80,160}      % Fondamenti
+\definecolor{csGreen}{RGB}{34,110,34}     % Sequenze
+\definecolor{csOrange}{RGB}{200,100,0}    % Numeri
+\definecolor{csPurple}{RGB}{120,50,140}   % Astrazione
+\definecolor{csTeal}{RGB}{0,110,110}      % Strutture dati
 
 % Box sezione colorato
 \newtcolorbox{cheatbox}[2][]{%
   enhanced,
   colback=#2!8,
-  colframe=#2!70!black,
+  colframe=#2!80!black,
   fonttitle=\bfseries\sffamily,
   coltitle=white,
   title=#1,
@@ -37,8 +42,10 @@
 \begin{multicols}{2}
 \small
 
-% ---- Definizioni ------------------------------------------
-\begin{cheatbox}[Definizioni e binding]{boxEssFrame}
+% ==================== COLONNA 1 ====================
+
+% ---- Definizioni (BLU) --------------------------------
+\begin{cheatbox}[Definizioni e binding]{csBlue}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
 \fn{(defun f (x) corpo)}      & \desc{funzione} \\
 \fn{(defparameter *v* e)}     & \desc{globale} \\
@@ -48,8 +55,18 @@
 \end{tabular}
 \end{cheatbox}
 
-% ---- Condizioni -------------------------------------------
-\begin{cheatbox}[Condizioni]{colThree}
+% ---- Booleani (BLU) -----------------------------------
+\begin{cheatbox}[Booleani e logica]{csBlue}
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
+\fn{T} / \fn{NIL}             & \desc{vero / falso} \\
+\fn{(and a b ...)}            & \desc{e logico} \\
+\fn{(or a b ...)}             & \desc{o logico} \\
+\fn{(not x)}                  & \desc{negazione} \\
+\end{tabular}
+\end{cheatbox}
+
+% ---- Condizioni (BLU) ---------------------------------
+\begin{cheatbox}[Condizioni]{csBlue}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
 \fn{(if test then else)}      & \desc{ramo singolo} \\
 \fn{(cond (t1 e1)...)}        & \desc{rami multipli} \\
@@ -59,64 +76,8 @@
 \end{tabular}
 \end{cheatbox}
 
-% ---- Booleani ---------------------------------------------
-\begin{cheatbox}[Booleani e logica]{colTwo}
-\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{T} / \fn{NIL}             & \desc{vero / falso} \\
-\fn{(and a b ...)}            & \desc{e logico} \\
-\fn{(or a b ...)}             & \desc{o logico} \\
-\fn{(not x)}                  & \desc{negazione} \\
-\end{tabular}
-\end{cheatbox}
-
-% ---- Aritmetica -------------------------------------------
-\begin{cheatbox}[Aritmetica]{colFour}
-\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{+ - * /}                  & \desc{base} \\
-\fn{(mod a b)} / \fn{(rem a b)} & \desc{resto} \\
-\fn{(1+ x)} / \fn{(1- x)}     & \desc{inc / dec} \\
-\fn{(expt b e)} / \fn{(sqrt x)} & \desc{potenza / radice} \\
-\fn{(abs x)}                  & \desc{valore assoluto} \\
-\fn{(max ...)} / \fn{(min ...)} & \desc{max / min} \\
-\fn{(floor x)} / \fn{(ceiling x)} & \desc{troncamenti} \\
-\fn{(round x)}                & \desc{arrotonda} \\
-\end{tabular}
-
-\smallskip
-\hdashrule{\linewidth}{0.3pt}{2pt}
-\smallskip
-
-\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{= /= < > <= >=}           & \desc{confronti numerici} \\
-\end{tabular}
-\end{cheatbox}
-
-% ---- Predicati --------------------------------------------
-\begin{cheatbox}[Predicati]{colFive}
-\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{(null x)}                 & \desc{NIL?} \\
-\fn{(atom x)} / \fn{(consp x)} & \desc{atomo? / cons?} \\
-\fn{(listp x)}                & \desc{lista?} \\
-\fn{(numberp x)} / \fn{(symbolp x)} & \desc{tipo?} \\
-\fn{(stringp x)}              & \desc{stringa?} \\
-\end{tabular}
-
-\smallskip
-\hdashrule{\linewidth}{0.3pt}{2pt}
-\smallskip
-
-\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{(eq a b)}                 & \desc{identità} \\
-\fn{(eql a b)}                & \desc{+ num/char} \\
-\fn{(equal a b)}              & \desc{strutturale} \\
-\fn{(equalp a b)}             & \desc{+ case-insens.} \\
-\end{tabular}
-\end{cheatbox}
-
-\columnbreak
-
-% ---- Liste ------------------------------------------------
-\begin{cheatbox}[Liste]{boxEssFrame}
+% ---- Liste (VERDE) ------------------------------------
+\begin{cheatbox}[Liste]{csGreen}
 \textit{\footnotesize Costruzione:}
 \smallskip
 
@@ -142,8 +103,83 @@
 \end{tabular}
 \end{cheatbox}
 
-% ---- Iterazione -------------------------------------------
-\begin{cheatbox}[Iterazione]{colTwo}
+\columnbreak
+
+% ==================== COLONNA 2 ====================
+
+% ---- Aritmetica (ARANCIONE) ---------------------------
+\begin{cheatbox}[Aritmetica]{csOrange}
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
+\fn{+ - * /}                  & \desc{base} \\
+\fn{(mod a b)} / \fn{(rem a b)} & \desc{resto} \\
+\fn{(1+ x)} / \fn{(1- x)}     & \desc{inc / dec} \\
+\fn{(expt b e)} / \fn{(sqrt x)} & \desc{potenza / radice} \\
+\fn{(abs x)}                  & \desc{valore assoluto} \\
+\fn{(max ...)} / \fn{(min ...)} & \desc{max / min} \\
+\fn{(floor x)} / \fn{(ceiling x)} & \desc{troncamenti} \\
+\fn{(round x)}                & \desc{arrotonda} \\
+\end{tabular}
+
+\smallskip
+\hdashrule{\linewidth}{0.3pt}{2pt}
+\smallskip
+
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
+\fn{= /= < > <= >=}           & \desc{confronti numerici} \\
+\end{tabular}
+\end{cheatbox}
+
+% ---- Predicati (ARANCIONE) ----------------------------
+\begin{cheatbox}[Predicati]{csOrange}
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
+\fn{(null x)}                 & \desc{NIL?} \\
+\fn{(atom x)} / \fn{(consp x)} & \desc{atomo? / cons?} \\
+\fn{(listp x)}                & \desc{lista?} \\
+\fn{(numberp x)} / \fn{(symbolp x)} & \desc{tipo?} \\
+\fn{(stringp x)}              & \desc{stringa?} \\
+\end{tabular}
+
+\smallskip
+\hdashrule{\linewidth}{0.3pt}{2pt}
+\smallskip
+
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
+\fn{(eq a b)}                 & \desc{identità} \\
+\fn{(eql a b)}                & \desc{+ num/char} \\
+\fn{(equal a b)}              & \desc{strutturale} \\
+\fn{(equalp a b)}             & \desc{+ case-insens.} \\
+\end{tabular}
+\end{cheatbox}
+
+% ---- Stringhe (VERDE) ---------------------------------
+\begin{cheatbox}[Stringhe]{csGreen}
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
+\fn{(length s)}               & \desc{lunghezza} \\
+\fn{(char s i)}               & \desc{i-esimo char} \\
+\fn{(subseq s start end)}     & \desc{sottostringa} \\
+\fn{(concatenate 'string ...)} & \desc{concatena} \\
+\fn{(string-upcase s)}        & \desc{MAIUSCOLO} \\
+\fn{(string-downcase s)}      & \desc{minuscolo} \\
+\fn{(parse-integer s)}        & \desc{str→int} \\
+\fn{(string= s1 s2)}          & \desc{uguaglianza} \\
+\end{tabular}
+\end{cheatbox}
+
+\end{multicols}
+
+\clearpage
+
+% ============================================================
+%  PAGINA 2
+% ============================================================
+
+\begin{multicols}{2}
+\small
+
+% ==================== COLONNA 1 ====================
+
+% ---- Iterazione (VERDE) -------------------------------
+\begin{cheatbox}[Iterazione]{csGreen}
 \textit{\footnotesize Base:}
 \smallskip
 
@@ -165,11 +201,8 @@
 \end{tabular}
 \end{cheatbox}
 
-% ---- Higher-order -----------------------------------------
-\begin{cheatbox}[Higher-order]{colThree}
-\textit{\footnotesize Funzioni:}
-\smallskip
-
+% ---- Higher-order (VIOLA) -----------------------------
+\begin{cheatbox}[Higher-order]{csPurple}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
 \fn{\#'nome}                  & \desc{rif.\ a funzione} \\
 \fn{(lambda (x) corpo)}       & \desc{anonima} \\
@@ -178,7 +211,7 @@
 \end{tabular}
 
 \smallskip
-\textit{\footnotesize Operazioni su liste:}
+\hdashrule{\linewidth}{0.3pt}{2pt}
 \smallskip
 
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
@@ -194,44 +227,31 @@
 \end{tabular}
 \end{cheatbox}
 
-\end{multicols}
-
-\clearpage
-
-% ============================================================
-%  PAGINA 2
-% ============================================================
-
-\begin{multicols}{2}
-\small
-
-% ---- Stringhe ---------------------------------------------
-\begin{cheatbox}[Stringhe]{colFour}
+% ---- Valori multipli (VIOLA) --------------------------
+\begin{cheatbox}[Valori multipli]{csPurple}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{(length s)}               & \desc{lunghezza} \\
-\fn{(char s i)}               & \desc{i-esimo char} \\
-\fn{(subseq s start end)}     & \desc{sottostringa} \\
-\fn{(concatenate 'string ...)} & \desc{concatena} \\
-\fn{(string-upcase s)}        & \desc{MAIUSCOLO} \\
-\fn{(string-downcase s)}      & \desc{minuscolo} \\
-\fn{(parse-integer s)}        & \desc{str→int} \\
-\fn{(string= s1 s2)}          & \desc{uguaglianza} \\
+\fn{(values v1 v2 ...)}       & \desc{ritorna più val} \\
+\fn{(multiple-value-bind}     & \\
+\fn{\ \ (a b) expr body)}     & \desc{cattura valori} \\
 \end{tabular}
 \end{cheatbox}
 
-% ---- Hash table -------------------------------------------
-\begin{cheatbox}[Hash table]{colFive}
+% ---- Macro (VIOLA) ------------------------------------
+\begin{cheatbox}[Macro]{csPurple}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{(make-hash-table)}        & \desc{crea} \\
-\fn{(gethash k ht)}           & \desc{leggi} \\
-\fn{(setf (gethash k ht) v)}  & \desc{scrivi} \\
-\fn{(remhash k ht)}           & \desc{rimuovi} \\
-\fn{(maphash \#'f ht)}        & \desc{itera (f k v)} \\
+\fn{(defmacro m (p) corpo)}   & \desc{definisci} \\
+\fn{`(... ,e ,@lst)}          & \desc{backquote} \\
+\fn{(gensym)}                 & \desc{simbolo unico} \\
+\fn{(macroexpand-1 '(m ...))} & \desc{espandi} \\
 \end{tabular}
 \end{cheatbox}
 
-% ---- Array ------------------------------------------------
-\begin{cheatbox}[Array e vettori]{colTwo}
+\columnbreak
+
+% ==================== COLONNA 2 ====================
+
+% ---- Array (TEAL) -------------------------------------
+\begin{cheatbox}[Array e vettori]{csTeal}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
 \fn{\#(1 2 3)}                & \desc{vettore letterale} \\
 \fn{(make-array n)}           & \desc{vettore} \\
@@ -241,17 +261,8 @@
 \end{tabular}
 \end{cheatbox}
 
-% ---- Alist ------------------------------------------------
-\begin{cheatbox}[Association list]{colThree}
-\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{'((k1 . v1) (k2 . v2))}   & \desc{struttura} \\
-\fn{(assoc key alist)}        & \desc{cerca} \\
-\fn{(cdr (assoc k al))}       & \desc{ottieni valore} \\
-\end{tabular}
-\end{cheatbox}
-
-% ---- Defstruct --------------------------------------------
-\begin{cheatbox}[Strutture]{boxEssFrame}
+% ---- Strutture (TEAL) ---------------------------------
+\begin{cheatbox}[Strutture]{csTeal}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
 \fn{(defstruct nome s1 s2)}   & \desc{definisci} \\
 \fn{(make-nome :s1 v1)}       & \desc{crea} \\
@@ -261,10 +272,28 @@
 \end{tabular}
 \end{cheatbox}
 
-\columnbreak
+% ---- Alist (TEAL) -------------------------------------
+\begin{cheatbox}[Association list]{csTeal}
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
+\fn{'((k1 . v1) (k2 . v2))}   & \desc{struttura} \\
+\fn{(assoc key alist)}        & \desc{cerca} \\
+\fn{(cdr (assoc k al))}       & \desc{ottieni valore} \\
+\end{tabular}
+\end{cheatbox}
 
-% ---- I/O --------------------------------------------------
-\begin{cheatbox}[Input/Output]{colFour}
+% ---- Hash table (TEAL) --------------------------------
+\begin{cheatbox}[Hash table]{csTeal}
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
+\fn{(make-hash-table)}        & \desc{crea} \\
+\fn{(gethash k ht)}           & \desc{leggi} \\
+\fn{(setf (gethash k ht) v)}  & \desc{scrivi} \\
+\fn{(remhash k ht)}           & \desc{rimuovi} \\
+\fn{(maphash \#'f ht)}        & \desc{itera (f k v)} \\
+\end{tabular}
+\end{cheatbox}
+
+% ---- I/O (TEAL) ---------------------------------------
+\begin{cheatbox}[Input/Output]{csTeal}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
 \fn{(read)}                   & \desc{leggi S-expr} \\
 \fn{(read-line)}              & \desc{leggi riga} \\
@@ -281,36 +310,6 @@
 \fn{\textasciitilde A}        & \desc{qualsiasi valore} \\
 \fn{\textasciitilde D} / \fn{\textasciitilde F} & \desc{intero / float} \\
 \fn{\textasciitilde\%}        & \desc{newline} \\
-\fn{\textasciitilde S}        & \desc{con escape} \\
-\end{tabular}
-\end{cheatbox}
-
-% ---- Valori multipli --------------------------------------
-\begin{cheatbox}[Valori multipli]{colTwo}
-\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{(values v1 v2 ...)}       & \desc{ritorna più val} \\
-\fn{(multiple-value-bind}     & \\
-\fn{\ \ (a b) expr body)}     & \desc{cattura valori} \\
-\end{tabular}
-\end{cheatbox}
-
-% ---- Macro ------------------------------------------------
-\begin{cheatbox}[Macro]{colFive}
-\begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
-\fn{(defmacro m (p) corpo)}   & \desc{definisci} \\
-\fn{`(... ,e ,@lst)}          & \desc{backquote} \\
-\fn{(gensym)}                 & \desc{simbolo unico} \\
-\fn{(macroexpand-1 '(m ...))} & \desc{espandi} \\
-\end{tabular}
-\end{cheatbox}
-
-% ---- Legenda simboli --------------------------------------
-\begin{cheatbox}[Legenda esercizi]{black}
-\begin{tabular}{@{}ll@{\hspace{12pt}}ll@{}}
-\essential & \desc{Essenziale} & \optional & \desc{Collaterale} \\[4pt]
-\unaStella & \desc{Facile} & \treStelle & \desc{Difficile} \\
-\dueStelle & \desc{Medio} & \quattroStelle & \desc{Avanzato} \\
-           &               & \cinqueStelle & \desc{Progetto} \\
 \end{tabular}
 \end{cheatbox}
 
