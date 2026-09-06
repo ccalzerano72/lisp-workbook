@@ -4,3 +4,6 @@
 /manuale/*.out
 /manuale/*.pdf
 /manuale/*.toc
+manuale/main.fdb_latexmk
+manuale/main.fls
+manuale/main.synctex.gz

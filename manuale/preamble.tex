@@ -11,6 +11,9 @@
 % --- Font ---
 \usepackage{lmodern}
 \usepackage{microtype}
+\usepackage{graphicx}   % per \scalebox nelle stelle
+\usepackage[outline]{contour}  % per bordino bianco sulle stelle
+\contourlength{0.6pt}
 
 % --- Layout pagina ---
 \usepackage[
@@ -144,12 +147,17 @@
 \usepackage[most]{tcolorbox}
 \tcbuselibrary{listings, breakable, skins}
 
-% Stelle di difficoltà
-\newcommand{\unaStella}{\textcolor{colOne}{$\bigstar$}}
-\newcommand{\dueStelle}{\textcolor{colTwo}{$\bigstar\bigstar$}}
-\newcommand{\treStelle}{\textcolor{colThree}{$\bigstar\bigstar\bigstar$}}
-\newcommand{\quattroStelle}{\textcolor{colFour}{$\bigstar\bigstar\bigstar\bigstar$}}
-\newcommand{\cinqueStelle}{\textcolor{colFive}{$\bigstar\bigstar\bigstar\bigstar\bigstar$}}
+% Stelle di difficoltà — con bordino bianco tramite pacchetto contour
+% \contour{white}{...} traccia il simbolo in bianco in 8 direzioni
+% poi sovrappone il simbolo colorato: risultato = alone bianco netto
+\newcommand{\stellaC}[1]{%
+  \contour{white}{\textcolor{#1}{$\bigstar$}}%
+}
+\newcommand{\unaStella}{\stellaC{colOne}}
+\newcommand{\dueStelle}{\stellaC{colTwo}\stellaC{colTwo}}
+\newcommand{\treStelle}{\stellaC{colThree}\stellaC{colThree}\stellaC{colThree}}
+\newcommand{\quattroStelle}{\stellaC{colFour}\stellaC{colFour}\stellaC{colFour}\stellaC{colFour}}
+\newcommand{\cinqueStelle}{\stellaC{colFive}\stellaC{colFive}\stellaC{colFive}\stellaC{colFive}\stellaC{colFive}}
 
 % Mappa numero di stelle → colore frame
 \newcommand{\starcolor}[1]{%
