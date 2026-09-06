@@ -37,17 +37,25 @@
 \definecolor{colFour}{RGB}{200,100,0}      % ★★★★   arancio
 \definecolor{colFive}{RGB}{180,30,30}      % ★★★★★  rosso
 
-% Colori box
-\definecolor{boxEssFrame}{RGB}{30,80,160}
-\definecolor{boxEssBack}{RGB}{235,241,252}
-\definecolor{boxColFrame}{RGB}{110,110,110}
+% Colori box esercizi (3 livelli)
+\definecolor{boxMinFrame}{RGB}{30,80,160}      % Minimo: blu
+\definecolor{boxMinBack}{RGB}{235,241,252}
+\definecolor{boxStdFrame}{RGB}{34,110,34}      % Standard: verde
+\definecolor{boxStdBack}{RGB}{236,248,236}
+\definecolor{boxColFrame}{RGB}{110,110,110}    % Collaterale: grigio
 \definecolor{boxColBack}{RGB}{245,245,245}
+
+% Colori box ausiliari
 \definecolor{boxHintFrame}{RGB}{180,130,0}
 \definecolor{boxHintBack}{RGB}{255,252,220}
 \definecolor{boxSolFrame}{RGB}{34,110,34}
 \definecolor{boxSolBack}{RGB}{236,248,236}
 \definecolor{boxRagFrame}{RGB}{140,50,140}
 \definecolor{boxRagBack}{RGB}{248,236,248}
+
+% Alias legacy per compatibilita'
+\definecolor{boxEssFrame}{RGB}{30,80,160}
+\definecolor{boxEssBack}{RGB}{235,241,252}
 
 % Colori semantici (cheat sheet e quick reference)
 \definecolor{csBlue}{RGB}{30,80,160}      % Fondamenti, stile
@@ -177,17 +185,17 @@
   \fi
 }
 
-% ---- Box ESERCIZIO ESSENZIALE ◆ ----
-% Uso: \begin{essbox}{n}{titolo}{stelle} ... \end{essbox}
-\newenvironment{essbox}[3]{%
+% ---- Box ESERCIZIO MINIMO ◆ (blu) ----
+% Uso: \begin{minbox}{n}{titolo}{stelle} ... \end{minbox}
+\newenvironment{minbox}[3]{%
   \medskip
   \begin{tcolorbox}[
     enhanced,
     breakable,
-    colframe=boxEssFrame,
-    colback=boxEssBack,
+    colframe=boxMinFrame,
+    colback=boxMinBack,
     fonttitle=\bfseries\small,
-    title={{\small\textcolor{boxEssFrame}{$\blacklozenge$}}\enspace Esercizio~#1\enspace---\enspace#2\enspace
+    title={{\small\textcolor{boxMinFrame}{$\blacklozenge$}}\enspace Esercizio~#1\enspace---\enspace#2\enspace
       \hfill\ifcase#3\or\unaStella\or\dueStelle\or\treStelle\or\quattroStelle\or\cinqueStelle\fi},
     arc=3pt,
     boxrule=1.2pt,
@@ -198,7 +206,28 @@
   \medskip
 }
 
-% ---- Box ESERCIZIO COLLATERALE ○ ----
+% ---- Box ESERCIZIO STANDARD ■ (verde) ----
+% Uso: \begin{stdbox}{n}{titolo}{stelle} ... \end{stdbox}
+\newenvironment{stdbox}[3]{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colframe=boxStdFrame,
+    colback=boxStdBack,
+    fonttitle=\bfseries\small,
+    title={{\small\textcolor{boxStdFrame}{$\blacksquare$}}\enspace Esercizio~#1\enspace---\enspace#2\enspace
+      \hfill\ifcase#3\or\unaStella\or\dueStelle\or\treStelle\or\quattroStelle\or\cinqueStelle\fi},
+    arc=3pt,
+    boxrule=1pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt
+  ]
+}{%
+  \end{tcolorbox}
+  \medskip
+}
+
+% ---- Box ESERCIZIO COLLATERALE ○ (grigio) ----
 % Uso: \begin{colbox}{n}{titolo}{stelle} ... \end{colbox}
 \newenvironment{colbox}[3]{%
   \medskip
@@ -219,6 +248,9 @@
   \end{tcolorbox}
   \medskip
 }
+
+% Alias legacy: essbox -> minbox
+\newenvironment{essbox}[3]{\begin{minbox}{#1}{#2}{#3}}{\end{minbox}}
 
 % ---- Box SUGGERIMENTO ----
 \newenvironment{hintbox}[1]{%
@@ -364,6 +396,11 @@
 \newcommand{\fn}[1]{\texttt{#1}}            % funzione inline
 \newcommand{\result}{{\color{clComment}; $\rightarrow$\ }}
 
-% Nomi simboli
-\newcommand{\essential}{{\color{boxEssFrame}$\blacklozenge$}}
-\newcommand{\optional}{{\color{boxColFrame}$\circ$}}
+% Nomi simboli per legenda
+\newcommand{\minimo}{{\color{boxMinFrame}$\blacklozenge$}}
+\newcommand{\standard}{{\color{boxStdFrame}$\blacksquare$}}
+\newcommand{\collateral}{{\color{boxColFrame}$\circ$}}
+
+% Alias legacy
+\newcommand{\essential}{\minimo}
+\newcommand{\optional}{\collateral}

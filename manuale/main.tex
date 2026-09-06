@@ -136,8 +136,8 @@ Sei libero di condividere e modificare questo materiale, a condizione di:
 
 \begin{tcolorbox}[
   enhanced,
-  colback=boxEssBack,
-  colframe=boxEssFrame,
+  colback=boxMinBack,
+  colframe=boxMinFrame,
   fonttitle=\bfseries,
   title=Legenda esercizi,
   boxrule=0.8pt,
@@ -145,8 +145,10 @@ Sei libero di condividere e modificare questo materiale, a condizione di:
   left=12pt, right=12pt, top=10pt, bottom=10pt
 ]
 \begin{tabular}{@{}ll@{\qquad}ll@{}}
-  \essential & Essenziale (concetto nuovo) &
-  \optional  & Collaterale (consolidamento)\\[8pt]
+  \minimo & Minimo (concetto chiave) &
+  \standard & Standard (approfondimento)\\[4pt]
+  & &
+  \collateral  & Collaterale (consolidamento)\\[8pt]
   \unaStella & Facile &
   \quattroStelle & Avanzato\\[2pt]
   \dueStelle & Medio &
@@ -184,12 +186,18 @@ Sei libero di condividere e modificare questo materiale, a condizione di:
   arc=3pt,
   left=12pt, right=12pt, top=10pt, bottom=10pt
 ]
-\textbf{Percorso minimo} (53 esercizi)\\[2pt]
-Solo gli \essential: coprono tutti i concetti fondamentali.
+\textbf{Percorso minimo} (25 esercizi) \minimo\\[2pt]
+Solo i \minimo: un esercizio per ogni concetto chiave del linguaggio.
+Per chi ha poco tempo o vuole una panoramica essenziale.
 
 \medskip
-\textbf{Percorso completo} (148 esercizi)\\[2pt]
-Anche i \optional\ per padronanza più solida.
+\textbf{Percorso standard} (50 esercizi) \minimo\ + \standard\\[2pt]
+Minimi più gli \standard: copre tutti i concetti con pratica sufficiente.
+Percorso consigliato per la maggior parte degli studenti.
+
+\medskip
+\textbf{Percorso completo} (148 esercizi) \minimo\ + \standard\ + \collateral\\[2pt]
+Anche i \collateral\ per padronanza solida e preparazione approfondita.
 
 \medskip
 \textbf{Suggerimenti}\\[2pt]
@@ -237,8 +245,9 @@ Esercizi \treStelle+ hanno un hint nella sezione apposita. Consultalo prima dell
 \vspace*{0.5cm}
 \begin{center}
 \begin{tabular}{@{}ll@{}}
-\essential\ \textbf{Essenziale} & introduce un costrutto o pattern nuovo --- da svolgere sempre \\[4pt]
-\optional\ \textbf{Collaterale} & consolida quanto visto --- consigliato per padronanza completa \\[6pt]
+\minimo\ \textbf{Minimo} & concetto chiave --- percorso rapido (25 esercizi) \\[4pt]
+\standard\ \textbf{Standard} & approfondimento --- percorso consigliato (+25 = 50) \\[4pt]
+\collateral\ \textbf{Collaterale} & consolidamento --- percorso completo (+98 = 148) \\[6pt]
 \unaStella\ Facile \quad
 \dueStelle\ Medio \quad
 \treStelle\ Difficile \quad
