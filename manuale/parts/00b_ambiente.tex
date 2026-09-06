@@ -6,38 +6,88 @@
 \addcontentsline{toc}{chapter}{Usare Allegro CL Free Express}
 \markboth{Usare Allegro CL Free Express}{Usare Allegro CL Free Express}
 
+% --- Colori per questa sezione (riusa quelli del cheatsheet) ---
+\colorlet{envBlue}{csBlue}
+\colorlet{envGreen}{csGreen}
+\colorlet{envOrange}{csOrange}
+\colorlet{envPurple}{csPurple}
+
+% --- Box per le sezioni ambiente ---
+\newtcolorbox{envbox}[2][]{%
+  enhanced,
+  breakable,
+  colback=#2!5,
+  colframe=#2!80!black,
+  fonttitle=\bfseries\sffamily,
+  coltitle=white,
+  title=#1,
+  boxrule=0.8pt,
+  arc=4pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  toptitle=3pt, bottomtitle=3pt,
+  before skip=10pt,
+  after skip=10pt
+}
+
+% --- Box per suggerimenti ---
+\newtcolorbox{tipbox}[1][]{%
+  enhanced,
+  colback=envPurple!8,
+  colframe=envPurple!60!black,
+  fonttitle=\bfseries\sffamily\small,
+  coltitle=white,
+  title={#1},
+  boxrule=0.6pt,
+  arc=3pt,
+  left=8pt, right=8pt, top=5pt, bottom=5pt,
+  before skip=8pt,
+  after skip=8pt
+}
+
+% --- Box per attenzione/warning ---
+\newtcolorbox{warnbox}[1][]{%
+  enhanced,
+  colback=envOrange!10,
+  colframe=envOrange!80!black,
+  fonttitle=\bfseries\sffamily\small,
+  coltitle=white,
+  title={#1},
+  boxrule=0.6pt,
+  arc=3pt,
+  left=8pt, right=8pt, top=5pt, bottom=5pt,
+  before skip=8pt,
+  after skip=8pt
+}
+
+\vspace{-0.5cm}
+
 \noindent
 Allegro CL Free Express (\textit{Franz Inc.}) è un'implementazione
 completa di ANSI Common Lisp, disponibile gratuitamente per uso
-didattico. Tutto il codice di questo manuale è compatibile con
-questa edizione senza modifiche.
+didattico. Tutto il codice di questo manuale è stato testato con
+questa edizione.
 
 % =============================================================
-\section*{Avvio}
-\addcontentsline{toc}{section}{Avvio e REPL}
+%  AVVIO E REPL
 % =============================================================
 
-Dopo l'installazione, avvia Allegro CL dal menu Start oppure
-tramite il file \fn{allegro-ansi.exe} (modalità ANSI,
-\textit{case-insensitive} — quella consigliata per gli esercizi).
+\begin{envbox}[Avvio e REPL]{envBlue}
 
-All'avvio compare il prompt del REPL:
+\textbf{Avvio.} Dopo l'installazione, avvia Allegro CL dal menu Start oppure
+tramite \fn{allegro-ansi.exe}. Usa sempre la modalità \textbf{ANSI}:
+i simboli vengono automaticamente convertiti in maiuscolo
+(es.\ \fn{quadrato} diventa \fn{QUADRATO}), quindi puoi scrivere
+in minuscolo senza problemi.
+
+\medskip
+All'avvio compare il prompt del \textbf{REPL} (Read–Eval–Print Loop):
 
 \begin{lstlisting}
 CL-USER(1):
 \end{lstlisting}
 
-Il numero tra parentesi è il contatore delle espressioni valutate
-nella sessione corrente. Puoi digitare qualsiasi S-expression e
-premere Invio per valutarla immediatamente.
-
-% =============================================================
-\section*{Il ciclo REPL}
-% =============================================================
-
-REPL sta per \textbf{Read–Eval–Print Loop}: Allegro legge la tua
-espressione, la valuta e stampa il risultato, poi si rimette in
-attesa. È il modo principale di interagire con Lisp.
+Il numero tra parentesi è il contatore delle espressioni valutate.
+Digita una S-expression e premi Invio per valutarla:
 
 \begin{lstlisting}
 CL-USER(1): (+ 1 2)
@@ -48,137 +98,161 @@ CL-USER(3): (quadrato 5)
 25
 \end{lstlisting}
 
-\fn{*}, \fn{**}, \fn{***} contengono rispettivamente l'ultimo,
-il penultimo e il terzultimo valore restituito --- utile per
-riusare risultati intermedi senza ridefinire variabili.
+\medskip
+\textbf{Riutilizzare risultati precedenti.}
+Le variabili speciali \fn{*}, \fn{**}, \fn{***} contengono
+l'ultimo, penultimo e terzultimo valore restituito:
 
 \begin{lstlisting}
 CL-USER(4): (+ 10 20)
 30
-CL-USER(5): *          ; * vale 30 (l'ultimo risultato)
-30
-CL-USER(6): (1+ *)     ; 1+ del valore di *
+CL-USER(5): (1+ *)      ; * vale 30 -> risultato 31
 31
-CL-USER(7): (list ** *) ; ** e' 30, * e' 31
+CL-USER(6): (list ** *)  ; ** vale 30, * vale 31
 (30 31)
 \end{lstlisting}
 
-% =============================================================
-\section*{Caricare e compilare file}
-\addcontentsline{toc}{section}{Caricare e compilare file}
-% =============================================================
-
-Scrivi le tue funzioni in un file di testo (estensione \fn{.lisp})
-con un editor qualsiasi (Notepad, Notepad++, VS Code, ecc.),
-poi caricalo nel REPL.
-
-\medskip
-\noindent\textbf{Caricare un file (interprete):}
-\begin{lstlisting}
-CL-USER(1): (load "c:/percorso/mio-file.lisp")
-\end{lstlisting}
-oppure con il comando top-level (abbreviazione \fn{:ld}):
-\begin{lstlisting}
-CL-USER(1): :ld "c:/percorso/mio-file.lisp"
-\end{lstlisting}
-
-\medskip
-\noindent\textbf{Compilare e caricare in un solo passo} (più veloce,
-genera un file \fn{.fasl}):
-\begin{lstlisting}
-CL-USER(1): :cload "c:/percorso/mio-file.lisp"
-\end{lstlisting}
-
-\medskip
-\noindent\textbf{Solo compilazione} (senza caricare):
-\begin{lstlisting}
-CL-USER(1): :cf "c:/percorso/mio-file.lisp"
-\end{lstlisting}
-
-\medskip
-\noindent\textbf{Nota sui percorsi:} su Windows usa slash \fn{/}
-oppure doppio backslash \fn{\\\\}. Il percorso corrente si ottiene con:
-\begin{lstlisting}
-CL-USER(1): :pwd
-\end{lstlisting}
-e si cambia con:
-\begin{lstlisting}
-CL-USER(1): :cd "c:/cartella-esercizi"
-\end{lstlisting}
-Dopo aver cambiato directory basta scrivere il nome del file:
-\begin{lstlisting}
-CL-USER(1): :ld "es01.lisp"
-\end{lstlisting}
+\end{envbox}
 
 % =============================================================
-\section*{Comandi top-level essenziali}
-\addcontentsline{toc}{section}{Comandi top-level}
+%  CARICARE E COMPILARE FILE
 % =============================================================
+
+\begin{envbox}[Caricare e compilare file]{envGreen}
+
+Scrivi le funzioni in un file \fn{.lisp} con un editor qualsiasi
+(Notepad++, VS Code, ecc.), poi caricalo nel REPL.
+
+\medskip
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{5.5cm}p{7.5cm}@{}}
+\rowcolor{envGreen!10}
+\textbf{Comando} & \textbf{Effetto} \\
+\fn{:ld "file.lisp"} & Carica e valuta (interpretato) \\
+\rowcolor{envGreen!5}
+\fn{:cl "file.lisp"} & Compila e carica (più veloce, genera \fn{.fasl}) \\
+\fn{:cf "file.lisp"} & Solo compila (senza caricare) \\
+\end{tabular}
+\renewcommand{\arraystretch}{1.0}
+
+\begin{tipbox}[Suggerimento: ricaricare dopo modifiche]
+Dopo aver modificato il file, usa lo stesso comando \fn{:ld} o \fn{:cl}
+per ricaricare. Allegro sovrascrive le definizioni precedenti.
+\end{tipbox}
+
+\medskip
+\textbf{Gestione directory:}
+
+\begin{lstlisting}
+CL-USER(1): :pwd                   ; stampa directory corrente
+CL-USER(2): :cd "c:/esercizi-lisp" ; cambia directory
+CL-USER(3): :ld "es01.lisp"        ; ora basta il nome del file
+\end{lstlisting}
+
+\begin{warnbox}[Attenzione: percorsi Windows]
+Su Windows usa slash \fn{/} nei percorsi, non backslash.\\
+Corretto: \fn{"c:/cartella/file.lisp"}\\
+Errato: \fn{"c:\textbackslash cartella\textbackslash file.lisp"}
+\end{warnbox}
+
+\end{envbox}
+
+% =============================================================
+%  COMANDI TOP-LEVEL
+% =============================================================
+
+\begin{envbox}[Comandi top-level]{envBlue}
 
 I comandi che iniziano con \fn{:} sono specifici di Allegro
-(\textit{top-level commands}) e non fanno parte di ANSI CL.
-Le abbreviazioni tra parentesi sono equivalenti.
+e non fanno parte dello standard ANSI Common Lisp.
 
 \medskip
-\begin{tabular}{@{}lll@{}}
-\toprule
-\textbf{Comando} & \textbf{Abbrev.} & \textbf{Effetto} \\
-\midrule
-\fn{:ld "file.lisp"}   & ---       & carica e valuta il file \\
-\fn{:cload "file.lisp"}& \fn{:cl}  & compila e carica \\
-\fn{:cf "file.lisp"}   & ---       & compila senza caricare \\
-\fn{:pwd}              & \fn{:pw}  & stampa la directory corrente \\
-\fn{:cd "dir"}         & ---       & cambia directory \\
-\fn{:trace nome-fn}    & \fn{:tr}  & attiva il trace su una funzione \\
-\fn{:untrace nome-fn}  & \fn{:untr}& disattiva il trace \\
-\fn{:step espressione} & \fn{:st}  & esegue in modalità step \\
-\fn{:inspect oggetto}  & \fn{:i}   & ispeziona un valore Lisp \\
-\fn{:macroexpand form} & \fn{:ma}  & espande una macro \\
-\fn{:history}          & \fn{:his} & mostra la cronologia \\
-\fn{:help}             & \fn{:he}  & mostra tutti i comandi \\
-\fn{:exit}             & \fn{:ex}  & esce da Allegro CL \\
-\bottomrule
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{\hspace{12pt}}p{6.5cm}@{}}
+\rowcolor{envBlue!10}
+\textbf{Comando} & \textbf{Abbr.} & \textbf{Effetto} \\
+\fn{:ld "file"} & --- & carica file (interpretato) \\
+\rowcolor{envBlue!5}
+\fn{:cl "file"} & --- & compila e carica \\
+\fn{:cf "file"} & --- & compila senza caricare \\
+\rowcolor{envBlue!5}
+\fn{:pwd} & \fn{:pw} & stampa directory corrente \\
+\fn{:cd "dir"} & --- & cambia directory \\
+\rowcolor{envBlue!5}
+\fn{:trace fn} & \fn{:tr} & attiva trace su funzione \\
+\fn{:untrace fn} & \fn{:untr} & disattiva trace \\
+\rowcolor{envBlue!5}
+\fn{:step expr} & \fn{:st} & esegue passo-passo \\
+\fn{:inspect obj} & \fn{:i} & ispeziona un oggetto \\
+\rowcolor{envBlue!5}
+\fn{:describe obj} & \fn{:de} & documentazione su oggetto \\
+\fn{:apropos "str"} & \fn{:ap} & cerca simboli contenenti "str" \\
+\rowcolor{envBlue!5}
+\fn{:history} & \fn{:his} & cronologia comandi \\
+\fn{:help} & \fn{:he} & lista tutti i comandi \\
+\rowcolor{envBlue!5}
+\fn{:exit} & \fn{:ex} & esce da Allegro CL \\
 \end{tabular}
+\renewcommand{\arraystretch}{1.0}
 
-% =============================================================
-\section*{Trace: seguire l'esecuzione passo passo}
-\addcontentsline{toc}{section}{Trace e debugger}
-% =============================================================
-
-\fn{:trace} è uno degli strumenti più utili per capire cosa fa
-una funzione ricorsiva.
+\medskip
+\textbf{Cercare funzioni:} usa \fn{:apropos} per trovare funzioni
+di cui non ricordi il nome esatto:
 
 \begin{lstlisting}
-CL-USER(1): (defun fattoriale (n)
-              (if (= n 0) 1 (* n (fattoriale (1- n)))))
-FATTORIALE
-CL-USER(2): :trace fattoriale
-(FATTORIALE)
-CL-USER(3): (fattoriale 4)
-  0: (FATTORIALE 4)
-    1: (FATTORIALE 3)
-      2: (FATTORIALE 2)
-        3: (FATTORIALE 1)
-          4: (FATTORIALE 0)
-          4: FATTORIALE returned 1
-        3: FATTORIALE returned 1
-      2: FATTORIALE returned 2
-    1: FATTORIALE returned 6
-  0: FATTORIALE returned 24
-24
-CL-USER(4): :untrace fattoriale
-NIL
+CL-USER(1): :apropos "remove"
+REMOVE           function
+REMOVE-IF        function
+REMOVE-IF-NOT    function
+REMOVE-DUPLICATES function
+...
 \end{lstlisting}
 
-La rientranza indica la profondità della chiamata ricorsiva.
-\fn{:untrace} senza argomenti disattiva il trace su tutte le funzioni.
+\end{envbox}
 
 % =============================================================
-\section*{Il debugger}
+%  TRACE
 % =============================================================
 
-Quando si verifica un errore, Allegro entra automaticamente nel
-\textbf{debugger}, riconoscibile dal prompt cambiato:
+\begin{envbox}[Trace: seguire la ricorsione]{envOrange}
+
+\fn{:trace} è lo strumento più utile per capire cosa fa
+una funzione ricorsiva. Mostra ogni chiamata e il valore restituito:
+
+\begin{lstlisting}
+CL-USER(1): (defun fatt (n)
+              (if (= n 0) 1 (* n (fatt (1- n)))))
+FATT
+CL-USER(2): :trace fatt
+(FATT)
+CL-USER(3): (fatt 4)
+  0: (FATT 4)
+    1: (FATT 3)
+      2: (FATT 2)
+        3: (FATT 1)
+          4: (FATT 0)
+          4: FATT returned 1
+        3: FATT returned 1
+      2: FATT returned 2
+    1: FATT returned 6
+  0: FATT returned 24
+24
+\end{lstlisting}
+
+La rientranza indica la profondità della chiamata.
+Per disattivare: \fn{:untrace fatt} (oppure \fn{:untrace} senza
+argomenti per disattivare tutto).
+
+\end{envbox}
+
+% =============================================================
+%  DEBUGGER
+% =============================================================
+
+\begin{envbox}[Il debugger]{envOrange}
+
+Quando si verifica un errore, Allegro entra nel \textbf{debugger}.
+Il prompt cambia mostrando il livello di errore tra parentesi quadre:
 
 \begin{lstlisting}
 CL-USER(1): (/ 1 0)
@@ -188,44 +262,85 @@ Error: Division-by-zero.
 Restart actions (select using :continue):
  0: Return to Top Level (an "abort" restart).
 
-[1] CL-USER(2):    ; prompt di breakpoint, livello 1
+[1] CL-USER(2):
 \end{lstlisting}
 
-I comandi più utili nel debugger:
+Il \fn{[1]} indica che sei al primo livello di errore.
+Se commetti un altro errore qui, vai al livello \fn{[2]}, ecc.
 
 \medskip
-\begin{tabular}{@{}lll@{}}
-\toprule
-\textbf{Comando} & \textbf{Abbrev.} & \textbf{Effetto} \\
-\midrule
-\fn{:pop}      & ---       & esce dal livello di errore corrente \\
-\fn{:reset}    & \fn{:res} & torna al top-level (livello 0) \\
-\fn{:continue} & \fn{:cont}& continua (se l'errore è continuabile) \\
-\fn{:bt}       & ---       & stampa lo stack in forma compatta \\
-\fn{:zoom}     & \fn{:zo}  & stampa lo stack completo \\
-\fn{:error}    & \fn{:err} & ristampa il messaggio di errore \\
-\bottomrule
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l@{\hspace{8pt}}l@{\hspace{12pt}}p{6cm}@{}}
+\rowcolor{envOrange!10}
+\textbf{Comando} & \textbf{Abbr.} & \textbf{Effetto} \\
+\fn{:reset} & \fn{:res} & torna al livello 0 (usa sempre questo!) \\
+\rowcolor{envOrange!5}
+\fn{:pop} & --- & sale di un livello \\
+\fn{:bt} & --- & stampa stack compatto \\
+\rowcolor{envOrange!5}
+\fn{:zoom} & \fn{:zo} & stampa stack completo \\
+\fn{:error} & \fn{:err} & ristampa messaggio di errore \\
+\rowcolor{envOrange!5}
+\fn{:continue} & \fn{:cont} & continua (se possibile) \\
 \end{tabular}
+\renewcommand{\arraystretch}{1.0}
+
+\begin{warnbox}[Attenzione: evita livelli annidati]
+Se il prompt mostra \fn{[2]}~o più, hai accumulato errori.
+Usa sempre \fn{:reset} per tornare al livello 0 prima di continuare.
+\end{warnbox}
+
+\end{envbox}
+
+% =============================================================
+%  ERRORI COMUNI
+% =============================================================
+
+\begin{envbox}[Errori comuni]{envOrange}
+
+\textbf{Parentesi sbilanciate.} Se premi Invio e non succede nulla,
+probabilmente manca una parentesi chiusa. Allegro aspetta che
+tu completi l'espressione. Chiudi le parentesi mancanti, oppure
+premi \textbf{Ctrl+C} per annullare e ricominciare.
 
 \medskip
-\noindent Per tornare rapidamente al prompt normale usa sempre
-\fn{:reset} — evita di accumulare livelli di errore annidati.
+\textbf{Troppe parentesi.} Se scrivi una parentesi chiusa di troppo:
+\begin{lstlisting}
+CL-USER(1): (+ 1 2))
+Error: eof encountered ...
+\end{lstlisting}
+Usa \fn{:reset} e riscrivi l'espressione.
+
+\medskip
+\textbf{Funzione non definita.} Se chiami una funzione che non esiste:
+\begin{lstlisting}
+CL-USER(1): (mia-funzione 3)
+Error: Undefined function: MIA-FUNZIONE
+\end{lstlisting}
+Verifica di aver caricato il file con \fn{:ld}.
+
+\end{envbox}
 
 % =============================================================
-\section*{Flusso di lavoro consigliato}
+%  FLUSSO DI LAVORO
 % =============================================================
 
-\begin{enumerate}[leftmargin=2em, itemsep=3pt]
+\begin{envbox}[Flusso di lavoro consigliato]{envPurple}
+
+\begin{enumerate}[leftmargin=1.5em, itemsep=4pt]
   \item Crea un file \fn{es01.lisp} con un editor di testo.
-  \item Scrivi le definizioni delle funzioni richieste dall'esercizio.
-  \item Nel REPL: \fn{:cd} nella cartella del file, poi \fn{:ld "es01.lisp"}.
-  \item Testa interattivamente nel REPL: chiama le funzioni con esempi.
-  \item Se trovi un bug, modifica il file, salva e ricarica con \fn{:ld}.
-  \item Per esercizi complessi, usa \fn{:trace} per seguire la ricorsione.
+  \item Scrivi \textbf{una sola funzione} per volta.
+  \item Nel REPL: \fn{:cd} nella cartella, poi \fn{:ld "es01.lisp"}.
+  \item \textbf{Testa subito} la funzione con vari input.
+  \item Se c'è un bug: modifica il file, salva, ricarica con \fn{:ld}.
+  \item Per funzioni ricorsive: usa \fn{:trace} per capire cosa succede.
+  \item Passa alla funzione successiva solo quando la prima funziona.
 \end{enumerate}
 
-\medskip
-\noindent\textbf{Suggerimento:} non scrivere mai tutto il codice
-in un colpo solo. Definisci una funzione per volta, testala subito
-nel REPL, poi passa alla successiva. Lisp è progettato per questo
-stile di sviluppo incrementale.
+\begin{tipbox}[Sviluppo incrementale]
+Non scrivere mai tutto il codice in un colpo solo!
+Lisp è progettato per lo sviluppo incrementale: scrivi poco,
+testa subito, procedi. Questo ti farà risparmiare ore di debug.
+\end{tipbox}
+
+\end{envbox}
