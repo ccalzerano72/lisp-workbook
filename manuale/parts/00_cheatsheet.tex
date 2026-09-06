@@ -6,12 +6,7 @@
 \addcontentsline{toc}{chapter}{Cheat Sheet}
 \markboth{Cheat Sheet}{Cheat Sheet}
 
-% --- Colori semantici per il cheat sheet ---
-\definecolor{csBlue}{RGB}{30,80,160}      % Fondamenti
-\definecolor{csGreen}{RGB}{34,110,34}     % Sequenze
-\definecolor{csOrange}{RGB}{200,100,0}    % Numeri
-\definecolor{csPurple}{RGB}{120,50,140}   % Astrazione
-\definecolor{csTeal}{RGB}{0,110,110}      % Strutture dati
+% Colori semantici cs* definiti in preamble.tex
 
 % Box sezione colorato
 \newtcolorbox{cheatbox}[2][]{%
@@ -20,7 +15,7 @@
   colframe=#2!80!black,
   fonttitle=\bfseries\sffamily,
   coltitle=white,
-  title=#1,
+  title={#1},
   boxrule=0.8pt,
   arc=4pt,
   left=5pt, right=5pt, top=3pt, bottom=3pt,

@@ -7,3 +7,4 @@
 manuale/main.fdb_latexmk
 manuale/main.fls
 manuale/main.synctex.gz
+/manuale/*.synctex(busy)
