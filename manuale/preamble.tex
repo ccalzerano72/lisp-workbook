@@ -19,8 +19,7 @@
 \usepackage[
   a4paper,
   top=2.5cm, bottom=2.8cm,
-  inner=2.8cm, outer=2.2cm,
-  marginparwidth=1.5cm
+  left=2.5cm, right=2.5cm
 ]{geometry}
 
 % --- Colori ---
@@ -316,9 +315,8 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LE,RO]{\small\thepage}
-\fancyhead[LO]{\small\nouppercase{\rightmark}}
-\fancyhead[RE]{\small\nouppercase{\leftmark}}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \fancypagestyle{plain}{%
   \fancyhf{}
