@@ -1690,15 +1690,19 @@ Definire:
 \end{stdbox}
 
 \label{ex:106}
-\begin{colbox}{106}{Struttura nodo-albero}{2}
-Definire:
+\begin{stdbox}{106}{Albero con liste}{2}
+Rappresentare un albero binario con la notazione \fn{(valore sinistra destra)}
+e implementare:
 \begin{lstlisting}
-(defstruct nodo
-  valore
-  (sinistra nil)
-  (destra   nil))
+(make-leaf v)
+(make-node v left right)
 \end{lstlisting}
-Costruire manualmente l'albero:
+\exspieg{Un nodo è semplicemente una lista di tre elementi.
+\fn{(make-leaf 5)} → \fn{(5 NIL NIL)};
+\fn{(make-node 5 sx dx)} → \fn{(5 sx dx)}.
+Implementare anche \fn{(node-value t)}, \fn{(node-left t)},
+\fn{(node-right t)} come accessor (\fn{car}, \fn{cadr}, \fn{caddr}).}
+Costruire l'albero di esempio:
 \begin{lstlisting}
 ;       5
 ;      / \
@@ -1707,30 +1711,28 @@ Costruire manualmente l'albero:
 ;   1   4
 \end{lstlisting}
 
-
 \small\color{black!55}\hyperref[sol:106]{$\rightarrow$ Soluzione}\normalsize\color{black}
-\end{colbox}
+\end{stdbox}
 
 \label{ex:107}
-\begin{colbox}{107}{Albero con liste}{2}
-Rappresentare lo stesso albero con la notazione
-\fn{(valore sinistra destra)} e implementare:
+\begin{colbox}{107}{Struttura nodo-albero}{2}
+Alternativa con \fn{defstruct}:
 \begin{lstlisting}
-(make-leaf v)
-(make-node v left right)
+(defstruct nodo
+  valore
+  (sinistra nil)
+  (destra   nil))
 \end{lstlisting}
-\exspieg{Alternativa leggera a \fn{defstruct}: un nodo è semplicemente
-una lista di tre elementi. \fn{(make-leaf 5)} → \fn{(5 NIL NIL)};
-\fn{(make-node 5 sx dx)} → \fn{(5 sx dx)}.
-Implementare anche \fn{(node-value t)}, \fn{(node-left t)},
-\fn{(node-right t)} come semplici accessor (\fn{car}, \fn{cadr}, \fn{caddr}).}
+\exnota{Con \fn{defstruct} si ottengono automaticamente costruttore
+e accessor tipizzati.}
 
 \small\color{black!55}\hyperref[sol:107]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:108}
 \begin{stdbox}{108}{BST: inserimento e ricerca}{4}
-Implementare un albero binario di ricerca:
+Implementare un albero binario di ricerca usando la rappresentazione
+dell'esercizio~106:
 \begin{lstlisting}
 (bst-insert value tree)
 (bst-find value tree)
@@ -1752,7 +1754,7 @@ l'uguaglianza al nodo corrente.}
 \end{stdbox}
 
 \label{ex:109}
-\begin{stdbox}{109}{Traversal dell'albero}{3}
+\begin{colbox}{109}{Traversal dell'albero}{3}
 \exlabel{Implementare} \fn{(preorder tree)}, \fn{(inorder tree)},
 \fn{(postorder tree)}.
 \exspieg{Le tre visite differiscono nell'ordine in cui si visita la radice
@@ -1770,7 +1772,7 @@ Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:109]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:109]{$\rightarrow$ Suggerimento}\normalsize\color{black}
-\end{stdbox}
+\end{colbox}
 
 \label{ex:110}
 \begin{colbox}{110}{Altezza e conteggio foglie}{3}

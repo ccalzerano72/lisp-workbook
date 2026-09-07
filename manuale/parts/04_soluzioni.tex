@@ -1386,31 +1386,8 @@ chiami la versione memoizzata, non se stessa:
 \end{solbox}
 
 \label{sol:106}
-\begin{solbox}{106}{Struttura nodo-albero}
+\begin{solbox}{106}{Albero con liste}
 \small\color{black!55}\hyperref[ex:106]{$\leftarrow$ Esercizio}\normalsize\color{black}
-\begin{lstlisting}
-(defstruct nodo
-  valore
-  (sinistra nil)
-  (destra   nil))
-
-;; albero:     5
-;;            / \
-;;           3   8
-;;          / \
-;;         1   4
-(defparameter *albero*
-  (make-nodo :valore 5
-    :sinistra (make-nodo :valore 3
-                :sinistra (make-nodo :valore 1)
-                :destra   (make-nodo :valore 4))
-    :destra   (make-nodo :valore 8)))
-\end{lstlisting}
-\end{solbox}
-
-\label{sol:107}
-\begin{solbox}{107}{Albero con liste}
-\small\color{black!55}\hyperref[ex:107]{$\leftarrow$ Esercizio}\normalsize\color{black}
 \begin{lstlisting}
 ;; Rappresentazione: (valore sinistra destra)
 ;; NIL = albero vuoto
@@ -1419,6 +1396,34 @@ chiami la versione memoizzata, non se stessa:
 (defun node-val  (n) (car n))
 (defun node-left (n) (cadr n))
 (defun node-right (n) (caddr n))
+
+;; albero:     5
+;;            / \
+;;           3   8
+;;          / \
+;;         1   4
+(defparameter *albero*
+  (make-node 5
+    (make-node 3 (make-leaf 1) (make-leaf 4))
+    (make-leaf 8)))
+\end{lstlisting}
+\end{solbox}
+
+\label{sol:107}
+\begin{solbox}{107}{Struttura nodo-albero}
+\small\color{black!55}\hyperref[ex:107]{$\leftarrow$ Esercizio}\normalsize\color{black}
+\begin{lstlisting}
+(defstruct nodo
+  valore
+  (sinistra nil)
+  (destra   nil))
+
+(defparameter *albero*
+  (make-nodo :valore 5
+    :sinistra (make-nodo :valore 3
+                :sinistra (make-nodo :valore 1)
+                :destra   (make-nodo :valore 4))
+    :destra   (make-nodo :valore 8)))
 \end{lstlisting}
 \end{solbox}
 
@@ -1429,26 +1434,24 @@ chiami la versione memoizzata, non se stessa:
 (defun bst-insert (value tree)
   ;; restituisce il nuovo albero (non modifica in loco)
   (if (null tree)
-      (make-nodo :valore value)
-      (cond ((< value (nodo-valore tree))
-             (make-nodo
-               :valore (nodo-valore tree)
-               :sinistra (bst-insert value (nodo-sinistra tree))
-               :destra   (nodo-destra tree)))
-            ((> value (nodo-valore tree))
-             (make-nodo
-               :valore (nodo-valore tree)
-               :sinistra (nodo-sinistra tree)
-               :destra   (bst-insert value (nodo-destra tree))))
+      (make-leaf value)
+      (cond ((< value (node-val tree))
+             (make-node (node-val tree)
+               (bst-insert value (node-left tree))
+               (node-right tree)))
+            ((> value (node-val tree))
+             (make-node (node-val tree)
+               (node-left tree)
+               (bst-insert value (node-right tree))))
             ;; duplicato: non inserire
             (t tree))))
 
 (defun bst-find (value tree)
   (cond ((null tree) nil)
-        ((= value (nodo-valore tree)) t)
-        ((< value (nodo-valore tree))
-         (bst-find value (nodo-sinistra tree)))
-        (t (bst-find value (nodo-destra tree)))))
+        ((= value (node-val tree)) t)
+        ((< value (node-val tree))
+         (bst-find value (node-left tree)))
+        (t (bst-find value (node-right tree)))))
 \end{lstlisting}
 \end{solbox}
 
@@ -1458,21 +1461,21 @@ chiami la versione memoizzata, non se stessa:
 \begin{lstlisting}
 (defun preorder (tree)
   (if (null tree) nil
-      (append (list (nodo-valore tree))
-              (preorder (nodo-sinistra tree))
-              (preorder (nodo-destra tree)))))
+      (append (list (node-val tree))
+              (preorder (node-left tree))
+              (preorder (node-right tree)))))
 
 (defun inorder (tree)
   (if (null tree) nil
-      (append (inorder (nodo-sinistra tree))
-              (list (nodo-valore tree))
-              (inorder (nodo-destra tree)))))
+      (append (inorder (node-left tree))
+              (list (node-val tree))
+              (inorder (node-right tree)))))
 
 (defun postorder (tree)
   (if (null tree) nil
-      (append (postorder (nodo-sinistra tree))
-              (postorder (nodo-destra tree))
-              (list (nodo-valore tree)))))
+      (append (postorder (node-left tree))
+              (postorder (node-right tree))
+              (list (node-val tree))))))
 \end{lstlisting}
 \end{solbox}
 
@@ -1482,15 +1485,15 @@ chiami la versione memoizzata, non se stessa:
 \begin{lstlisting}
 (defun tree-height (tree)
   (if (null tree) 0
-      (1+ (max (tree-height (nodo-sinistra tree))
-               (tree-height (nodo-destra tree))))))
+      (1+ (max (tree-height (node-left tree))
+               (tree-height (node-right tree))))))
 
 (defun count-leaves (tree)
   (cond ((null tree) 0)
-        ((and (null (nodo-sinistra tree))
-              (null (nodo-destra tree))) 1)
-        (t (+ (count-leaves (nodo-sinistra tree))
-              (count-leaves (nodo-destra tree))))))
+        ((and (null (node-left tree))
+              (null (node-right tree))) 1)
+        (t (+ (count-leaves (node-left tree))
+              (count-leaves (node-right tree))))))
 \end{lstlisting}
 \end{solbox}
 
@@ -1500,9 +1503,9 @@ chiami la versione memoizzata, non se stessa:
 \begin{lstlisting}
 (defun specchia (tree)
   (if (null tree) nil
-      (make-nodo :valore   (nodo-valore tree)
-                 :sinistra (specchia (nodo-destra tree))
-                 :destra   (specchia (nodo-sinistra tree)))))
+      (make-node (node-val tree)
+                 (specchia (node-right tree))
+                 (specchia (node-left tree)))))
 \end{lstlisting}
 \end{solbox}
 
@@ -1515,8 +1518,8 @@ chiami la versione memoizzata, non se stessa:
   (labels ((check (tr)
              (if (null tr)
                  0
-                 (let ((hl (check (nodo-sinistra tr)))
-                       (hr (check (nodo-destra tr))))
+                 (let ((hl (check (node-left tr)))
+                       (hr (check (node-right tr))))
                    (if (or (= hl -1) (= hr -1)
                            (> (abs (- hl hr)) 1))
                        -1

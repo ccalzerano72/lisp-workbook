@@ -490,8 +490,8 @@ sbilanciamento.
 (defun check (tree)
   (if (null tree)
       0
-      (let ((hl (check (nodo-sinistra tree)))
-            (hr (check (nodo-destra tree))))
+      (let ((hl (check (node-left tree)))
+            (hr (check (node-right tree))))
         (if (or (= hl -1) (= hr -1)
                 (> (abs (- hl hr)) 1))
             -1
