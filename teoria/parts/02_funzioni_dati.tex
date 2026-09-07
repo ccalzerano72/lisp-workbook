@@ -1,0 +1,676 @@
+﻿% =============================================================
+%  02_funzioni_dati.tex
+%  Capitolo 2 --- Funzioni e dati fondamentali
+% =============================================================
+
+\chapter{Funzioni e dati fondamentali}
+
+\begin{intuizione}
+Prima di scrivere algoritmi complessi, devi padroneggiare
+il vocabolario di base: i tipi di dato, i binding locali,
+i condizionali e le varianti di \fn{defun}.
+Questo capitolo è il lessico da cui parte tutto il resto.
+\end{intuizione}
+
+\vspace{4pt}
+
+% ================================================================
+\section{Tipi di dato}
+% ================================================================
+
+Common Lisp è a \textbf{tipizzazione dinamica}: ogni valore ha un tipo,
+ma le variabili no. Il tipo viene controllato a runtime.
+
+\argomento{Numeri}
+
+\begin{concetto}{Numeri in Common Lisp}
+Quattro sottotipi principali:
+\begin{itemize}
+  \item \textbf{Interi} (\texttt{integer}): dimensione arbitraria, nessun overflow
+  \item \textbf{Razionali} (\texttt{ratio}): frazioni esatte, tipo \texttt{3/4}
+  \item \textbf{Float} (\texttt{float}): virgola mobile IEEE 754
+  \item \textbf{Complessi} (\texttt{complex}): raramente usati
+\end{itemize}
+\end{concetto}
+
+\begin{esempio}[Aritmetica di base]
+\begin{lstlisting}
+(+ 3 4)          ; => 7      intero
+(/ 10 3)         ; => 10/3   razionale esatto!
+(/ 10.0 3)       ; => 3.3333... float
+(* 1/3 3)        ; => 1      esatto
+
+(expt 2 10)      ; => 1024
+(sqrt 2)         ; => 1.4142...
+(abs -7)         ; => 7
+(mod 17 5)       ; => 2
+(rem -7 3)       ; => -1     (rem mantiene segno del dividendo)
+
+(floor  7/2)     ; => 3      (arrotonda verso -inf)
+(ceiling 7/2)    ; => 4      (arrotonda verso +inf)
+(truncate 7/2)   ; => 3      (taglia la parte decimale)
+(round  7/2)     ; => 4      (arrotonda al piu' vicino, 0.5 -> pari)
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+\textbf{Divisione intera / non esiste come operatore separato.}
+\texttt{(/ 10 3)} restituisce \texttt{10/3} (razionale), non \texttt{3}.
+Per il quoziente intero usa \texttt{(floor (/ 10 3))} oppure
+\texttt{(truncate 10 3)}, che con due argomenti restituisce quoziente
+e resto come valori multipli.
+\end{attenzione}
+
+\seprule
+
+\argomento{Simboli, booleani, caratteri, stringhe}
+
+\begin{esempio}[Gli altri tipi fondamentali]
+\begin{lstlisting}
+;; Booleani
+t              ; => T   (vero)
+nil            ; => NIL (falso -- e lista vuota -- e simbolo NIL)
+(not nil)      ; => T
+(not 0)        ; => NIL  (0 e' VERO! Solo nil e' falso)
+(not "")       ; => NIL  (stringa vuota e' VERA)
+(not '())      ; => T    ('() e' nil, quindi e' FALSO)
+
+;; Simboli
+'hello         ; => HELLO  (case-insensitive)
+'Hello         ; => HELLO  (identico)
+(symbolp 'x)   ; => T
+
+;; Caratteri
+#\a            ; => #\a    (il carattere a)
+#\Space        ; => #\Space
+#\Newline      ; => #\Newline
+(char-code #\A)   ; => 65
+(code-char 65)    ; => #\A
+
+;; Stringhe
+"ciao"            ; => "ciao"
+(length "ciao")   ; => 4
+(string-upcase "ciao")   ; => "CIAO"
+(string-downcase "CIAO") ; => "ciao"
+(concatenate 'string "a" "b" "c")  ; => "abc"
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+\textbf{In Common Lisp, solo \texttt{nil} è falso. Tutto il resto è vero.}
+Lo zero, la stringa vuota, un numero negativo --- tutto è vero.
+La lista vuota \texttt{()} invece è falsa, perché \texttt{()} \emph{è} \texttt{nil}.
+Questa è una differenza critica rispetto a Python o C.
+\end{attenzione}
+
+\begin{intuizione}
+\texttt{nil} fa tre lavori contemporaneamente: è il valore falso,
+è la lista vuota \texttt{()}, ed è il simbolo \texttt{NIL}.
+Questi tre ruoli sono la stessa identità per design --- non tre cose
+diverse, ma un unico oggetto con tre nomi.
+\texttt{(null nil)} $\Rightarrow$ \texttt{T},
+\texttt{(not nil)} $\Rightarrow$ \texttt{T},
+\texttt{(listp nil)} $\Rightarrow$ \texttt{T},
+\texttt{(equal nil '())} $\Rightarrow$ \texttt{T}.
+\end{intuizione}
+
+\seprule
+
+\argomento{Predicati di tipo}
+
+\begin{sintassi}
+(numberp x)    (integerp x)   (floatp x)\\
+(stringp x)    (symbolp x)    (characterp x)\\
+(listp x)      (consp x)      (null x)\\
+(functionp x)  (atom x)
+\end{sintassi}
+
+\begin{esempio}[Predicati di tipo]
+\begin{lstlisting}
+(numberp 42)       ; => T
+(numberp "42")     ; => NIL
+(atom 'x)          ; => T    (simbolo = atomo)
+(atom '(a b))      ; => NIL  (lista = non atomo)
+(consp '(a b))     ; => T    (lista non vuota)
+(consp '())        ; => NIL  (nil non e' una cons-cell)
+(null '())         ; => T
+(null nil)         ; => T
+(null 'x)          ; => NIL
+\end{lstlisting}
+\end{esempio}
+
+% ================================================================
+\section{Binding locale: \texttt{let} e \texttt{let*}}
+% ================================================================
+
+\begin{concetto}{\texttt{let} --- binding parallelo}
+\begin{sintassi}
+(let ((var1 val1)\\
+\hspace{4em}(var2 val2)\\
+\hspace{4em}...)\\
+\hspace{2em}corpo)
+\end{sintassi}
+Tutte le espressioni \texttt{val} vengono valutate \textbf{prima} di
+legare qualsiasi variabile. I binding sono quindi \emph{paralleli}:
+\texttt{var1} non è ancora definita quando si valuta \texttt{val2}.
+\end{concetto}
+
+\begin{concetto}{\texttt{let*} --- binding sequenziale}
+Identico a \texttt{let}, ma i binding avvengono \textbf{in sequenza}:
+ogni variabile è visibile nelle espressioni successive.
+Usalo quando un valore dipende da quello precedente.
+\end{concetto}
+
+\begin{esempio}[let vs let*]
+\begin{lstlisting}
+;; let: tutti i valori si calcolano nell'env ESTERNO
+(let ((x 10)
+      (y 20))
+  (+ x y))         ; => 30
+
+;; let*: y vede gia' x
+(let* ((x 10)
+       (y (* x 2))
+       (z (+ x y)))
+  z)               ; => 30
+
+;; let NON funzionerebbe qui:
+;; (let ((x 10) (y (* x 2))) ...)  ; ERRORE: x non ancora definita
+\end{lstlisting}
+\end{esempio}
+
+\mnota{Regola pratica: usa \fn{let} se i binding sono indipendenti, \fn{let*} se uno dipende da un altro.}
+
+\begin{esempio}[Pattern tipico: valori intermedi]
+\begin{lstlisting}
+(defun ipotenusa (a b)
+  (let* ((a2 (* a a))
+         (b2 (* b b))
+         (somma (+ a2 b2)))
+    (sqrt somma)))
+
+(ipotenusa 3 4)   ; => 5.0
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+\textbf{Le variabili di \texttt{let} non esistono fuori dal corpo.}
+Sono locali all'espressione \texttt{let}. Non "escono".
+Non è necessario --- e non si deve --- dichiararle prima.
+Questo è radicalmente diverso da C o Java.
+\end{attenzione}
+
+\begin{workbook}
+\textbf{Esercizi 4--5} (Ipotenusa, Distanza euclidea)\\[4pt]
+Entrambi richiedono \fn{let} o \fn{let*} per i valori intermedi.
+L'esercizio 4 impone esplicitamente \fn{let}: è un esercizio
+\emph{didattico} sul binding, non solo sull'aritmetica.
+\end{workbook}
+
+% ================================================================
+\section{Condizionali}
+% ================================================================
+
+\argomento{\texttt{if} --- la forma base}
+
+\begin{concetto}{\texttt{if}}
+\begin{sintassi}
+(if condizione\\
+\hspace{2em}espressione-se-vera\\
+\hspace{2em}espressione-se-falsa)  ; opzionale
+\end{sintassi}
+\texttt{if} è un'\textbf{espressione}: restituisce il valore del ramo
+eseguito. Se il ramo falso manca e la condizione è falsa,
+restituisce \texttt{NIL}.
+\end{concetto}
+
+\begin{esempio}[\texttt{if} come espressione]
+\begin{lstlisting}
+(if (> 3 2) "maggiore" "minore")   ; => "maggiore"
+
+;; Usabile direttamente in un'espressione piu' grande
+(+ 10 (if (oddp 7) 1 0))   ; => 11
+
+;; if con una sola branch
+(if (> x 0) (print "positivo"))
+;; => NIL se x <= 0, stampa e restituisce "positivo" altrimenti
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+\fn{if} accetta \textbf{un'unica espressione} per branch.
+Se vuoi eseguire più espressioni in un branch, usa \fn{progn}:
+\texttt{(if cond (progn e1 e2 e3) altro)}.
+In pratica, quando il corpo è lungo si preferisce \fn{when}/\fn{unless}
+o \fn{cond}.
+\end{nota}
+
+\seprule
+
+\argomento{\texttt{when} e \texttt{unless} --- versioni semplificate}
+
+\begin{sintassi}
+(when condizione corpo...)    ; esegue corpo se vero, ritorna NIL altrimenti\\
+(unless condizione corpo...)  ; esegue corpo se FALSO
+\end{sintassi}
+
+\begin{esempio}[\texttt{when}/\texttt{unless}]
+\begin{lstlisting}
+(when (> x 0)
+  (print "positivo")
+  (print "elaboro..."))   ; piu' espressioni ok
+
+(unless (null lst)
+  (print (car lst)))
+\end{lstlisting}
+\end{esempio}
+
+\seprule
+
+\argomento{\texttt{cond} --- ramificazione multipla}
+
+\begin{concetto}{\texttt{cond}}
+\begin{sintassi}
+(cond (test1 expr1...)\\
+\hspace{2em}  (test2 expr2...)\\
+\hspace{2em}  ...\\
+\hspace{2em}  (t     default...))
+\end{sintassi}
+Valuta i test in ordine. Appena uno è vero, esegue le espressioni
+associate e restituisce l'ultima. La clausola \texttt{(t ...)} è
+il caso default (opzionale ma raccomandato).
+\end{concetto}
+
+\begin{esempio}[\texttt{cond} per ramificazioni multiple]
+\begin{lstlisting}
+(defun segno (n)
+  (cond ((< n 0) 'negativo)
+        ((= n 0) 'zero)
+        (t       'positivo)))
+
+(segno -5)   ; => NEGATIVO
+(segno 0)    ; => ZERO
+(segno 7)    ; => POSITIVO
+
+
+;; Voto in lettere
+(defun voto->giudizio (p)
+  (cond ((>= p 90) "ottimo")
+        ((>= p 75) "buono")
+        ((>= p 60) "sufficiente")
+        (t         "insufficiente")))
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+\textbf{Quando usare cosa:}
+\begin{itemize}
+  \item \fn{if} --- due casi, espressioni brevi
+  \item \fn{when}/\fn{unless} --- un solo caso, corpo multi-espressione
+  \item \fn{cond} --- tre o più casi, o condizioni complesse
+\end{itemize}
+\end{intuizione}
+
+\seprule
+
+\argomento{\texttt{case} --- dispatch su valori discreti}
+
+\begin{sintassi}
+(case valore\\
+\hspace{2em}(chiave1 expr...)\\
+\hspace{2em}(chiave2 expr...)\\
+\hspace{2em}(otherwise default...))
+\end{sintassi}
+
+\begin{esempio}[\texttt{case}]
+\begin{lstlisting}
+(defun calcola (op a b)
+  (case op
+    (+  (+ a b))
+    (-  (- a b))
+    (*  (* a b))
+    (/  (if (= b 0) nil (/ a b)))
+    (otherwise (error "operatore sconosciuto"))))
+
+(calcola '+ 3 4)   ; => 7
+(calcola '* 5 6)   ; => 30
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+\fn{case} confronta con \fn{eql} (uguaglianza per simboli e numeri).
+Non funziona con stringhe --- per quelle usa \fn{cond} con \fn{equal}.
+\end{nota}
+
+\begin{workbook}
+\textbf{Esercizi 8--16} (Segno, Massimo, Triangolo, Bisestile,
+Giorni mese, Voto, Terna, Radici, Calcolatrice)\\[4pt]
+Questi esercizi coprono \fn{cond}, \fn{case}, \fn{and}/\fn{or} e \fn{let*}.
+L'ordine suggerito: 8, 11, 15, 16 per gli essenziali;
+9, 10, 12, 13, 14 per completare.\\[4pt]
+L'esercizio 15 (radici quadratiche) richiede \fn{let*} e la gestione
+del caso $\Delta < 0$: è il primo esercizio che combina binding e
+condizionali in modo non banale.
+\end{workbook}
+
+% ================================================================
+\section{Operatori logici: \texttt{and}, \texttt{or}, \texttt{not}}
+% ================================================================
+
+\begin{concetto}{\texttt{and}, \texttt{or} --- short-circuit e valori}
+\texttt{and} e \texttt{or} non sono solo operatori booleani:
+restituiscono \emph{valori}, non solo \texttt{T}/\texttt{NIL}.
+
+\medskip
+\begin{tabular}{@{}ll@{}}
+\texttt{(and e1 e2 ...)} & Restituisce il primo falso, o l'ultimo valore\\
+\texttt{(or e1 e2 ...)}  & Restituisce il primo vero, o \texttt{NIL}\\
+\texttt{(not x)}         & Restituisce \texttt{T} o \texttt{NIL}\\
+\end{tabular}
+\medskip
+
+Entrambi usano la \textbf{valutazione cortocircuito}: si fermano
+appena conoscono il risultato.
+\end{concetto}
+
+\begin{esempio}[\texttt{and}/\texttt{or} come flusso di controllo]
+\begin{lstlisting}
+(and 1 2 3)          ; => 3      (tutti veri: restituisce l'ultimo)
+(and 1 nil 3)        ; => NIL    (si ferma al primo falso)
+(or  nil nil 42)     ; => 42     (primo vero)
+(or  nil nil nil)    ; => NIL
+(or  nil "default")  ; => "default"
+
+;; Uso idiomatico: valore di default
+(defun saluta (nome)
+  (let ((n (or nome "Utente")))
+    (format t "Ciao, ~a!~%" n)))
+
+(saluta nil)    ; stampa: Ciao, Utente!
+(saluta "Ada")  ; stampa: Ciao, Ada!
+
+;; Uso idiomatico: guard clause
+(defun dividi (a b)
+  (and (not (= b 0))
+       (/ a b)))
+
+(dividi 10 2)   ; => 5
+(dividi 10 0)   ; => NIL
+\end{lstlisting}
+\end{esempio}
+
+% ================================================================
+\section{Parametri opzionali, con default e multipli}
+% ================================================================
+
+\argomento{\texttt{\&optional} --- parametri facoltativi}
+
+\begin{concetto}{\texttt{\&optional}}
+\begin{sintassi}
+(defun f (obbligatorio \&optional (opt1 default1) (opt2 default2))\\
+\hspace{2em}corpo)
+\end{sintassi}
+Se non si passa il parametro, viene usato il default.
+Se il default è omesso, il valore è \texttt{NIL}.
+\end{concetto}
+
+\begin{esempio}[\texttt{\&optional}]
+\begin{lstlisting}
+(defun saluta (&optional (nome "Mondo"))
+  (format t "Ciao, ~a!~%" nome))
+
+(saluta)        ; stampa: Ciao, Mondo!
+(saluta "Ada")  ; stampa: Ciao, Ada!
+
+
+(defun potenza (base &optional (esp 2))
+  (expt base esp))
+
+(potenza 3)      ; => 9   (3^2)
+(potenza 3 4)    ; => 81  (3^4)
+\end{lstlisting}
+\end{esempio}
+
+\seprule
+
+\argomento{\texttt{\&rest} --- numero variabile di argomenti}
+
+\begin{concetto}{\texttt{\&rest}}
+\begin{sintassi}
+(defun f (a b \&rest resto) corpo)
+\end{sintassi}
+\texttt{resto} è una \emph{lista} di tutti gli argomenti extra.
+\end{concetto}
+
+\begin{esempio}[\texttt{\&rest}]
+\begin{lstlisting}
+(defun somma-tutto (&rest numeri)
+  (apply #'+ numeri))
+
+(somma-tutto 1 2 3 4 5)   ; => 15
+(somma-tutto)              ; => 0
+
+
+(defun mio-format (fmt &rest args)
+  (apply #'format t fmt args))
+\end{lstlisting}
+\end{esempio}
+
+\seprule
+
+\argomento{Valori multipli: \texttt{values} e \texttt{multiple-value-bind}}
+
+\begin{concetto}{Valori multipli}
+Una funzione Lisp può restituire \textbf{più valori} contemporaneamente
+--- senza costruire una lista.
+\end{concetto}
+
+\begin{esempio}[Valori multipli]
+\begin{lstlisting}
+;; Restituire due valori
+(defun min-max (lst)
+  (values (apply #'min lst)
+          (apply #'max lst)))
+
+;; Ricevere piu' valori
+(multiple-value-bind (minimo massimo)
+    (min-max '(3 1 4 1 5 9 2 6))
+  (format t "min=~a max=~a~%" minimo massimo))
+; stampa: min=1 max=9
+
+
+;; floor con 2 argomenti restituisce quoziente e resto
+(multiple-value-bind (q r)
+    (floor 17 5)
+  (format t "~a = ~a * 5 + ~a~%" 17 q r))
+; stampa: 17 = 3 * 5 + 2
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+Se usi una funzione multi-valore in un contesto che ne vuole uno solo
+(es. \texttt{(+ (floor 7 2) 1)}), viene usato solo il primo valore.
+\end{nota}
+
+% ================================================================
+\section{Iterazione di base}
+% ================================================================
+
+La ricorsione è il modo idiomatico in Lisp. Ma Lisp ha anche
+costrutti iterativi espliciti, utili per output, effetti collaterali
+e loop semplici.
+
+\argomento{\texttt{dotimes} --- ripetizione N volte}
+
+\begin{concetto}{\texttt{dotimes}}
+\begin{sintassi}
+(dotimes (variabile N risultato)\\
+\hspace{2em}corpo)
+\end{sintassi}
+\texttt{variabile} va da \texttt{0} a \texttt{N-1}.
+\texttt{risultato} è il valore restituito (default \texttt{NIL}).
+\end{concetto}
+
+\begin{esempio}[\texttt{dotimes}]
+\begin{lstlisting}
+(dotimes (i 5)
+  (format t "~a " i))
+; stampa: 0 1 2 3 4
+
+
+;; Accumulatore con dotimes
+(let ((somma 0))
+  (dotimes (i 10 somma)           ; restituisce somma
+    (setf somma (+ somma i))))
+; => 45
+\end{lstlisting}
+\end{esempio}
+
+\seprule
+
+\argomento{\texttt{dolist} --- iterare su una lista}
+
+\begin{sintassi}
+(dolist (variabile lista risultato)\\
+\hspace{2em}corpo)
+\end{sintassi}
+
+\begin{esempio}[\texttt{dolist}]
+\begin{lstlisting}
+(dolist (x '(1 2 3 4 5))
+  (format t "~a " (* x x)))
+; stampa: 1 4 9 16 25
+\end{lstlisting}
+\end{esempio}
+
+\seprule
+
+\argomento{\texttt{loop} --- iterazione flessibile}
+
+\fn{loop} è il costrutto più potente. Nella forma base:
+
+\begin{esempio}[\texttt{loop} base]
+\begin{lstlisting}
+;; Iterazione con contatore
+(loop for i from 1 to 5
+      do (format t "~a " i))
+; stampa: 1 2 3 4 5
+
+
+;; Raccogliere risultati
+(loop for i from 1 to 5
+      collect (* i i))
+; => (1 4 9 16 25)
+
+
+;; Con accumulatore
+(loop for i from 1 to 100
+      sum i)
+; => 5050
+
+
+;; Iterare su una lista
+(loop for x in '(a b c d)
+      do (print x))
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+\textbf{\fn{setf} e mutabilita'.}
+Negli esempi sopra compare \fn{setf}: è l'operatore di assegnazione.
+Usarlo è lecito, ma nella programmazione funzionale si preferisce
+la ricorsione con accumulatori. Ritorneremo su questo nel
+Capitolo~4 (Higher-order e closure).
+
+In generale: \fn{dotimes}/\fn{dolist}/\fn{loop} per output e side-effect;
+ricorsione per trasformare dati.
+\end{attenzione}
+
+\begin{workbook}
+\textbf{Esercizi 17--21} (Somma cifre, Conta fino a N, Tabellina,
+Sconto, Paga settimanale)\\[4pt]
+L'esercizio 17 (Somma delle cifre) è il più interessante:
+richiede ricorsione su un numero intero, estraendo le cifre
+con \fn{mod} e \fn{floor}. Ha un suggerimento nel workbook.\\[4pt]
+Gli esercizi 18 e 19 sono esplicitamente su \fn{dotimes}/\fn{loop}:
+l'obiettivo è prendere confidenza con l'output iterativo.
+\end{workbook}
+
+% ================================================================
+\section{Il formato dell'output: \texttt{format}}
+% ================================================================
+
+\fn{format} è la funzione di output principale. La forma base:
+
+\begin{sintassi}
+(format destinazione stringa-controllo argomenti...)
+\end{sintassi}
+
+\texttt{t} = standard output; \texttt{nil} = restituisce una stringa.
+
+\begin{esempio}[Direttive \texttt{format} essenziali]
+\begin{lstlisting}
+(format t "Ciao, ~a!~%"  "Ada")   ; ~a = qualsiasi valore
+(format t "Valore: ~s~%" '(1 2))  ; ~s = rappresentazione leggibile
+(format t "Numero: ~d~%" 42)      ; ~d = intero decimale
+(format t "Float: ~f~%"  3.14)    ; ~f = float
+(format t "~%")                   ; ~% = newline
+(format t "~&")                   ; ~& = newline se non gia' a inizio riga
+(format t "~10d~%" 42)            ; ~10d = campo di 10 caratteri
+
+;; Restituire stringa invece di stampare
+(format nil "Risultato: ~a" 42)   ; => "Risultato: 42"
+\end{lstlisting}
+\end{esempio}
+
+% ================================================================
+\section*{Riepilogo del capitolo}
+% ================================================================
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=csBlue!5, colframe=csBlue!40,
+  arc=4pt, boxrule=0.6pt,
+  left=14pt, right=14pt, top=12pt, bottom=12pt,
+  before skip=16pt, after skip=16pt
+]
+\textbf{Quello che hai imparato:}
+
+\medskip
+\begin{itemize}
+  \item \textbf{Tipi}: interi senza overflow, razionali esatti,
+        float, simboli, stringhe, caratteri.
+        Solo \texttt{NIL} è falso.
+  \item \textbf{\texttt{let}/\texttt{let*}}: binding locale.
+        Parallelo vs sequenziale.
+        Le variabili non "escono" dal corpo.
+  \item \textbf{Condizionali}: \texttt{if} (2 casi),
+        \texttt{when}/\texttt{unless} (1 caso + corpo multiplo),
+        \texttt{cond} (n casi), \texttt{case} (dispatch su valori).
+  \item \textbf{\texttt{and}/\texttt{or}}: short-circuit con valori reali,
+        non solo booleani.
+  \item \textbf{Parametri}: \texttt{\&optional} (con default),
+        \texttt{\&rest} (argomenti variabili).
+  \item \textbf{Valori multipli}: \texttt{values} +
+        \texttt{multiple-value-bind}.
+  \item \textbf{Iterazione}: \texttt{dotimes}, \texttt{dolist},
+        \texttt{loop} --- per output e side-effect.
+  \item \textbf{\texttt{format}}: output formattato con direttive
+        \texttt{\textasciitilde a}, \texttt{\textasciitilde d},
+        \texttt{\textasciitilde f}, \texttt{\textasciitilde \%}.
+\end{itemize}
+
+\medskip
+\textbf{Cosa viene dopo:}\\
+Capitolo~3 --- \emph{Condizioni e flusso avanzato}: ricorsione
+strutturata, tail recursion, gestione degli errori, \texttt{block}/\texttt{return-from}.
+\end{tcolorbox}
+
+\begin{workbook}
+\textbf{Prima di andare al Capitolo~3:}\\[4pt]
+Completa gli esercizi \textbf{1--21} del workbook (capitolo
+\emph{Fondamenti}).
+Sono tutti fattibili con i costrutti di questo capitolo.\\[4pt]
+Se sei a corto di tempo: priorita' agli esercizi essenziali
+(contrassegnati con $\blacklozenge$): 1, 4, 6, 8, 11, 15, 17, 18.
+\end{workbook}

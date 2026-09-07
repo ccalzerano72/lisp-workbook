@@ -8,6 +8,23 @@
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
 
+% Blindatura caratteri accentati italiani per pdflatex+T1
+% (evita problemi in contesti speciali come titoli tcolorbox)
+\DeclareUnicodeCharacter{00E0}{\`a}  % à
+\DeclareUnicodeCharacter{00E8}{\`e}  % è
+\DeclareUnicodeCharacter{00E9}{\'e}  % é
+\DeclareUnicodeCharacter{00EC}{\`\i} % ì
+\DeclareUnicodeCharacter{00F2}{\`o}  % ò
+\DeclareUnicodeCharacter{00F9}{\`u}  % ù
+\DeclareUnicodeCharacter{00C0}{\`A}  % À
+\DeclareUnicodeCharacter{00C8}{\`E}  % È
+\DeclareUnicodeCharacter{00C9}{\'E}  % É
+\DeclareUnicodeCharacter{00CC}{\`I}  % Ì
+\DeclareUnicodeCharacter{00D2}{\`O}  % Ò
+\DeclareUnicodeCharacter{00D9}{\`U}  % Ù
+\DeclareUnicodeCharacter{00F3}{\'o}  % ó  (es. però)
+\DeclareUnicodeCharacter{00FA}{\'u}  % ú
+
 % --- Font ---
 \usepackage{lmodern}
 \usepackage{microtype}
