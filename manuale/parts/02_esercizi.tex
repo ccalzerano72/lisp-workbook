@@ -1915,12 +1915,6 @@ Non modificare la struttura originale; restituire un nuovo grafo.}
 \label{ex:118}
 \begin{colbox}{118}{DFS su grafo}{4}
 \exlabel{Implementare} \fn{(dfs graph start)}: visita in profondita'.
-\exspieg{La \textit{Depth-First Search} (DFS) esplora il grafo seguendo
-ogni ramo fino in fondo prima di tornare indietro.
-Algoritmo ricorsivo: (1) marcare il nodo corrente come visitato;
-(2) per ogni vicino non ancora visitato, chiamare ricorsivamente DFS.
-Usare una lista \fn{visited} per tenere traccia dei nodi già visti
-e gestire i cicli (altrimenti si va in loop infinito).}
 \nopagebreak
 \begin{lstlisting}
 (dfs '((a b c) (b a d) (c a) (d b)) 'a)
@@ -1934,14 +1928,6 @@ e gestire i cicli (altrimenti si va in loop infinito).}
 \label{ex:119}
 \begin{colbox}{119}{BFS su grafo}{4}
 \exlabel{Implementare} \fn{(bfs graph start)}: visita in ampiezza.
-\exspieg{La \textit{Breadth-First Search} (BFS) esplora prima tutti i vicini
-diretti di un nodo, poi i vicini dei vicini, e così via — livello per livello.
-La differenza rispetto alla DFS è che usa una \textit{coda} (FIFO)
-invece della pila implicita della ricorsione.
-Algoritmo: (1) iniziare con la coda = \fn{(start)};
-(2) estrarre il primo elemento dalla coda, aggiungerlo al risultato;
-(3) accodare tutti i vicini non ancora visitati;
-(4) ripetere finché la coda è vuota.}
 \nopagebreak
 \begin{lstlisting}
 (bfs '((a b c) (b a d) (c a) (d b)) 'a)
