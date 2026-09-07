@@ -8,3 +8,12 @@ manuale/main.fdb_latexmk
 manuale/main.fls
 manuale/main.synctex.gz
 /manuale/*.synctex(busy)
+/teoria/*.txt
+/teoria/*.aux
+/teoria/*.fdb_latexmk
+/teoria/*.fls
+/teoria/*.log
+/teoria/*.out
+/teoria/*.pdf
+/teoria/*.gz
+/teoria/*.toc
