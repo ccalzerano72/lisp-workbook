@@ -1061,12 +1061,46 @@ se stessa sul resto.}
 \section{Higher-order e closure}
 % =============================================================
 
-\noindent
-Funzioni di ordine superiore (\fn{mapcar}, \fn{remove-if},
-\fn{reduce}, \fn{apply}, \fn{mapcan}) e closure: funzioni che
-catturano variabili dall'ambiente lessicale.
+% ---- Box HOF ----
+\begin{tcolorbox}[
+  enhanced, colback=black!2, colframe=black!15,
+  boxrule=0.3pt, arc=2pt,
+  left=6pt, right=6pt, top=5pt, bottom=5pt,
+  before skip=6pt, after skip=6pt
+]
+\footnotesize
+\textbf{Funzione di ordine superiore}\,: {\color{black!70}riceve funzioni come argomenti o ne restituisce una.}
 
-\bigskip
+\smallskip
+\scriptsize
+\begin{tabular}{@{}l@{\;\;--\;\;}l@{}}
+\fn{mapcar}    & \color{black!60}{applica f a ogni elemento, ritorna lista risultati} \\
+\fn{remove-if} & \color{black!60}{rimuove elementi per cui il predicato è vero} \\
+\fn{reduce}    & \color{black!60}{riduce lista a un valore applicando f cumulativamente} \\
+\fn{apply}     & \color{black!60}{chiama f con elementi lista come argomenti separati} \\
+\fn{mapcan}    & \color{black!60}{come mapcar ma concatena le liste risultato} \\
+\end{tabular}
+\end{tcolorbox}
+
+% ---- Box Closure ----
+\begin{tcolorbox}[
+  enhanced, colback=black!2, colframe=black!15,
+  boxrule=0.3pt, arc=2pt,
+  left=6pt, right=6pt, top=5pt, bottom=5pt,
+  before skip=4pt, after skip=10pt
+]
+\footnotesize
+\textbf{Closure}\,: {\color{black!70}funzione che cattura variabili dall'ambiente lessicale.}
+
+\smallskip
+\scriptsize
+\begin{lstlisting}
+(defun make-counter ()
+  (let ((n 0))                  ; n catturata dalla lambda
+    (lambda () (incf n))))
+(funcall (make-counter))        ; -> 1, 2, 3...
+\end{lstlisting}
+\end{tcolorbox}
 
 \label{ex:69}
 \begin{essbox}{69}{Quadrato degli elementi con mapcar}{1}
