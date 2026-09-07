@@ -169,10 +169,12 @@
 % ================================================================
 
 % ---- CONCETTO ----
+% \Needspace{5\baselineskip} = salta pagina se mancano meno di 5 righe
 \newenvironment{concetto}[1]{%
+  \Needspace{6\baselineskip}%
   \medskip
   \begin{tcolorbox}[
-    enhanced, breakable,
+    enhanced,
     colframe=boxConFrame, colback=boxConBack,
     fonttitle=\bfseries\normalsize,
     title={\textcolor{white}{\strut #1}},
@@ -205,11 +207,12 @@
 }{\end{tcolorbox}\smallskip}
 
 % ---- ESEMPIO ----
-% Argomento opzionale: titolo (default "Esempio")
+% breakable ma con soglia minima di righe prima dello spacco
 \newenvironment{esempio}[1][Esempio]{%
   \medskip
   \begin{tcolorbox}[
     enhanced, breakable,
+    lines before break=5,
     colframe=boxEsFrame, colback=boxEsBack,
     fonttitle=\bfseries\small,
     title={#1},
@@ -230,6 +233,7 @@
 
 % ---- ATTENZIONE ----
 \newenvironment{attenzione}{%
+  \Needspace{5\baselineskip}%
   \medskip
   \begin{tcolorbox}[
     enhanced,
@@ -253,6 +257,7 @@
 
 % ---- INTUIZIONE ----
 \newenvironment{intuizione}{%
+  \Needspace{5\baselineskip}%
   \medskip
   \begin{tcolorbox}[
     enhanced,
@@ -276,6 +281,7 @@
 
 % ---- WORKBOOK ----
 \newenvironment{workbook}{%
+  \Needspace{6\baselineskip}%
   \medskip
   \begin{tcolorbox}[
     enhanced,
@@ -299,6 +305,7 @@
 
 % ---- NOTA ----
 \newenvironment{nota}{%
+  \Needspace{4\baselineskip}%
   \smallskip
   \begin{tcolorbox}[
     enhanced,
@@ -310,11 +317,11 @@
   \small\color{black!65}\itshape%
 }{\end{tcolorbox}\smallskip}
 
-% ---- CONFRONTO: box per comparazioni con altri linguaggi ----
-% Bordo sinistro colorato, sfondo caldo, testo descrittivo
-\definecolor{boxCfFrame}{RGB}{160,80,20}    % marrone-arancio
+% ---- CONFRONTO ----
+\definecolor{boxCfFrame}{RGB}{160,80,20}
 \definecolor{boxCfBack}{RGB}{253,247,238}
 \newenvironment{confronto}{%
+  \Needspace{4\baselineskip}%
   \smallskip
   \begin{tcolorbox}[
     enhanced,
@@ -340,6 +347,7 @@
 
 % Titolo di argomento interno (sotto-sezione visiva, senza numero)
 \newcommand{\argomento}[1]{%
+  \Needspace{5\baselineskip}%
   \par\vspace{16pt}%
   \noindent{\large\bfseries\color{csBlue} #1}%
   \par\noindent\textcolor{csBlue!35}{\rule{\linewidth}{0.7pt}}%
@@ -477,3 +485,4 @@
 \usepackage{array}
 \usepackage{multicol}
 \usepackage{ragged2e}
+\usepackage{needspace}  % per evitare pagebreak interni ai box brevi
