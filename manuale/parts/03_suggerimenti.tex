@@ -93,6 +93,20 @@ Usa \fn{member} (o la tua \fn{member*}) per il controllo.
 \hintsection{Ricorsione avanzata}
 % =============================================================
 
+\label{hint:52}
+\begin{hintbox}{52}{Reverse tail-recursive}
+\small\color{black!55}\hyperref[ex:52]{$\leftarrow$ Esercizio}\normalsize\color{black}
+
+Definire con \fn{labels} una funzione ausiliaria con due parametri:
+\fn{lst} (la lista da rovesciare) e \fn{acc} (l'accumulatore, inizialmente \fn{NIL}).
+Ad ogni passo: se \fn{lst} è vuota restituire \fn{acc};
+altrimenti richiamare la funzione con \fn{(cdr lst)} e
+\fn{(cons (car lst) acc)}.
+La chiamata ricorsiva è l'ultima operazione: nessun calcolo al ritorno.
+
+\small\color{black!55}\hyperref[sol:52]{$\rightarrow$ Soluzione}\normalsize\color{black}
+\end{hintbox}
+
 \label{hint:54}
 \begin{hintbox}{54}{Fibonacci O(n)}
 \small\color{black!55}\hyperref[ex:54]{$\leftarrow$ Esercizio}\normalsize\color{black}

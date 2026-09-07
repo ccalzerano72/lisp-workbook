@@ -601,7 +601,7 @@ con accumulatore (tail-recursive).
 \begin{lstlisting}
 (reverse* '(a b c d))   ; -> (D C B A)
 \end{lstlisting}
-
+\exnota{Vedi \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
 
 \small\color{black!55}\hyperref[sol:39]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
@@ -774,8 +774,7 @@ con accumulatore, usando \fn{labels}.
 (fattoriale 0)   ; -> 1
 (fattoriale 5)   ; -> 120
 \end{lstlisting}
-\exnota{Obiettivo: capire il pattern accumulatore.}
-
+\exnota{Obiettivo: capire il pattern accumulatore. Vedi \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
 
 \small\color{black!55}\hyperref[sol:51]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
@@ -783,19 +782,13 @@ con accumulatore, usando \fn{labels}.
 \label{ex:52}
 \begin{stdbox}{52}{Reverse tail-recursive}{2}
 Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
-
-\exspieg{Una funzione è \textit{tail-recursive} quando la chiamata ricorsiva
-è l'ultima operazione eseguita (non c'è nulla da calcolare al ritorno).
-Questo permette al compilatore di riutilizzare lo stesso frame dello stack,
-evitando overflow su liste lunghe.
-Usare \fn{labels} con un parametro accumulatore \fn{acc} inizialmente \fn{NIL}:
-ad ogni passo anteporre la testa di \fn{lst} ad \fn{acc}, finché \fn{lst} è vuota.}
 \begin{lstlisting}
 (reverse* '(a b c d))   ; -> (D C B A)
 \end{lstlisting}
 \vincolo{usare \fn{labels} con un accumulatore esplicito; la chiamata ricorsiva dev'essere in posizione di coda.}
+\exnota{Vedi la \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
 
-\small\color{black!55}\hyperref[sol:52]{$\rightarrow$ Soluzione}\normalsize\color{black}
+\small\color{black!55}\hyperref[sol:52]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:52]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:53}
@@ -803,7 +796,8 @@ ad ogni passo anteporre la testa di \fn{lst} ad \fn{acc}, finché \fn{lst} è vu
 \exlabel{Implementare} \fn{(somma-range a b)} in forma tail-recursive.
 \exspieg{Stessa tecnica dell'es.~51: introdurre un accumulatore che accumula
 la somma parziale. La ricorsione scende da \fn{a} verso \fn{b} (o viceversa)
-aggiungendo ad ogni passo il valore corrente.}
+aggiungendo ad ogni passo il valore corrente.
+Vedi la \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
 \nopagebreak
 \begin{lstlisting}
 (somma-range 1 100)   ; -> 5050
@@ -2515,6 +2509,87 @@ Struttura minima:
 
 \small\color{black!55}\hyperref[sol:148]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:148]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
+
+% =============================================================
+%  Nota tecnica — Tail recursion
+% =============================================================
+
+\bigskip
+\label{nota:tailrec}
+\begin{tcolorbox}[
+  enhanced,
+  colframe=black!35,
+  colback=black!3,
+  fonttitle=\bfseries\small,
+  title={Nota tecnica --- Tail recursion (ricorsione in coda)},
+  arc=3pt,
+  boxrule=0.6pt,
+  left=12pt, right=12pt, top=8pt, bottom=8pt,
+  toptitle=3pt, bottomtitle=3pt,
+  before skip=18pt plus 4pt,
+  after skip=12pt plus 3pt,
+  parskip=5pt
+]
+\small\color{black!75}
+
+Una funzione è \textbf{tail-recursive} (ricorsiva in coda) quando la
+chiamata ricorsiva è \textit{l'ultima operazione eseguita}: non c'è
+nulla da calcolare al ritorno dalla ricorsione.
+
+\medskip
+\textbf{Perché è importante.}
+In una ricorsione normale, ogni chiamata alloca un nuovo \textit{frame}
+sullo stack per tenere i valori intermedi. Su liste molto lunghe, questo
+porta a uno \textit{stack overflow}. Quando la chiamata è in coda, il
+compilatore può riutilizzare lo stesso frame — trasformando la ricorsione
+in un ciclo a tutti gli effetti (\textit{tail call optimization}, TCO).
+Common Lisp non garantisce TCO nella specifica ANSI, ma tutte le
+implementazioni principali (SBCL, Allegro CL, CCL) la applicano in pratica
+quando la funzione ausiliaria è definita con \fn{labels}.
+
+\medskip
+\textbf{Il pattern con accumulatore.}
+Per rendere tail-recursive una funzione che accumula un risultato, si
+introduce un parametro aggiuntivo (\textit{accumulatore}) che porta
+il risultato parziale da una chiamata all'altra.
+
+\medskip
+Confronto per il fattoriale:
+
+\begin{minipage}[t]{0.45\textwidth}
+\textcolor{black!55}{\textit{Ricorsione normale — NON tail-recursive:}}
+\begin{lstlisting}
+; al ritorno deve ancora
+; moltiplicare per n
+(defun fact (n)
+  (if (= n 0)
+      1
+      (* n (fact (1- n)))))
+\end{lstlisting}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.50\textwidth}
+\textcolor{black!55}{\textit{Con accumulatore — tail-recursive:}}
+\begin{lstlisting}
+; al ritorno non c'e'
+; niente da fare
+(defun fact (n)
+  (labels ((aux (n acc)
+    (if (= n 0)
+        acc
+        (aux (1- n) (* n acc)))))
+    (aux n 1)))
+\end{lstlisting}
+\end{minipage}
+
+\medskip
+\textcolor{black!55}{\small
+Esercizi che richiedono questo pattern:
+\hyperref[ex:39]{es.~39},
+\hyperref[ex:51]{es.~51},
+\hyperref[ex:52]{es.~52},
+\hyperref[ex:53]{es.~53}.}
+\end{tcolorbox}
 
 
 
