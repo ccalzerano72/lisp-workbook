@@ -1215,17 +1215,12 @@ ogni passo si fa \fn{(append acc elemento)}.}
 \label{ex:77}
 \begin{colbox}{77}{Regola di Horner}{3}
 \exlabel{Implementare} \fn{(horner coefficienti x)} con \fn{reduce}.
-\exspieg{La \textit{regola di Horner} è un modo efficiente per valutare
-un polinomio. Invece di calcolare separatamente ogni potenza di $x$,
-si annida il calcolo da sinistra:
-$p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots) \cdot x + c_0$.
-Esempio con $2x^2 + 3x + 1$: partendo da $c_2 = 2$, si fa
-$2 \cdot x + 3 = 7$, poi $7 \cdot x + 1 = 15$ (con $x=2$).
-Con \fn{reduce}: la funzione da applicare ad ogni passo è
-\fn{(lambda (acc c) (+ (* acc x) c))}, e il valore iniziale è 0.}
-\[
-p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)
-\]
+\exspieg{\textbf{Valutare un polinomio} significa calcolare il suo valore
+numerico sostituendo un numero a $x$. Ad esempio, il polinomio $2x^2 + 3x + 1$
+valutato in $x=2$ dà: $2 \cdot 4 + 3 \cdot 2 + 1 = 8 + 6 + 1 = 15$.
+La \textit{regola di Horner} evita di calcolare le potenze riscrivendo il
+polinomio in forma annidata: $2x^2 + 3x + 1 = ((2 \cdot x) + 3) \cdot x + 1$.
+Così si procede da sinistra: $2 \to 2 \cdot 2 + 3 = 7 \to 7 \cdot 2 + 1 = 15$.}
 \begin{lstlisting}
 ; 2x^2 + 3x + 1  con x=2  -> 15
 (horner '(2 3 1) 2)   ; -> 15
