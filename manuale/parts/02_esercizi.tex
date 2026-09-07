@@ -283,7 +283,6 @@ Gestire la divisione per zero restituendo \fn{NIL}.
 (somma-cifre 1234)   ; -> 10
 (somma-cifre 99)     ; -> 18
 \end{lstlisting}
-\textbf{Suggerimento:} estrarre le cifre con \fn{mod} e \fn{floor}.
 
 
 \small\color{black!55}\hyperref[sol:17]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:17]{$\rightarrow$ Suggerimento}\normalsize\color{black}
@@ -1185,9 +1184,6 @@ Gestire la lista vuota.
 \begin{lstlisting}
 (cifre->intero '(1 5 3 4))   ; -> 1534
 \end{lstlisting}
-Suggerimento: a ogni passo moltiplicare l'accumulatore per 10
-e sommare la cifra corrente.
-
 
 
 \small\color{black!55}\hyperref[sol:75]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:75]{$\rightarrow$ Suggerimento}\normalsize\color{black}
@@ -1312,9 +1308,7 @@ ottenere una "chiave". Raccogliere gli elementi con la stessa chiave
 nella stessa coppia \fn{(chiave elem1 elem2 \ldots)} della alist
 risultante.
 Esempio: con \fn{\#'evenp} i pari vanno sotto la chiave \fn{T},
-i dispari sotto \fn{NIL}.
-Suggerimento: usare \fn{assoc} per trovare il gruppo esistente e
-\fn{push} o \fn{setf} per aggiungere l'elemento.}
+i dispari sotto \fn{NIL}.}
 \begin{lstlisting}
 (raggruppa-per #'evenp '(1 2 3 4 5))
 ; -> ((NIL 1 3 5) (T 2 4))
