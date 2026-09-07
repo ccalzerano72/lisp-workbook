@@ -1863,12 +1863,6 @@ di $O(n)$. Suggerimento: una struttura \fn{(cons testa coda-puntatore)}.}
 \begin{stdbox}{115}{Valida parentesi}{3}
 \exlabel{Implementare} \fn{(valida-parentesi stringa)} per
 \fn{()}, \fn{[]}, \fn{\{\}}.
-\exspieg{Algoritmo classico con pila: scorrere la stringa carattere per
-carattere. Se il carattere è una parentesi aperta (\fn{(}, \fn{[}, \fn{\{}),
-metterla sulla pila. Se è una parentesi chiusa, controllare che la cima della
-pila contenga la corrispondente aperta: se sì, toglierla dalla pila; se no
-(o se la pila è vuota), la stringa non è valida.
-Alla fine la stringa è valida solo se la pila è vuota.}
 \begin{lstlisting}
 (valida-parentesi "([]{})")   ; -> T
 (valida-parentesi "([)]")     ; -> NIL
