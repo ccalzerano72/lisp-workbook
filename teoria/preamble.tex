@@ -369,11 +369,23 @@
 
 % ---- Comandi per gerarchia INTERNA ai box ----
 
-% Frase-chiave: grande, colorata, su riga propria
-\newcommand{\keyline}[1]{%
+% Frase-chiave: barra arancione + etichetta + testo, seconda riga allineata
+% \keyline{etichetta}{testo} -- etichetta grande sffamily + testo bold
+% \keyline{}{testo}          -- solo testo bold
+% hangindent allinea le righe successive dopo la barra (14pt = 3pt barra + 5pt spazio + 6pt margine)
+\newcommand{\keyline}[2]{%
   \par\smallskip%
-  {\normalsize\bfseries\color{csBlue!90!black} #1}%
-  \par\vspace{3pt}%
+  \noindent%
+  \setlength{\hangindent}{14pt}%
+  \setlength{\hangafter}{1}%
+  \textcolor{csOrange}{\rule{3pt}{1em}}\hspace{5pt}%
+  \ifx&#1&%
+    {\normalsize\bfseries\color{csBlue!85!black} #2}%
+  \else%
+    {\large\sffamily\bfseries\color{csBlue} #1}\enspace%
+    {\normalsize\bfseries\color{csBlue!85!black} #2}%
+  \fi\par%
+  \vspace{3pt}%
 }
 
 % Dettaglio: testo attenuato, leggermente più piccolo

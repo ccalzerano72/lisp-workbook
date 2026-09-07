@@ -19,7 +19,7 @@ Questo capitolo è il lessico da cui parte tutto il resto.
 % ================================================================
 
 \begin{concetto}{Tipizzazione dinamica}
-\keyline{I tipi sono associati ai valori, non alle variabili.}
+\keyline{}{I tipi sono associati ai valori, non alle variabili.}
 
 \detail{Una variabile è solo un nome che punta a un valore.
 Il valore porta con sé il proprio tipo: non la variabile.}
@@ -31,7 +31,7 @@ poi a una lista --- il linguaggio non si lamenta.}
 
 \boxsep
 
-\keyline{Il tipo viene controllato solo quando serve, a runtime.}
+\keyline{}{Il tipo viene controllato solo quando serve, a runtime.}
 
 \detail{Non prima dell'esecuzione come in Java/C, ma nel momento
 in cui il valore viene effettivamente usato.}
@@ -185,7 +185,7 @@ Non tre cose diverse --- la stessa identità.\\[4pt]
 % ================================================================
 
 \begin{concetto}{\texttt{let} --- binding parallelo}
-\keyline{Tutti i valori si calcolano prima di legare qualsiasi variabile.}
+\keyline{}{Tutti i valori si calcolano \emph{prima} di legare qualsiasi variabile.}
 
 \begin{sintassi}
 (let ((var1 val1) (var2 val2) ...) corpo)
@@ -197,7 +197,7 @@ sono indipendenti tra loro.}
 \end{concetto}
 
 \begin{concetto}{\texttt{let*} --- binding sequenziale}
-\keyline{Ogni variabile è visibile nelle espressioni che seguono.}
+\keyline{}{Ogni variabile è visibile nelle espressioni \emph{che seguono}.}
 
 \begin{sintassi}
 (let* ((var1 val1) (var2 val2) ...) corpo)
@@ -263,7 +263,7 @@ L'esercizio~4 lo impone esplicitamente: è un esercizio
 \argomento{\texttt{if} --- la forma base}
 
 \begin{concetto}{\texttt{if} è un'espressione, non un'istruzione}
-\keyline{\texttt{if} restituisce un valore --- il valore del ramo eseguito.}
+\keyline{}{\fn{if} restituisce un valore --- il valore del ramo eseguito.}
 
 \begin{sintassi}
 (if condizione expr-vera expr-falsa)
@@ -328,7 +328,7 @@ Usali per azioni con side-effect condizionati.
 \argomento{\texttt{cond} --- ramificazioni multiple}
 
 \begin{concetto}{\texttt{cond}}
-\keyline{Valuta i test in ordine; esegue il primo ramo vero.}
+\keyline{}{Valuta i test in ordine; esegue il \emph{primo ramo vero}.}
 
 \begin{sintassi}
 (cond (test1 expr1...)
@@ -410,43 +410,69 @@ farlo prima di andare avanti.
 % ================================================================
 
 \begin{concetto}{\texttt{and} e \texttt{or} restituiscono valori, non solo T/NIL}
-\keyline{\texttt{and}: restituisce il primo falso, o l'ultimo se tutti veri.}
-\keyline{\texttt{or}: restituisce il primo vero, o \texttt{NIL} se tutti falsi.}
+\keyline{\fn{and}}{valuta da sinistra; appena incontra \fn{nil} restituisce \fn{NIL}.
+Se nessun valore è \fn{nil}, restituisce l'ultimo.}
+
+\keyline{\fn{or}}{valuta da sinistra; appena incontra un valore non-\fn{nil} lo restituisce.
+Se tutti sono \fn{nil}, restituisce \fn{NIL}.}
 
 \boxsep
-\detail{Entrambi usano la \textbf{valutazione cortocircuito}:
-si fermano appena il risultato è determinato e non valutano
-le espressioni successive.}
-
-\boxsep
-\detail{\textbf{Conseguenza pratica:} \fn{or} è l'idioma per i valori
-di default (\texttt{(or x "fallback")}); \fn{and} è il guard
-(\texttt{(and (not (null x)) (f x))}).}
+\detail{Entrambi usano la \textbf{valutazione cortocircuito}: le espressioni
+dopo il punto di uscita non vengono nemmeno valutate.}
 \end{concetto}
 
-\begin{esempio}[\texttt{and}/\texttt{or} come flusso di controllo]
+\begin{esempio}[Cosa restituiscono esattamente \texttt{and} e \texttt{or}]
 \begin{lstlisting}
-(and 1 2 3)          ; => 3       (tutti veri: restituisce l'ultimo)
-(and 1 nil 3)        ; => NIL     (si ferma al primo falso)
-(or  nil nil 42)     ; => 42      (primo vero)
-(or  nil "default")  ; => "default"
+;; AND: restituisce NIL appena incontra nil, altrimenti l'ULTIMO valore
+(and 1 2 3)        ; => 3      (nessun nil: restituisce l'ultimo)
+(and 1 nil 3)      ; => NIL    (si ferma, il 3 non viene valutato)
+(and nil 1 2)      ; => NIL    (si ferma subito)
+(and)              ; => T      (zero argomenti: convenzione)
 
-;; Idioma: valore di default
+;; OR: restituisce il primo valore non-nil, altrimenti NIL
+(or nil nil 42)    ; => 42     (42 e' non-nil: lo restituisce)
+(or nil "ciao")    ; => "ciao"
+(or nil nil nil)   ; => NIL
+(or)               ; => NIL    (zero argomenti: convenzione)
+
+;; Restituiscono il VALORE, non T/NIL
+(and 10 20)        ; => 20     (non T!)
+(or  nil 42)       ; => 42     (non T!)
+\end{lstlisting}
+\end{esempio}
+
+\begin{confronto}
+\textbf{Idioma 1 --- valore di default con \texttt{or}:}
+
+\texttt{(or x default)} restituisce \texttt{x} se è non-nil,
+altrimenti \texttt{default}. È il pattern \texttt{x ?? default}
+di C\# o \texttt{x or default} di Python.
+
+\begin{lstlisting}
 (defun saluta (nome)
-  (let ((n (or nome "Utente")))
+  (let ((n (or nome "Utente")))   ; nil -> usa "Utente"
     (format t "Ciao, ~a!~%" n)))
 
 (saluta nil)    ; => Ciao, Utente!
 (saluta "Ada")  ; => Ciao, Ada!
+\end{lstlisting}
 
-;; Idioma: guard clause
+\medskip
+\textbf{Idioma 2 --- guard clause con \texttt{and}:}
+
+\texttt{(and condizione (f x))} esegue \texttt{(f x)} solo se
+la condizione è vera; altrimenti restituisce \texttt{NIL}
+senza chiamare \texttt{f}. È il pattern \texttt{cond \&\& f(x)} di C.
+
+\begin{lstlisting}
 (defun dividi (a b)
-  (and (not (= b 0)) (/ a b)))
+  (and (not (= b 0))   ; se b = 0, si ferma qui e restituisce NIL
+       (/ a b)))       ; altrimenti calcola e restituisce il quoziente
 
 (dividi 10 2)   ; => 5
-(dividi 10 0)   ; => NIL
+(dividi 10 0)   ; => NIL  (non ha nemmeno tentato la divisione)
 \end{lstlisting}
-\end{esempio}
+\end{confronto}
 
 % ================================================================
 \section{Parametri avanzati e valori multipli}
@@ -455,7 +481,7 @@ di default (\texttt{(or x "fallback")}); \fn{and} è il guard
 \argomento{\texttt{\&optional} --- parametri facoltativi}
 
 \begin{concetto}{\texttt{\&optional} --- parametri facoltativi}
-\keyline{Se il parametro non viene passato, usa il valore di default.}
+\keyline{}{Se il parametro \emph{non viene passato}, usa il valore di default.}
 
 \begin{sintassi}
 (defun f (obbligatorio \&optional (opt default)) corpo)
@@ -486,7 +512,7 @@ Puoi avere più parametri opzionali; vengono riempiti in ordine.}
 \argomento{\texttt{\&rest} --- argomenti variabili}
 
 \begin{concetto}{\texttt{\&rest} --- argomenti in numero variabile}
-\keyline{Raccoglie tutti gli argomenti extra in una lista.}
+\keyline{}{Raccoglie \emph{tutti gli argomenti extra} in una lista.}
 
 \begin{sintassi}
 (defun f (a b \&rest resto) corpo)
@@ -511,7 +537,7 @@ Usalo quando il numero di argomenti non è noto a priori.}
 \argomento{Valori multipli}
 
 \begin{concetto}{\texttt{values} e \texttt{multiple-value-bind}}
-\keyline{Una funzione può restituire più valori senza costruire una lista.}
+\keyline{}{Una funzione può restituire \emph{più valori} senza costruire una lista.}
 
 \begin{sintassi}
 (values v1 v2 ...)                        \textit{; lato produzione}\\
@@ -558,7 +584,7 @@ esplicita quando è più leggibile.
 \argomento{\texttt{dotimes} --- ripetizione N volte}
 
 \begin{concetto}{\texttt{dotimes}}
-\keyline{Ripete il corpo esattamente N volte, con contatore da 0 a N-1.}
+\keyline{}{Ripete il corpo esattamente \emph{N volte}, con contatore da \fn{0} a \fn{N-1}.}
 
 \begin{sintassi}
 (dotimes (var N risultato) corpo)
@@ -654,7 +680,7 @@ per prendere confidenza con l'output iterativo.
 % ================================================================
 
 \begin{concetto}{\texttt{format} --- output formattato}
-\keyline{Stampa su un destinatario con una stringa di controllo.}
+\keyline{}{Stampa su un destinatario con una \emph{stringa di controllo}.}
 
 \begin{sintassi}
 (format destinazione stringa-controllo argomenti...)
