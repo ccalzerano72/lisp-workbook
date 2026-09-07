@@ -1,0 +1,403 @@
+% =============================================================
+%  PREAMBLE — Common Lisp: Fondamenti e Pratica  (testo teorico)
+%  Compilare con: pdflatex main  (x2)
+% =============================================================
+
+% --- Encoding e lingua ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+
+% --- Font ---
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[outline]{contour}
+\contourlength{0.6pt}
+
+% --- Layout pagina: margini simmetrici, generosi ---
+\usepackage[
+  a4paper,
+  top=2.8cm, bottom=3cm,
+  left=3cm, right=3cm
+]{geometry}
+
+% --- Colori ---
+\usepackage[dvipsnames,svgnames,table]{xcolor}
+
+% Palette brand (condivisa col workbook)
+\definecolor{clBg}{RGB}{248,248,248}
+\definecolor{clKeyword}{RGB}{0,0,180}
+\definecolor{clComment}{RGB}{110,110,110}
+\definecolor{clString}{RGB}{0,120,0}
+
+% Colori semantici
+\definecolor{csBlue}{RGB}{30,80,160}
+\definecolor{csGreen}{RGB}{34,110,34}
+\definecolor{csOrange}{RGB}{200,100,0}
+\definecolor{csPurple}{RGB}{130,50,150}
+\definecolor{csTeal}{RGB}{0,110,110}
+\definecolor{csRed}{RGB}{180,30,30}
+
+% Box frame/back
+\definecolor{boxConFrame}{RGB}{30,80,160}
+\definecolor{boxConBack}{RGB}{235,241,252}
+\definecolor{boxEsFrame}{RGB}{34,110,34}
+\definecolor{boxEsBack}{RGB}{236,248,236}
+\definecolor{boxWarnFrame}{RGB}{200,100,0}
+\definecolor{boxWarnBack}{RGB}{255,249,220}
+\definecolor{boxWbFrame}{RGB}{130,50,150}
+\definecolor{boxWbBack}{RGB}{248,236,255}
+\definecolor{boxKeyFrame}{RGB}{0,110,110}
+\definecolor{boxKeyBack}{RGB}{230,248,248}
+\definecolor{boxNoteFrame}{RGB}{130,130,130}
+\definecolor{boxNoteBack}{RGB}{245,245,245}
+
+% --- Matematica ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% --- Listings ---
+\usepackage{listings}
+
+\lstdefinelanguage{CommonLisp}{%
+  sensitive=false,
+  morecomment=[l]{;},
+  morestring=[b]",
+  morekeywords=[1]{%
+    defun, defmacro, defparameter, defvar, defconstant,
+    defstruct, defclass, defmethod, defgeneric,
+    let, let*, flet, labels, setf, setq,
+    if, cond, when, unless, case, ecase,
+    and, or, not,
+    progn, prog1, prog2,
+    loop, dotimes, dolist, do, do*,
+    lambda, function,
+    funcall, apply,
+    mapcar, maplist, mapcan, mapc,
+    remove-if, remove-if-not, find-if, find-if-not,
+    every, some, notany, notevery,
+    reduce, count-if, count,
+    sort, stable-sort,
+    return, return-from,
+    values, multiple-value-bind, multiple-value-list,
+    destructuring-bind,
+    handler-case, handler-bind, error, warn, signal,
+    with-open-file, open, close,
+    format, print, princ, prin1, terpri, fresh-line,
+    read, read-line, read-char,
+    car, cdr, cons, list, append, reverse, length,
+    first, second, third, fourth, fifth,
+    rest, last, nth, nthcdr, butlast,
+    null, atom, listp, consp, numberp, stringp,
+    symbolp, functionp, integerp, floatp, characterp,
+    eq, eql, equal, equalp,
+    quote, backquote,
+    make-hash-table, gethash, remhash, maphash, hash-table-count,
+    make-array, aref, array-dimensions,
+    make-instance, slot-value, initialize-instance,
+    in-package, defpackage, use-package, export, import,
+    compile, load, require, provide,
+    t, nil%
+  },
+  morekeywords=[2]{%
+    +, -, *, /, mod, rem, expt, sqrt, abs,
+    floor, ceiling, truncate, round,
+    min, max, 1+, 1-,
+    =, /=, <, >, <=, >=,
+    char, char-code, code-char, char-upcase, char-downcase,
+    string, string-upcase, string-downcase, string-length,
+    coerce, type-of, typep, check-type%
+  }
+}
+
+\lstdefinestyle{lispstyle}{%
+  language=CommonLisp,
+  basicstyle=\ttfamily\small,
+  keywordstyle=[1]{\color{clKeyword}\bfseries},
+  keywordstyle=[2]{\color{clKeyword}},
+  commentstyle=\itshape\color{clComment},
+  stringstyle=\color{clString},
+  backgroundcolor=\color{clBg},
+  frame=single,
+  framesep=5pt,
+  framerule=0.4pt,
+  rulecolor=\color{gray!40},
+  xleftmargin=10pt,
+  xrightmargin=4pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  tabsize=2,
+  numbers=none,
+  upquote=true,
+  extendedchars=true,
+  literate=
+    {->}{{$\rightarrow$}}2
+    {=>}{{$\Rightarrow$}}2
+    {à}{{\`a}}1  {è}{{\`e}}1  {é}{{\'{e}}}1  {ì}{{\`{\i}}}1
+    {ò}{{\`o}}1  {ù}{{\`u}}1
+}
+
+\lstset{style=lispstyle}
+\newcommand{\cl}[1]{\lstinline[style=lispstyle]{#1}}
+\newcommand{\fn}[1]{\texttt{\color{clKeyword}\bfseries#1}}
+
+% --- tcolorbox ---
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{listings, breakable, skins}
+
+% ================================================================
+%  BOX TIPOLOGIE
+% ================================================================
+
+% ---- CONCETTO ----
+\newenvironment{concetto}[1]{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced, breakable,
+    colframe=boxConFrame, colback=boxConBack,
+    fonttitle=\bfseries\normalsize,
+    title={\textcolor{white}{\strut #1}},
+    coltitle=white,
+    attach boxed title to top left={yshift=-2mm, xshift=6pt},
+    boxed title style={
+      colback=boxConFrame, colframe=boxConFrame,
+      arc=2pt, boxrule=0pt,
+      left=6pt, right=6pt, top=2pt, bottom=2pt
+    },
+    arc=4pt, boxrule=1pt,
+    left=12pt, right=12pt, top=14pt, bottom=10pt,
+    before skip=18pt plus 4pt, after skip=14pt plus 3pt,
+    parskip=6pt
+  ]
+  \small\color{black!80}%
+}{\end{tcolorbox}\medskip}
+
+% ---- SINTASSI ----
+\newenvironment{sintassi}{%
+  \smallskip
+  \begin{tcolorbox}[
+    enhanced,
+    colframe=csBlue!60, colback=csBlue!4,
+    arc=2pt, boxrule=0.6pt,
+    left=10pt, right=8pt, top=5pt, bottom=5pt,
+    before skip=6pt, after skip=8pt
+  ]
+  \ttfamily\small\color{csBlue!80!black}%
+}{\end{tcolorbox}\smallskip}
+
+% ---- ESEMPIO ----
+% Argomento opzionale: titolo (default "Esempio")
+\newenvironment{esempio}[1][Esempio]{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced, breakable,
+    colframe=boxEsFrame, colback=boxEsBack,
+    fonttitle=\bfseries\small,
+    title={#1},
+    coltitle=boxEsFrame!80!black,
+    attach boxed title to top left={yshift=-2mm, xshift=6pt},
+    boxed title style={
+      colback=boxEsBack, colframe=boxEsFrame,
+      arc=2pt, boxrule=0.6pt,
+      left=5pt, right=5pt, top=1pt, bottom=1pt
+    },
+    arc=3pt, boxrule=0.8pt,
+    left=10pt, right=10pt, top=12pt, bottom=8pt,
+    before skip=10pt plus 2pt, after skip=10pt plus 2pt,
+    parskip=4pt
+  ]
+  \small\color{black!80}%
+}{\end{tcolorbox}\medskip}
+
+% ---- ATTENZIONE ----
+\newenvironment{attenzione}{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    colframe=boxWarnFrame, colback=boxWarnBack,
+    fonttitle=\bfseries\small,
+    title={$\blacktriangleright$\enspace Attenzione},
+    coltitle=boxWarnFrame!80!black,
+    attach boxed title to top left={yshift=-2mm, xshift=6pt},
+    boxed title style={
+      colback=boxWarnBack, colframe=boxWarnFrame,
+      arc=2pt, boxrule=0.6pt,
+      left=5pt, right=5pt, top=1pt, bottom=1pt
+    },
+    arc=3pt, boxrule=0.8pt,
+    left=10pt, right=10pt, top=12pt, bottom=8pt,
+    before skip=10pt plus 2pt, after skip=10pt plus 2pt,
+    parskip=4pt
+  ]
+  \small\color{black!80}%
+}{\end{tcolorbox}\medskip}
+
+% ---- INTUIZIONE ----
+\newenvironment{intuizione}{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    colframe=boxKeyFrame, colback=boxKeyBack,
+    fonttitle=\bfseries\small,
+    title={$\bigstar$\enspace Intuizione chiave},
+    coltitle=boxKeyFrame!80!black,
+    attach boxed title to top left={yshift=-2mm, xshift=6pt},
+    boxed title style={
+      colback=boxKeyBack, colframe=boxKeyFrame,
+      arc=2pt, boxrule=0.6pt,
+      left=5pt, right=5pt, top=1pt, bottom=1pt
+    },
+    arc=3pt, boxrule=0.8pt,
+    left=12pt, right=12pt, top=12pt, bottom=10pt,
+    before skip=10pt plus 2pt, after skip=10pt plus 2pt,
+    parskip=4pt
+  ]
+  \small\color{black!80}%
+}{\end{tcolorbox}\medskip}
+
+% ---- WORKBOOK ----
+\newenvironment{workbook}{%
+  \medskip
+  \begin{tcolorbox}[
+    enhanced,
+    colframe=boxWbFrame, colback=boxWbBack,
+    fonttitle=\bfseries\small,
+    title={$\blacktriangleright$\enspace Nel workbook},
+    coltitle=boxWbFrame!80!black,
+    attach boxed title to top left={yshift=-2mm, xshift=6pt},
+    boxed title style={
+      colback=boxWbBack, colframe=boxWbFrame,
+      arc=2pt, boxrule=0.6pt,
+      left=5pt, right=5pt, top=1pt, bottom=1pt
+    },
+    arc=3pt, boxrule=0.8pt,
+    left=12pt, right=12pt, top=12pt, bottom=8pt,
+    before skip=10pt plus 2pt, after skip=10pt plus 2pt,
+    parskip=3pt
+  ]
+  \small\color{black!80}%
+}{\end{tcolorbox}\medskip}
+
+% ---- NOTA ----
+\newenvironment{nota}{%
+  \smallskip
+  \begin{tcolorbox}[
+    enhanced,
+    colframe=boxNoteFrame, colback=boxNoteBack,
+    arc=3pt, boxrule=0.5pt,
+    left=10pt, right=10pt, top=6pt, bottom=6pt,
+    before skip=8pt, after skip=8pt
+  ]
+  \small\color{black!65}\itshape%
+}{\end{tcolorbox}\smallskip}
+
+% ================================================================
+%  SEPARATORI E COMANDI SEMANTICI
+% ================================================================
+
+% Separatore orizzontale leggero
+\newcommand{\seprule}{%
+  \par\vspace{6pt}%
+  \noindent\textcolor{black!20}{\rule{\linewidth}{0.4pt}}%
+  \par\vspace{4pt}%
+}
+
+% Titolo di argomento interno (sotto-sezione visiva, senza numero)
+\newcommand{\argomento}[1]{%
+  \par\vspace{16pt}%
+  \noindent{\large\bfseries\color{csBlue} #1}%
+  \par\noindent\textcolor{csBlue!35}{\rule{\linewidth}{0.7pt}}%
+  \par\vspace{4pt}%
+}
+
+% Comando per funzioni inline
+\newcommand{\repl}[1]{\texttt{\small\color{csGreen!70!black}#1}}
+\newcommand{\risultato}[1]{\texttt{\small\color{csGreen!70!black}$\Rightarrow$\enspace #1}}
+
+% Nota inline a piè di paragrafo (sostituisce marginnote)
+\newcommand{\mnota}[1]{%
+  \par\smallskip\noindent%
+  \textcolor{black!45}{\footnotesize\itshape\hspace{1em}$\triangleright$\enspace #1}%
+  \par\smallskip%
+}
+
+% ================================================================
+%  INTESTAZIONI DI PAGINA
+% ================================================================
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+% Solo il titolo corrente del capitolo a sinistra, pagina a destra
+% Troncato per evitare overflow
+\fancyhead[L]{\small\color{black!50}\itshape\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{black!40}\thepage}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Ridefinisce \chaptermark per non stampare "CAPITOLO N" ma solo il titolo
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername~\thechapter.\ #1}{}}
+
+% ================================================================
+%  STILE CAPITOLI E SEZIONI
+% ================================================================
+
+\usepackage{titlesec}
+
+% Capitoli: numero grande colorato + titolo + riga
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{csBlue}}
+  {\normalfont\large\color{csBlue!55}\scshape\chaptername\ \thechapter}
+  {6pt}
+  {\Huge\color{csBlue}}
+  [\vspace{4pt}{\color{csBlue!25}\rule{\linewidth}{1.5pt}}\vspace{2pt}]
+
+\titlespacing*{\chapter}{0pt}{0pt}{28pt}
+
+% Sezioni: numero colorato + titolo + sottile riga
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{black!85}}
+  {\textcolor{csBlue}{\thesection.}}
+  {7pt}
+  {}
+  [\vspace{1pt}{\color{csBlue!25}\rule{\linewidth}{0.5pt}}]
+
+\titlespacing*{\section}{0pt}{22pt}{8pt}
+
+% Sottosezioni
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries\color{csBlue!80!black}}
+  {\thesubsection.}
+  {6pt}
+  {}
+
+\titlespacing*{\subsection}{0pt}{14pt}{4pt}
+
+% ================================================================
+%  HYPERREF (sempre ultimo)
+% ================================================================
+
+\usepackage[
+  colorlinks=true,
+  linkcolor=csBlue,
+  urlcolor=csTeal,
+  citecolor=csGreen,
+  pdftitle={Common Lisp - Fondamenti e Pratica},
+  pdfauthor={Carmelo Calzerano}
+]{hyperref}
+
+% ================================================================
+%  PACCHETTI ACCESSORI
+% ================================================================
+
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.6em, itemsep=2pt, topsep=3pt}
+\setlist[enumerate]{leftmargin=1.6em, itemsep=2pt, topsep=3pt}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{ragged2e}

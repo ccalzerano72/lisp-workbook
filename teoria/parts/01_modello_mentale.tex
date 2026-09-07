@@ -1,0 +1,561 @@
+% =============================================================
+%  01_modello_mentale.tex
+%  Capitolo 1 — Il modello mentale di Lisp
+% =============================================================
+
+\chapter{Il modello mentale di Lisp}
+
+\begin{intuizione}
+Lisp non è un linguaggio da \emph{imparare}, è un linguaggio da
+\emph{capire}. La sintassi si impara in dieci minuti. Il modello mentale
+richiede qualche ora. Questo capitolo serve a costruirlo.
+\end{intuizione}
+
+\vspace{4pt}
+
+% ================================================================
+\section{Tutto è un'espressione}
+% ================================================================
+
+In C, Python o Java distingui nettamente \emph{istruzioni} ed
+\emph{espressioni}: \texttt{if} è un'istruzione, \texttt{a + b} è
+un'espressione. In Lisp questa distinzione non esiste.
+
+\begin{intuizione}
+\textbf{In Lisp tutto è un'espressione e ogni espressione produce un valore.}\\
+Non ci sono istruzioni. Non ci sono statement. Solo espressioni.
+\end{intuizione}
+
+\argomento{S-expression}
+
+La struttura fondamentale del linguaggio si chiama \textbf{S-expression}
+(symbolic expression). Ha due forme:
+
+\begin{sintassi}
+atomo          ; un valore singolo: numero, stringa, simbolo\\
+(f a1 a2 ...)  ; una lista: primo elemento = operatore/funzione
+\end{sintassi}
+
+\mnota{S-expression (symbolic expression) --- introdotta da McCarthy nel 1960.}
+
+Esempi di atomi:
+
+\begin{esempio}[Atomi]
+\begin{lstlisting}
+42           ; numero intero
+3.14         ; numero in virgola mobile
+"ciao"       ; stringa
+t            ; vero (true)
+nil          ; falso / lista vuota
+pi           ; costante predefinita (~3.14159)
+\end{lstlisting}
+\end{esempio}
+
+Esempi di liste (chiamata di funzione):
+
+\begin{esempio}[Liste come chiamate]
+\begin{lstlisting}
+(+ 3 5)        ; => 8
+(* 4 2)        ; => 8
+(+ 1 2 3 4)    ; => 10   (+ accetta qualsiasi numero di argomenti)
+(max 7 3 9 2)  ; => 9
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+L'operatore va \textbf{sempre prima} degli argomenti. Non esiste
+\texttt{3 + 5}: si scrive \texttt{(+ 3 5)}.\\[4pt]
+Se vieni da Python o C, questa è l'unica cosa che richiede
+adattamento. Dopo pochi minuti diventa automatica.
+\end{attenzione}
+
+\seprule
+
+\argomento{Annidamento}
+
+Le espressioni si annidano liberamente. Il risultato di una
+espressione è l'argomento di un'altra:
+
+\begin{esempio}[Espressioni annidate]
+\begin{lstlisting}
+(+ (* 3 4) (* 2 5))   ; => 22
+; equivale a: 3*4 + 2*5 = 12 + 10
+
+(sqrt (+ (* 3 3) (* 4 4)))   ; => 5.0
+; equivale a: sqrt(3^2 + 4^2)
+\end{lstlisting}
+\end{esempio}
+
+\mnota{Nessuna precedenza tra operatori: le parentesi definiscono tutto. Zero ambiguita'.}
+
+\begin{nota}
+Non esiste precedenza tra operatori: le parentesi definiscono esplicitamente
+l'ordine di valutazione. Questo è una \emph{feature}, non un limite:
+il codice non è mai ambiguo.
+\end{nota}
+
+% ================================================================
+\section{Il REPL: il tuo laboratorio}
+% ================================================================
+
+\begin{concetto}{REPL — Read Eval Print Loop}
+Il REPL è l'ambiente interattivo di Lisp. Il flusso è:
+
+\medskip
+\begin{center}
+\textbf{Read} $\to$ legge un'espressione\\[3pt]
+\textbf{Eval} $\to$ la valuta\\[3pt]
+\textbf{Print} $\to$ stampa il risultato\\[3pt]
+\textbf{Loop} $\to$ ricomincia
+\end{center}
+
+\medskip
+Non scrivi un programma, lo compili e lo esegui. Scrivi
+un'espressione, premi Invio, vedi il risultato. Subito.
+\end{concetto}
+
+\argomento{Workflow nel REPL}
+
+La sessione tipica:
+
+\begin{esempio}[Sessione REPL]
+\begin{lstlisting}
+; Avvia Allegro CL Free Express e digita:
+CL-USER> (+ 1 2)
+3                          ; il REPL stampa il risultato
+
+CL-USER> (* 6 7)
+42
+
+CL-USER> (defun quadrato (x) (* x x))
+QUADRATO                   ; Lisp conferma la definizione
+
+CL-USER> (quadrato 5)
+25
+
+CL-USER> (quadrato (+ 2 1))
+9
+\end{lstlisting}
+\end{esempio}
+
+\begin{workbook}
+Apri il REPL adesso e testa queste espressioni prima di andare avanti.
+Prova a variare i numeri, annida le espressioni, rompi qualcosa e leggi
+l'errore.
+\end{workbook}
+
+\argomento{Caricare un file}
+
+Per lavori più lunghi scrivi il codice in un file \texttt{.lisp}
+e lo carichi nel REPL:
+
+\begin{sintassi}
+:ld nomefile.lisp    ; Allegro CL (shorthand)\\
+(load "nomefile.lisp")  ; ANSI standard, funziona ovunque
+\end{sintassi}
+
+\mnota{In Allegro: \fn{:ld}, \fn{:cl} (compile+load), \fn{:trace}, \fn{:untrace}.}
+
+\begin{nota}
+Flusso di lavoro consigliato: scrivi 3-5 righe nel file, carica,
+testa nel REPL, correggi. Non aspettare di avere 100 righe prima
+di testare.
+\end{nota}
+
+% ================================================================
+\section{Valutazione: le regole del gioco}
+% ================================================================
+
+\begin{concetto}{Come Lisp valuta un'espressione}
+Regole di valutazione — semplici e uniformi:
+
+\medskip
+\begin{enumerate}
+  \item \textbf{Atomo auto-valutante}: numeri, stringhe, \texttt{t}, \texttt{nil}
+        restituiscono se stessi.
+  \item \textbf{Simbolo}: viene cercato nell'ambiente corrente e restituisce
+        il suo valore.
+  \item \textbf{Lista \texttt{(f a1 a2 ...)}}: prima si valutano tutti gli
+        argomenti (da sinistra a destra), poi si chiama \texttt{f} con i risultati.
+  \item \textbf{Forma speciale}: alcune parole chiave (\texttt{if}, \texttt{let},
+        \texttt{defun}, \texttt{quote}\ldots) hanno regole di valutazione proprie.
+\end{enumerate}
+\end{concetto}
+
+\argomento{Quote: bloccare la valutazione}
+
+A volte vuoi che un simbolo o una lista \emph{non} venga valutata
+ma trattata come dato. Si usa \texttt{quote} (o l'abbreviazione \texttt{'}):
+
+\begin{esempio}[Quote]
+\begin{lstlisting}
+(+ 1 2)      ; => 3  (valuta: chiama +)
+'(+ 1 2)     ; => (+ 1 2)  (non valuta: restituisce la lista)
+
+'ciao        ; => CIAO  (simbolo come dato, non come variabile)
+(quote x)    ; equivalente a 'x
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+\textbf{Codice e dati hanno la stessa forma.}
+Una lista \texttt{(+ 1 2)} è sia un'espressione da valutare
+sia un dato (una lista di tre elementi). Il \texttt{quote} sceglie
+il secondo caso. Questa simmetria — chiamata \emph{homoiconicity} —
+è il fondamento delle macro.
+\end{intuizione}
+
+% ================================================================
+\section{Differenza con il paradigma imperativo}
+% ================================================================
+
+Vieni da C, Java, Python. Ecco i punti di rottura:
+
+\bigskip
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{@{}p{4.8cm}p{5.5cm}@{}}
+\toprule
+\textbf{Linguaggio imperativo} & \textbf{Common Lisp} \\
+\midrule
+\texttt{result = f(x)} \newline (assegnazione) &
+\texttt{(let ((result (f x))) ...)} \newline (binding locale) \\
+\addlinespace
+\texttt{if (cond) \{ ... \} else \{ ... \}} \newline (istruzione) &
+\texttt{(if cond vero falso)} \newline (espressione con valore) \\
+\addlinespace
+\texttt{for (int i=0; i<n; i++)} \newline (loop imperativo) &
+\texttt{(loop for i from 0 below n ...)} \newline o ricorsione \\
+\addlinespace
+\texttt{void f(x) \{ ... \}} \newline (procedura senza return) &
+Non esiste: ogni funzione \newline restituisce sempre un valore \\
+\addlinespace
+\texttt{f = \&g} (puntatore a funzione, raro) &
+\texttt{\#'g} o \texttt{(lambda ...)} \newline (funzioni come valori normali) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bigskip
+
+\begin{attenzione}
+\textbf{La mutabilità non è la norma.}
+In Lisp si \emph{può} modificare variabili con \texttt{setf},
+ma il pattern naturale è creare nuovi valori, non modificare quelli
+esistenti. Inizia così: evita \texttt{setf} finché non è strettamente
+necessario.
+\end{attenzione}
+
+\seprule
+
+\argomento{Il modello di esecuzione}
+
+In un linguaggio imperativo il programma è una sequenza di
+\emph{istruzioni} che modificano uno stato. In Lisp è una
+\emph{composizione di espressioni} che producono valori:
+
+\begin{esempio}[Imperativo vs funzionale]
+\begin{lstlisting}
+;;; Python (imperativo)
+;; x = 3
+;; y = x * 2
+;; z = y + 1
+
+;;; Common Lisp (composizione)
+(let* ((x 3)
+       (y (* x 2))
+       (z (+ y 1)))
+  z)
+; => 7
+
+;;; Oppure direttamente:
+(+ (* 3 2) 1)   ; => 7
+\end{lstlisting}
+\end{esempio}
+
+\mnota{\fn{let*} permette binding sequenziali: ognuno vede i precedenti.}
+
+% ================================================================
+\section{Definire funzioni: \texttt{defun}}
+% ================================================================
+
+\begin{concetto}{\texttt{defun} --- definire una funzione}
+\begin{sintassi}
+(defun nome (param1 param2 ...) corpo)
+\end{sintassi}
+\begin{itemize}
+  \item \texttt{nome}: il simbolo con cui richiamare la funzione
+  \item \texttt{(param1 ...)}: lista dei parametri
+  \item \texttt{corpo}: una o più espressioni; la funzione restituisce
+        il valore dell'\textbf{ultima}
+\end{itemize}
+\end{concetto}
+
+\begin{esempio}[Prime funzioni]
+\begin{lstlisting}
+(defun add (a b)
+  (+ a b))
+
+(add 3 5)    ; => 8
+(add 1.5 2)  ; => 3.5
+
+
+(defun quadrato (x)
+  (* x x))
+
+(quadrato 4)   ; => 16
+(quadrato -3)  ; => 9
+
+
+;; Corpo con piu' espressioni: conta solo l'ultima
+(defun saluta (nome)
+  (format t "Ciao, ~a!~%" nome)   ; effetto collaterale: stampa
+  nil)                             ; valore restituito: nil
+
+(saluta "Alice")
+; stampa: Ciao, Alice!
+; => NIL
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+\texttt{format t "~a~\%"} stampa il valore di \texttt{~a} seguito da
+newline (\texttt{~\%}). La \texttt{t} indica lo standard output.
+Non preoccuparti ora dei dettagli di \texttt{format}: verrà trattato
+nel capitolo sull'I/O.
+\end{nota}
+
+\argomento{Ricorsione come default}
+
+In Lisp la ricorsione non è un trucco avanzato: è il modo naturale
+di esprimere iterazione. Inizia a ragionarci subito:
+
+\begin{esempio}[Prima funzione ricorsiva]
+\begin{lstlisting}
+(defun fattoriale (n)
+  (if (= n 0)
+      1                         ; caso base
+      (* n (fattoriale (- n 1)))))  ; caso ricorsivo
+
+(fattoriale 5)   ; => 120
+(fattoriale 0)   ; => 1
+\end{lstlisting}
+\end{esempio}
+
+\mnota{Ogni funzione ricorsiva ha un caso base (stop) e uno ricorsivo (avanzamento).}
+
+\begin{intuizione}
+\textbf{Come leggere una funzione ricorsiva:}
+Non seguire l'esecuzione passo per passo nella testa — ti perdi.
+Invece: \emph{"se n è 0, restituisce 1; altrimenti, n per il
+fattoriale del resto"}.
+Fidati della definizione. Il computer gestisce lo stack.
+\end{intuizione}
+
+\begin{workbook}
+\textbf{Esercizi 1--4} (Fondamenti --- Somma, Geometria, Conversioni, Ipotenusa)\\[4pt]
+Sono le prime funzioni: pura sintassi \texttt{defun} e aritmetica.
+Scrivile nel REPL, non in un file. Obiettivo: prendere confidenza con
+la notazione prefissa e con la struttura \texttt{(defun nome (params) corpo)}.
+\end{workbook}
+
+% ================================================================
+\section{Nomi, simboli e case}
+% ================================================================
+
+\begin{concetto}{Simboli in Common Lisp}
+Un \textbf{simbolo} è un nome: può essere una variabile, una funzione,
+una costante. Common Lisp converte tutto in maiuscolo internamente,
+ma la convenzione di scrittura è \textbf{kebab-case} minuscolo:
+\end{concetto}
+
+\begin{esempio}[Convenzioni di naming]
+\begin{lstlisting}
+;; Nomi di funzione: kebab-case
+(defun calcola-area (r) (* pi r r))
+(defun converti-celsius->fahrenheit (c) (+ (* c 9/5) 32))
+
+;; Predicati (restituiscono vero/falso): terminano con -p
+(defun pari-p (n) (= (mod n 2) 0))
+(defun vuoto-p (lst) (null lst))
+
+;; Costanti globali: asterischi (per convenzione)
+(defparameter *pi-greco* 3.14159)
+(defconstant +max-iter+ 1000)
+
+;; Il case non conta per il lettore:
+(defun Foo (x) x)   ; identico a (defun foo (x) x)
+\end{lstlisting}
+\end{esempio}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Tipo} & \textbf{Convenzione} & \textbf{Esempio} \\
+\midrule
+Funzione       & kebab-case          & \texttt{calcola-area} \\
+Predicato      & kebab-case + \texttt{-p} & \texttt{pari-p}, \texttt{null} \\
+Variabile globale & \texttt{*nome*}  & \texttt{*debug*} \\
+Costante       & \texttt{+nome+}     & \texttt{+max-size+} \\
+Parametro locale & kebab-case        & \texttt{lista-input} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{nota}
+Le convenzioni non sono imposte dal compilatore, ma sono universalmente
+rispettate nel codice Lisp professionale. Adottarle subito ti permette
+di leggere codice altrui senza sforzo.
+\end{nota}
+
+% ================================================================
+\section{Gestire gli errori nel REPL}
+% ================================================================
+
+Prima o poi (subito) il REPL mostra un errore. Non farti prendere dal
+panico: il debugger di Lisp è potente e informativo.
+
+\begin{esempio}[Errori tipici e come leggerli]
+\begin{lstlisting}
+;; Parentesi mancante: il REPL aspetta
+CL-USER> (+ 1 2
+               ; cursore lampeggia, si aspetta )
+               )   ; digita la parentesi che manca
+3
+
+;; Funzione non definita
+CL-USER> (foo 42)
+; Error: The function FOO is undefined.
+; Digita :reset per tornare al prompt
+
+;; Tipo sbagliato
+CL-USER> (+ 1 "ciao")
+; Error: "ciao" is not of type NUMBER.
+
+;; Troppi / troppo pochi argomenti
+CL-USER> (add 1)
+; Error: ADD requires exactly 2 arguments.
+\end{lstlisting}
+\end{esempio}
+
+\begin{sintassi}
+:reset    ; (Allegro) torna al prompt pulito dopo un errore\\
+:bt       ; (Allegro) mostra lo stack trace\\
+:q        ; esce dal debugger
+\end{sintassi}
+
+\begin{workbook}
+\textbf{Esercizi 5--11} (Fondamenti --- Distanza, Pari/dispari, Divisibilita', Segno,
+Massimo, Triangolo, Anno bisestile)\\[4pt]
+Questi esercizi richiedono \texttt{let}, \texttt{cond} e \texttt{mod}.
+Prima di scriverli, leggi la sezione \emph{Condizioni e flusso}
+(Capitolo~3) oppure consulta la sezione corrispondente nel workbook
+Quick Reference.\\[4pt]
+\textbf{Obiettivo:} consolidare \texttt{defun}, cominciare a usare
+i condizionali, capire quando usare \texttt{let} per i valori intermedi.
+\end{workbook}
+
+% ================================================================
+\section{Il ciclo di sviluppo professionale}
+% ================================================================
+
+\begin{concetto}{Come lavora un Lisper}
+Non si scrive il programma intero e poi si compila. Si costruisce
+\textbf{incrementalmente}, pezzo per pezzo, con il REPL come
+amico fidato:
+
+\medskip
+\begin{enumerate}
+  \item Scrivi una funzione piccola (5-10 righe max)
+  \item Caricala nel REPL (\texttt{:ld file.lisp})
+  \item Testala con 2-3 casi, incluso un caso limite
+  \item Se funziona, vai avanti. Se no, correggi e ricarica.
+  \item Componi le funzioni piccole in funzioni più grandi
+\end{enumerate}
+
+\medskip
+Il REPL non è un accessorio: è \textbf{l'ambiente di sviluppo}.
+\end{concetto}
+
+\argomento{Trace: vedere l'esecuzione}
+
+\texttt{:trace} è uno strumento prezioso per capire cosa fa una
+funzione ricorsiva:
+
+\begin{esempio}[Trace di una funzione ricorsiva]
+\begin{lstlisting}
+CL-USER> :trace fattoriale
+; Tracing FATTORIALE
+
+CL-USER> (fattoriale 4)
+0: (FATTORIALE 4)
+  1: (FATTORIALE 3)
+    2: (FATTORIALE 2)
+      3: (FATTORIALE 1)
+        4: (FATTORIALE 0)
+        4: FATTORIALE returned 1
+      3: FATTORIALE returned 1
+    2: FATTORIALE returned 2
+  1: FATTORIALE returned 6
+0: FATTORIALE returned 24
+24
+
+CL-USER> :untrace fattoriale   ; disattiva il trace
+\end{lstlisting}
+\end{esempio}
+
+\mnota{\fn{:trace} mostra ogni chiamata ricorsiva con indentazione = profondita'.}
+
+\begin{intuizione}
+Usa \texttt{:trace} ogni volta che una funzione ricorsiva non si
+comporta come ti aspetti. Vedere le chiamate annidate risolve il
+90\% dei bug di ricorsione.
+\end{intuizione}
+
+% ================================================================
+\section*{Riepilogo del capitolo}
+% ================================================================
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=csBlue!5,
+  colframe=csBlue!40,
+  arc=4pt,
+  boxrule=0.6pt,
+  left=14pt, right=14pt, top=12pt, bottom=12pt,
+  before skip=16pt,
+  after skip=16pt
+]
+\textbf{Quello che hai imparato:}
+
+\medskip
+\begin{itemize}
+  \item \textbf{S-expression}: la struttura uniforme di tutto il codice Lisp.
+        Atom | \texttt{(operatore arg1 arg2 ...)}
+  \item \textbf{Valutazione}: atomi si auto-valutano; liste chiamano funzioni;
+        \texttt{quote} blocca la valutazione.
+  \item \textbf{REPL}: il laboratorio interattivo. Scrivi, valuta, correggi.
+  \item \textbf{defun}: come definire funzioni. Il corpo è un'espressione,
+        non una sequenza di istruzioni.
+  \item \textbf{Ricorsione}: il modo naturale di iterare in Lisp.
+  \item \textbf{Convenzioni}: kebab-case, predicati con \texttt{-p},
+        globali con \texttt{*asterischi*}.
+  \item \textbf{Ciclo di sviluppo}: incrementale, con il REPL.
+        Funzioni piccole, test immediati, composizione.
+\end{itemize}
+
+\medskip
+\textbf{Cosa viene dopo:}\\
+Capitolo~2 --- \emph{Funzioni e dati fondamentali}: tutti i tipi di dato,
+le funzioni numeriche, le stringhe, \texttt{let}/\texttt{let*},
+parametri opzionali e \texttt{\&rest}.
+\end{tcolorbox}
+
+\begin{workbook}
+\textbf{Prima di andare al Capitolo~2:}\\[4pt]
+Completa almeno gli esercizi \textbf{1--8} del workbook (capitolo
+\emph{Fondamenti}). Sono tutti fattibili con quello che hai visto qui.\\[4pt]
+Se hai difficolta' con un esercizio \textbf{★★★} o superiore,
+consulta il suggerimento corrispondente nel workbook prima della soluzione.
+\end{workbook}

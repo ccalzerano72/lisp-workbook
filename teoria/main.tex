@@ -1,0 +1,130 @@
+% =============================================================
+%  MAIN — Common Lisp: Fondamenti e Pratica  (testo teorico)
+%  Compilare con: pdflatex main  (due volte per i riferimenti)
+% =============================================================
+\documentclass[a4paper,11pt,oneside]{book}
+
+\input{preamble}
+
+\begin{document}
+
+% ---- Copertina -----------------------------------------------
+\begin{titlepage}
+  \centering
+  \vspace*{2.5cm}
+  {\Huge\bfseries\color{csBlue} Common Lisp}\\[0.5cm]
+  {\LARGE\itshape Fondamenti e Pratica}\\[0.4cm]
+  {\large Dal modello mentale alla programmazione professionale}\\[2.5cm]
+  \textcolor{csBlue!30}{\rule{0.5\textwidth}{1.5pt}}\\[1.2cm]
+  {\large\itshape Per studenti con basi di programmazione imperativa}\\[0.5cm]
+  {\normalsize Companion del \textit{Common Lisp — Guida Pratica} (workbook)}\\[2.5cm]
+  \textcolor{csBlue!30}{\rule{0.5\textwidth}{0.4pt}}\\[0.8cm]
+  {\large\textbf{Carmelo Calzerano}}\\[1.2cm]
+  {\normalsize Prima versione --- Settembre 2026}
+  \vfill
+\end{titlepage}
+
+% ---- Pagina crediti ------------------------------------------
+\thispagestyle{empty}
+\vspace*{2cm}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=boxConBack,
+  colframe=boxConFrame,
+  fonttitle=\bfseries\large,
+  title=Come usare questo testo,
+  boxrule=0.8pt,
+  arc=4pt,
+  left=14pt, right=14pt, top=12pt, bottom=12pt
+]
+Questo testo \textbf{non} è una reference: per quella esiste il workbook.\\[6pt]
+È un \textbf{percorso narrativo}: spiega i concetti nell'ordine in cui
+ha senso incontrarli, costruendo un modello mentale progressivo
+del linguaggio.
+
+\medskip
+\textbf{Come leggerlo:} un capitolo alla volta, con il REPL aperto.
+Testa ogni esempio mentre leggi. Non andare avanti se qualcosa non è chiaro.
+
+\medskip
+\textbf{Il workbook:} al termine di ogni capitolo trovi i richiami agli
+esercizi corrispondenti. Falli prima di passare al capitolo successivo.
+\end{tcolorbox}
+
+\vspace{1.5em}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!3,
+  colframe=black!30,
+  boxrule=0.5pt,
+  arc=3pt,
+  left=12pt, right=12pt, top=10pt, bottom=10pt
+]
+\small
+\textbf{Standard:} ANSI Common Lisp.
+Esempi testati con Allegro CL Free Express.
+Qualsiasi implementazione conforme (SBCL, CCL, CLISP, ECL) è compatibile.
+
+\medskip
+\textbf{Legenda box:}\\[4pt]
+\begin{tabular}{@{}ll@{}}
+\textcolor{csBlue}{$\blacksquare$}\enspace \textbf{Concetto} &
+  Il costrutto o l'idea centrale\\[3pt]
+\textcolor{csGreen}{$\blacksquare$}\enspace \textbf{Esempio} &
+  Codice con output commentato\\[3pt]
+\textcolor{csOrange}{$\blacksquare$}\enspace \textbf{Attenzione} &
+  Errori tipici, trappole, differenze con altri linguaggi\\[3pt]
+\textcolor{csTeal}{$\blacksquare$}\enspace \textbf{Intuizione chiave} &
+  Il salto concettuale da fare\\[3pt]
+\textcolor{csPurple}{$\blacksquare$}\enspace \textbf{Nel workbook} &
+  Esercizi da fare subito dopo\\[3pt]
+\textcolor{black!50}{$\blacksquare$}\enspace \textbf{Nota} &
+  Dettagli secondari, varianti, approfondimenti\\
+\end{tabular}
+\end{tcolorbox}
+
+\vspace{1.5em}
+
+\noindent
+\begin{tabular}{@{}ll@{}}
+\textbf{Autore}   & Carmelo Calzerano\\[4pt]
+\textbf{Versione} & Prima edizione --- Settembre 2026\\[4pt]
+\textbf{Licenza}  & CC BY-NC-SA 4.0\\
+\end{tabular}
+
+\clearpage
+
+% ---- Indice --------------------------------------------------
+\tableofcontents
+\clearpage
+
+% ================================================================
+%  PARTE I — LE BASI DEL LINGUAGGIO
+% ================================================================
+\part{Le basi del linguaggio}
+
+\input{parts/01_modello_mentale}
+% \input{parts/02_funzioni_dati}
+% \input{parts/03_condizioni_flusso}
+% \input{parts/04_liste_ricorsione}
+% \input{parts/05_funzioni_come_valori}
+
+% ================================================================
+%  PARTE II — STRUTTURE E ASTRAZIONE
+% ================================================================
+% \part{Strutture e astrazione}
+
+% \input{parts/06_iterazione}
+% \input{parts/07_strutture_dati}
+% \input{parts/08_macro}
+
+% ================================================================
+%  PARTE III — STILE E PROFESSIONE
+% ================================================================
+% \part{Stile e professione}
+
+% \input{parts/09_stile_progettazione}
+
+\end{document}
