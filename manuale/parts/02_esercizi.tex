@@ -1915,6 +1915,8 @@ Non modificare la struttura originale; restituire un nuovo grafo.}
 \label{ex:118}
 \begin{colbox}{118}{DFS su grafo}{4}
 \exlabel{Implementare} \fn{(dfs graph start)}: visita in profondita'.
+\exspieg{La \textit{Depth-First Search} (DFS) esplora il grafo seguendo
+ogni ramo fino in fondo prima di tornare indietro.}
 \nopagebreak
 \begin{lstlisting}
 (dfs '((a b c) (b a d) (c a) (d b)) 'a)
@@ -1928,6 +1930,8 @@ Non modificare la struttura originale; restituire un nuovo grafo.}
 \label{ex:119}
 \begin{colbox}{119}{BFS su grafo}{4}
 \exlabel{Implementare} \fn{(bfs graph start)}: visita in ampiezza.
+\exspieg{La \textit{Breadth-First Search} (BFS) esplora prima tutti i vicini
+diretti di un nodo, poi i vicini dei vicini, e così via — livello per livello.}
 \nopagebreak
 \begin{lstlisting}
 (bfs '((a b c) (b a d) (c a) (d b)) 'a)
@@ -2050,12 +2054,6 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \label{ex:124}
 \begin{stdbox}{124}{Tutti i sottoinsiemi}{3}
 \exlabel{Implementare} \fn{(subsets lst)}: genera tutti i $2^n$ sottoinsiemi.
-\exspieg{Dato un insieme di $n$ elementi, ci sono esattamente $2^n$
-sottoinsiemi (inclusi l'insieme vuoto e l'insieme stesso).
-Strategia ricorsiva: prendere il primo elemento \fn{x} e i sottoinsiemi
-del resto. Per ogni sottoinsieme \fn{s} del resto, ci sono due scelte:
-includerlo senza \fn{x}, oppure includerlo con \fn{x} preposto.
-Caso base: lista vuota → \fn{'(())}.}
 \nopagebreak
 \begin{lstlisting}
 (subsets '(a b))
@@ -2068,13 +2066,8 @@ Caso base: lista vuota → \fn{'(())}.}
 \label{ex:125}
 \begin{stdbox}{125}{Permutazioni}{4}
 \exlabel{Implementare} \fn{(permutations lst)}.
-\exspieg{Una permutazione è un ordinamento di tutti gli elementi.
-Con $n$ elementi ci sono $n!$ permutazioni.
-Strategia ricorsiva: per ogni elemento \fn{x} della lista, considerare
-\fn{x} come primo elemento e generare tutte le permutazioni del resto
-(\fn{lst} senza \fn{x}). Combinare: \fn{(mapcar (lambda (p) (cons x p)) perms-del-resto)}.
-Ripetere per ogni \fn{x} e unire i risultati con \fn{append}.
-Caso base: lista vuota o singolo elemento → \fn{'(())}/\fn{'((elem))}.}
+\exspieg{Una \textit{permutazione} è un ordinamento di tutti gli elementi.
+Con $n$ elementi ci sono $n!$ permutazioni (es: 3 elementi → 6 permutazioni).}
 \nopagebreak
 \begin{lstlisting}
 (length (permutations '(a b c)))   ; -> 6
@@ -2086,14 +2079,9 @@ Caso base: lista vuota o singolo elemento → \fn{'(())}/\fn{'((elem))}.}
 \label{ex:126}
 \begin{stdbox}{126}{Combinazioni}{3}
 \exlabel{Implementare} \fn{(combinations lst k)}.
-\exspieg{Una combinazione è una selezione di \fn{k} elementi senza
-considerare l'ordine (a differenza delle permutazioni).
-Strategia ricorsiva: per il primo elemento \fn{x},
-(1) generare tutte le combinazioni di \fn{k-1} elementi dal resto e
-preporre \fn{x} a ciascuna;
-(2) generare tutte le combinazioni di \fn{k} elementi dal solo resto
-(senza usare \fn{x}).
-Unire i due insiemi. Casi base: \fn{k=0} → \fn{'(())}; lista vuota → \fn{'()}.}
+\exspieg{Una \textit{combinazione} è una selezione di \fn{k} elementi
+senza considerare l'ordine. Es: da \fn{(a b c d)} prendendo 2 elementi
+si ottengono 6 coppie: \fn{(a b)}, \fn{(a c)}, \fn{(a d)}, \fn{(b c)}, \fn{(b d)}, \fn{(c d)}.}
 \nopagebreak
 \begin{lstlisting}
 (combinations '(a b c d) 2)
@@ -2107,13 +2095,7 @@ Unire i due insiemi. Casi base: \fn{k=0} → \fn{'(())}; lista vuota → \fn{'()
 \begin{stdbox}{127}{Somma a target}{3}
 \exlabel{Implementare} \fn{(somma-a-target numeri target)}.
 \exspieg{Trovare tutti i sottoinsiemi di \fn{numeri} la cui somma è
-esattamente \fn{target}. È un problema di \textit{backtracking}:
-per ogni elemento si può scegliere di includerlo o escluderlo,
-esplorando ricorsivamente entrambe le strade.
-Una versione semplice: generare tutti i sottoinsiemi (es.~124) e
-filtrare quelli con somma uguale a \fn{target}.
-Una versione più efficiente fa pruning: se la somma parziale supera
-già \fn{target}, non esplorare ulteriormente quel ramo.}
+esattamente \fn{target}.}
 \nopagebreak
 \begin{lstlisting}
 (somma-a-target '(1 2 3 4 5) 6)
@@ -2127,12 +2109,7 @@ già \fn{target}, non esplorare ulteriormente quel ramo.}
 \begin{colbox}{128}{Parentesi bilanciate generate}{3}
 \exlabel{Implementare} \fn{(genera-parentesi n)}.
 \exspieg{Generare tutte le stringhe di \fn{n} coppie di parentesi tonde
-correttamente bilanciate (stessa idea dell'es.~115, ma in generazione
-invece che in verifica).
-Approccio con backtracking: costruire la stringa carattere per carattere
-mantenendo due contatori, \fn{aperte} e \fn{chiuse}. Si può aggiungere
-\fn{(} se \fn{aperte < n}; si può aggiungere \fn{)} se \fn{chiuse < aperte}.
-Quando la stringa ha lunghezza $2n$, aggiungerla al risultato.}
+correttamente bilanciate.}
 \nopagebreak
 \begin{lstlisting}
 (genera-parentesi 3)
@@ -2145,12 +2122,9 @@ Quando la stringa ha lunghezza $2n$, aggiungerla al risultato.}
 \label{ex:129}
 \begin{stdbox}{129}{Merge sort}{4}
 \exlabel{Implementare} \fn{(merge-sorted lst1 lst2)} e \fn{(merge-sort* lst)}.
-\exspieg{Il \textit{merge sort} è un algoritmo divide-et-impera $O(n \log n)$:
-(1) dividere la lista a metà; (2) ordinare ricorsivamente ciascuna metà;
-(3) fondere (\textit{merge}) le due metà già ordinate in una sola lista ordinata.
-La fusione \fn{merge-sorted} confronta le teste delle due liste e prende
-il minore, finché una delle due è vuota.
-Per dividere a metà una lista in Lisp: usare \fn{length} e \fn{sublist}/\fn{nthcdr}.}
+\exspieg{Il \textit{merge sort} è un algoritmo di ordinamento che divide
+la lista a metà, ordina ricorsivamente le due metà, e le fonde in una
+lista ordinata.}
 \nopagebreak
 \begin{lstlisting}
 (merge-sort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
@@ -2163,14 +2137,9 @@ Per dividere a metà una lista in Lisp: usare \fn{length} e \fn{sublist}/\fn{nth
 \label{ex:130}
 \begin{stdbox}{130}{Quicksort}{4}
 \exlabel{Implementare} \fn{(quicksort* lst)} senza usare \fn{sort}.
-\exspieg{Il \textit{quicksort} è un altro algoritmo divide-et-impera:
-(1) scegliere un elemento \textit{pivot} (es.\ la testa della lista);
-(2) partizionare gli altri elementi in due gruppi: quelli $\leq$ pivot
-e quelli $>$ pivot;
-(3) ordinare ricorsivamente i due gruppi;
-(4) concatenare: \fn{(append (quicksort* minori) (list pivot) (quicksort* maggiori))}.
-In media $O(n \log n)$, nel caso peggiore $O(n^2)$.
-Usare \fn{remove-if} o \fn{remove-if-not} per partizionare.}
+\exspieg{Il \textit{quicksort} è un algoritmo di ordinamento che sceglie
+un elemento \textit{pivot}, divide la lista in elementi minori e maggiori
+del pivot, e ordina ricorsivamente le due parti.}
 \nopagebreak
 \begin{lstlisting}
 (quicksort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
@@ -2182,6 +2151,10 @@ Usare \fn{remove-if} o \fn{remove-if-not} per partizionare.}
 \label{ex:131}
 \begin{stdbox}{131}{Torri di Hanoi}{3}
 \exlabel{Implementare} \fn{(hanoi n da a tramite)} che stampa le mosse.
+\exspieg{Ci sono 3 pioli (A, B, C) e \fn{n} dischi di dimensione crescente
+impilati sul piolo \fn{da}. Obiettivo: spostare tutta la torre sul piolo
+\fn{a}, muovendo un disco alla volta e senza mai mettere un disco più
+grande sopra uno più piccolo.}
 \nopagebreak
 \begin{lstlisting}
 (hanoi 3 'A 'C 'B)
@@ -2197,12 +2170,9 @@ Usare \fn{remove-if} o \fn{remove-if-not} per partizionare.}
 \begin{colbox}{132}{Problema dello zaino}{4}
 \exlabel{Implementare} \fn{(knapsack oggetti capacita)}.
 Oggetti: lista di \fn{(peso valore)}.
-\exspieg{Il \textit{problema dello zaino} (0/1 knapsack): dati oggetti
-ognuno con peso e valore, scegliere quali portare nello zaino (capienza
-\fn{capacita}) per massimizzare il valore totale senza superare la capacità.
-Approccio con backtracking: per ogni oggetto, esplorare la scelta
-di includerlo (se il peso residuo lo permette) e quella di escluderlo,
-tenere il massimo. Oppure usare la programmazione dinamica (facoltativo).}
+\exspieg{Dati oggetti con peso e valore, scegliere quali mettere nello
+zaino (capacità limitata) per massimizzare il valore totale senza
+superare la capacità.}
 \begin{lstlisting}
 (knapsack '((2 3) (3 4) (4 5) (5 8)) 5)
 ; -> 7
@@ -2215,15 +2185,9 @@ tenere il massimo. Oppure usare la programmazione dinamica (facoltativo).}
 \begin{colbox}{133}{Labirinto}{4}
 Rappresentare un labirinto come matrice 2D (0 libero, 1 muro).
 \exlabel{Implementare} \fn{(find-path maze start goal)}.
-\exspieg{Trovare un percorso da \fn{start} a \fn{goal} in una griglia
-dove 0 = cella libera e 1 = muro. La cella è raggiungibile solo dai
-quattro vicini ortogonali (su, giù, sinistra, destra).
-Approccio: DFS o BFS (vedi es.~118/119). Tenere traccia delle celle
-già visitate per evitare cicli. La funzione restituisce la sequenza di
-coordinate dal punto di partenza all'obiettivo, o \fn{NIL} se non
-esiste percorso.
-La ricerca va costruita restituendo all'indietro il percorso una volta
-trovato il goal (backtracking sul path).}
+\exspieg{Trovare un percorso dalla cella \fn{start} alla cella \fn{goal},
+muovendosi solo nelle 4 direzioni ortogonali (su, giù, sinistra, destra)
+attraverso celle libere.}
 \nopagebreak
 \begin{lstlisting}
 (find-path maze '(0 0) '(4 4))
@@ -2237,15 +2201,8 @@ trovato il goal (backtracking sul path).}
 \begin{stdbox}{134}{N-regine}{5}
 \exlabel{Implementare} \fn{(n-queens n)}: tutte le configurazioni valide.
 \exspieg{Posizionare \fn{n} regine su una scacchiera $n \times n$ in modo
-che nessuna attacchi le altre. Due regine si attaccano se sono sulla stessa
-riga, colonna o diagonale.
-Rappresentazione compatta: una lista di \fn{n} interi dove l'$i$-esimo
-valore è la colonna della regina nella riga $i$. In questo modo la
-vincolo "una per riga" è automaticamente soddisfatta.
-Algoritmo: piazzare una regina per volta, riga per riga. Per ogni colonna
-disponibile, verificare che non sia in conflitto con le regine già piazzate
-(stessa colonna o stessa diagonale: $|c_i - c_j| = |i - j|$). Se il
-conflitto non c'è, procedere alla riga successiva; altrimenti fare backtrack.}
+che nessuna ne attacchi un'altra. Due regine si attaccano se sono sulla
+stessa riga, colonna o diagonale.}
 \nopagebreak
 \begin{lstlisting}
 (length (n-queens 4))   ; -> 2
@@ -2260,11 +2217,8 @@ conflitto non c'è, procedere alla riga successiva; altrimenti fare backtrack.}
 \begin{colbox}{135}{Sudoku}{5}
 \exlabel{Implementare} \fn{(solve-sudoku board)}.
 \fn{board}: array $9 \times 9$ con 0 per celle vuote.
-
-Algoritmo: per ogni cella vuota, provare i valori 1--9,
-verificare vincoli riga/colonna/blocco, procedere ricorsivamente.
-
-
+\exspieg{Riempire la griglia in modo che ogni riga, colonna e blocco
+$3 \times 3$ contenga i numeri da 1 a 9 senza ripetizioni.}
 
 \small\color{black!55}\hyperref[sol:135]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:135]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -2276,7 +2230,6 @@ scacchiera $n \times n$ visitando ogni casella esattamente una volta.
 \begin{lstlisting}
 (knights-tour 5)   ; -> lista di mosse, o NIL
 \end{lstlisting}
-Suggerimento: euristica di Warnsdorff.
 
 
 
@@ -2308,6 +2261,8 @@ direttamente; usare \fn{coerce}.
 \label{ex:138}
 \begin{stdbox}{138}{Stringa palindroma}{2}
 \exlabel{Implementare} \fn{(palindrome-p s)}.
+\exspieg{Un \textit{palindromo} è una stringa che si legge uguale da
+sinistra a destra e da destra a sinistra (es: "anna", "radar").}
 \nopagebreak
 \begin{lstlisting}
 (palindrome-p "anna")    ; -> T
