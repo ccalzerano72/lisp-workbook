@@ -225,6 +225,11 @@ Usare \fn{bisestile-p} per febbraio.
 \label{ex:14}
 \begin{colbox}{14}{Terna pitagorica}{1}
 \exlabel{Implementare} \fn{(terna-pitagorica-p a b c)}.
+
+\exspieg{Tre interi positivi $(a, b, c)$ formano una \textit{terna pitagorica}
+se soddisfano il teorema di Pitagora: $a^2 + b^2 = c^2$
+(dove $c$ è l'ipotenusa, il lato più lungo).
+Assumere che \fn{c} sia il lato maggiore.}
 \nopagebreak
 \begin{lstlisting}
 (terna-pitagorica-p 3 4 5)    ; -> T
