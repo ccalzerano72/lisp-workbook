@@ -1643,6 +1643,8 @@ cicli annidati (\fn{dotimes} o \fn{loop}): per ogni $(i, j)$ copiare
 \begin{stdbox}{103}{Inversione array in loco}{2}
 \exlabel{Implementare} \fn{(inverti-array! v)} che inverte il vettore
 modificandolo con \fn{setf}/\fn{aref}, senza liste ausiliarie.
+\exnota{Il \fn{!} nel nome è una convenzione per indicare che la funzione
+modifica i dati esistenti invece di crearne una copia.}
 \begin{lstlisting}
 (defparameter *v*
   (make-array 5 :initial-contents '(1 2 3 4 5)))
