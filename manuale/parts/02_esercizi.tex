@@ -794,15 +794,11 @@ Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 \label{ex:53}
 \begin{colbox}{53}{Somma di un intervallo}{2}
 \exlabel{Implementare} \fn{(somma-range a b)} in forma tail-recursive.
-\exspieg{Stessa tecnica dell'es.~51: introdurre un accumulatore che accumula
-la somma parziale. La ricorsione scende da \fn{a} verso \fn{b} (o viceversa)
-aggiungendo ad ogni passo il valore corrente.
-Vedi la \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
-\nopagebreak
 \begin{lstlisting}
 (somma-range 1 100)   ; -> 5050
 \end{lstlisting}
 \vincolo{usare \fn{labels} con accumulatore; nessun calcolo dopo la chiamata ricorsiva.}
+\exnota{Vedi la \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
 
 \small\color{black!55}\hyperref[sol:53]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -812,11 +808,14 @@ Vedi la \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.
 \exlabel{Implementare} \fn{(fibonacci-fast n)} con due accumulatori,
 complessita' $O(n)$.
 \exspieg{La versione ricorsiva naive di Fibonacci è $O(2^n)$ perché ricalcola
-gli stessi valori moltissime volte. Con due accumulatori (\fn{a} = F(k),
-\fn{b} = F(k+1)) si avanza di un passo alla volta senza ridondanze,
-ottenendo $O(n)$ in tempo e $O(1)$ in spazio.
+gli stessi valori moltissime volte. La variante efficiente usa \textit{due}
+accumulatori che tengono in ogni momento gli ultimi due valori della sequenza
+(\fn{a} = F(k), \fn{b} = F(k+1)), avanzando di un passo per chiamata senza
+mai ricalcolare valori già noti.
 Schema: \fn{(step n a b)} → se \fn{n = 0} ritorna \fn{a}; altrimenti
-chiama \fn{(step (1- n) b (+ a b))}.}
+chiama \fn{(step (1- n) b (+ a b))}.
+La chiamata è in coda: nessuna operazione dopo la ricorsione.
+Il concetto di accumulatore è spiegato nella \hyperref[nota:tailrec]{nota sulla tail recursion}.}
 \begin{lstlisting}
 (fibonacci-fast 10)   ; -> 55
 (fibonacci-fast 50)   ; -> 12586269025
