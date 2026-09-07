@@ -474,6 +474,7 @@
 \newcommand{\hintsection}[1]{%
   \stepcounter{hintsec}%
   \vspace{1.5em}%
+  \phantomsection% crea anchor unico per hyperref
   \noindent{\large\bfseries\thehintsec\quad #1}%
   \addcontentsline{toc}{section}{\protect\numberline{\thehintsec}#1}%
   \par\vspace{0.8em}%
@@ -484,6 +485,7 @@
 \newcommand{\solsection}[1]{%
   \stepcounter{solsec}%
   \vspace{1.5em}%
+  \phantomsection% crea anchor unico per hyperref
   \noindent{\large\bfseries\thesolsec\quad #1}%
   \addcontentsline{toc}{section}{\protect\numberline{\thesolsec}#1}%
   \par\vspace{0.8em}%
