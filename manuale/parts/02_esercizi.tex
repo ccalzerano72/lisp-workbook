@@ -779,6 +779,16 @@ con accumulatore, usando \fn{labels}.
 \begin{stdbox}{52}{Reverse tail-recursive}{2}
 Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 
+\exspieg{Una funzione è \textit{tail-recursive} quando la chiamata ricorsiva
+è l'ultima operazione eseguita (non c'è nulla da calcolare al ritorno).
+Questo permette al compilatore di riutilizzare lo stesso frame dello stack,
+evitando overflow su liste lunghe.
+Usare \fn{labels} con un parametro accumulatore \fn{acc} inizialmente \fn{NIL}:
+ad ogni passo anteporre la testa di \fn{lst} ad \fn{acc}, finché \fn{lst} è vuota.}
+\begin{lstlisting}
+(reverse* '(a b c d))   ; -> (D C B A)
+\end{lstlisting}
+\vincolo{usare \fn{labels} con un accumulatore esplicito; la chiamata ricorsiva dev'essere in posizione di coda.}
 
 \small\color{black!55}\hyperref[sol:52]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
@@ -786,11 +796,14 @@ Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 \label{ex:53}
 \begin{colbox}{53}{Somma di un intervallo}{2}
 \exlabel{Implementare} \fn{(somma-range a b)} in forma tail-recursive.
+\exspieg{Stessa tecnica dell'es.~51: introdurre un accumulatore che accumula
+la somma parziale. La ricorsione scende da \fn{a} verso \fn{b} (o viceversa)
+aggiungendo ad ogni passo il valore corrente.}
 \nopagebreak
 \begin{lstlisting}
 (somma-range 1 100)   ; -> 5050
 \end{lstlisting}
-
+\vincolo{usare \fn{labels} con accumulatore; nessun calcolo dopo la chiamata ricorsiva.}
 
 \small\color{black!55}\hyperref[sol:53]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -799,23 +812,37 @@ Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 \begin{stdbox}{54}{Fibonacci O(n)}{3}
 \exlabel{Implementare} \fn{(fibonacci-fast n)} con due accumulatori,
 complessita' $O(n)$.
+\exspieg{La versione ricorsiva naive di Fibonacci è $O(2^n)$ perché ricalcola
+gli stessi valori moltissime volte. Con due accumulatori (\fn{a} = F(k),
+\fn{b} = F(k+1)) si avanza di un passo alla volta senza ridondanze,
+ottenendo $O(n)$ in tempo e $O(1)$ in spazio.
+Schema: \fn{(step n a b)} → se \fn{n = 0} ritorna \fn{a}; altrimenti
+chiama \fn{(step (1- n) b (+ a b))}.}
 \begin{lstlisting}
 (fibonacci-fast 10)   ; -> 55
 (fibonacci-fast 50)   ; -> 12586269025
 \end{lstlisting}
-
+\vincolo{usare \fn{labels}; due accumulatori inizializzati a 0 e 1.}
 
 \small\color{black!55}\hyperref[sol:54]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:54]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 \label{ex:55}
 \begin{essbox}{55}{Flatten}{3}
 \exlabel{Implementare} \fn{(flatten* tree)} che appiattisce strutture annidate.
+\exspieg{Una lista Common Lisp è un albero implicito: ogni elemento può
+essere a sua volta una lista (nodo interno) oppure un atomo (foglia).
+\fn{flatten*} visita ricorsivamente l'albero raccogliendo solo le foglie,
+in ordine.
+Caso base~1: lista vuota → \fn{NIL}.
+Caso base~2: l'elemento corrente è un atomo → \fn{cons} sulla ricorsione
+sul resto.
+Caso ricorsivo: l'elemento corrente è una lista → \fn{append} del
+\fn{flatten*} della testa con il \fn{flatten*} della coda.}
 \nopagebreak
 \begin{lstlisting}
 (flatten* '(a (b (c d) e) f))   ; -> (A B C D E F)
 (flatten* '((1 2) (3 (4 5))))   ; -> (1 2 3 4 5)
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:55]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:55]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
@@ -823,6 +850,12 @@ complessita' $O(n)$.
 \label{ex:56}
 \begin{stdbox}{56}{Profondita' di una struttura}{3}
 \exlabel{Implementare} \fn{(tree-depth tree)}: profondita' massima di nesting.
+\exspieg{La \textit{profondità} misura quanti livelli di parentesi si trovano
+al massimo. Un atomo ha profondità 0; una lista piatta ha profondità 1;
+ogni livello di annidamento aggiunge 1.
+Strategia: per ogni elemento della lista prendere il massimo tra
+\fn{(tree-depth elemento)} e la profondità degli altri elementi,
+poi aggiungere 1 al risultato.}
 \nopagebreak
 \begin{lstlisting}
 (tree-depth '())             ; -> 0
@@ -831,17 +864,18 @@ complessita' $O(n)$.
 (tree-depth '(a (b (c d))))  ; -> 3
 \end{lstlisting}
 
-
 \small\color{black!55}\hyperref[sol:56]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:56]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 \label{ex:57}
 \begin{colbox}{57}{Conta atomi}{2}
 \exlabel{Implementare} \fn{(count-atoms tree)}.
+\exspieg{Conta quanti atomi (non-lista) ci sono in tutta la struttura,
+indipendentemente dalla profondità. Ricorsione sulla testa: se è un atomo
+conta 1, se è una lista conta gli atomi nella sottolista.}
 \nopagebreak
 \begin{lstlisting}
 (count-atoms '(a (b c) ((d))))   ; -> 4
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:57]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -849,11 +883,12 @@ complessita' $O(n)$.
 \label{ex:58}
 \begin{colbox}{58}{Somma profonda}{2}
 \exlabel{Implementare} \fn{(sum-tree tree)}.
+\exspieg{Come \fn{count-atoms}, ma invece di contare si sommano i valori
+numerici di tutti gli atomi, a qualsiasi profondità di annidamento.}
 \nopagebreak
 \begin{lstlisting}
 (sum-tree '(1 (2 3) ((4 5))))   ; -> 15
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:58]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -886,6 +921,12 @@ complessita' $O(n)$.
 \label{ex:61}
 \begin{stdbox}{61}{Potenza efficiente}{3}
 \exlabel{Implementare} \fn{(power-fast base exp)} con complessita' $O(\log n)$:
+\exspieg{L'idea è il \textit{fast exponentiation} (o \textit{esponenziazione
+per quadratura}): invece di moltiplicare \fn{base} per sé stessa $n$ volte
+($O(n)$ moltiplicazioni), si dimezza l'esponente ad ogni passo.
+Se $n$ è pari, basta calcolare $m = x^{n/2}$ e restituire $m \times m$ — una
+sola ricorsione invece di $n$. Se $n$ è dispari, si riconduce al caso
+$x \cdot x^{n-1}$ (che è pari). Il numero di passi diventa $O(\log n)$.}
 \[
 x^n = \begin{cases}
   (x^{n/2})^2 & \text{se } n \text{ pari} \\
@@ -897,18 +938,21 @@ x^n = \begin{cases}
 (power-fast 3  0)   ; -> 1
 \end{lstlisting}
 
-
 \small\color{black!55}\hyperref[sol:61]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:61]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 \label{ex:62}
 \begin{stdbox}{62}{MCD e MCM}{2}
 Implementare \fn{(mcd* a b)} e \fn{(mcm* a b)} senza usare
 \fn{gcd}/\fn{lcm}.
+\exspieg{\textbf{MCD} (Massimo Comun Divisore): usare l'algoritmo di Euclide —
+\fn{(mcd* a b)} = \fn{(mcd* b (mod a b))} finché \fn{b = 0}, in quel caso
+il risultato è \fn{a}.
+\textbf{MCM} (Minimo Comune Multiplo): una volta calcolato il MCD, vale
+$\text{MCM}(a,b) = \dfrac{a \times b}{\text{MCD}(a,b)}$.}
 \begin{lstlisting}
 (mcd* 48 18)   ; -> 6
 (mcm* 4  6)    ; -> 12
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:62]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
@@ -929,15 +973,20 @@ Gestire correttamente 0 e 1.
 \label{ex:64}
 \begin{essbox}{64}{Crivello di Eratostene}{3}
 \exlabel{Implementare} \fn{(crivello n)}: lista di tutti i primi $\leq n$.
+\exspieg{Il crivello di Eratostene è un algoritmo classico: si parte con
+tutti i numeri da 2 a $n$ marcati come "forse primi"; per ogni numero non
+ancora marcato come composto, si marcano come composti tutti i suoi multipli.
+Alla fine, i numeri rimasti non marcati sono i primi.
+In Lisp: creare un array booleano di lunghezza $n+1$ (tutti \fn{T} =
+"è primo"); per $i$ da 2 a $\sqrt{n}$, se \fn{(aref arr i)} è ancora \fn{T},
+marcare \fn{(aref arr (* i j))} = \fn{NIL} per ogni $j \geq i$.}
 \nopagebreak
 \begin{lstlisting}
 (crivello 20)
 ; -> (2 3 5 7 11 13 17 19)
 \end{lstlisting}
-Vincoli: usare array booleano di lunghezza $n+1$; marcare i
-multipli con \fn{setf}/\fn{aref}.
-
-
+\vincolo{usare array booleano di lunghezza $n+1$; marcare i
+multipli con \fn{setf}/\fn{aref}.}
 
 \small\color{black!55}\hyperref[sol:64]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:64]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
@@ -945,13 +994,18 @@ multipli con \fn{setf}/\fn{aref}.
 \label{ex:65}
 \begin{stdbox}{65}{Fattori primi}{3}
 \exlabel{Implementare} \fn{(prime-factors n)}.
+\exspieg{Scomporre $n$ nei suoi fattori primi significa trovare la sequenza
+di numeri primi $p_1 \leq p_2 \leq \ldots$ tale che
+$n = p_1 \times p_2 \times \ldots$
+Algoritmo: partire da $d = 2$; se $d$ divide $n$, inserirlo nel risultato
+e dividere $n$ per $d$ (ripetere finché $n \bmod d = 0$); poi aumentare $d$
+di 1 e ripetere finché $d^2 > n$. Se a quel punto $n > 1$, anche $n$ è un
+fattore primo.}
 \nopagebreak
 \begin{lstlisting}
 (prime-factors 60)   ; -> (2 2 3 5)
 \end{lstlisting}
 Risultato ordinato; $n > 1$.
-
-
 
 \small\color{black!55}\hyperref[sol:65]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:65]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -960,10 +1014,14 @@ Risultato ordinato; $n > 1$.
 \begin{colbox}{66}{Sottolista per posizione}{2}
 \exlabel{Implementare} \fn{(sublist lst inizio fine)} (indici 0-based,
 \fn{fine} escluso).
+\exspieg{Equivalente di \fn{lst[inizio:fine]} in Python o
+\fn{subList(inizio, fine)} in Java. Restituisce gli elementi dalla posizione
+\fn{inizio} (inclusa) alla posizione \fn{fine} (esclusa).
+Esempio: dalla lista \fn{(a b c d e)} con \fn{inizio=1}, \fn{fine=4}
+si ottengono gli elementi alle posizioni 1, 2, 3, cioè \fn{(b c d)}.}
 \begin{lstlisting}
 (sublist '(a b c d e) 1 4)   ; -> (B C D)
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:66]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -971,12 +1029,19 @@ Risultato ordinato; $n > 1$.
 \label{ex:67}
 \begin{colbox}{67}{Raggruppa in blocchi}{3}
 \exlabel{Implementare} \fn{(raggruppa lst n)}: sottoliste di lunghezza \fn{n}.
+\exspieg{Dividere la lista in gruppi consecutivi di \fn{n} elementi.
+Se la lunghezza non è multiplo di \fn{n}, l'ultimo gruppo contiene
+i rimanenti (può essere più corto).
+Esempio: \fn{'(a b c d e f g)} con \fn{n=3} dà tre gruppi:
+\fn{(a b c)}, \fn{(d e f)}, \fn{(g)}.
+Suggerimento: usare \fn{sublist}/\fn{butlast}/\fn{nthcdr} oppure
+una ricorsione che prende i primi \fn{n} elementi, poi richiama
+se stessa sul resto.}
 \nopagebreak
 \begin{lstlisting}
 (raggruppa '(a b c d e f g) 3)
 ; -> ((A B C) (D E F) (G))
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:67]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:67]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1100,11 +1165,17 @@ e sommare la cifra corrente.
 \begin{colbox}{76}{Appiattisce un livello}{3}
 \exlabel{Implementare} \fn{(appiattisci-un-livello lst)} con \fn{reduce}
 e \fn{append}.
+\exspieg{A differenza di \fn{flatten*} (es.~55) che appiattisce
+\textit{tutti} i livelli di annidamento, questa funzione rimuove
+\textit{solo il primo} livello: gli elementi che sono liste vengono
+"aperti" e i loro contenuti inseriti nella lista risultante, ma senza
+ricorrere ulteriormente in profondità.
+Con \fn{reduce} e \fn{append}: il valore iniziale è \fn{'()}, e ad
+ogni passo si fa \fn{(append acc elemento)}.}
 \begin{lstlisting}
 (appiattisci-un-livello '((a b) (c d) (e)))
 ; -> (A B C D E)
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:76]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -1112,6 +1183,14 @@ e \fn{append}.
 \label{ex:77}
 \begin{colbox}{77}{Regola di Horner}{3}
 \exlabel{Implementare} \fn{(horner coefficienti x)} con \fn{reduce}.
+\exspieg{La \textit{regola di Horner} è un modo efficiente per valutare
+un polinomio. Invece di calcolare separatamente ogni potenza di $x$,
+si annida il calcolo da sinistra:
+$p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots) \cdot x + c_0$.
+Esempio con $2x^2 + 3x + 1$: partendo da $c_2 = 2$, si fa
+$2 \cdot x + 3 = 7$, poi $7 \cdot x + 1 = 15$ (con $x=2$).
+Con \fn{reduce}: la funzione da applicare ad ogni passo è
+\fn{(lambda (acc c) (+ (* acc x) c))}, e il valore iniziale è 0.}
 \[
 p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)
 \]
@@ -1119,7 +1198,6 @@ p(x) = (\ldots((c_n \cdot x + c_{n-1}) \cdot x + c_{n-2})\ldots + c_0)
 ; 2x^2 + 3x + 1  con x=2  -> 15
 (horner '(2 3 1) 2)   ; -> 15
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:77]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:77]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1141,12 +1219,19 @@ poi \fn{apply} con \fn{+} per la somma.
 \label{ex:79}
 \begin{stdbox}{79}{mapcan}{2}
 \exlabel{Implementare} \fn{(raddoppia lst)} con \fn{mapcan}.
+\exspieg{\fn{mapcan} è come \fn{mapcar} ma concatena i risultati
+invece di raccoglierli in una lista di liste: applica la funzione
+a ogni elemento (la funzione deve restituire una lista) e poi
+fa \fn{nconc} (append distruttivo) di tutti i risultati.
+Per raddoppiare ogni elemento, la funzione da applicare deve
+restituire \fn{(list x x)} per ogni \fn{x}.
+Differenza chiave: \fn{(mapcar f '(1 2 3))} → \fn{((1 1) (2 2) (3 3))};
+\fn{(mapcan f '(1 2 3))} → \fn{(1 1 2 2 3 3)}.}
 \nopagebreak
 \begin{lstlisting}
 (raddoppia '(1 2 3))   ; -> (1 1 2 2 3 3)
 \end{lstlisting}
 Spiegare la differenza tra \fn{mapcan} e \fn{mapcar} in un commento.
-
 
 \small\color{black!55}\hyperref[sol:79]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
@@ -1195,11 +1280,18 @@ replicando \fn{every}/\fn{some} senza usarli.
 \begin{colbox}{83}{Raggruppa per chiave}{3}
 \exlabel{Implementare} \fn{(raggruppa-per funzione lst)}: restituisce
 una alist con chiave = risultato della funzione.
+\exspieg{Per ogni elemento di \fn{lst}, applicare \fn{funzione} per
+ottenere una "chiave". Raccogliere gli elementi con la stessa chiave
+nella stessa coppia \fn{(chiave elem1 elem2 \ldots)} della alist
+risultante.
+Esempio: con \fn{\#'evenp} i pari vanno sotto la chiave \fn{T},
+i dispari sotto \fn{NIL}.
+Suggerimento: usare \fn{assoc} per trovare il gruppo esistente e
+\fn{push} o \fn{setf} per aggiungere l'elemento.}
 \begin{lstlisting}
 (raggruppa-per #'evenp '(1 2 3 4 5))
 ; -> ((NIL 1 3 5) (T 2 4))
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:83]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:83]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1220,12 +1312,16 @@ una alist con chiave = risultato della funzione.
 \label{ex:85}
 \begin{essbox}{85}{Composizione di funzioni}{3}
 \exlabel{Implementare} \fn{(compose f g)}: restituisce $f(g(x))$ come closure.
+\exspieg{La composizione di funzioni $f \circ g$ è la funzione che prima
+applica $g$ all'argomento, poi applica $f$ al risultato.
+\fn{compose} deve restituire una \textit{nuova funzione} (una lambda/closure)
+che cattura \fn{f} e \fn{g} dall'ambiente lessicale e, quando chiamata con
+un argomento \fn{x}, restituisce \fn{(funcall f (funcall g x))}.}
 \nopagebreak
 \begin{lstlisting}
 (defparameter *f* (compose #'1+ #'1+))
 (funcall *f* 10)   ; -> 12
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:85]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:85]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
@@ -1233,6 +1329,12 @@ una alist con chiave = risultato della funzione.
 \label{ex:86}
 \begin{stdbox}{86}{Applicazione parziale}{3}
 \exlabel{Implementare} \fn{(partial funzione \&rest argomenti)}.
+\exspieg{L'\textit{applicazione parziale} (o \textit{currying parziale})
+fissa alcuni argomenti di una funzione, restituendo una nuova funzione
+che accetta gli argomenti rimanenti.
+\fn{partial} deve restituire una closure che, quando chiamata con ulteriori
+argomenti, chiama \fn{funzione} con gli argomenti fissi preposti a quelli
+nuovi: \fn{(apply funzione (append argomenti-fissi argomenti-nuovi))}.}
 \nopagebreak
 \begin{lstlisting}
 (defparameter *add10* (partial #'+ 10))
@@ -1240,13 +1342,20 @@ una alist con chiave = risultato della funzione.
 (funcall *add10* 20)   ; -> 30
 \end{lstlisting}
 
-
 \small\color{black!55}\hyperref[sol:86]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:86]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
 
 \label{ex:87}
 \begin{essbox}{87}{Closure con stato: contatore}{3}
 \exlabel{Implementare} \fn{(make-counter \&optional (start 0) (step 1))}.
+\exspieg{Una \textit{closure con stato} è una funzione che "ricorda" una
+variabile tra una chiamata e l'altra. \fn{make-counter} deve restituire
+una funzione (non il valore corrente!): ogni volta che questa funzione
+viene chiamata, restituisce il valore attuale del contatore e lo avanza
+di \fn{step}.
+Il trucco: usare \fn{let} per creare una variabile locale \fn{val}, poi
+restituire una \fn{lambda} che la legge e la modifica con \fn{setf}.
+La variabile \fn{val} sopravvive perché la lambda la cattura nel suo scope.}
 \nopagebreak
 \begin{lstlisting}
 (defparameter *c* (make-counter))
@@ -1258,7 +1367,6 @@ una alist con chiave = risultato della funzione.
 (funcall *c2*)  ; -> 15
 \end{lstlisting}
 
-
 \small\color{black!55}\hyperref[sol:87]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:87]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{essbox}
 
@@ -1266,12 +1374,15 @@ una alist con chiave = risultato della funzione.
 \begin{colbox}{88}{Accumulatore}{3}
 \exlabel{Implementare} \fn{(make-accumulator iniziale)}: ogni chiamata
 somma un valore al totale.
+\exspieg{Variante dell'es.~87: la closure ha uno stato interno (il totale
+corrente) che viene aggiornato ad ogni chiamata. A differenza del contatore,
+qui l'argomento passato alla funzione restituita è il valore da aggiungere,
+non un segnale di avanzamento fisso.}
 \begin{lstlisting}
 (defparameter *acc* (make-accumulator 5))
 (funcall *acc* 10)   ; -> 15
 (funcall *acc* 3)    ; -> 18
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:88]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -1280,6 +1391,11 @@ somma un valore al totale.
 \begin{colbox}{89}{Generatore Fibonacci con closure}{4}
 \exlabel{Implementare} \fn{(make-fib-generator)}: restituisce una funzione
 che ad ogni chiamata produce il successivo numero di Fibonacci.
+\exspieg{Come il contatore dell'es.~87, ma lo stato interno è una coppia
+di valori $(a, b)$ che rappresenta gli ultimi due numeri della sequenza.
+Ad ogni chiamata: restituire $a$, poi aggiornare la coppia a $(b, a+b)$.
+La closure cattura entrambe le variabili e le aggiorna con \fn{setf} ad
+ogni invocazione.}
 \begin{lstlisting}
 (defparameter *fib* (make-fib-generator))
 (funcall *fib*)   ; -> 0
@@ -1288,19 +1404,24 @@ che ad ogni chiamata produce il successivo numero di Fibonacci.
 (funcall *fib*)   ; -> 2
 \end{lstlisting}
 
-
 \small\color{black!55}\hyperref[sol:89]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:89]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
 
 \label{ex:90}
 \begin{colbox}{90}{Pipeline}{3}
 \exlabel{Implementare} \fn{(pipeline valore funzioni)}.
+\exspieg{Una \textit{pipeline} (o catena di trasformazioni) applica una
+lista di funzioni in sequenza: il risultato di ogni funzione diventa
+l'input della successiva. È l'equivalente dell'operatore \texttt{|>}
+di Elixir/F\#, o di \fn{compose} applicato da sinistra a destra.
+Con \fn{reduce}: il valore iniziale è \fn{valore}, e la funzione
+di riduzione è \fn{(funcall f acc)}.}
 \nopagebreak
 \begin{lstlisting}
 (pipeline 5 (list #'1+ #'1+ (lambda (x) (* x 2))))
 ; -> 14
 \end{lstlisting}
-
+\exnota{Confrontare con \fn{compose} (es.~85): lì l'ordine di applicazione è da destra a sinistra; qui è da sinistra a destra.}
 
 \small\color{black!55}\hyperref[sol:90]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -1309,14 +1430,19 @@ che ad ogni chiamata produce il successivo numero di Fibonacci.
 \begin{stdbox}{91}{Memoization}{4}
 \exlabel{Implementare} \fn{(memoize funzione)} che restituisce una versione
 con cache.
-
-Vincoli: hash table nella closure; funzione originale invariata.
+\exspieg{La \textit{memoization} è una tecnica di ottimizzazione: si
+memorizza il risultato di ogni chiamata in una cache (hash table), così se
+la stessa funzione viene chiamata di nuovo con gli stessi argomenti si
+restituisce il valore salvato senza ricalcolarlo.
+\fn{memoize} deve restituire una closure che: (1) controlla se l'argomento
+è già nella hash table; (2) se sì, restituisce il valore salvato; (3) se no,
+chiama la funzione originale, salva il risultato e lo restituisce.}
+\vincolo{hash table nella closure; funzione originale invariata.}
 \begin{lstlisting}
 (defparameter *fib-m*
   (memoize #'fibonacci))
 (funcall *fib-m* 35)   ; veloce
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:91]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:91]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1394,9 +1520,12 @@ Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
 \label{ex:96}
 \begin{colbox}{96}{Frequenza con hash table}{2}
 Riscrivere \fn{(frequencies-hash lst)} usando una hash table.
-
-\exnota{Obiettivo: confrontare alist vs hash table.}
-
+\exspieg{Stessa logica dell'es.~94 (\fn{frequencies} con alist), ma usando
+una hash table al posto dell'alist. Per ogni elemento: leggere il contatore
+attuale con \fn{gethash} (default 0), incrementarlo di 1 e salvarlo con
+\fn{setf}. Alla fine convertire la hash table in alist con \fn{maphash}
+oppure restituirla direttamente.}
+\exnota{Obiettivo: confrontare alist vs hash table — prestazioni, leggibilità e uso tipico.}
 
 \small\color{black!55}\hyperref[sol:96]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -1418,8 +1547,11 @@ Riscrivere \fn{(frequencies-hash lst)} usando una hash table.
 \begin{colbox}{98}{Unione di hash table}{3}
 \exlabel{Implementare} \fn{(unisci-hash ht1 ht2)}: chiavi duplicate
 $\to$ somma dei valori.
-
-
+\exspieg{Creare una nuova hash table. Copiare tutte le coppie di \fn{ht1}
+con \fn{maphash}. Poi iterare su \fn{ht2}: se la chiave è già presente
+sommare i valori, altrimenti inserire la coppia.
+Il risultato è una hash table che contiene tutte le chiavi di entrambe;
+dove la stessa chiave compare in entrambe, il valore è la somma.}
 
 \small\color{black!55}\hyperref[sol:98]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:98]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1428,8 +1560,11 @@ $\to$ somma dei valori.
 \begin{colbox}{99}{Inverti hash table}{3}
 \exlabel{Implementare} \fn{(inverti-hash ht)}: scambia chiavi e valori.
 Assumere valori unici.
-
-
+\exspieg{Creare una nuova hash table vuota. Iterare su \fn{ht} con
+\fn{maphash}: per ogni coppia \fn{(chiave . valore)}, inserire nella
+nuova tabella la coppia inversa \fn{(valore . chiave)}.
+Se i valori non fossero unici, alcune chiavi andrebbero perse (il motivo
+per cui l'esercizio assume valori unici).}
 
 \small\color{black!55}\hyperref[sol:99]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:99]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1468,8 +1603,11 @@ Creare una matrice $3 \times 3$ con \fn{make-array} e implementare:
 \label{ex:102}
 \begin{colbox}{102}{Trasposta di matrice}{3}
 \exlabel{Implementare} \fn{(trasposta m n)}: trasposta di una matrice $n \times n$.
-
-
+\exspieg{La \textit{trasposizione} di una matrice scambia righe e colonne:
+l'elemento in posizione $(i, j)$ va in posizione $(j, i)$.
+Usare \fn{make-array} con \fn{'(n n)} per la matrice risultante, poi due
+cicli annidati (\fn{dotimes} o \fn{loop}): per ogni $(i, j)$ copiare
+\fn{(aref m i j)} in \fn{(aref risultato j i)}.}
 
 \small\color{black!55}\hyperref[sol:102]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:102]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1493,8 +1631,11 @@ modificandolo con \fn{setf}/\fn{aref}, senza liste ausiliarie.
 \begin{colbox}{104}{Moltiplicazione di matrici (opzionale)}{4}
 \exlabel{Implementare} \fn{(moltiplica-matrici a b n)}: prodotto di
 matrici quadrate $n \times n$.
-
-
+\exspieg{Il prodotto $C = A \times B$ è definito da:
+$C[i][j] = \sum_{k=0}^{n-1} A[i][k] \times B[k][j]$.
+Servono tre cicli annidati: $i$ per le righe di $A$, $j$ per le colonne
+di $B$, $k$ per la somma interna. Creare la matrice risultante con
+\fn{make-array} inizializzata a 0.}
 
 \small\color{black!55}\hyperref[sol:104]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:104]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1549,7 +1690,11 @@ Rappresentare lo stesso albero con la notazione
 (make-leaf v)
 (make-node v left right)
 \end{lstlisting}
-
+\exspieg{Alternativa leggera a \fn{defstruct}: un nodo è semplicemente
+una lista di tre elementi. \fn{(make-leaf 5)} → \fn{(5 NIL NIL)};
+\fn{(make-node 5 sx dx)} → \fn{(5 sx dx)}.
+Implementare anche \fn{(node-value t)}, \fn{(node-left t)},
+\fn{(node-right t)} come semplici accessor (\fn{car}, \fn{cadr}, \fn{caddr}).}
 
 \small\color{black!55}\hyperref[sol:107]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -1561,11 +1706,18 @@ Implementare un albero binario di ricerca:
 (bst-insert value tree)
 (bst-find value tree)
 \end{lstlisting}
+\exspieg{Un \textit{Binary Search Tree} (BST) mantiene la proprietà:
+tutti i valori nel sottoalbero sinistro sono minori del nodo radice,
+tutti quelli nel destro sono maggiori.
+\fn{bst-insert}: se l'albero è \fn{NIL} creare un nuovo nodo foglia;
+se \fn{value < radice} inserire nel sottoalbero sinistro, altrimenti
+nel destro. Restituire sempre un nuovo albero (no mutazione).
+\fn{bst-find}: come l'inserimento ma invece di creare si verifica
+l'uguaglianza al nodo corrente.}
 \begin{lstlisting}
 (bst-find 4 (bst-insert 4 (bst-insert 5 nil)))
 ; -> T
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:108]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:108]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1574,12 +1726,19 @@ Implementare un albero binario di ricerca:
 \begin{stdbox}{109}{Traversal dell'albero}{3}
 \exlabel{Implementare} \fn{(preorder tree)}, \fn{(inorder tree)},
 \fn{(postorder tree)}.
-
+\exspieg{Le tre visite differiscono nell'ordine in cui si visita la radice
+rispetto ai sottoalberi:
+\begin{itemize}[leftmargin=1.8em, itemsep=1pt, topsep=2pt]
+  \item \textbf{preorder}: radice → sinistra → destra
+  \item \textbf{inorder}: sinistra → radice → destra
+  \item \textbf{postorder}: sinistra → destra → radice
+\end{itemize}
+La visita \textit{inorder} su un BST produce sempre una sequenza ordinata
+in senso crescente.}
 Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 \begin{lstlisting}
 (inorder albero)   ; -> (1 3 4 5 8)
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:109]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:109]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1601,7 +1760,12 @@ Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 \begin{colbox}{111}{Specchia l'albero}{3}
 \exlabel{Implementare} \fn{(specchia tree)}: scambia ricorsivamente
 sottoalberi sinistro e destro.
-
+\exspieg{Il \textit{mirror} di un albero binario è l'albero ottenuto
+scambiando ricorsivamente il figlio sinistro con il destro per ogni nodo.
+Caso base: albero vuoto (\fn{NIL}) → \fn{NIL}.
+Caso ricorsivo: creare un nuovo nodo con lo stesso valore, ma con
+\fn{(specchia destra)} come figlio sinistro e \fn{(specchia sinistra)}
+come figlio destro.}
 
 \small\color{black!55}\hyperref[sol:111]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -1610,8 +1774,13 @@ sottoalberi sinistro e destro.
 \begin{colbox}{112}{Albero bilanciato?}{4}
 \exlabel{Implementare} \fn{(bilanciato-p tree)}: le altezze dei sottoalberi
 differiscono al piu' di 1 per ogni nodo.
-
-
+\exspieg{Un albero è \textit{bilanciato in altezza} (height-balanced) se,
+per ogni nodo, la differenza di altezza tra il sottoalbero sinistro e quello
+destro è al massimo 1 — \textit{e questa condizione vale ricorsivamente}
+anche per ogni sottoalbero.
+Suggerimento efficiente: scrivere una funzione ausiliaria che calcola
+l'altezza e al tempo stesso segnala lo sbilanciamento (es.\ restituendo
+$-1$ se non bilanciato), così si evita di ricalcolare l'altezza due volte.}
 
 \small\color{black!55}\hyperref[sol:112]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:112]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1648,7 +1817,13 @@ Implementare con \fn{setf}:
 (dequeue queue)
 (queue-empty-p queue)
 \end{lstlisting}
-
+\exspieg{Una \textit{coda} (queue) segue la politica FIFO (First In First Out):
+il primo elemento inserito è il primo ad essere rimosso.
+La differenza con la pila (es.~113) è che \fn{enqueue} aggiunge
+in fondo e \fn{dequeue} rimuove dalla testa.
+Implementazione efficiente: mantenere due puntatori, uno alla testa
+e uno alla coda della lista interna, così \fn{enqueue} è $O(1)$ invece
+di $O(n)$. Suggerimento: una struttura \fn{(cons testa coda-puntatore)}.}
 
 \small\color{black!55}\hyperref[sol:114]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:114]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1657,14 +1832,18 @@ Implementare con \fn{setf}:
 \begin{stdbox}{115}{Valida parentesi}{3}
 \exlabel{Implementare} \fn{(valida-parentesi stringa)} per
 \fn{()}, \fn{[]}, \fn{\{\}}.
+\exspieg{Algoritmo classico con pila: scorrere la stringa carattere per
+carattere. Se il carattere è una parentesi aperta (\fn{(}, \fn{[}, \fn{\{}),
+metterla sulla pila. Se è una parentesi chiusa, controllare che la cima della
+pila contenga la corrispondente aperta: se sì, toglierla dalla pila; se no
+(o se la pila è vuota), la stringa non è valida.
+Alla fine la stringa è valida solo se la pila è vuota.}
 \begin{lstlisting}
 (valida-parentesi "([]{})")   ; -> T
 (valida-parentesi "([)]")     ; -> NIL
 (valida-parentesi "((")       ; -> NIL
 \end{lstlisting}
-Vincolo: usare una pila.
-
-
+\vincolo{usare una pila.}
 
 \small\color{black!55}\hyperref[sol:115]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:115]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1693,11 +1872,17 @@ Gestire il caso contatto non trovato.
 (neighbors node graph)
 (add-edge node1 node2 graph)
 \end{lstlisting}
+\exspieg{Un \textit{grafo non orientato} viene rappresentato come una lista
+di adiacenza: una alist dove ogni chiave è un nodo e il valore è la lista
+dei suoi vicini diretti.
+\fn{neighbors}: trovare la coppia con \fn{assoc} e restituire il \fn{cdr}.
+\fn{add-edge}: aggiungere \fn{node2} ai vicini di \fn{node1} e
+\fn{node1} ai vicini di \fn{node2} (grafo non orientato).
+Non modificare la struttura originale; restituire un nuovo grafo.}
 \begin{lstlisting}
 (neighbors 'a '((a b c) (b a d) (c a d) (d b c)))
 ; -> (B C)
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:117]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{stdbox}
@@ -1705,14 +1890,18 @@ Gestire il caso contatto non trovato.
 \label{ex:118}
 \begin{colbox}{118}{DFS su grafo}{4}
 \exlabel{Implementare} \fn{(dfs graph start)}: visita in profondita'.
+\exspieg{La \textit{Depth-First Search} (DFS) esplora il grafo seguendo
+ogni ramo fino in fondo prima di tornare indietro.
+Algoritmo ricorsivo: (1) marcare il nodo corrente come visitato;
+(2) per ogni vicino non ancora visitato, chiamare ricorsivamente DFS.
+Usare una lista \fn{visited} per tenere traccia dei nodi già visti
+e gestire i cicli (altrimenti si va in loop infinito).}
 \nopagebreak
 \begin{lstlisting}
 (dfs '((a b c) (b a d) (c a) (d b)) 'a)
 ; -> (A B D C)
 \end{lstlisting}
-Gestire i cicli con un insieme di nodi gia' visitati.
-
-
+\vincolo{gestire i cicli con un insieme di nodi gia' visitati.}
 
 \small\color{black!55}\hyperref[sol:118]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:118]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1720,14 +1909,20 @@ Gestire i cicli con un insieme di nodi gia' visitati.
 \label{ex:119}
 \begin{colbox}{119}{BFS su grafo}{4}
 \exlabel{Implementare} \fn{(bfs graph start)}: visita in ampiezza.
+\exspieg{La \textit{Breadth-First Search} (BFS) esplora prima tutti i vicini
+diretti di un nodo, poi i vicini dei vicini, e così via — livello per livello.
+La differenza rispetto alla DFS è che usa una \textit{coda} (FIFO)
+invece della pila implicita della ricorsione.
+Algoritmo: (1) iniziare con la coda = \fn{(start)};
+(2) estrarre il primo elemento dalla coda, aggiungerlo al risultato;
+(3) accodare tutti i vicini non ancora visitati;
+(4) ripetere finché la coda è vuota.}
 \nopagebreak
 \begin{lstlisting}
 (bfs '((a b c) (b a d) (c a) (d b)) 'a)
 ; -> (A B C D)
 \end{lstlisting}
-Vincolo: usare una coda.
-
-
+\vincolo{usare una coda.}
 
 \small\color{black!55}\hyperref[sol:119]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:119]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1786,6 +1981,13 @@ Verificare l'espansione con \fn{macroexpand-1}.
 \begin{lstlisting}
 (defmacro mio-while (test &body corpo))
 \end{lstlisting}
+\exspieg{Una macro trasforma codice in codice \textit{prima} della valutazione.
+\fn{mio-while} deve espandersi in un costrutto che: (1) valuta \fn{test};
+(2) se vero, esegue \fn{corpo} e torna al punto (1); se falso, termina.
+Schema di espansione con \fn{loop}:
+\fn{(loop (unless test (return)) corpo\ldots)} oppure con
+un'\fn{labels} ricorsiva tail-recursive.
+Verificare con \fn{macroexpand-1}.}
 \begin{lstlisting}
 (let ((i 0))
   (mio-while (< i 5)
@@ -1793,7 +1995,6 @@ Verificare l'espansione con \fn{macroexpand-1}.
     (setf i (1+ i))))
 ; stampa 0 1 2 3 4
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:122]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:122]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1805,14 +2006,21 @@ Verificare l'espansione con \fn{macroexpand-1}.
 \begin{lstlisting}
 (defmacro mio-for ((var da a) &body corpo))
 \end{lstlisting}
+\exspieg{Questa macro introduce una variabile di ciclo \fn{var} che va da
+\fn{da} ad \fn{a} incluso, eseguendo \fn{corpo} ad ogni iterazione.
+Lo schema di espansione è simile a \fn{dotimes} ma con range esplicito.
+Il problema della \textit{cattura di variabile}: se il corpo usa una
+variabile con lo stesso nome del contatore interno, ci potrebbe essere
+un conflitto. Per evitarlo, usare \fn{gensym} per i nomi delle variabili
+interne all'espansione.
+Esempio di espansione sicura:
+\fn{(let ((var da) (end\$ a)) (loop (when (> var end\$) (return)) corpo\ldots (incf var)))}.}
 \begin{lstlisting}
 (mio-for (i 1 5)
   (format t "~A~%" i))
 ; stampa 1 2 3 4 5
 \end{lstlisting}
 \exnota{Obiettivo: usare \fn{gensym} per evitare cattura della variabile.}
-
-
 
 \small\color{black!55}\hyperref[sol:123]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:123]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1831,12 +2039,17 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \label{ex:124}
 \begin{stdbox}{124}{Tutti i sottoinsiemi}{3}
 \exlabel{Implementare} \fn{(subsets lst)}: genera tutti i $2^n$ sottoinsiemi.
+\exspieg{Dato un insieme di $n$ elementi, ci sono esattamente $2^n$
+sottoinsiemi (inclusi l'insieme vuoto e l'insieme stesso).
+Strategia ricorsiva: prendere il primo elemento \fn{x} e i sottoinsiemi
+del resto. Per ogni sottoinsieme \fn{s} del resto, ci sono due scelte:
+includerlo senza \fn{x}, oppure includerlo con \fn{x} preposto.
+Caso base: lista vuota → \fn{'(())}.}
 \nopagebreak
 \begin{lstlisting}
 (subsets '(a b))
 ; -> (() (A) (B) (A B))
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:124]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:124]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1844,11 +2057,17 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \label{ex:125}
 \begin{stdbox}{125}{Permutazioni}{4}
 \exlabel{Implementare} \fn{(permutations lst)}.
+\exspieg{Una permutazione è un ordinamento di tutti gli elementi.
+Con $n$ elementi ci sono $n!$ permutazioni.
+Strategia ricorsiva: per ogni elemento \fn{x} della lista, considerare
+\fn{x} come primo elemento e generare tutte le permutazioni del resto
+(\fn{lst} senza \fn{x}). Combinare: \fn{(mapcar (lambda (p) (cons x p)) perms-del-resto)}.
+Ripetere per ogni \fn{x} e unire i risultati con \fn{append}.
+Caso base: lista vuota o singolo elemento → \fn{'(())}/\fn{'((elem))}.}
 \nopagebreak
 \begin{lstlisting}
 (length (permutations '(a b c)))   ; -> 6
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:125]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:125]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1856,12 +2075,19 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \label{ex:126}
 \begin{stdbox}{126}{Combinazioni}{3}
 \exlabel{Implementare} \fn{(combinations lst k)}.
+\exspieg{Una combinazione è una selezione di \fn{k} elementi senza
+considerare l'ordine (a differenza delle permutazioni).
+Strategia ricorsiva: per il primo elemento \fn{x},
+(1) generare tutte le combinazioni di \fn{k-1} elementi dal resto e
+preporre \fn{x} a ciascuna;
+(2) generare tutte le combinazioni di \fn{k} elementi dal solo resto
+(senza usare \fn{x}).
+Unire i due insiemi. Casi base: \fn{k=0} → \fn{'(())}; lista vuota → \fn{'()}.}
 \nopagebreak
 \begin{lstlisting}
 (combinations '(a b c d) 2)
 ; -> ((A B) (A C) (A D) (B C) (B D) (C D))
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:126]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:126]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1869,12 +2095,19 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \label{ex:127}
 \begin{stdbox}{127}{Somma a target}{3}
 \exlabel{Implementare} \fn{(somma-a-target numeri target)}.
+\exspieg{Trovare tutti i sottoinsiemi di \fn{numeri} la cui somma è
+esattamente \fn{target}. È un problema di \textit{backtracking}:
+per ogni elemento si può scegliere di includerlo o escluderlo,
+esplorando ricorsivamente entrambe le strade.
+Una versione semplice: generare tutti i sottoinsiemi (es.~124) e
+filtrare quelli con somma uguale a \fn{target}.
+Una versione più efficiente fa pruning: se la somma parziale supera
+già \fn{target}, non esplorare ulteriormente quel ramo.}
 \nopagebreak
 \begin{lstlisting}
 (somma-a-target '(1 2 3 4 5) 6)
 ; -> ((1 5) (2 4) (1 2 3))
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:127]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:127]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1882,12 +2115,18 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \label{ex:128}
 \begin{colbox}{128}{Parentesi bilanciate generate}{3}
 \exlabel{Implementare} \fn{(genera-parentesi n)}.
+\exspieg{Generare tutte le stringhe di \fn{n} coppie di parentesi tonde
+correttamente bilanciate (stessa idea dell'es.~115, ma in generazione
+invece che in verifica).
+Approccio con backtracking: costruire la stringa carattere per carattere
+mantenendo due contatori, \fn{aperte} e \fn{chiuse}. Si può aggiungere
+\fn{(} se \fn{aperte < n}; si può aggiungere \fn{)} se \fn{chiuse < aperte}.
+Quando la stringa ha lunghezza $2n$, aggiungerla al risultato.}
 \nopagebreak
 \begin{lstlisting}
 (genera-parentesi 3)
 ; -> ("((()))" "(()())" "(())()" "()(())" "()()()")
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:128]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:128]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1895,13 +2134,17 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \label{ex:129}
 \begin{stdbox}{129}{Merge sort}{4}
 \exlabel{Implementare} \fn{(merge-sorted lst1 lst2)} e \fn{(merge-sort* lst)}.
+\exspieg{Il \textit{merge sort} è un algoritmo divide-et-impera $O(n \log n)$:
+(1) dividere la lista a metà; (2) ordinare ricorsivamente ciascuna metà;
+(3) fondere (\textit{merge}) le due metà già ordinate in una sola lista ordinata.
+La fusione \fn{merge-sorted} confronta le teste delle due liste e prende
+il minore, finché una delle due è vuota.
+Per dividere a metà una lista in Lisp: usare \fn{length} e \fn{sublist}/\fn{nthcdr}.}
 \nopagebreak
 \begin{lstlisting}
 (merge-sort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
 \end{lstlisting}
-Vincoli: non usare \fn{sort}; complessita' $O(n \log n)$.
-
-
+\vincolo{non usare \fn{sort}; complessita' $O(n \log n)$.}
 
 \small\color{black!55}\hyperref[sol:129]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:129]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1909,11 +2152,18 @@ Vincoli: non usare \fn{sort}; complessita' $O(n \log n)$.
 \label{ex:130}
 \begin{stdbox}{130}{Quicksort}{4}
 \exlabel{Implementare} \fn{(quicksort* lst)} senza usare \fn{sort}.
+\exspieg{Il \textit{quicksort} è un altro algoritmo divide-et-impera:
+(1) scegliere un elemento \textit{pivot} (es.\ la testa della lista);
+(2) partizionare gli altri elementi in due gruppi: quelli $\leq$ pivot
+e quelli $>$ pivot;
+(3) ordinare ricorsivamente i due gruppi;
+(4) concatenare: \fn{(append (quicksort* minori) (list pivot) (quicksort* maggiori))}.
+In media $O(n \log n)$, nel caso peggiore $O(n^2)$.
+Usare \fn{remove-if} o \fn{remove-if-not} per partizionare.}
 \nopagebreak
 \begin{lstlisting}
 (quicksort* '(7 2 9 1 5 3))   ; -> (1 2 3 5 7 9)
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:130]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:130]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -1936,11 +2186,16 @@ Vincoli: non usare \fn{sort}; complessita' $O(n \log n)$.
 \begin{colbox}{132}{Problema dello zaino}{4}
 \exlabel{Implementare} \fn{(knapsack oggetti capacita)}.
 Oggetti: lista di \fn{(peso valore)}.
+\exspieg{Il \textit{problema dello zaino} (0/1 knapsack): dati oggetti
+ognuno con peso e valore, scegliere quali portare nello zaino (capienza
+\fn{capacita}) per massimizzare il valore totale senza superare la capacità.
+Approccio con backtracking: per ogni oggetto, esplorare la scelta
+di includerlo (se il peso residuo lo permette) e quella di escluderlo,
+tenere il massimo. Oppure usare la programmazione dinamica (facoltativo).}
 \begin{lstlisting}
 (knapsack '((2 3) (3 4) (4 5) (5 8)) 5)
 ; -> 7
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:132]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:132]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1949,12 +2204,20 @@ Oggetti: lista di \fn{(peso valore)}.
 \begin{colbox}{133}{Labirinto}{4}
 Rappresentare un labirinto come matrice 2D (0 libero, 1 muro).
 \exlabel{Implementare} \fn{(find-path maze start goal)}.
+\exspieg{Trovare un percorso da \fn{start} a \fn{goal} in una griglia
+dove 0 = cella libera e 1 = muro. La cella è raggiungibile solo dai
+quattro vicini ortogonali (su, giù, sinistra, destra).
+Approccio: DFS o BFS (vedi es.~118/119). Tenere traccia delle celle
+già visitate per evitare cicli. La funzione restituisce la sequenza di
+coordinate dal punto di partenza all'obiettivo, o \fn{NIL} se non
+esiste percorso.
+La ricerca va costruita restituendo all'indietro il percorso una volta
+trovato il goal (backtracking sul path).}
 \nopagebreak
 \begin{lstlisting}
 (find-path maze '(0 0) '(4 4))
 ; -> ((0 0) (1 0) ... (4 4))
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:133]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:133]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1962,14 +2225,22 @@ Rappresentare un labirinto come matrice 2D (0 libero, 1 muro).
 \label{ex:134}
 \begin{stdbox}{134}{N-regine}{5}
 \exlabel{Implementare} \fn{(n-queens n)}: tutte le configurazioni valide.
+\exspieg{Posizionare \fn{n} regine su una scacchiera $n \times n$ in modo
+che nessuna attacchi le altre. Due regine si attaccano se sono sulla stessa
+riga, colonna o diagonale.
+Rappresentazione compatta: una lista di \fn{n} interi dove l'$i$-esimo
+valore è la colonna della regina nella riga $i$. In questo modo la
+vincolo "una per riga" è automaticamente soddisfatta.
+Algoritmo: piazzare una regina per volta, riga per riga. Per ogni colonna
+disponibile, verificare che non sia in conflitto con le regine già piazzate
+(stessa colonna o stessa diagonale: $|c_i - c_j| = |i - j|$). Se il
+conflitto non c'è, procedere alla riga successiva; altrimenti fare backtrack.}
 \nopagebreak
 \begin{lstlisting}
 (length (n-queens 4))   ; -> 2
 (length (n-queens 8))   ; -> 92
 \end{lstlisting}
-Vincoli: backtracking con pruning; rappresentazione compatta.
-
-
+\vincolo{backtracking con pruning; rappresentazione compatta.}
 
 \small\color{black!55}\hyperref[sol:134]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:134]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -2104,11 +2375,18 @@ Vincolo: usare una pila.
 \begin{stdbox}{143}{Valutatore di espressioni}{4}
 \exlabel{Implementare} \fn{(evaluate-expression expr)}: espressioni
 in notazione prefissa, senza usare \fn{eval}.
+\exspieg{In Common Lisp il codice è esso stesso una lista (S-expression),
+quindi \fn{'(+ 2 3)} è una lista con tre elementi.
+Questo valutatore implementa un sottoinsieme di Lisp "a mano":
+se \fn{expr} è un numero, restituirlo direttamente;
+se è una lista \fn{(op arg1 arg2)}, valutare ricorsivamente gli argomenti
+e applicare l'operazione corrispondente a \fn{op}.
+Estendere con altri operatori (\fn{-}, \fn{*}, \fn{/}) tramite \fn{cond}
+o \fn{case} su \fn{op}.}
 \begin{lstlisting}
 (evaluate-expression '(+ 2 3))        ; -> 5
 (evaluate-expression '(* 4 (+ 2 3)))  ; -> 20
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:143]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:143]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -2116,13 +2394,22 @@ in notazione prefissa, senza usare \fn{eval}.
 \label{ex:144}
 \begin{colbox}{144}{Mini-interprete con variabili}{5}
 Estendere l'es.~143 con variabili (\fn{set x 10}) e riferimenti.
+\exspieg{Estendere il valutatore dell'es.~143 con un \textit{ambiente}
+(alist di coppie \fn{(nome . valore)}) che persiste tra le chiamate.
+Nuovi casi da gestire:
+\begin{itemize}[leftmargin=1.8em, itemsep=1pt, topsep=2pt]
+  \item se \fn{expr} è un simbolo, cercarlo nell'ambiente con \fn{assoc};
+  \item se \fn{expr} è \fn{(set nome valore)}, valutare \fn{valore},
+        aggiornare l'ambiente e restituire il valore;
+  \item le espressioni aritmetiche continuano a funzionare come prima.
+\end{itemize}
+L'ambiente viene passato esplicitamente ad ogni chiamata ricorsiva
+per mantenere lo scope lessicale semplice (no variabili globali).}
 \begin{lstlisting}
 (mio-eval '(set x 10) env)
 (mio-eval '(+ x 5) env)   ; -> 15
 \end{lstlisting}
-Ambiente separato come alist; non usare \fn{eval}.
-
-
+\vincolo{ambiente separato come alist; non usare \fn{eval}.}
 
 \small\color{black!55}\hyperref[sol:144]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:144]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -2175,13 +2462,24 @@ Separare logica del gioco, verifica vittoria e I/O.
 \begin{colbox}{147}{Gioco della vita (Conway)}{4}
 \exlabel{Implementare} \fn{(evolvi griglia)}: un passo di evoluzione.
 Griglia: array 2D di 0 (morto) e 1 (vivo).
+\exspieg{Il \textit{Game of Life} di Conway è un automa cellulare:
+ogni cella viva o morta evolve in base ai suoi 8 vicini (orizzontali,
+verticali, diagonali) secondo le regole:
+\begin{itemize}[leftmargin=1.8em, itemsep=1pt, topsep=2pt]
+  \item cella viva con 2 o 3 vicini vivi → sopravvive;
+  \item cella viva con meno di 2 o più di 3 vicini → muore;
+  \item cella morta con esattamente 3 vicini vivi → nasce.
+\end{itemize}
+\textbf{Attenzione}: la griglia deve essere aggiornata tutta in un colpo
+(non in place), altrimenti le celle già evolute influenzerebbero le
+successive. Creare una nuova griglia, calcolare ogni nuova cella
+leggendo sempre dalla griglia originale.}
 Regole: sopravvive con 2--3 vicini vivi; nasce con esattamente 3.
 \begin{lstlisting}
 (loop repeat 5
       do (setf g (evolvi g))
          (stampa-griglia g))
 \end{lstlisting}
-
 
 \small\color{black!55}\hyperref[sol:147]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:147]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
