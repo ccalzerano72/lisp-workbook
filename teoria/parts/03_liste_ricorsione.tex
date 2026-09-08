@@ -367,10 +367,10 @@ bisogno di \fn{append}.}
 (defun reverse* (lst)
   (labels ((rev-acc (lst acc)
              (if (null lst)
-                 acc                          ; lista esaurita: ritorna acc
-                 (rev-acc (cdr lst)           ; avanza sulla lista
-                          (cons (car lst) acc))))); aggiungi in testa ad acc
-    (rev-acc lst nil)))                        ; parte con acc vuoto
+                 acc                 ; caso base
+                 (rev-acc (cdr lst)
+                          (cons (car lst) acc)))))
+    (rev-acc lst nil)))              ; parte con acc vuoto
 
 ;; Traccia dell'esecuzione:
 ;; (reverse* '(a b c))
