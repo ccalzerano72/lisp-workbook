@@ -10,7 +10,12 @@
 
 % --- Font ---
 \usepackage{lmodern}
+\usepackage[scaled=0.88,varqu]{inconsolata} % monospace TrueType: copia/incolla fedele
+% Mappa unicode per copia/incolla corretto dal PDF
+\input{glyphtounicode}
+\pdfgentounicode=1
 \usepackage{microtype}
+\DisableLigatures[f]{encoding=*,family=tt*}  % no ligature nel monospace
 \usepackage{graphicx}   % per \scalebox nelle stelle
 \usepackage[outline]{contour}  % per bordino bianco sulle stelle
 \contourlength{0.6pt}
@@ -125,6 +130,8 @@
 \lstdefinestyle{lispstyle}{%
   language=CommonLisp,
   basicstyle=\ttfamily\small,
+  columns=fullflexible,        % CRITICO: no micro-spazi, copia/incolla fedele
+  keepspaces=true,             % preserva spazi originali
   keywordstyle=[1]{\color{clKeyword}\bfseries},
   keywordstyle=[2]{\color{clKeyword}},
   commentstyle=\itshape\color{clComment},
