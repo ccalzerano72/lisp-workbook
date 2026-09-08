@@ -228,8 +228,8 @@ Usare \fn{bisestile-p} per febbraio.
 
 \exspieg{Tre interi positivi $(a, b, c)$ formano una \textit{terna pitagorica}
 se soddisfano il teorema di Pitagora: $a^2 + b^2 = c^2$
-(dove $c$ è l'ipotenusa, il lato più lungo).
-Assumere che \fn{c} sia il lato maggiore.}
+(dove $c$ è l'ipotenusa, il lato più lungo).\\\\
+Assumere \fn{a}, \fn{b}, \fn{c} positivi e che \fn{c} sia il lato maggiore.}
 \nopagebreak
 \begin{lstlisting}
 (terna-pitagorica-p 3 4 5)    ; -> T
@@ -1349,8 +1349,8 @@ un argomento \fn{x}, restituisce \fn{(funcall f (funcall g x))}.}
 
 \label{ex:86}
 \begin{stdbox}{86}{Applicazione parziale}{3}
-\exlabel{Implementare} \fn{(partial funzione \&rest argomenti)}.
-\exspieg{L'\textit{applicazione parziale} (o \textit{currying parziale})
+\exlabel{Implementare} \fn{(partial funzione \&rest argomenti)}.\\\\
+\exspieg{L'\textit{applicazione parziale}
 fissa alcuni argomenti di una funzione, restituendo una nuova funzione
 che accetta gli argomenti rimanenti.
 \fn{partial} deve restituire una closure che, quando chiamata con ulteriori
@@ -1567,7 +1567,7 @@ oppure restituirla direttamente.}
 \label{ex:98}
 \begin{colbox}{98}{Unione di hash table}{3}
 \exlabel{Implementare} \fn{(unisci-hash ht1 ht2)}: chiavi duplicate
-$\to$ somma dei valori.
+$\to$ somma dei valori.\\\\
 \exspieg{Creare una nuova hash table. Copiare tutte le coppie di \fn{ht1}
 con \fn{maphash}. Poi iterare su \fn{ht2}: se la chiave è già presente
 sommare i valori, altrimenti inserire la coppia.
@@ -1579,8 +1579,8 @@ dove la stessa chiave compare in entrambe, il valore è la somma.}
 
 \label{ex:99}
 \begin{colbox}{99}{Inverti hash table}{3}
-\exlabel{Implementare} \fn{(inverti-hash ht)}: scambia chiavi e valori.
-Assumere valori unici.
+\exlabel{Implementare} \fn{(inverti-hash ht)}: scambia chiavi e valori.\\
+Assumere valori unici, e chiavi e valori semplici (confrontabili con \fn{eql}).\\\\
 \exspieg{Creare una nuova hash table vuota. Iterare su \fn{ht} con
 \fn{maphash}: per ogni coppia \fn{(chiave . valore)}, inserire nella
 nuova tabella la coppia inversa \fn{(valore . chiave)}.
