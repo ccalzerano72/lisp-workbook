@@ -497,3 +497,14 @@
   \addcontentsline{toc}{section}{\protect\numberline{\thesolsec}#1}%
   \par\vspace{0.8em}%
 }
+
+% ---- Rimando al testo teorico companion ----
+% Uso: \teorico{Capitolo~N}{Titolo sezione}
+% Genera una riga discreta che rimanda a "Fondamenti e Pratica"
+\newcommand{\teorico}[2]{%
+  \smallskip\noindent%
+  {\small\color{black!50}\itshape
+   $\triangleright$\enspace
+   \textit{Fondamenti e Pratica},~#1\ifx&#2&\else\ ---\ #2\fi.}%
+  \smallskip%
+}

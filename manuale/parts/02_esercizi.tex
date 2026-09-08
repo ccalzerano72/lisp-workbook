@@ -601,6 +601,7 @@ con accumulatore (tail-recursive).
 (reverse* '(a b c d))   ; -> (D C B A)
 \end{lstlisting}
 \exnota{Vedi \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
+\teorico{Cap.~3}{Tail recursion e accumulatori; App.~A: Lo stack delle chiamate}
 
 \small\color{black!55}\hyperref[sol:39]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
@@ -774,6 +775,7 @@ con accumulatore, usando \fn{labels}.
 (fattoriale 5)   ; -> 120
 \end{lstlisting}
 \exnota{Obiettivo: capire il pattern accumulatore. Vedi \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
+\teorico{Cap.~3}{Tail recursion; App.~A: Lo stack delle chiamate}
 
 \small\color{black!55}\hyperref[sol:51]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{essbox}
@@ -786,6 +788,7 @@ Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 \end{lstlisting}
 \vincolo{usare \fn{labels} con un accumulatore esplicito; la chiamata ricorsiva dev'essere in posizione di coda.}
 \exnota{Vedi la \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
+\teorico{Cap.~3}{Tail recursion; App.~A: Lo stack delle chiamate}
 
 \small\color{black!55}\hyperref[sol:52]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:52]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
@@ -798,6 +801,7 @@ Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 \end{lstlisting}
 \vincolo{usare \fn{labels} con accumulatore; nessun calcolo dopo la chiamata ricorsiva.}
 \exnota{Vedi la \hyperref[nota:tailrec]{nota sulla tail recursion} in fondo al capitolo.}
+\teorico{Cap.~3}{Tail recursion; App.~A: Lo stack delle chiamate}
 
 \small\color{black!55}\hyperref[sol:53]{$\rightarrow$ Soluzione}\normalsize\color{black}
 \end{colbox}
@@ -1345,6 +1349,7 @@ un argomento \fn{x}, restituisce \fn{(funcall f (funcall g x))}.}
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:85]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:85]{$\rightarrow$ Suggerimento}\normalsize\color{black}
+\teorico{Cap.~4}{Composizione e applicazione parziale}
 \end{essbox}
 
 \label{ex:86}
@@ -1388,6 +1393,7 @@ La variabile \fn{val} sopravvive perché la lambda la cattura nel suo scope.}
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:87]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:87]{$\rightarrow$ Suggerimento}\normalsize\color{black}
+\teorico{Cap.~4}{Closure: funzioni con memoria}
 \end{essbox}
 
 \label{ex:88}
@@ -1405,6 +1411,7 @@ non un segnale di avanzamento fisso.}
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:88]{$\rightarrow$ Soluzione}\normalsize\color{black}
+\teorico{Cap.~4}{Closure: funzioni con memoria}
 \end{colbox}
 
 \label{ex:89}
@@ -1744,6 +1751,7 @@ l'uguaglianza al nodo corrente.}
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:108]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:108]{$\rightarrow$ Suggerimento}\normalsize\color{black}
+\teorico{Cap.~5}{Alberi binari e BST}
 \end{stdbox}
 
 \label{ex:109}
@@ -1980,6 +1988,7 @@ Verificare l'espansione con \fn{macroexpand-1}.
 
 
 \small\color{black!55}\hyperref[sol:121]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:121]{$\rightarrow$ Suggerimento}\normalsize\color{black}
+\teorico{Cap.~6}{Come funziona una macro; backquote}
 \end{stdbox}
 
 \label{ex:122}
@@ -2005,6 +2014,7 @@ Verificare con \fn{macroexpand-1}.}
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:122]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:122]{$\rightarrow$ Suggerimento}\normalsize\color{black}
+\teorico{Cap.~6}{Macro pratiche; \fn{\&body}}
 \end{stdbox}
 
 \label{ex:123}
@@ -2031,6 +2041,7 @@ Esempio di espansione sicura:
 \exnota{Obiettivo: usare \fn{gensym} per evitare cattura della variabile.}
 
 \small\color{black!55}\hyperref[sol:123]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:123]{$\rightarrow$ Suggerimento}\normalsize\color{black}
+\teorico{Cap.~6}{Cattura di variabile e \fn{gensym}}
 \end{colbox}
 
 % =============================================================
