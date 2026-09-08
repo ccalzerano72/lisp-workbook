@@ -1,0 +1,587 @@
+% =============================================================
+%  05_strutture_dati.tex
+%  Capitolo 5 --- Strutture dati
+% =============================================================
+
+\chapter{Strutture dati}
+
+\begin{intuizione}
+Una lista è flessibile ma lenta per l'accesso per chiave.
+Una hash table è veloce ma non ordinata.
+\fn{defstruct} dà nomi ai campi.
+Scegliere la struttura giusta non è un dettaglio: determina
+la complessità dell'algoritmo.
+\end{intuizione}
+
+\vspace{4pt}
+
+% ================================================================
+\section{Association list (alist)}
+% ================================================================
+
+\begin{concetto}{Alist --- la mappa più semplice}
+\keyline{}{Una alist è una lista di coppie \fn{(chiave . valore)}.}
+\keyline{\fn{assoc}}{trova la prima coppia con una data chiave. $O(n)$.}
+\keyline{\fn{acons}}{aggiunge una coppia in testa. $O(1)$.}
+
+\boxsep
+\detail{La alist è la struttura associativa di base di Lisp.
+Funziona bene per dizionari piccoli (< 20--30 coppie) o quando
+l'ordine di inserimento conta.
+Per dizionari grandi, preferire le hash table.}
+\end{concetto}
+
+\begin{esempio}[Alist: costruzione e accesso]
+\begin{lstlisting}
+;; Costruzione
+(defparameter *persona*
+  '((nome . "Mario") (eta . 23) (citta . "Roma")))
+
+;; assoc: cerca per chiave
+(assoc 'eta *persona*)           ; => (ETA . 23)
+(cdr (assoc 'eta *persona*))     ; => 23   (solo il valore)
+(assoc 'telefono *persona*)      ; => NIL  (non trovato)
+
+;; acons: aggiunge in testa (non modifica l'originale)
+(acons 'email "mario@example.com" *persona*)
+; => ((EMAIL . "mario@example.com") (NOME . "Mario") ...)
+
+;; Aggiornare un valore: aggiungi in testa, la vecchia coppia
+;; rimane ma non viene trovata (shadow)
+(defparameter *p2*
+  (acons 'eta 24 *persona*))
+(cdr (assoc 'eta *p2*))   ; => 24  (trovata la nuova prima)
+\end{lstlisting}
+\end{esempio}
+
+\begin{confronto}
+\textbf{Alist vs hash table vs \fn{defstruct}.}
+\begin{itemize}
+  \item \textbf{Alist}: chiavi arbitrarie, funzionale (no mutazione),
+        ricerca $O(n)$. Usa per configurazioni, piccoli dizionari,
+        risultati di \fn{raggruppa-per}.
+  \item \textbf{Hash table}: ricerca $O(1)$, mutabile, chiavi
+        confrontate con \fn{equal}/\fn{eql}. Usa per dizionari grandi
+        o frequentemente consultati.
+  \item \textbf{\fn{defstruct}}: campi nominati, accesso $O(1)$,
+        type-checking automatico. Usa quando la struttura è fissa
+        e i campi sono noti a priori.
+\end{itemize}
+\end{confronto}
+
+\begin{workbook}
+\textbf{Esercizi 93--94, 100}
+(Lookup/set su alist, Frequenza con alist, Conversione alist$\leftrightarrow$hash)\\[4pt]
+L'esercizio~93 è il fondamentale: \fn{assoc} e la costruzione
+funzionale con \fn{acons}.
+L'esercizio~94 (frequenza elementi) mostra come una alist si presta
+bene per accumulare conteggi su insiemi piccoli.
+\end{workbook}
+
+% ================================================================
+\section{Hash table}
+% ================================================================
+
+\begin{concetto}{Hash table --- dizionario a tempo costante}
+\keyline{\fn{make-hash-table}}{crea una hash table vuota.}
+\keyline{\fn{gethash}}{legge un valore per chiave. $O(1)$.}
+\keyline{\fn{setf}\ \fn{gethash}}{scrive o sovrascrive un valore. $O(1)$.}
+\keyline{\fn{remhash}}{rimuove una coppia. $O(1)$.}
+\keyline{\fn{maphash}}{itera su tutte le coppie.}
+\end{concetto}
+
+\begin{esempio}[Hash table: operazioni fondamentali]
+\begin{lstlisting}
+;; Creare
+(defparameter *ht* (make-hash-table))
+
+;; Scrivere
+(setf (gethash 'nome *ht*) "Mario")
+(setf (gethash 'eta  *ht*) 23)
+
+;; Leggere
+(gethash 'nome *ht*)    ; => "Mario"  T
+(gethash 'tel  *ht*)    ; => NIL      NIL  (due valori: valore + trovato?)
+
+;; Il secondo valore di gethash indica se la chiave esiste
+(multiple-value-bind (val trovato)
+    (gethash 'eta *ht*)
+  (if trovato
+      (format t "eta' = ~a~%" val)
+      (print "non trovato")))
+; => eta' = 23
+
+;; Valore di default esplicito
+(gethash 'tel *ht* "sconosciuto")   ; => "sconosciuto"
+
+;; Rimuovere
+(remhash 'eta *ht*)
+(gethash 'eta *ht*)    ; => NIL  NIL
+
+;; Quante coppie?
+(hash-table-count *ht*)   ; => 1
+\end{lstlisting}
+\end{esempio}
+
+\argomento{Iterare: \fn{maphash}}
+
+\begin{concetto}{\fn{maphash} --- iterare su tutte le coppie}
+\begin{sintassi}
+(maphash \#'(lambda (chiave valore) ...) ht)
+\end{sintassi}
+\detail{Non ha un valore di ritorno definito. Usalo per side-effect
+(stampare, accumulare in una struttura esterna).}
+\end{concetto}
+
+\begin{esempio}[\fn{maphash} e conversione in alist]
+\begin{lstlisting}
+;; Stampa tutte le coppie
+(maphash #'(lambda (k v)
+             (format t "~a => ~a~%" k v))
+         *ht*)
+
+;; Converti hash table in alist
+(defun hash->alist (ht)
+  (let ((result '()))
+    (maphash #'(lambda (k v)
+                 (setf result (acons k v result)))
+             ht)
+    result))
+
+;; Converti alist in hash table
+(defun alist->hash (alist)
+  (let ((ht (make-hash-table)))
+    (dolist (pair alist ht)
+      (setf (gethash (car pair) ht) (cdr pair)))))
+\end{lstlisting}
+\end{esempio}
+
+\argomento{Test di uguaglianza e stringhe}
+
+\begin{attenzione}
+\textbf{Il test di default è \fn{eql}: non funziona con le stringhe.}
+\fn{eql} confronta per identità (stesso oggetto in memoria).
+Due stringhe con lo stesso contenuto sono due oggetti distinti.
+
+\begin{lstlisting}
+;; SBAGLIATO per stringhe: usa :test #'equal
+(defparameter *ht-sbagliata* (make-hash-table))
+(setf (gethash "foo" *ht-sbagliata*) 42)
+(gethash "foo" *ht-sbagliata*)   ; => NIL !! (eql fallisce)
+
+;; CORRETTO: specifica il test di uguaglianza
+(defparameter *ht-corretta*
+  (make-hash-table :test #'equal))
+(setf (gethash "foo" *ht-corretta*) 42)
+(gethash "foo" *ht-corretta*)    ; => 42  T
+\end{lstlisting}
+
+Regola: chiavi stringa o lista $\to$ \fn{:test \#'equal}.
+Chiavi simbolo o numero $\to$ default \fn{eql} va bene.
+\end{attenzione}
+
+\begin{workbook}
+\textbf{Esercizi 95--100, 116, 120}
+(Operazioni base, frequenza alist vs hash, conversioni,
+rubrica, conta parole)\\[4pt]
+Priorità: \textbf{95, 96, 100}.
+L'esercizio~96 è fondamentale: ripete la stessa cosa dell'es.~94
+con hash table invece di alist --- il confronto diretto insegna
+quando usare quale.\\[4pt]
+L'esercizio~120 (conta parole) è il caso reale più comune di hash table:
+contatore di frequenze su input testuale di dimensione arbitraria.
+\end{workbook}
+
+% ================================================================
+\section{Array multidimensionali}
+% ================================================================
+
+\begin{concetto}{Array 2D --- matrici}
+\keyline{}{Passa una lista di dimensioni a \fn{make-array}.}
+\keyline{\fn{aref}}{accede con indici multipli.}
+\end{concetto}
+
+\begin{esempio}[Matrice 2D]
+\begin{lstlisting}
+;; Matrice 3x3 inizializzata a 0
+(defparameter *m*
+  (make-array '(3 3) :initial-element 0))
+
+;; Leggere elemento (riga 1, colonna 2)
+(aref *m* 1 2)           ; => 0
+
+;; Scrivere
+(setf (aref *m* 1 1) 5)
+(aref *m* 1 1)           ; => 5
+
+;; Dimensioni
+(array-dimensions *m*)   ; => (3 3)
+(array-dimension  *m* 0) ; => 3  (numero di righe)
+(array-dimension  *m* 1) ; => 3  (numero di colonne)
+
+;; Popolare con valori: matrice identita'
+(defun identita (n)
+  (let ((m (make-array (list n n) :initial-element 0)))
+    (dotimes (i n m)
+      (setf (aref m i i) 1))))
+
+(identita 3)
+; => #2A((1 0 0) (0 1 0) (0 0 1))
+\end{lstlisting}
+\end{esempio}
+
+\begin{confronto}
+\textbf{Array vs lista di liste.}
+Una matrice si può rappresentare anche come lista di liste:
+\texttt{((1 0 0) (0 1 0) (0 0 1))}.
+Con la lista di liste, \fn{(nth j (nth i m))} ha costo $O(i+j)$.
+Con l'array 2D, \fn{(aref m i j)} ha costo $O(1)$.
+Per algoritmi su matrici grandi (trasposta, moltiplicazione,
+algoritmi di grafo su matrice di adiacenza) usa sempre l'array.
+\end{confronto}
+
+\begin{workbook}
+\textbf{Esercizi 101--104}
+(Matrice, trasposta, inversione array, moltiplicazione matrici)\\[4pt]
+L'esercizio~101 è l'essenziale: crea una matrice, leggi e scrivi celle.
+L'esercizio~103 (inversione in-place) mostra la differenza tra
+stile funzionale (crea un nuovo array) e stile imperativo
+(modifica l'esistente): entrambi sono validi in Common Lisp.
+\end{workbook}
+
+% ================================================================
+\section{\texttt{defstruct} --- strutture con campi nominati}
+% ================================================================
+
+\begin{concetto}{\texttt{defstruct}}
+\keyline{}{Definisce un tipo con campi nominati, costruttore e accessor\\
+generati automaticamente.}
+\end{concetto}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Cosa genera \fn{defstruct} automaticamente.}
+
+\medskip
+Quando scrivi \fn{(defstruct persona nome eta citta)}, Common Lisp
+genera in automatico:
+\begin{itemize}
+  \item \fn{make-persona} --- costruttore con parametri keyword
+  \item \fn{persona-nome}, \fn{persona-eta}, \fn{persona-citta} --- accessor (getter)
+  \item \fn{persona-p} --- predicato di tipo
+  \item \fn{copy-persona} --- copia superficiale della struttura
+  \item Supporto per \fn{setf} su ogni accessor (setter)
+\end{itemize}
+
+\medskip
+Il valore di ritorno è un oggetto \fn{\#S(PERSONA ...)},
+che può essere stampato e riletto dal reader Lisp.
+A differenza di una alist o hash table, il tipo è verificabile a runtime.
+\end{tcolorbox}
+
+\begin{esempio}[\fn{defstruct}: definizione e uso]
+\begin{lstlisting}
+;; Definizione: campi con valori di default
+(defstruct persona
+  nome
+  (eta 18)         ; default: 18
+  (citta "Roma"))  ; default: "Roma"
+
+;; Costruzione con make-<nome>
+(defparameter *p*
+  (make-persona :nome "Mario" :eta 23 :citta "Milano"))
+
+;; Accesso con accessor
+(persona-nome *p*)    ; => "Mario"
+(persona-eta  *p*)    ; => 23
+
+;; Modifica con setf
+(setf (persona-eta *p*) 24)
+(persona-eta *p*)     ; => 24
+
+;; Predicato di tipo
+(persona-p *p*)       ; => T
+(persona-p '(1 2))    ; => NIL
+
+;; Valori di default
+(make-persona :nome "Anna")
+; => #S(PERSONA :NOME "Anna" :ETA 18 :CITTA "Roma")
+\end{lstlisting}
+\end{esempio}
+
+\begin{esempio}[Funzioni su strutture]
+\begin{lstlisting}
+;; Validazione nel costruttore
+(defun crea-persona (nome eta citta)
+  (unless (> eta 0)
+    (error "eta' deve essere positiva: ~a" eta))
+  (make-persona :nome nome :eta eta :citta citta))
+
+;; Stampa personalizzata
+(defun stampa-persona (p)
+  (format t "~a, ~a anni, ~a~%"
+    (persona-nome p)
+    (persona-eta  p)
+    (persona-citta p)))
+
+;; Sort su strutture
+(sort (list (make-persona :nome "B" :eta 30)
+            (make-persona :nome "A" :eta 25)
+            (make-persona :nome "C" :eta 20))
+      #'<
+      :key #'persona-eta)
+; ordinate per eta' crescente
+\end{lstlisting}
+\end{esempio}
+
+\begin{workbook}
+\textbf{Esercizio 105}
+(Struttura \fn{persona} con validazione)\\[4pt]
+Questo esercizio introduce \fn{defstruct}.
+Dopo averlo fatto, nota come il codice diventa più leggibile:
+\fn{(persona-nome p)} è più chiaro di \fn{(cdr (assoc 'nome p))}.
+\end{workbook}
+
+% ================================================================
+\section{Alberi binari e BST}
+% ================================================================
+
+\begin{concetto}{Albero binario come lista}
+\keyline{}{Convenzione: \fn{(valore sinistra destra)}.}
+\keyline{\fn{nil}}{albero vuoto (foglia assente).}
+\end{concetto}
+
+\begin{esempio}[Albero binario: costruzione e accesso]
+\begin{lstlisting}
+;; Convenzione: (valore sottoalbero-sx sottoalbero-dx)
+;; nil = albero vuoto
+
+;; Nodi foglia
+(defun foglia (v) (list v nil nil))
+
+;; Accessor
+(defun valore-nodo (n) (car   n))
+(defun figlio-sx   (n) (cadr  n))
+(defun figlio-dx   (n) (caddr n))
+
+;; Costruire l'albero:
+;;        5
+;;       / \
+;;      3   8
+;;     / \
+;;    1   4
+(defparameter *albero*
+  (list 5
+    (list 3 (foglia 1) (foglia 4))
+    (foglia 8)))
+
+;; Accedere
+(valore-nodo *albero*)            ; => 5
+(valore-nodo (figlio-sx *albero*)) ; => 3
+\end{lstlisting}
+\end{esempio}
+
+\argomento{Binary Search Tree (BST)}
+
+\begin{concetto}{BST: la proprieta' fondamentale}
+\keyline{}{Tutti i nodi nel sottoalbero sinistro sono \emph{minori}\\
+del nodo corrente; tutti quelli a destra sono \emph{maggiori}.}
+
+\boxsep
+\detail{Questa proprietà garantisce ricerca, inserimento e
+cancellazione in $O(\log n)$ su un albero bilanciato.
+In Lisp si implementa in stile funzionale: ogni operazione restituisce
+un nuovo albero, senza modificare quello originale.}
+\end{concetto}
+
+\begin{esempio}[BST: inserimento e ricerca funzionale]
+\begin{lstlisting}
+;; Inserimento: restituisce un NUOVO albero
+(defun bst-insert (val tree)
+  (cond ((null tree) (foglia val))         ; albero vuoto: crea foglia
+        ((= val (valore-nodo tree)) tree)  ; gia' presente
+        ((< val (valore-nodo tree))        ; va a sinistra
+         (list (valore-nodo tree)
+               (bst-insert val (figlio-sx tree))
+               (figlio-dx tree)))
+        (t                                 ; va a destra
+         (list (valore-nodo tree)
+               (figlio-sx tree)
+               (bst-insert val (figlio-dx tree))))))
+
+;; Ricerca
+(defun bst-find (val tree)
+  (cond ((null tree) nil)
+        ((= val (valore-nodo tree)) t)
+        ((< val (valore-nodo tree))
+         (bst-find val (figlio-sx tree)))
+        (t
+         (bst-find val (figlio-dx tree)))))
+
+;; Costruire un BST da una lista
+(defun lista->bst (lst)
+  (reduce #'(lambda (tree val) (bst-insert val tree))
+          lst :initial-value nil))
+
+(defparameter *bst* (lista->bst '(5 3 8 1 4)))
+(bst-find 4 *bst*)   ; => T
+(bst-find 7 *bst*)   ; => NIL
+\end{lstlisting}
+\end{esempio}
+
+\begin{esempio}[Visita inorder: produce sequenza ordinata]
+\begin{lstlisting}
+;; Inorder (sinistra -> radice -> destra) su BST
+;; produce sempre la sequenza ordinata crescente
+(defun inorder (tree)
+  (if (null tree)
+      nil
+      (append (inorder (figlio-sx tree))
+              (list (valore-nodo tree))
+              (inorder (figlio-dx tree)))))
+
+(inorder *bst*)   ; => (1 3 4 5 8)  ordinata!
+\end{lstlisting}
+\end{esempio}
+
+\begin{workbook}
+\textbf{Esercizi 105--112}
+(\fn{defstruct}, rappresentazione albero, BST, traversal,
+altezza, specchia, bilanciato)\\[4pt]
+Priorità: \textbf{106, 108, 109}.
+L'esercizio~109 (traversal) mostra perché inorder su BST produce
+una sequenza ordinata: è una proprietà non ovvia che vale la pena
+verificare sperimentalmente.\\[4pt]
+L'esercizio~112 (bilanciato) è il più difficile del gruppo:
+leggi il suggerimento prima di tentare.
+\end{workbook}
+
+% ================================================================
+\section{Pila e coda come ADT}
+% ================================================================
+
+\begin{concetto}{Abstract Data Type (ADT)}
+\keyline{}{Un ADT espone solo le operazioni, non la rappresentazione interna.}
+
+\boxsep
+\detail{La pila e la coda si implementano su liste Lisp,
+ma il chiamante non sa (e non deve sapere) come sono fatte dentro.
+È incapsulamento: se si cambia la rappresentazione interna,
+l'interfaccia non cambia.}
+\end{concetto}
+
+\begin{esempio}[Pila (stack) --- LIFO]
+\begin{lstlisting}
+;; Rappresentazione: una cons-cell (lista . puntatore-fine)
+;; ma per la pila basta una lista: la testa e' il top
+
+(defun make-stack () (list nil))        ; wrapper mutabile
+(defun stack-empty-p (s) (null (car s)))
+(defun stack-peek (s)    (caar s))
+
+(defun stack-push (item s)
+  (setf (car s) (cons item (car s))))
+
+(defun stack-pop (s)
+  (if (stack-empty-p s)
+      (error "stack vuoto")
+      (let ((top (caar s)))
+        (setf (car s) (cdar s))
+        top)))
+
+;; Uso
+(defparameter *s* (make-stack))
+(stack-push 1 *s*)
+(stack-push 2 *s*)
+(stack-push 3 *s*)
+(stack-pop *s*)    ; => 3
+(stack-peek *s*)   ; => 2
+\end{lstlisting}
+\end{esempio}
+
+\begin{esempio}[Applicazione: validazione parentesi]
+\begin{lstlisting}
+(defun valida-parentesi (stringa)
+  (let ((s (make-stack))
+        (aperte '(#\( #\[ #\{))
+        (chiuse '(#\) #\] #\})))
+    (every #'identity
+      (loop for c across stringa
+            collect
+            (cond
+              ((member c aperte) (stack-push c s) t)
+              ((member c chiuse)
+               (and (not (stack-empty-p s))
+                    (char= (stack-pop s)
+                           (nth (position c chiuse) aperte))))
+              (t t)))
+      (stack-empty-p s))))
+
+(valida-parentesi "([]{})")   ; => T
+(valida-parentesi "([)]")     ; => NIL
+\end{lstlisting}
+\end{esempio}
+
+\begin{workbook}
+\textbf{Esercizi 113--115}
+(Pila, coda, validazione parentesi)\\[4pt]
+L'esercizio~115 (validazione parentesi) è l'applicazione classica
+della pila: usata in tutti i parser, compilatori, editor.
+Dopo averlo risolto avrai un'intuizione concreta di perché
+la pila è la struttura giusta per problemi di matching.
+\end{workbook}
+
+% ================================================================
+\section*{Riepilogo del capitolo}
+% ================================================================
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=csBlue!5, colframe=csBlue!40,
+  arc=4pt, boxrule=0.6pt,
+  left=14pt, right=14pt, top=12pt, bottom=12pt,
+  before skip=16pt, after skip=16pt
+]
+\textbf{Quello che hai imparato:}
+
+\medskip
+\begin{itemize}
+  \item \textbf{Alist}: lista di coppie \fn{(chiave . valore)}.
+        \fn{assoc} per cercare, \fn{acons} per aggiungere.
+        Funzionale, $O(n)$. Buona per dizionari piccoli.
+  \item \textbf{Hash table}: \fn{make-hash-table}, \fn{gethash},
+        \fn{setf gethash}, \fn{remhash}, \fn{maphash}.
+        $O(1)$ per accesso. Per stringhe usa \fn{:test \#'equal}.
+  \item \textbf{Array 2D}: \fn{make-array '(n m)}, \fn{aref} con
+        due indici. Per matrici e algoritmi con accesso casuale.
+  \item \textbf{\fn{defstruct}}: genera costruttore, accessor,
+        predicato. Campi nominati, type-checking, \fn{setf} su accessor.
+  \item \textbf{BST}: proprietà sinistra-minore/destra-maggiore.
+        Inserimento e ricerca funzionali ($O(\log n)$).
+        Inorder produce sequenza ordinata.
+  \item \textbf{Pila/coda}: ADT con interfaccia esplicita.
+        La rappresentazione è privata; l'interfaccia è stabile.
+\end{itemize}
+
+\medskip
+\textbf{Prossimo:} Capitolo~6 --- \emph{Macro}.
+Trasformare codice in codice prima della valutazione.
+\end{tcolorbox}
+
+\begin{workbook}
+\textbf{Prima di andare al Capitolo~6:}\\[4pt]
+Completa gli esercizi \textbf{93--120} (capitolo
+\emph{Strutture dati}).\\[4pt]
+Priorità: \textbf{93, 95, 101, 105, 106, 108, 113, 115}.
+Questi otto coprono una struttura per tipo.\\[4pt]
+Gli esercizi 117--120 (grafo, DFS, BFS, conta parole) sono
+collaterali ma molto utili: applicano le strutture dati a
+problemi reali.
+\end{workbook}

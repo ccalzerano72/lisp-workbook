@@ -1,0 +1,460 @@
+% =============================================================
+%  06_macro.tex
+%  Capitolo 6 --- Macro
+% =============================================================
+
+\chapter{Macro}
+
+\begin{intuizione}
+Le funzioni trasformano \emph{valori}.
+Le macro trasformano \emph{codice}.
+Una macro riceve espressioni non valutate e le riscrive
+in altre espressioni, prima che il compilatore le veda.
+Questo è il meccanismo con cui Lisp si estende: puoi aggiungere
+nuove strutture di controllo al linguaggio, indistinguibili
+da quelle native.
+\end{intuizione}
+
+\vspace{4pt}
+
+% ================================================================
+\section{La differenza tra funzione e macro}
+% ================================================================
+
+\begin{concetto}{Funzione vs macro: quando vengono valutati gli argomenti}
+\keyline{}{Funzione: gli argomenti sono valutati \emph{prima} della chiamata.}
+\keyline{}{Macro: gli argomenti arrivano come \emph{codice grezzo}, non valutati.}
+
+\boxsep
+\detail{Questa differenza è fondamentale.
+Una funzione non può implementare \fn{if}: se tutti gli argomenti
+fossero valutati prima della chiamata, entrambi i rami verrebbero
+eseguiti sempre. \fn{if} è una forma speciale (o macro) proprio
+perché controlla \emph{quale} ramo valutare.}
+\end{concetto}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Perché le funzioni non bastano.}
+
+\medskip
+Supponi di voler implementare \fn{mio-and} come funzione:
+
+\begin{tcolorbox}[enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt, left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt]
+\begin{lstlisting}
+;; SBAGLIATO: non funziona come and
+(defun mio-and-fn (a b)
+  (if a b nil))
+
+;; Il problema:
+(mio-and-fn t (/ 1 0))   ; ERRORE: divide by zero!
+;; Perche'? Prima di chiamare mio-and-fn, Lisp valuta TUTTI
+;; gli argomenti. (/ 1 0) viene valutato anche se a e' NIL.
+
+;; and nativo usa short-circuit: non valuta b se a e' falso
+(and nil (/ 1 0))   ; => NIL  (nessun errore)
+\end{lstlisting}
+\end{tcolorbox}
+
+\medskip
+La valutazione cortocircuito di \fn{and} non si può implementare
+con una funzione. Si può implementare con una macro, perché la macro
+riceve le espressioni non valutate e decide lei come (e se) valutarle.
+
+\medskip
+\textbf{Questo è il potere delle macro}: non si limitano a calcolare
+con valori, possono \emph{ristrutturare} il codice prima
+che venga eseguito.
+In Java o Python non esiste nulla di equivalente.
+Le annotazioni, i decorator, il preprocessore C --- sono tutti
+meccanismi più limitati che operano in fasi separate.
+Le macro Lisp lavorano direttamente sull'AST del programma,
+con tutto il linguaggio disponibile.
+\end{tcolorbox}
+
+% ================================================================
+\section{Come funziona una macro}
+% ================================================================
+
+\begin{concetto}{Il ciclo di vita di una macro}
+\keyline{}{1. Il compilatore incontra \fn{(nome-macro arg1 arg2 ...)}.}
+\keyline{}{2. Chiama il \emph{trasformatore} della macro con gli argomenti\\
+come liste simboliche (codice grezzo).}
+\keyline{}{3. Il trasformatore restituisce una nuova espressione S.}
+\keyline{}{4. Il compilatore valuta quella nuova espressione.}
+
+\boxsep
+\detail{Il trasformatore è codice Common Lisp ordinario.
+Può usare tutto il linguaggio: variabili, funzioni, ricorsione.
+Viene eseguito a \emph{compile time}, non a runtime.}
+\end{concetto}
+
+\begin{esempio}[Prima macro: \fn{quando} come \fn{when}]
+\begin{lstlisting}
+;; defmacro: come defun, ma riceve codice grezzo
+(defmacro quando (test &body corpo)
+  ;; test e corpo sono simboli/liste, non valori
+  ;; questo codice gira a compile-time
+  `(if ,test (progn ,@corpo) nil))
+
+;; Uso
+(quando (> x 0)
+  (print "positivo")
+  (print "fatto"))
+
+;; Equivale a:
+(if (> x 0)
+    (progn (print "positivo")
+           (print "fatto"))
+    nil)
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+\textbf{\fn{macroexpand-1}: il tuo migliore amico.}
+Prima di usare una macro in produzione, verifica sempre la sua
+espansione:
+\begin{lstlisting}
+(macroexpand-1 '(quando (> x 0) (print "positivo")))
+; => (IF (> X 0) (PROGN (PRINT "positivo")) NIL)  T
+\end{lstlisting}
+\fn{macroexpand-1} espande un solo livello.
+\fn{macroexpand} espande tutto ricorsivamente.
+\end{attenzione}
+
+% ================================================================
+\section{Backquote: costruire codice programmaticamente}
+% ================================================================
+
+\begin{concetto}{Backquote, comma e comma-at}
+\keyline{\texttt{`(a b c)}}{come \fn{'(a b c)} ma con interpolazione.}
+\keyline{\texttt{,expr}}{valuta \fn{expr} e inserisce il risultato.}
+\keyline{\texttt{,@lista}}{valuta \fn{lista} e la \emph{espande} (splice).}
+\end{concetto}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Il backquote è il template engine di Lisp.}
+
+\medskip
+Senza backquote, costruire una lista che rappresenta codice
+è verboso e error-prone:
+
+\begin{tcolorbox}[enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt, left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt]
+\begin{lstlisting}
+;; Senza backquote: costruzione manuale
+(list 'if test (cons 'progn corpo) nil)
+
+;; Con backquote: template leggibile
+`(if ,test (progn ,@corpo) nil)
+\end{lstlisting}
+\end{tcolorbox}
+
+\medskip
+Il \textbf{backquote} (\texttt{`}) avvia un template.
+All'interno, tutto è quotato tranne ciò che è preceduto da:
+\begin{itemize}
+  \item \textbf{\texttt{,}} (comma) --- inserisce il valore di
+        un'espressione
+  \item \textbf{\texttt{,@}} (comma-at) --- inserisce gli elementi
+        di una lista (splice)
+\end{itemize}
+
+\begin{tcolorbox}[enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt, left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt]
+\begin{lstlisting}
+(let ((x 42)
+      (lst '(1 2 3)))
+  `(a ,x c)       ; => (A 42 C)      , inserisce il valore
+  `(a ,@lst c)    ; => (A 1 2 3 C)   ,@ splica la lista
+  `(a ,(+ 1 2))   ; => (A 3)         , valuta l'espressione
+  `(a 'b)         ; => (A (QUOTE B)) senza , resta quotato
+)
+\end{lstlisting}
+\end{tcolorbox}
+
+\medskip
+La differenza tra \texttt{,x} e \texttt{,@x}:
+\texttt{,x} inserisce \texttt{x} come \emph{un elemento};
+\texttt{,@x} inserisce gli \emph{elementi di x}.
+
+\begin{tcolorbox}[enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt, left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt]
+\begin{lstlisting}
+(let ((corpo '((print "a") (print "b"))))
+  `(progn ,corpo)    ; => (PROGN ((PRINT "a") (PRINT "b")))
+  `(progn ,@corpo))  ; => (PROGN (PRINT "a") (PRINT "b"))
+;; ,@corpo inserisce le due espressioni come elementi separati
+\end{lstlisting}
+\end{tcolorbox}
+\end{tcolorbox}
+
+% ================================================================
+\section{Macro pratiche}
+% ================================================================
+
+\argomento{\fn{\&body}: raccogliere il corpo}
+
+\begin{concetto}{\fn{\&body}}
+\keyline{}{Come \fn{\&rest} ma segnala a editor e strumenti\\
+che questi argomenti sono il \emph{corpo} della macro.}
+\detail{La differenza è solo di indentazione automatica:
+gli editor Lisp indentano correttamente le forme con \fn{\&body}.}
+\end{concetto}
+
+\begin{esempio}[Macro \fn{mio-while}]
+\begin{lstlisting}
+(defmacro mio-while (test &body corpo)
+  `(loop
+     (unless ,test (return))
+     ,@corpo))
+
+;; Uso
+(let ((i 0))
+  (mio-while (< i 5)
+    (print i)
+    (setf i (1+ i))))
+; stampa: 0 1 2 3 4
+
+;; Espansione
+(macroexpand-1 '(mio-while (< i 5) (print i)))
+; => (LOOP (UNLESS (< I 5) (RETURN)) (PRINT I))
+\end{lstlisting}
+\end{esempio}
+
+\begin{workbook}
+\textbf{Esercizi 121--123}
+(\fn{quando}, \fn{mio-while}, \fn{mio-for})\\[4pt]
+Questi tre esercizi seguono una progressione precisa.
+Dopo ciascuno usa \fn{macroexpand-1} per verificare l'espansione ---
+è l'unico modo per essere sicuri che la macro faccia quello che pensi.\\[4pt]
+L'esercizio~123 (\fn{mio-for}) introduce \fn{gensym}: leggilo con
+attenzione anche se non lo implementi, perché il problema della
+cattura di variabile è reale e importante.
+\end{workbook}
+
+% ================================================================
+\section{Il problema della cattura di variabile}
+% ================================================================
+
+\begin{concetto}{Cattura di variabile --- il bug silenzioso delle macro}
+\keyline{}{Se la macro usa nomi di variabile ``comuni'', può\\
+\emph{catturare} variabili del codice chiamante per errore.}
+\end{concetto}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Il problema.}
+
+\medskip
+Considera questa macro \fn{swap!} che scambia due variabili:
+
+\begin{tcolorbox}[enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt, left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt]
+\begin{lstlisting}
+;; VERSIONE CON BUG
+(defmacro swap!-bug (a b)
+  `(let ((tmp ,a))      ; tmp potrebbe essere catturato!
+     (setf ,a ,b)
+     (setf ,b tmp)))
+
+;; Funziona nella maggior parte dei casi...
+(let ((x 1) (y 2))
+  (swap!-bug x y)
+  (list x y))         ; => (2 1)  ok
+
+;; ...ma non se il chiamante usa una variabile chiamata tmp!
+(let ((tmp 10) (y 20))
+  (swap!-bug tmp y)
+  (list tmp y))       ; => SBAGLIATO: tmp viene catturato
+\end{lstlisting}
+\end{tcolorbox}
+
+\medskip
+\textbf{La soluzione: \fn{gensym}.}
+
+\fn{gensym} genera un simbolo unico garantito mai usato altrove.
+
+\begin{tcolorbox}[enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt, left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt]
+\begin{lstlisting}
+;; VERSIONE CORRETTA con gensym
+(defmacro swap! (a b)
+  (let ((tmp (gensym)))   ; gensym gira a compile-time
+    `(let ((,tmp ,a))     ; ,tmp inserisce il simbolo unico
+       (setf ,a ,b)
+       (setf ,b ,tmp))))
+
+;; Ora e' sicuro
+(let ((tmp 10) (y 20))
+  (swap! tmp y)
+  (list tmp y))   ; => (20 10)  corretto
+
+;; Espansione: il nome e' qualcosa come G1234
+(macroexpand-1 '(swap! x y))
+; => (LET ((#:G1234 X)) (SETF X Y) (SETF Y #:G1234))
+\end{lstlisting}
+\end{tcolorbox}
+
+\medskip
+\textbf{Regola pratica}: ogni variabile temporanea introdotta
+da una macro deve usare \fn{gensym}.
+Se la macro non introduce variabili temporanee (come \fn{quando}
+o \fn{mio-while}), il problema non si pone.
+\end{tcolorbox}
+
+% ================================================================
+\section{Quando usare le macro}
+% ================================================================
+
+\begin{concetto}{Macro: sì o no?}
+\keyline{}{Usa una macro \emph{solo} quando una funzione non è sufficiente.}
+
+\boxsep
+\detail{La tentazione di usare le macro è forte in Lisp,
+ma di solito una funzione o una higher-order function sono
+la scelta giusta. Le macro aggiungono complessità e
+rendono il codice più difficile da analizzare.}
+\end{concetto}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Usa una macro quando:}
+\begin{itemize}
+  \item Hai bisogno di \textbf{valutazione controllata}: alcuni argomenti
+        non devono essere valutati, o devono essere valutati
+        in un certo ordine (\fn{if}, \fn{and}, \fn{or},
+        \fn{when}, \fn{while}).
+  \item Vuoi introduire \textbf{nuova sintassi} o nuovi costrutti
+        di controllo del flusso.
+  \item Vuoi evitare la ripetizione di \textbf{boilerplate} strutturale
+        che una funzione non può eliminare (es.\ \fn{with-open-file}
+        gestisce automaticamente la chiusura del file).
+\end{itemize}
+
+\medskip
+\textbf{Non usare una macro quando:}
+\begin{itemize}
+  \item Una funzione di ordine superiore risolve il problema
+        (preferisci \fn{mapcar \#'f lst} a una macro che fa la stessa cosa).
+  \item Il ``vantaggio'' è solo sintattico e non vale la complessità aggiunta.
+  \item Il codice diventa difficile da testare o da \fn{macroexpand}.
+\end{itemize}
+
+\medskip
+\textbf{Esempi di macro nella libreria standard} che mostrano
+quando le macro sono giustificate:
+\begin{itemize}
+  \item \fn{with-open-file} --- garantisce la chiusura del file
+        anche in caso di errore (il corpo è valutato in un contesto
+        protetto con cleanup automatico)
+  \item \fn{loop} --- mini-linguaggio per iterazione
+  \item \fn{setf} --- generalizzazione dell'assegnazione a qualsiasi
+        ``posto'' (lista, array, slot di struttura...)
+  \item \fn{defun}, \fn{defstruct}, \fn{defclass} --- definizioni
+        che creano binding globali e metadata
+\end{itemize}
+\end{tcolorbox}
+
+\begin{esempio}[\fn{with-open-file}: macro nella pratica]
+\begin{lstlisting}
+;; with-open-file e' una macro: garantisce la chiusura
+(with-open-file (stream "dati.txt" :direction :input)
+  (read-line stream))
+;; Anche se read-line segnala un errore, il file viene chiuso.
+
+;; Espansione semplificata:
+;; (let ((stream (open "dati.txt" :direction :input)))
+;;   (unwind-protect
+;;     (read-line stream)
+;;     (close stream)))
+;;
+;; unwind-protect esegue il cleanup anche in caso di eccezione.
+;; Senza macro, il chiamante dovrebbe scrivere tutto questo ogni volta.
+\end{lstlisting}
+\end{esempio}
+
+% ================================================================
+\section*{Riepilogo del capitolo}
+% ================================================================
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=csBlue!5, colframe=csBlue!40,
+  arc=4pt, boxrule=0.6pt,
+  left=14pt, right=14pt, top=12pt, bottom=12pt,
+  before skip=16pt, after skip=16pt
+]
+\textbf{Quello che hai imparato:}
+
+\medskip
+\begin{itemize}
+  \item \textbf{Macro vs funzione}: le funzioni ricevono valori,
+        le macro ricevono codice grezzo non valutato.
+        Le macro vengono espanse a compile-time, le funzioni
+        girano a runtime.
+  \item \textbf{\fn{defmacro}}: come \fn{defun} ma con parametri
+        che sono S-expression, non valori.
+        \fn{\&body} per il corpo della macro.
+  \item \textbf{Backquote}: template per costruire codice.
+        \texttt{,expr} inserisce un valore,
+        \texttt{,@lista} espande una lista.
+  \item \textbf{\fn{macroexpand-1}}: verifica sempre l'espansione.
+        È lo strumento di debug fondamentale per le macro.
+  \item \textbf{Cattura di variabile}: usa \fn{gensym} per ogni
+        variabile temporanea introdotta dalla macro.
+  \item \textbf{Quando usarle}: valutazione controllata, nuova
+        sintassi, eliminazione di boilerplate strutturale.
+        Non usarle se una funzione o una HOF bastano.
+\end{itemize}
+
+\medskip
+\textbf{Prossimo:} Capitolo~7 --- \emph{Backtracking e algoritmi}.
+Spazi di ricerca, sottoinsiemi, permutazioni, ordinamento,
+problemi classici.
+\end{tcolorbox}
+
+\begin{workbook}
+\textbf{Prima di andare al Capitolo~7:}\\[4pt]
+Completa gli esercizi \textbf{121--123} (capitolo \emph{Macro}).\\[4pt]
+Sono solo tre esercizi, ma richiedono un cambio di prospettiva:
+pensare al codice come dato.
+Usa \fn{macroexpand-1} dopo ogni esercizio, anche se la macro
+sembra funzionare: assicurati di capire esattamente cosa genera.
+\end{workbook}

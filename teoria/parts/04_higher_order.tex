@@ -1,0 +1,532 @@
+% =============================================================
+%  04_higher_order.tex
+%  Capitolo 4 --- Higher-order e closure
+% =============================================================
+
+\chapter{Higher-order e closure}
+
+\begin{intuizione}
+Nel Capitolo~3 hai scritto \fn{map}, \fn{filter} e \fn{reduce}
+a mano, con ricorsione esplicita.
+Questo capitolo ti mostra che Lisp li ha già incorporati ---
+e molto di più.
+Le funzioni sono valori di prima classe: si passano, si restituiscono,
+si compongono. Questa è la programmazione funzionale vera.
+\end{intuizione}
+
+\vspace{4pt}
+
+% ================================================================
+\section{Funzioni come valori}
+% ================================================================
+
+\begin{concetto}{Funzioni di prima classe}
+\keyline{}{In Common Lisp una funzione è un valore come qualsiasi altro.}
+\keyline{}{Può essere assegnata a una variabile, passata come argomento,\\
+restituita come risultato di un'altra funzione.}
+
+\boxsep
+\detail{Una \textbf{funzione di ordine superiore} (higher-order function)
+è una funzione che riceve funzioni come argomenti o ne restituisce una.
+In Lisp questo è naturale: è lo stesso meccanismo con cui si passa
+un numero.}
+\end{concetto}
+
+\begin{confronto}
+\textbf{Confronto con Java/C.}
+In Java pre-8 le funzioni non sono valori: per passare ``comportamento''
+si usano interfacce o classi anonime. Con Java 8+ si usano le lambda
+(\texttt{x -> x*2}), ma rimangono una funzionalità aggiunta a posteriori.
+In C i puntatori a funzione esistono, ma la sintassi è scomoda e
+non si possono creare funzioni al volo.
+In Lisp questo meccanismo esiste dal 1960 ed è al centro del linguaggio.
+\end{confronto}
+
+\argomento{La sintassi: \fn{\#'} e \fn{funcall}}
+
+\begin{concetto}{\fn{\#'} e \fn{funcall}}
+\keyline{\fn{\#'nome}}{riferimento a una funzione definita (``sharp-quote'').}
+\keyline{\fn{(funcall f arg...)}}{chiama la funzione contenuta nella variabile \fn{f}.}
+\keyline{\fn{(apply f lista)}}{chiama \fn{f} con gli elementi della lista come argomenti.}
+\end{concetto}
+
+\begin{esempio}[\fn{\#'}, \fn{funcall}, \fn{apply}]
+\begin{lstlisting}
+;; #' prende il riferimento alla funzione
+(defun quadrato (x) (* x x))
+#'quadrato         ; => #<FUNCTION QUADRATO>  (non la chiama!)
+
+;; funcall: chiama la funzione in una variabile
+(defparameter *f* #'quadrato)
+(funcall *f* 5)    ; => 25
+
+;; apply: espande una lista come argomenti
+(apply #'+ '(1 2 3 4))   ; => 10
+(apply #'max '(3 1 4 1 5))   ; => 5
+
+;; Differenza tra funcall e apply:
+(funcall #'+ 1 2 3)       ; => 6  (argomenti diretti)
+(apply   #'+ '(1 2 3))    ; => 6  (argomenti come lista)
+(apply   #'+ 1 2 '(3 4))  ; => 10 (misti: prefisso + lista finale)
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+Perché \fn{\#'} e non solo \fn{'}?
+\fn{'foo} cita il \emph{simbolo} \texttt{foo};
+\fn{\#'foo} prende la \emph{funzione} associata a \texttt{foo}.
+In Common Lisp simboli e funzioni vivono in spazi di nomi separati
+(a differenza di Scheme). \fn{\#'} è la notazione corretta quando
+vuoi passare una funzione.
+\end{nota}
+
+% ================================================================
+\section{Le funzioni higher-order della libreria}
+% ================================================================
+
+\begin{concetto}{\fn{mapcar} --- il map}
+\keyline{}{Applica una funzione a ogni elemento, raccoglie i risultati.}
+
+\begin{sintassi}
+(mapcar funzione lista)\\
+(mapcar funzione lista1 lista2 ...)  \textit{; piu' liste in parallelo}
+\end{sintassi}
+\end{concetto}
+
+\begin{esempio}[\fn{mapcar}]
+\begin{lstlisting}
+(mapcar #'1+      '(1 2 3 4))       ; => (2 3 4 5)
+(mapcar #'oddp    '(1 2 3 4))       ; => (T NIL T NIL)
+(mapcar #'quadrato '(1 2 3 4))      ; => (1 4 9 16)
+
+;; Con piu' liste: prende elementi in parallelo
+(mapcar #'+ '(1 2 3) '(10 20 30))  ; => (11 22 33)
+(mapcar #'list '(a b c) '(1 2 3))  ; => ((A 1) (B 2) (C 3))
+\end{lstlisting}
+\end{esempio}
+
+\seprule
+
+\begin{concetto}{\fn{remove-if} e \fn{remove-if-not} --- il filter}
+\keyline{\fn{remove-if}}{rimuove gli elementi per cui il predicato è vero.}
+\keyline{\fn{remove-if-not}}{mantiene gli elementi per cui il predicato è vero.}
+
+\boxsep
+\detail{\fn{remove-if-not} è il ``filter'' classico.
+\fn{remove-if} è il suo complemento (``anti-filter'').}
+\end{concetto}
+
+\begin{esempio}[\fn{remove-if} e \fn{remove-if-not}]
+\begin{lstlisting}
+;; Tieni solo i pari
+(remove-if-not #'evenp '(1 2 3 4 5 6))   ; => (2 4 6)
+
+;; Elimina i negativi
+(remove-if #'minusp '(3 -1 4 -1 5 -9 2)) ; => (3 4 5 2)
+
+;; Con predicato personalizzato
+(remove-if-not #'(lambda (x) (> x 3))
+               '(1 2 3 4 5))              ; => (4 5)
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+Common Lisp moderno preferisce \fn{remove} con \fn{:test} o
+\fn{:key} per casi semplici. Le varianti \fn{-if} accettano
+predicati arbitrari. Vedi anche \fn{find-if}, \fn{count-if},
+\fn{every}, \fn{some} --- stessa struttura, risultato diverso.
+\end{nota}
+
+\seprule
+
+\begin{concetto}{\fn{reduce} --- il reduce/fold}
+\keyline{}{Riduce una lista a un singolo valore applicando\\
+una funzione binaria in modo cumulativo.}
+
+\begin{sintassi}
+(reduce funzione lista)\\
+(reduce funzione lista :initial-value valore-iniziale)
+\end{sintassi}
+
+\detail{\fn{:initial-value} serve per le liste vuote e come
+``elemento neutro'' dell'operazione (0 per la somma, 1 per il prodotto).}
+\end{concetto}
+
+\begin{esempio}[\fn{reduce}]
+\begin{lstlisting}
+;; Somma
+(reduce #'+ '(1 2 3 4))              ; => 10
+(reduce #'+ '() :initial-value 0)   ; => 0  (lista vuota)
+
+;; Prodotto
+(reduce #'* '(2 3 4))               ; => 24
+
+;; max di una lista
+(reduce #'max '(3 1 4 1 5 9 2))     ; => 9
+
+;; Concatena stringhe
+(reduce #'(lambda (a b)
+            (concatenate 'string a " " b))
+        '("ciao" "mondo" "Lisp"))    ; => "ciao mondo Lisp"
+
+;; Da lista di cifre a numero intero: 1534
+(reduce #'(lambda (acc d) (+ (* acc 10) d))
+        '(1 5 3 4) :initial-value 0)  ; => 1534
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+\textbf{\fn{reduce} è il più potente dei tre.}
+Qualsiasi \fn{mapcar} o \fn{remove-if} si può esprimere con \fn{reduce}.
+La direzione predefinita è da sinistra a destra (\emph{fold left});
+con \fn{:from-end t} si procede da destra a sinistra (\emph{fold right}).
+\end{intuizione}
+
+\seprule
+
+\begin{concetto}{\fn{mapcan} --- map + flatten}
+\keyline{}{Come \fn{mapcar}, ma concatena i risultati invece di\\
+raccoglierli in una lista di liste.}
+
+\boxsep
+\detail{La funzione deve restituire una lista per ogni elemento.
+\fn{mapcan} è l'equivalente del \texttt{flatMap} di Java/JavaScript.}
+\end{concetto}
+
+\begin{esempio}[\fn{mapcan}]
+\begin{lstlisting}
+;; mapcar vs mapcan
+(mapcar  #'list '(1 2 3))   ; => ((1) (2) (3))  lista di liste
+(mapcan  #'list '(1 2 3))   ; => (1 2 3)         appiattita
+
+;; Raddoppia elementi
+(mapcan #'(lambda (x) (list x x)) '(1 2 3))
+; => (1 1 2 2 3 3)
+
+;; Espandi ogni elemento nei suoi vicini
+(mapcan #'(lambda (x) (list (1- x) x (1+ x)))
+        '(10 20))
+; => (9 10 11 19 20 21)
+\end{lstlisting}
+\end{esempio}
+
+\begin{workbook}
+\textbf{Esercizi 69--84}
+(\fn{mapcar}, \fn{remove-if-not}, \fn{reduce}, \fn{mapcan},
+\fn{sort}, \fn{every}/\fn{some}, composizione, ordinamento)\\[4pt]
+Ordine suggerito per gli essenziali: \textbf{69, 70, 72, 78, 85}.\\[4pt]
+L'esercizio~72 (somma con \fn{reduce}) è banale ma fondamentale:
+assicurati di capire il ruolo di \fn{:initial-value}.
+L'esercizio~75 (cifre a intero) e 77 (Horner) sono i più eleganti:
+vedono \fn{reduce} usato in modo non ovvio.
+\end{workbook}
+
+% ================================================================
+\section{Lambda: funzioni anonime}
+% ================================================================
+
+\begin{concetto}{\fn{lambda} --- funzione senza nome}
+\keyline{}{Crea una funzione al volo, senza darle un nome.}
+
+\begin{sintassi}
+(lambda (param1 param2 ...) corpo)
+\end{sintassi}
+
+\detail{Una lambda è una funzione come \fn{defun}, ma non viene
+registrata nel namespace globale. Si usa quando la funzione serve
+solo in un posto e non vale la pena nominarla.}
+\end{concetto}
+
+\begin{esempio}[Lambda con \fn{mapcar} e \fn{remove-if-not}]
+\begin{lstlisting}
+;; Senza lambda: serve definire una funzione ausiliaria
+(defun doppio (x) (* 2 x))
+(mapcar #'doppio '(1 2 3))   ; => (2 4 6)
+
+;; Con lambda: diretto, nessuna definizione separata
+(mapcar #'(lambda (x) (* 2 x)) '(1 2 3))   ; => (2 4 6)
+
+;; Anche piu' argomenti
+(mapcar #'(lambda (x y) (+ x y))
+        '(1 2 3) '(10 20 30))              ; => (11 22 33)
+
+;; Lambda in remove-if-not
+(remove-if-not #'(lambda (x) (> x 3))
+               '(1 2 3 4 5 6))             ; => (4 5 6)
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+La notazione \fn{\#'(lambda ...)} è equivalente a \fn{(lambda ...)} in
+Common Lisp moderno --- la lambda è già una funzione di prima classe.
+La forma con \fn{\#'} è più esplicita e preferita per chiarezza.
+\end{nota}
+
+% ================================================================
+\section{Closure: funzioni con memoria}
+% ================================================================
+
+\begin{concetto}{Closure --- cattura dell'ambiente lessicale}
+\keyline{}{Una closure è una funzione che \emph{cattura} le variabili\\
+dell'ambiente in cui è stata creata.}
+\keyline{}{Le variabili catturate sopravvivono alla funzione che le ha create.}
+
+\boxsep
+\detail{Quando una lambda viene creata, ``chiude sopra'' le variabili
+locali visibili in quel momento. Ogni chiamata successiva alla lambda
+vede e può modificare quelle variabili --- anche se la funzione che le
+aveva definite è già terminata.}
+\end{concetto}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Come funziona la cattura.}
+
+\medskip
+Considera questa funzione:
+
+\begin{tcolorbox}[
+  enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt,
+  left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt
+]
+\begin{lstlisting}
+(defun make-adder (n)
+  (lambda (x) (+ x n)))   ; n e' catturata
+
+(defparameter *add5*  (make-adder 5))
+(defparameter *add10* (make-adder 10))
+
+(funcall *add5*  3)   ; => 8
+(funcall *add10* 3)   ; => 13
+(funcall *add5*  7)   ; => 12
+\end{lstlisting}
+\end{tcolorbox}
+
+Quando \fn{make-adder} viene chiamata con \fn{n=5}, crea una lambda
+che cattura quella specifica istanza di \fn{n}.
+Quando \fn{make-adder} viene chiamata di nuovo con \fn{n=10},
+crea una \emph{nuova} lambda con una \emph{nuova} istanza di \fn{n}.
+Le due closure sono indipendenti.
+
+\medskip
+In Java questo si chiamerebbe ``parametro catturato da una lambda''.
+In C++ ``capture by value''. In JavaScript ``closure su una variabile''.
+In tutti i casi il meccanismo è lo stesso: la funzione porta con sé
+un riferimento alle variabili dell'ambiente in cui è nata.
+
+\medskip
+\textbf{Closure con stato mutabile.}
+Se la variabile catturata viene modificata con \fn{setf}, la modifica
+è visibile a tutte le chiamate successive della stessa closure.
+Questo permette di creare \emph{oggetti con stato} usando solo funzioni:
+
+\begin{tcolorbox}[
+  enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt,
+  left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt
+]
+\begin{lstlisting}
+(defun make-counter (&optional (start 0) (step 1))
+  (let ((val start))            ; val e' catturata
+    (lambda ()
+      (let ((current val))
+        (setf val (+ val step)) ; modifica lo stato interno
+        current))))             ; restituisce il vecchio valore
+
+(defparameter *c* (make-counter))
+(funcall *c*)   ; => 0
+(funcall *c*)   ; => 1
+(funcall *c*)   ; => 2
+
+(defparameter *c2* (make-counter 10 5))
+(funcall *c2*)  ; => 10
+(funcall *c2*)  ; => 15
+\end{lstlisting}
+\end{tcolorbox}
+
+Ogni chiamata a \fn{make-counter} crea una \emph{nuova} variabile \fn{val}
+indipendente. Due contatori creati separatamente non interferiscono.
+Questo è il fondamento del concetto di oggetto: stato + comportamento
+incapsulati insieme.
+\end{tcolorbox}
+
+\begin{workbook}
+\textbf{Esercizi 85--88}
+(Composizione, applicazione parziale, contatore, accumulatore)\\[4pt]
+Questi quattro esercizi sono il cuore del capitolo.
+L'esercizio~85 (\fn{compose}) e l'87 (\fn{make-counter}) sono gli essenziali.\\[4pt]
+\textbf{Attenzione all'es.~87}: la funzione restituisce una \emph{funzione},
+non un valore. Se \fn{(make-counter)} restituisce un numero sei sulla
+strada sbagliata.
+\end{workbook}
+
+% ================================================================
+\section{Composizione e applicazione parziale}
+% ================================================================
+
+\argomento{Composizione di funzioni}
+
+\begin{concetto}{Composizione}
+\keyline{}{$f \circ g$ è la funzione che prima applica $g$, poi $f$ al risultato.}
+\end{concetto}
+
+\begin{esempio}[Composizione manuale e generalizzata]
+\begin{lstlisting}
+;; Composizione manuale
+(defun componi-due (f g)
+  (lambda (x) (funcall f (funcall g x))))
+
+(defparameter *inc-poi-doppio*
+  (componi-due #'(lambda (x) (* 2 x)) #'1+))
+
+(funcall *inc-poi-doppio* 5)   ; => 12  ((5+1)*2)
+
+
+;; Composizione generalizzata: n funzioni
+(defun compose (&rest funzioni)
+  (if (null funzioni)
+      #'identity
+      (let ((f (car funzioni))
+            (resto (apply #'compose (cdr funzioni))))
+        (lambda (x) (funcall f (funcall resto x))))))
+
+(defparameter *pipeline*
+  (compose #'(lambda (x) (* x x))   ; terzo: quadrato
+           #'1+                      ; secondo: incrementa
+           #'abs))                   ; primo: valore assoluto
+
+(funcall *pipeline* -3)   ; => 16   abs(-3)=3 -> 3+1=4 -> 4^2=16
+\end{lstlisting}
+\end{esempio}
+
+\argomento{Applicazione parziale}
+
+\begin{concetto}{Applicazione parziale}
+\keyline{}{Fissa alcuni argomenti di una funzione, restituisce\\
+una funzione che attende i rimanenti.}
+
+\boxsep
+\detail{In linguaggi funzionali puri (Haskell) ogni funzione è
+automaticamente ``currificata''. In Common Lisp si costruisce
+esplicitamente con una closure.}
+\end{concetto}
+
+\begin{esempio}[Applicazione parziale]
+\begin{lstlisting}
+(defun partial (f &rest args-fissi)
+  (lambda (&rest args-nuovi)
+    (apply f (append args-fissi args-nuovi))))
+
+;; Costruisce "add-10" fissando il primo argomento di +
+(defparameter *add10* (partial #'+ 10))
+(funcall *add10* 5)    ; => 15
+(funcall *add10* 20)   ; => 30
+
+;; Costruisce un moltiplicatore
+(defparameter *doppio* (partial #'* 2))
+(mapcar *doppio* '(1 2 3 4))   ; => (2 4 6 8)
+
+;; Combinato con mapcar: filtra i multipli di 3
+(defparameter *mult3?* (partial #'= 0))
+;; Non funziona direttamente, ma l'idea e' questa:
+(remove-if-not #'(lambda (x) (= (mod x 3) 0))
+               '(1 2 3 4 5 6 7 8 9))   ; => (3 6 9)
+\end{lstlisting}
+\end{esempio}
+
+% ================================================================
+\section{Funzioni utili della libreria}
+% ================================================================
+
+\begin{esempio}[Altre funzioni higher-order della libreria]
+\begin{lstlisting}
+;; sort: ordina con comparatore custom (DISTRUTTIVO!)
+(sort '(3 1 4 1 5 9) #'<)    ; => (1 1 3 4 5 9)
+(sort '(3 1 4 1 5 9) #'>)    ; => (9 5 4 3 1 1)
+
+;; sort su strutture con :key
+(sort '((anna . 92) (mario . 85) (luca . 78))
+      #'>
+      :key #'cdr)
+; => ((ANNA . 92) (MARIO . 85) (LUCA . 78))
+
+;; every / some: predicati su sequenze
+(every  #'evenp '(2 4 6))    ; => T   (tutti pari)
+(every  #'evenp '(2 3 6))    ; => NIL
+(some   #'oddp  '(2 3 4))    ; => T   (almeno uno dispari)
+(notany #'minusp '(1 2 3))   ; => T   (nessun negativo)
+
+;; count-if: conta gli elementi che soddisfano il predicato
+(count-if #'evenp '(1 2 3 4 5 6))   ; => 3
+
+;; find-if: trova il primo elemento che soddisfa il predicato
+(find-if #'evenp '(1 3 4 5 6))      ; => 4
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+\textbf{\fn{sort} è distruttivo.}
+Modifica la lista originale. Se hai bisogno della lista originale
+intatta, usa \fn{sort} su una copia: \fn{(sort (copy-list lst) \#'<)}.
+Questa è una delle poche funzioni della libreria di liste che modifica
+la struttura in-place.
+\end{attenzione}
+
+% ================================================================
+\section*{Riepilogo del capitolo}
+% ================================================================
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=csBlue!5, colframe=csBlue!40,
+  arc=4pt, boxrule=0.6pt,
+  left=14pt, right=14pt, top=12pt, bottom=12pt,
+  before skip=16pt, after skip=16pt
+]
+\textbf{Quello che hai imparato:}
+
+\medskip
+\begin{itemize}
+  \item \textbf{Funzioni di prima classe}: \fn{\#'nome} prende il
+        riferimento, \fn{funcall} chiama, \fn{apply} espande una lista
+        come argomenti.
+  \item \textbf{\fn{mapcar}}: trasforma ogni elemento. Con più liste,
+        prende elementi in parallelo.
+  \item \textbf{\fn{remove-if}/\fn{remove-if-not}}: filtra per predicato.
+  \item \textbf{\fn{reduce}}: riduce una lista a un valore.
+        \fn{:initial-value} per le liste vuote.
+  \item \textbf{\fn{mapcan}}: map + flatten. Equivalente a \texttt{flatMap}.
+  \item \textbf{Lambda}: funzione anonima, creata al volo.
+  \item \textbf{Closure}: funzione che cattura variabili dell'ambiente.
+        Sopravvivono alla funzione che le ha create.
+        Con \fn{setf} permettono stato mutabile incapsulato.
+  \item \textbf{Composizione e parziale}: costruire nuove funzioni
+        combinando quelle esistenti.
+  \item \textbf{\fn{sort}, \fn{every}, \fn{some}, \fn{count-if},
+        \fn{find-if}}: la libreria standard higher-order.
+\end{itemize}
+
+\medskip
+\textbf{Prossimo:} Capitolo~5 --- \emph{Strutture dati}.
+Association list, hash table, \fn{defstruct}, CLOS base.
+\end{tcolorbox}
+
+\begin{workbook}
+\textbf{Prima di andare al Capitolo~5:}\\[4pt]
+Completa gli esercizi \textbf{69--88} (capitolo \emph{Higher-order
+e closure}).\\[4pt]
+Priorità: \textbf{69, 70, 72, 78, 85, 87} --- questi sei coprono
+tutti i pattern fondamentali del capitolo.\\[4pt]
+Se l'esercizio~85 (\fn{compose}) o l'87 (\fn{make-counter}) ti
+mette in difficoltà, leggi il suggerimento prima della soluzione.
+\end{workbook}
