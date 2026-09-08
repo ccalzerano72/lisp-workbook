@@ -705,6 +705,122 @@ un passo per chiamata: O(n) senza strutture dati ausiliarie.}
 
 \argomento{Il crivello di Eratostene: ricorsione + array}
 
+% --- Spiegazione degli array prima dell'esempio ---
+
+\begin{concetto}{Array in Common Lisp}
+\keyline{\fn{make-array}}{crea un array di dimensione fissa.}
+\keyline{\fn{aref}}{accede (legge o scrive) a un elemento per indice.}
+\keyline{\fn{setf}\ \fn{aref}}{modifica un elemento in posizione.}
+
+\boxsep
+\detail{A differenza delle liste, un array alloca le celle in
+memoria contigua. Accesso e modifica sono $O(1)$, qualunque sia
+l'indice.}
+\end{concetto}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Cosa è un array in Common Lisp.}
+
+\medskip
+Un array è una sequenza di celle numerate a partire da 0,
+allocate in memoria contigua.
+La dimensione viene fissata alla creazione e non cambia.
+A differenza della lista --- che è una catena di cons-cell distribuite
+in memoria --- l'array permette di raggiungere qualsiasi elemento
+direttamente, in tempo costante $O(1)$, conoscendo solo l'indice.
+
+\medskip
+\textbf{Creare un array.}
+La funzione è \fn{make-array}. Il primo argomento è la dimensione;
+\fn{:initial-element} imposta il valore iniziale di ogni cella.
+
+\begin{tcolorbox}[
+  enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt,
+  left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt
+]
+\begin{lstlisting}
+;; Array di 5 elementi, tutti inizializzati a 0
+(make-array 5 :initial-element 0)
+; => #(0 0 0 0 0)
+
+;; Array di 4 booleani, tutti T
+(make-array 4 :initial-element t)
+; => #(T T T T)
+
+;; Leggerlo: la notazione #(...) e' la rappresentazione di un array
+\end{lstlisting}
+\end{tcolorbox}
+
+\textbf{Leggere un elemento: \fn{aref}.}
+\fn{(aref arr i)} restituisce l'elemento all'indice \fn{i} (0-based).
+
+\begin{tcolorbox}[
+  enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt,
+  left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt
+]
+\begin{lstlisting}
+(defparameter *arr* (make-array 5 :initial-element 0))
+
+(aref *arr* 0)   ; => 0   (primo elemento)
+(aref *arr* 4)   ; => 0   (ultimo elemento)
+(aref *arr* 5)   ; ERRORE: indice fuori range
+\end{lstlisting}
+\end{tcolorbox}
+
+\textbf{Modificare un elemento: \fn{setf} + \fn{aref}.}
+\fn{setf} è l'operatore di assegnazione generalizzato.
+Combinato con \fn{aref} modifica una cella specifica.
+
+\begin{tcolorbox}[
+  enhanced, colback=clBg, colframe=gray!40,
+  arc=2pt, boxrule=0.4pt,
+  left=8pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt
+]
+\begin{lstlisting}
+(setf (aref *arr* 2) 42)   ; scrive 42 in posizione 2
+(aref *arr* 2)             ; => 42
+;; *arr* e' ora #(0 0 42 0 0)
+
+;; Modificare piu' celle in un colpo solo
+(setf (aref *arr* 0) 10
+      (aref *arr* 1) 20)
+;; *arr* e' ora #(10 20 42 0 0)
+\end{lstlisting}
+\end{tcolorbox}
+
+\textbf{Differenza fondamentale con la lista.}
+L'operazione \fn{(aref arr i)} è identica per $i = 0$ e $i = 1000$:
+raggiunge la cella direttamente senza scorrere nulla.
+Con una lista, \fn{(nth 1000 lst)} deve scorrere 1000 cons-cell.
+Questa differenza è irrilevante per liste di 5 elementi;
+diventa decisiva su strutture di migliaia o milioni di elementi.
+
+\medskip
+\textbf{Quando usare array invece di liste.}
+\begin{itemize}
+  \item Quando l'algoritmo richiede accesso per indice
+        (``vai alla posizione $k$'')
+  \item Quando la dimensione è nota a priori e non cambia
+  \item Quando la struttura viene modificata in-place
+        (algoritmi di marcatura, ordinamento, crivelli)
+\end{itemize}
+Le liste rimangono la scelta migliore per strutture di dimensione
+variabile, costruite incrementalmente con \fn{cons}.
+\end{tcolorbox}
+
 \begin{concetto}{Quando uscire dalla ricorsione pura}
 \keyline{}{Alcuni algoritmi richiedono \emph{accesso casuale} a posizioni\\
 arbitrarie: per questi, un array è la struttura giusta.}
