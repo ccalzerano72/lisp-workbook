@@ -19,11 +19,13 @@ I due volumi sono **strettamente correlati**: ogni modifica deve mantenere coere
 ## I due volumi
 
 ### Workbook — `manuale/`
-*Common Lisp — Guida Pratica*
+
+_Common Lisp — Guida Pratica_
 
 Un libro di esercizi graduali. Non spiega: fa fare.
 
 **Struttura:**
+
 1. Introduzione + cheat sheet + guida Allegro CL
 2. Quick Reference (consultazione, non lettura)
 3. 148 esercizi in 10 capitoli, difficoltà ★–★★★★★
@@ -40,7 +42,8 @@ Un libro di esercizi graduali. Non spiega: fa fare.
 | `colbox` | ○ | Grigio | 69 |
 
 ### Testo teorico — `teoria/`
-*Common Lisp — Fondamenti e Pratica*
+
+_Common Lisp — Fondamenti_
 
 Un percorso narrativo. Non è una reference: è il "perché" e il "come si pensa".
 
@@ -78,22 +81,24 @@ Studente universitario con basi imperative (C, Java, Python). Sa cos'è una vari
 
 ## Sistema visivo — teoria/
 
-| Box | Colore | Uso |
-|-----|--------|-----|
-| `concetto` | Blu | Costrutto o idea centrale |
-| `esempio` | Verde | Codice con output commentato |
-| `attenzione` | Arancio | Errori tipici, trappole |
-| `intuizione` | Teal | Salti concettuali chiave |
-| `confronto` | Marrone-caldo | Paragoni con altri linguaggi |
-| `nota` | Grigio corsivo | Dettagli secondari |
-| `workbook` | Viola | Richiami agli esercizi |
+| Box          | Colore         | Uso                          |
+| ------------ | -------------- | ---------------------------- |
+| `concetto`   | Blu            | Costrutto o idea centrale    |
+| `esempio`    | Verde          | Codice con output commentato |
+| `attenzione` | Arancio        | Errori tipici, trappole      |
+| `intuizione` | Teal           | Salti concettuali chiave     |
+| `confronto`  | Marrone-caldo  | Paragoni con altri linguaggi |
+| `nota`       | Grigio corsivo | Dettagli secondari           |
+| `workbook`   | Viola          | Richiami agli esercizi       |
 
 **Gerarchia interna ai box:**
+
 - `\keyline{etichetta}{testo}` — barra arancione + label sans-serif + testo bold blu
 - `\detail{...}` — grigio small per contorno/dettagli
 - `\boxsep` — linea sottile per respirare
 
 **Fuori dai box:**
+
 - `\argomento{...}` — sotto-titoli visivi senza numero
 - `\seprule` — separatori leggeri
 
@@ -102,6 +107,7 @@ Studente universitario con basi imperative (C, Java, Python). Sa cos'è una vari
 ## Regole tipografiche
 
 ### Da fare
+
 - **Conciso ma completo.** Ogni parola deve guadagnarsi il posto.
 - **Esempi concreti sempre.** Ogni costrutto ha almeno un esempio con output commentato, testabile nel REPL.
 - **Caratteri accentati nei listing:** usare forme apostrofate (`e'`, `puo'`, `perche'`) dentro `lstlisting`; usare UTF-8 nel testo normale.
@@ -109,6 +115,7 @@ Studente universitario con basi imperative (C, Java, Python). Sa cos'è una vari
 - **Priorità agli essenziali** nei box workbook: indicare sempre quali esercizi fare per primi.
 
 ### Da evitare
+
 - **Ridondanza.** Non ripetere lo stesso concetto in testo + box + esempio se uno basta.
 - **Prolissità.** Se superi 5 righe di testo continuo senza break visivo, è troppo.
 - **Cripticità.** Terminologia senza spiegazione, codice senza commenti inline su cosa restituisce.
