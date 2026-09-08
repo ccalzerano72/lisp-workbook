@@ -224,8 +224,7 @@ Usare \fn{bisestile-p} per febbraio.
 
 \label{ex:14}
 \begin{colbox}{14}{Terna pitagorica}{1}
-\exlabel{Implementare} \fn{(terna-pitagorica-p a b c)}.
-
+\exlabel{Implementare} \fn{(terna-pitagorica-p a b c)}.\\\\
 \exspieg{Tre interi positivi $(a, b, c)$ formano una \textit{terna pitagorica}
 se soddisfano il teorema di Pitagora: $a^2 + b^2 = c^2$
 (dove $c$ è l'ipotenusa, il lato più lungo).\\\\
@@ -805,7 +804,7 @@ Riscrivere \fn{reverse*} (es.~39) in forma tail-recursive.
 \label{ex:54}
 \begin{stdbox}{54}{Fibonacci O(n)}{3}
 \exlabel{Implementare} \fn{(fibonacci-fast n)} con due accumulatori,
-complessita' $O(n)$.
+complessita' $O(n)$.\\\\
 \exspieg{La versione ricorsiva naive di Fibonacci è $O(2^n)$ perché ricalcola
 gli stessi valori moltissime volte. La variante efficiente usa \textit{due}
 accumulatori che tengono in ogni momento gli ultimi due valori della sequenza
@@ -825,7 +824,7 @@ Il concetto di accumulatore è spiegato nella \hyperref[nota:tailrec]{nota sulla
 \end{stdbox}
 \label{ex:55}
 \begin{essbox}{55}{Flatten}{3}
-\exlabel{Implementare} \fn{(flatten* tree)} che appiattisce strutture annidate.
+\exlabel{Implementare} \fn{(flatten* tree)} che appiattisce strutture annidate.\\\\
 \exspieg{Una lista Common Lisp è un albero implicito: ogni elemento può
 essere a sua volta una lista (nodo interno) oppure un atomo (foglia).
 \fn{flatten*} visita ricorsivamente l'albero raccogliendo solo le foglie,
@@ -846,7 +845,7 @@ Caso ricorsivo: l'elemento corrente è una lista → \fn{append} del
 
 \label{ex:56}
 \begin{stdbox}{56}{Profondita' di una struttura}{3}
-\exlabel{Implementare} \fn{(tree-depth tree)}: profondita' massima di nesting.
+\exlabel{Implementare} \fn{(tree-depth tree)}: profondita' massima di nesting.\\\\
 \exspieg{La \textit{profondità} misura quanti livelli di parentesi si trovano
 al massimo. Un atomo ha profondità 0; una lista piatta ha profondità 1;
 ogni livello di annidamento aggiunge 1.
@@ -865,7 +864,7 @@ poi aggiungere 1 al risultato.}
 \end{stdbox}
 \label{ex:57}
 \begin{colbox}{57}{Conta atomi}{2}
-\exlabel{Implementare} \fn{(count-atoms tree)}.
+\exlabel{Implementare} \fn{(count-atoms tree)}.\\\\
 \exspieg{Conta quanti atomi (non-lista) ci sono in tutta la struttura,
 indipendentemente dalla profondità. Ricorsione sulla testa: se è un atomo
 conta 1, se è una lista conta gli atomi nella sottolista.}
@@ -879,7 +878,7 @@ conta 1, se è una lista conta gli atomi nella sottolista.}
 
 \label{ex:58}
 \begin{colbox}{58}{Somma profonda}{2}
-\exlabel{Implementare} \fn{(sum-tree tree)}.
+\exlabel{Implementare} \fn{(sum-tree tree)}.\\\\
 \exspieg{Come \fn{count-atoms}, ma invece di contare si sommano i valori
 numerici di tutti gli atomi, a qualsiasi profondità di annidamento.}
 \nopagebreak
@@ -917,7 +916,7 @@ numerici di tutti gli atomi, a qualsiasi profondità di annidamento.}
 \end{stdbox}
 \label{ex:61}
 \begin{stdbox}{61}{Potenza efficiente}{3}
-\exlabel{Implementare} \fn{(power-fast base exp)} con complessita' $O(\log n)$:
+\exlabel{Implementare} \fn{(power-fast base exp)} con complessita' $O(\log n)$.\\\\
 \exspieg{L'idea è il \textit{fast exponentiation} (o \textit{esponenziazione
 per quadratura}): invece di moltiplicare \fn{base} per sé stessa $n$ volte
 ($O(n)$ moltiplicazioni), si dimezza l'esponente ad ogni passo.
@@ -940,7 +939,7 @@ x^n = \begin{cases}
 \label{ex:62}
 \begin{stdbox}{62}{MCD e MCM}{2}
 Implementare \fn{(mcd* a b)} e \fn{(mcm* a b)} senza usare
-\fn{gcd}/\fn{lcm}.
+\fn{gcd}/\fn{lcm}.\\\\
 \exspieg{\textbf{MCD} (Massimo Comun Divisore): usare l'algoritmo di Euclide —
 \fn{(mcd* a b)} = \fn{(mcd* b (mod a b))} finché \fn{b = 0}, in quel caso
 il risultato è \fn{a}.
@@ -969,7 +968,7 @@ Gestire correttamente 0 e 1.
 
 \label{ex:64}
 \begin{essbox}{64}{Crivello di Eratostene}{3}
-\exlabel{Implementare} \fn{(crivello n)}: lista di tutti i primi $\leq n$.
+\exlabel{Implementare} \fn{(crivello n)}: lista di tutti i primi $\leq n$.\\\\
 \exspieg{Il crivello di Eratostene è un algoritmo classico: si parte con
 tutti i numeri da 2 a $n$ marcati come "forse primi"; per ogni numero non
 ancora marcato come composto, si marcano come composti tutti i suoi multipli.
@@ -990,7 +989,7 @@ multipli con \fn{setf}/\fn{aref}.}
 
 \label{ex:65}
 \begin{stdbox}{65}{Fattori primi}{3}
-\exlabel{Implementare} \fn{(prime-factors n)}.
+\exlabel{Implementare} \fn{(prime-factors n)}.\\\\
 \exspieg{Scomporre $n$ nei suoi fattori primi significa trovare la sequenza
 di numeri primi $p_1 \leq p_2 \leq \ldots$ tale che
 $n = p_1 \times p_2 \times \ldots$
@@ -1010,7 +1009,7 @@ Risultato ordinato; $n > 1$.
 \label{ex:66}
 \begin{colbox}{66}{Sottolista per posizione}{2}
 \exlabel{Implementare} \fn{(sublist lst inizio fine)} (indici 0-based,
-\fn{fine} escluso).
+\fn{fine} escluso).\\\\
 \exspieg{Equivalente di \fn{lst[inizio:fine]} in Python o
 \fn{subList(inizio, fine)} in Java. Restituisce gli elementi dalla posizione
 \fn{inizio} (inclusa) alla posizione \fn{fine} (esclusa).
@@ -1025,7 +1024,7 @@ si ottengono gli elementi alle posizioni 1, 2, 3, cioè \fn{(b c d)}.}
 
 \label{ex:67}
 \begin{colbox}{67}{Raggruppa in blocchi}{3}
-\exlabel{Implementare} \fn{(raggruppa lst n)}: sottoliste di lunghezza \fn{n}.
+\exlabel{Implementare} \fn{(raggruppa lst n)}: sottoliste di lunghezza \fn{n}.\\\\
 \exspieg{Dividere la lista in gruppi consecutivi di \fn{n} elementi.
 Se la lunghezza non è multiplo di \fn{n}, l'ultimo gruppo contiene
 i rimanenti (può essere più corto).
@@ -1192,7 +1191,7 @@ Gestire la lista vuota.
 \label{ex:76}
 \begin{colbox}{76}{Appiattisce un livello}{3}
 \exlabel{Implementare} \fn{(appiattisci-un-livello lst)} con \fn{reduce}
-e \fn{append}.
+e \fn{append}.\\\\
 \exspieg{A differenza di \fn{flatten*} (es.~55) che appiattisce
 \textit{tutti} i livelli di annidamento, questa funzione rimuove
 \textit{solo il primo} livello: gli elementi che sono liste vengono
@@ -1210,7 +1209,7 @@ ogni passo si fa \fn{(append acc elemento)}.}
 
 \label{ex:77}
 \begin{colbox}{77}{Regola di Horner}{3}
-\exlabel{Implementare} \fn{(horner coefficienti x)} con \fn{reduce}.
+\exlabel{Implementare} \fn{(horner coefficienti x)} con \fn{reduce}.\\\\
 \exspieg{\textbf{Valutare un polinomio} significa calcolare il suo valore
 numerico sostituendo un numero a $x$. Ad esempio, il polinomio $2x^2 + 3x + 1$
 valutato in $x=2$ dà: $2 \cdot 4 + 3 \cdot 2 + 1 = 8 + 6 + 1 = 15$.
@@ -1241,7 +1240,7 @@ poi \fn{apply} con \fn{+} per la somma.
 
 \label{ex:79}
 \begin{stdbox}{79}{mapcan}{2}
-\exlabel{Implementare} \fn{(raddoppia lst)} con \fn{mapcan}.
+\exlabel{Implementare} \fn{(raddoppia lst)} con \fn{mapcan}.\\\\
 \exspieg{\fn{mapcan} è come \fn{mapcar} ma concatena i risultati
 invece di raccoglierli in una lista di liste: applica la funzione
 a ogni elemento (la funzione deve restituire una lista) e poi
@@ -1302,7 +1301,7 @@ replicando \fn{every}/\fn{some} senza usarli.
 \label{ex:83}
 \begin{colbox}{83}{Raggruppa per chiave}{3}
 \exlabel{Implementare} \fn{(raggruppa-per funzione lst)}: restituisce
-una alist con chiave = risultato della funzione.
+una alist con chiave = risultato della funzione.\\\\
 \exspieg{Per ogni elemento di \fn{lst}, applicare \fn{funzione} per
 ottenere una "chiave". Raccogliere gli elementi con la stessa chiave
 nella stessa coppia \fn{(chiave elem1 elem2 \ldots)} della alist
@@ -1332,7 +1331,7 @@ i dispari sotto \fn{NIL}.}
 
 \label{ex:85}
 \begin{essbox}{85}{Composizione di funzioni}{3}
-\exlabel{Implementare} \fn{(compose f g)}: restituisce $f(g(x))$ come closure.
+\exlabel{Implementare} \fn{(compose f g)}: restituisce $f(g(x))$ come closure.\\\\
 \exspieg{La composizione di funzioni $f \circ g$ è la funzione che prima
 applica $g$ all'argomento, poi applica $f$ al risultato.
 \fn{compose} deve restituire una \textit{nuova funzione} (una lambda/closure)
@@ -1367,7 +1366,7 @@ nuovi:\\\fn{(apply funzione (append argomenti-fissi argomenti-nuovi))}.}
 
 \label{ex:87}
 \begin{essbox}{87}{Closure con stato: contatore}{3}
-\exlabel{Implementare} \fn{(make-counter \&optional (start 0) (step 1))}.
+\exlabel{Implementare} \fn{(make-counter \&optional (start 0) (step 1))}.\\\\
 \exspieg{Una \textit{closure con stato} è una funzione che "ricorda" una
 variabile tra una chiamata e l'altra. \fn{make-counter} deve restituire
 una funzione (non il valore corrente!): ogni volta che questa funzione
@@ -1393,7 +1392,7 @@ La variabile \fn{val} sopravvive perché la lambda la cattura nel suo scope.}
 \label{ex:88}
 \begin{colbox}{88}{Accumulatore}{3}
 \exlabel{Implementare} \fn{(make-accumulator iniziale)}: ogni chiamata
-somma un valore al totale.
+somma un valore al totale.\\\\
 \exspieg{Variante dell'es.~87: la closure ha uno stato interno (il totale
 corrente) che viene aggiornato ad ogni chiamata. A differenza del contatore,
 qui l'argomento passato alla funzione restituita è il valore da aggiungere,
@@ -1410,7 +1409,7 @@ non un segnale di avanzamento fisso.}
 \label{ex:89}
 \begin{colbox}{89}{Generatore Fibonacci con closure}{4}
 \exlabel{Implementare} \fn{(make-fib-generator)}: restituisce una funzione
-che ad ogni chiamata produce il successivo numero di Fibonacci.
+che ad ogni chiamata produce il successivo numero di Fibonacci.\\\\
 \exspieg{Come il contatore dell'es.~87, ma lo stato interno è una coppia
 di valori $(a, b)$ che rappresenta gli ultimi due numeri della sequenza.
 Ad ogni chiamata: restituire $a$, poi aggiornare la coppia a $(b, a+b)$.
@@ -1429,7 +1428,7 @@ ogni invocazione.}
 
 \label{ex:90}
 \begin{colbox}{90}{Pipeline}{3}
-\exlabel{Implementare} \fn{(pipeline valore funzioni)}.
+\exlabel{Implementare} \fn{(pipeline valore funzioni)}.\\\\
 \exspieg{Una \textit{pipeline} (o catena di trasformazioni) applica una
 lista di funzioni in sequenza: il risultato di ogni funzione diventa
 l'input della successiva. È l'equivalente dell'operatore \texttt{|>}
@@ -1449,7 +1448,7 @@ di riduzione è \fn{(funcall f acc)}.}
 \label{ex:91}
 \begin{stdbox}{91}{Memoization}{4}
 \exlabel{Implementare} \fn{(memoize funzione)} che restituisce una versione
-con cache.
+con cache.\\\\
 \exspieg{La \textit{memoization} è una tecnica di ottimizzazione: si
 memorizza il risultato di ogni chiamata in una cache (hash table), così se
 la stessa funzione viene chiamata di nuovo con gli stessi argomenti si
@@ -1539,7 +1538,7 @@ Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
 
 \label{ex:96}
 \begin{colbox}{96}{Frequenza con hash table}{2}
-Riscrivere \fn{(frequencies-hash lst)} usando una hash table.
+Riscrivere \fn{(frequencies-hash lst)} usando una hash table.\\\\
 \exspieg{Stessa logica dell'es.~94 (\fn{frequencies} con alist), ma usando
 una hash table al posto dell'alist. Per ogni elemento: leggere il contatore
 attuale con \fn{gethash} (default 0), incrementarlo di 1 e salvarlo con
@@ -1622,7 +1621,7 @@ Creare una matrice $3 \times 3$ con \fn{make-array} e implementare:
 
 \label{ex:102}
 \begin{colbox}{102}{Trasposta di matrice}{3}
-\exlabel{Implementare} \fn{(trasposta m n)}: trasposta di una matrice $n \times n$.
+\exlabel{Implementare} \fn{(trasposta m n)}: trasposta di una matrice $n \times n$.\\\\
 \exspieg{La \textit{trasposizione} di una matrice scambia righe e colonne:
 l'elemento in posizione $(i, j)$ va in posizione $(j, i)$.
 Usare \fn{make-array} con \fn{'(n n)} per la matrice risultante, poi due
@@ -1652,7 +1651,7 @@ modifica i dati esistenti invece di crearne una copia.}
 \label{ex:104}
 \begin{colbox}{104}{Moltiplicazione di matrici (opzionale)}{4}
 \exlabel{Implementare} \fn{(moltiplica-matrici a b n)}: prodotto di
-matrici quadrate $n \times n$.
+matrici quadrate $n \times n$.\\\\
 \exspieg{Il prodotto $C = A \times B$ è definito da:
 $C[i][j] = \sum_{k=0}^{n-1} A[i][k] \times B[k][j]$.
 Servono tre cicli annidati: $i$ per le righe di $A$, $j$ per le colonne
@@ -1749,7 +1748,7 @@ l'uguaglianza al nodo corrente.}
 \label{ex:109}
 \begin{colbox}{109}{Traversal dell'albero}{3}
 \exlabel{Implementare} \fn{(preorder tree)}, \fn{(inorder tree)},
-\fn{(postorder tree)}.
+\fn{(postorder tree)}.\\\\
 \exspieg{Le tre visite differiscono nell'ordine in cui si visita la radice
 rispetto ai sottoalberi:
 \begin{itemize}[leftmargin=1.8em, itemsep=1pt, topsep=2pt]
@@ -1783,7 +1782,7 @@ Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 \label{ex:111}
 \begin{colbox}{111}{Specchia l'albero}{3}
 \exlabel{Implementare} \fn{(specchia tree)}: scambia ricorsivamente
-sottoalberi sinistro e destro.
+sottoalberi sinistro e destro.\\\\
 \exspieg{Il \textit{mirror} di un albero binario è l'albero ottenuto
 scambiando ricorsivamente il figlio sinistro con il destro per ogni nodo.
 Caso base: albero vuoto (\fn{NIL}) → \fn{NIL}.
@@ -1797,7 +1796,7 @@ come figlio destro.}
 \label{ex:112}
 \begin{colbox}{112}{Albero bilanciato?}{4}
 \exlabel{Implementare} \fn{(bilanciato-p tree)}: le altezze dei sottoalberi
-differiscono al piu' di 1 per ogni nodo.
+differiscono al piu' di 1 per ogni nodo.\\\\
 \exspieg{Un albero è \textit{bilanciato in altezza} (height-balanced) se,
 per ogni nodo, la differenza di altezza tra il sottoalbero sinistro e quello
 destro è al massimo 1 — \textit{e questa condizione vale ricorsivamente}
@@ -1907,7 +1906,7 @@ Non modificare la struttura originale; restituire un nuovo grafo.}
 
 \label{ex:118}
 \begin{colbox}{118}{DFS su grafo}{4}
-\exlabel{Implementare} \fn{(dfs graph start)}: visita in profondita'.
+\exlabel{Implementare} \fn{(dfs graph start)}: visita in profondita'.\\\\
 \exspieg{La \textit{Depth-First Search} (DFS) esplora il grafo seguendo
 ogni ramo fino in fondo prima di tornare indietro.}
 \nopagebreak
@@ -1922,7 +1921,7 @@ ogni ramo fino in fondo prima di tornare indietro.}
 
 \label{ex:119}
 \begin{colbox}{119}{BFS su grafo}{4}
-\exlabel{Implementare} \fn{(bfs graph start)}: visita in ampiezza.
+\exlabel{Implementare} \fn{(bfs graph start)}: visita in ampiezza.\\\\
 \exspieg{La \textit{Breadth-First Search} (BFS) esplora prima tutti i vicini
 diretti di un nodo, poi i vicini dei vicini, e così via — livello per livello.}
 \nopagebreak
@@ -2058,7 +2057,7 @@ combinazioni, ordinamento e problemi classici di backtracking.
 
 \label{ex:125}
 \begin{stdbox}{125}{Permutazioni}{4}
-\exlabel{Implementare} \fn{(permutations lst)}.
+\exlabel{Implementare} \fn{(permutations lst)}.\\\\
 \exspieg{Una \textit{permutazione} è un ordinamento di tutti gli elementi.
 Con $n$ elementi ci sono $n!$ permutazioni (es: 3 elementi → 6 permutazioni).}
 \nopagebreak
@@ -2071,7 +2070,7 @@ Con $n$ elementi ci sono $n!$ permutazioni (es: 3 elementi → 6 permutazioni).}
 
 \label{ex:126}
 \begin{stdbox}{126}{Combinazioni}{3}
-\exlabel{Implementare} \fn{(combinations lst k)}.
+\exlabel{Implementare} \fn{(combinations lst k)}.\\\\
 \exspieg{Una \textit{combinazione} è una selezione di \fn{k} elementi
 senza considerare l'ordine. Es: da \fn{(a b c d)} prendendo 2 elementi
 si ottengono 6 coppie: \fn{(a b)}, \fn{(a c)}, \fn{(a d)}, \fn{(b c)}, \fn{(b d)}, \fn{(c d)}.}
@@ -2086,7 +2085,7 @@ si ottengono 6 coppie: \fn{(a b)}, \fn{(a c)}, \fn{(a d)}, \fn{(b c)}, \fn{(b d)
 
 \label{ex:127}
 \begin{stdbox}{127}{Somma a target}{3}
-\exlabel{Implementare} \fn{(somma-a-target numeri target)}.
+\exlabel{Implementare} \fn{(somma-a-target numeri target)}.\\\\
 \exspieg{Trovare tutti i sottoinsiemi di \fn{numeri} la cui somma è
 esattamente \fn{target}.}
 \nopagebreak
@@ -2100,7 +2099,7 @@ esattamente \fn{target}.}
 
 \label{ex:128}
 \begin{colbox}{128}{Parentesi bilanciate generate}{3}
-\exlabel{Implementare} \fn{(genera-parentesi n)}.
+\exlabel{Implementare} \fn{(genera-parentesi n)}.\\\\
 \exspieg{Generare tutte le stringhe di \fn{n} coppie di parentesi tonde
 correttamente bilanciate.}
 \nopagebreak
@@ -2114,7 +2113,7 @@ correttamente bilanciate.}
 
 \label{ex:129}
 \begin{stdbox}{129}{Merge sort}{4}
-\exlabel{Implementare} \fn{(merge-sorted lst1 lst2)} e \fn{(merge-sort* lst)}.
+\exlabel{Implementare} \fn{(merge-sorted lst1 lst2)} e \fn{(merge-sort* lst)}.\\\\
 \exspieg{Il \textit{merge sort} è un algoritmo di ordinamento che divide
 la lista a metà, ordina ricorsivamente le due metà, e le fonde in una
 lista ordinata.}
@@ -2129,7 +2128,7 @@ lista ordinata.}
 
 \label{ex:130}
 \begin{stdbox}{130}{Quicksort}{4}
-\exlabel{Implementare} \fn{(quicksort* lst)} senza usare \fn{sort}.
+\exlabel{Implementare} \fn{(quicksort* lst)} senza usare \fn{sort}.\\\\
 \exspieg{Il \textit{quicksort} è un algoritmo di ordinamento che sceglie
 un elemento \textit{pivot}, divide la lista in elementi minori e maggiori
 del pivot, e ordina ricorsivamente le due parti.}
@@ -2143,7 +2142,7 @@ del pivot, e ordina ricorsivamente le due parti.}
 
 \label{ex:131}
 \begin{stdbox}{131}{Torri di Hanoi}{3}
-\exlabel{Implementare} \fn{(hanoi n da a tramite)} che stampa le mosse.
+\exlabel{Implementare} \fn{(hanoi n da a tramite)} che stampa le mosse.\\\\
 \exspieg{Ci sono 3 pioli (A, B, C) e \fn{n} dischi di dimensione crescente
 impilati sul piolo \fn{da}. Obiettivo: spostare tutta la torre sul piolo
 \fn{a}, muovendo un disco alla volta e senza mai mettere un disco più
@@ -2162,12 +2161,12 @@ grande sopra uno più piccolo.}
 \label{ex:132}
 \begin{colbox}{132}{Problema dello zaino}{4}
 \exlabel{Implementare} \fn{(knapsack oggetti capacita)}.
-Oggetti: lista di \fn{(peso valore)}.
+Oggetti: lista di \fn{(peso valore)}.\\\\
 \exspieg{Dati oggetti con peso e valore, scegliere quali mettere nello
 zaino (capacità limitata) per massimizzare il valore totale senza
 superare la capacità.}
 \begin{lstlisting}
-(knapsack '((2 3) (3 4) (4 5) (5 8)) 5)
+(knapsack '((2 3) (3 4) (4 5) (5 6)) 5)
 ; -> 7
 \end{lstlisting}
 
@@ -2177,7 +2176,7 @@ superare la capacità.}
 \label{ex:133}
 \begin{colbox}{133}{Labirinto}{4}
 Rappresentare un labirinto come matrice 2D (0 libero, 1 muro).
-\exlabel{Implementare} \fn{(find-path maze start goal)}.
+\exlabel{Implementare} \fn{(find-path maze start goal)}.\\\\
 \exspieg{Trovare un percorso dalla cella \fn{start} alla cella \fn{goal},
 muovendosi solo nelle 4 direzioni ortogonali (su, giù, sinistra, destra)
 attraverso celle libere.}
@@ -2192,7 +2191,7 @@ attraverso celle libere.}
 
 \label{ex:134}
 \begin{stdbox}{134}{N-regine}{5}
-\exlabel{Implementare} \fn{(n-queens n)}: tutte le configurazioni valide.
+\exlabel{Implementare} \fn{(n-queens n)}: tutte le configurazioni valide.\\\\
 \exspieg{Posizionare \fn{n} regine su una scacchiera $n \times n$ in modo
 che nessuna ne attacchi un'altra. Due regine si attaccano se sono sulla
 stessa riga, colonna o diagonale.}
@@ -2209,7 +2208,7 @@ stessa riga, colonna o diagonale.}
 \label{ex:135}
 \begin{colbox}{135}{Sudoku}{5}
 \exlabel{Implementare} \fn{(solve-sudoku board)}.
-\fn{board}: array $9 \times 9$ con 0 per celle vuote.
+\fn{board}: array $9 \times 9$ con 0 per celle vuote.\\\\
 \exspieg{Riempire la griglia in modo che ogni riga, colonna e blocco
 $3 \times 3$ contenga i numeri da 1 a 9 senza ripetizioni.}
 
@@ -2253,7 +2252,7 @@ direttamente; usare \fn{coerce}.
 
 \label{ex:138}
 \begin{stdbox}{138}{Stringa palindroma}{2}
-\exlabel{Implementare} \fn{(palindrome-p s)}.
+\exlabel{Implementare} \fn{(palindrome-p s)}.\\\\
 \exspieg{Un \textit{palindromo} è una stringa che si legge uguale da
 sinistra a destra e da destra a sinistra (es: "anna", "radar").}
 \nopagebreak
@@ -2333,7 +2332,7 @@ Vincolo: usare una pila.
 \label{ex:143}
 \begin{stdbox}{143}{Valutatore di espressioni}{4}
 \exlabel{Implementare} \fn{(evaluate-expression expr)}: espressioni
-in notazione prefissa, senza usare \fn{eval}.
+in notazione prefissa, senza usare \fn{eval}.\\\\
 \exspieg{In Common Lisp il codice è esso stesso una lista (S-expression),
 quindi \fn{'(+ 2 3)} è una lista con tre elementi.
 Questo valutatore implementa un sottoinsieme di Lisp "a mano":
@@ -2352,7 +2351,7 @@ o \fn{case} su \fn{op}.}
 
 \label{ex:144}
 \begin{colbox}{144}{Mini-interprete con variabili}{5}
-Estendere l'es.~143 con variabili (\fn{set x 10}) e riferimenti.
+Estendere l'es.~143 con variabili (\fn{set x 10}) e riferimenti.\\\\
 \exspieg{Estendere il valutatore dell'es.~143 con un \textit{ambiente}
 (alist di coppie \fn{(nome . valore)}) che persiste tra le chiamate.
 Nuovi casi da gestire:
@@ -2420,7 +2419,7 @@ Separare logica del gioco, verifica vittoria e I/O.
 \label{ex:147}
 \begin{colbox}{147}{Gioco della vita (Conway)}{4}
 \exlabel{Implementare} \fn{(evolvi griglia)}: un passo di evoluzione.
-Griglia: array 2D di 0 (morto) e 1 (vivo).
+Griglia: array 2D di 0 (morto) e 1 (vivo).\\\\
 \exspieg{Il \textit{Game of Life} di Conway è un automa cellulare:
 ogni cella viva o morta evolve in base ai suoi 8 vicini (orizzontali,
 verticali, diagonali) secondo le regole:

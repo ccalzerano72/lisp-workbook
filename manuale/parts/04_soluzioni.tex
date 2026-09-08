@@ -1475,7 +1475,7 @@ chiami la versione memoizzata, non se stessa:
   (if (null tree) nil
       (append (postorder (node-left tree))
               (postorder (node-right tree))
-              (list (node-val tree))))))
+              (list (node-val tree)))))
 \end{lstlisting}
 \end{solbox}
 
