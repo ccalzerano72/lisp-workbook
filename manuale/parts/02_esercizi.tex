@@ -1310,7 +1310,7 @@ Esempio: con \fn{\#'evenp} i pari vanno sotto la chiave \fn{T},
 i dispari sotto \fn{NIL}.}
 \begin{lstlisting}
 (raggruppa-per #'evenp '(1 2 3 4 5))
-; -> ((NIL 1 3 5) (T 2 4))
+; -> ((T 2 4) (NIL 1 3 5))
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:83]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:83]{$\rightarrow$ Suggerimento}\normalsize\color{black}
@@ -1513,7 +1513,7 @@ Usare \fn{assoc} in \fn{lookup}; non modificare la lista originale.
 \nopagebreak
 \begin{lstlisting}
 (frequencies '(a b a c b a))
-; -> ((A . 3) (B . 2) (C . 1))
+; -> ((C . 1) (B . 2) (A . 3))
 \end{lstlisting}
 
 
@@ -2049,7 +2049,7 @@ combinazioni, ordinamento e problemi classici di backtracking.
 \nopagebreak
 \begin{lstlisting}
 (subsets '(a b))
-; -> (() (A) (B) (A B))
+; -> (NIL (B) (A) (A B))
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:124]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:124]{$\rightarrow$ Suggerimento}\normalsize\color{black}
@@ -2091,7 +2091,7 @@ esattamente \fn{target}.}
 \nopagebreak
 \begin{lstlisting}
 (somma-a-target '(1 2 3 4 5) 6)
-; -> ((1 5) (2 4) (1 2 3))
+; -> ((1 2 3) (1 5) (2 4))
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:127]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:127]{$\rightarrow$ Suggerimento}\normalsize\color{black}
