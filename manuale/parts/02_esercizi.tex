@@ -1352,10 +1352,9 @@ un argomento \fn{x}, restituisce \fn{(funcall f (funcall g x))}.}
 \exlabel{Implementare} \fn{(partial funzione \&rest argomenti)}.\\\\
 \exspieg{L'\textit{applicazione parziale}
 fissa alcuni argomenti di una funzione, restituendo una nuova funzione
-che accetta gli argomenti rimanenti.
-\fn{partial} deve restituire una closure che, quando chiamata con ulteriori
+che accetta gli argomenti rimanenti. \fn{partial} deve restituire una closure che, quando chiamata con ulteriori
 argomenti, chiama \fn{funzione} con gli argomenti fissi preposti a quelli
-nuovi: \fn{(apply funzione (append argomenti-fissi argomenti-nuovi))}.}
+nuovi:\\\fn{(apply funzione (append argomenti-fissi argomenti-nuovi))}.}
 \nopagebreak
 \begin{lstlisting}
 (defparameter *add10* (partial #'+ 10))
