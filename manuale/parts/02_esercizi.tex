@@ -1060,46 +1060,65 @@ se stessa sul resto.}
 \section{Higher-order e closure}
 % =============================================================
 
-% ---- Box HOF ----
+% ---- Nota tecnica: rimando al testo teorico ----
+\label{nota:higherorder}
 \begin{tcolorbox}[
-  enhanced, colback=black!2, colframe=black!15,
-  boxrule=0.3pt, arc=2pt,
-  left=6pt, right=6pt, top=5pt, bottom=5pt,
-  before skip=6pt, after skip=6pt
+  enhanced,
+  colframe=black!35,
+  colback=black!3,
+  fonttitle=\bfseries\small,
+  title={Nota --- Higher-order, closure e funzioni di prima classe},
+  arc=3pt,
+  boxrule=0.6pt,
+  left=12pt, right=12pt, top=8pt, bottom=8pt,
+  toptitle=3pt, bottomtitle=3pt,
+  before skip=10pt plus 3pt,
+  after skip=10pt plus 3pt,
+  parskip=4pt
 ]
-\footnotesize
-\textbf{Funzione di ordine superiore}\,: {\color{black!70}riceve funzioni come argomenti o ne restituisce una.}
+\small\color{black!75}
+
+Una \textbf{funzione di ordine superiore} (higher-order) riceve funzioni
+come argomenti o ne restituisce una. In Common Lisp le funzioni sono
+valori di prima classe: \fn{\#'nome} prende il riferimento,
+\fn{funcall} la chiama, \fn{apply} la chiama espandendo una lista
+come argomenti.
 
 \smallskip
-\scriptsize
-\begin{tabular}{@{}l@{\;\;--\;\;}l@{}}
-\fn{mapcar}    & \color{black!60}{applica f a ogni elemento, ritorna lista risultati} \\
-\fn{remove-if} & \color{black!60}{rimuove elementi per cui il predicato è vero} \\
-\fn{reduce}    & \color{black!60}{riduce lista a un valore applicando f cumulativamente} \\
-\fn{apply}     & \color{black!60}{chiama f con elementi lista come argomenti separati} \\
-\fn{mapcan}    & \color{black!60}{come mapcar ma concatena le liste risultato} \\
+\begin{tabular}{@{}l@{\;\;---\;\;}l@{}}
+\fn{mapcar}        & applica \fn{f} a ogni elemento, ritorna lista risultati \\
+\fn{remove-if-not} & mantiene gli elementi per cui il predicato e' vero \\
+\fn{remove-if}     & rimuove gli elementi per cui il predicato e' vero \\
+\fn{reduce}        & riduce una lista a un valore con una funzione binaria \\
+\fn{apply}         & chiama \fn{f} con gli elementi di una lista come argomenti \\
+\fn{mapcan}        & come \fn{mapcar} ma concatena i risultati (flatMap) \\
 \end{tabular}
-\end{tcolorbox}
 
-% ---- Box Closure ----
-\begin{tcolorbox}[
-  enhanced, colback=black!2, colframe=black!15,
-  boxrule=0.3pt, arc=2pt,
-  left=6pt, right=6pt, top=5pt, bottom=5pt,
-  before skip=4pt, after skip=10pt
-]
-\footnotesize
-\textbf{Closure}\,: {\color{black!70}funzione che cattura variabili dall'ambiente lessicale.}
+\medskip
+Una \textbf{closure} e' una funzione che cattura variabili
+dall'ambiente lessicale in cui e' stata creata.
+Le variabili catturate sopravvivono alla funzione che le ha create
+e rimangono accessibili a ogni chiamata successiva.
+Con \fn{setf} permettono stato mutabile incapsulato:
 
-\smallskip
-\scriptsize
 \begin{lstlisting}
 (defun make-counter ()
-  (let ((n 0))                  ; n catturata dalla lambda
+  (let ((n 0))           ; n catturata dalla lambda
     (lambda () (incf n))))
-(funcall (make-counter))        ; -> 1, 2, 3...
+
+(defparameter *c* (make-counter))
+(funcall *c*)   ; -> 1
+(funcall *c*)   ; -> 2   (n persiste tra le chiamate)
 \end{lstlisting}
+
+\smallskip\noindent
+\textcolor{black!50}{\textit{Approfondimento ---
+\fn{\#'}, \fn{funcall}, \fn{apply}, lambda, closure con stato,
+composizione e applicazione parziale:
+\textbf{Fondamenti e Pratica}, Cap.~4 (Higher-order e closure).}}
 \end{tcolorbox}
+
+\bigskip
 
 \label{ex:69}
 \begin{essbox}{69}{Quadrato degli elementi con mapcar}{1}
@@ -1953,10 +1972,58 @@ diretti di un nodo, poi i vicini dei vicini, e così via — livello per livello
 \section{Macro}
 % =============================================================
 
-\noindent
-Le macro operano a livello sintattico: trasformano codice
-prima che venga valutato. Questo capitolo mostra come costruire
-nuove strutture di controllo.
+\label{nota:macro}
+\begin{tcolorbox}[
+  enhanced,
+  colframe=black!35,
+  colback=black!3,
+  fonttitle=\bfseries\small,
+  title={Nota --- Macro: trasformare codice in codice},
+  arc=3pt,
+  boxrule=0.6pt,
+  left=12pt, right=12pt, top=8pt, bottom=8pt,
+  toptitle=3pt, bottomtitle=3pt,
+  before skip=10pt plus 3pt,
+  after skip=10pt plus 3pt,
+  parskip=4pt
+]
+\small\color{black!75}
+
+Le macro operano a livello sintattico: ricevono gli argomenti
+come \textit{codice grezzo non valutato} e li riscrivono in
+un'altra espressione prima che il compilatore la veda.
+Questo e' radicalmente diverso da una funzione, dove gli argomenti
+vengono sempre valutati prima della chiamata.
+
+\medskip
+\textbf{Strumento fondamentale: \fn{macroexpand-1}.}
+Dopo aver scritto una macro, verificarne sempre l'espansione:
+\begin{lstlisting}
+(macroexpand-1 '(quando (> x 0) (print "ok")))
+; -> (IF (> X 0) (PROGN (PRINT "ok")) NIL)
+\end{lstlisting}
+Se l'espansione non e' quella attesa, il comportamento sara' sbagliato.
+
+\medskip
+\textbf{Cattura di variabile.}
+Ogni variabile temporanea introdotta dalla macro deve usare
+\fn{gensym} per evitare conflitti con le variabili del codice
+chiamante. Rilevante per l'esercizio~123.
+
+\medskip
+\textbf{Quando usare una macro.}
+Solo quando una funzione non basta: valutazione controllata
+(come \fn{when} o \fn{and}), nuova sintassi, eliminazione di
+boilerplate strutturale. Se una funzione di ordine superiore
+risolve il problema, usare quella.
+
+\smallskip\noindent
+\textcolor{black!50}{\textit{Approfondimento ---
+meccanismo macro, backquote, \fn{gensym} e cattura di variabile:
+\textbf{Fondamenti e Pratica}, Cap.~6 (Macro).}}
+\end{tcolorbox}
+
+\bigskip
 
 \bigskip
 
@@ -2559,6 +2626,13 @@ Esercizi che richiedono questo pattern:
 \hyperref[ex:51]{es.~51},
 \hyperref[ex:52]{es.~52},
 \hyperref[ex:53]{es.~53}.}
+
+\medskip\noindent
+\small\textcolor{black!50}{\textit{Approfondimento ---
+per una spiegazione dettagliata di frame di attivazione, stack overflow
+e come la TCO li evita, vedi il testo teorico
+\textbf{Fondamenti e Pratica}, Cap.~3 §\,Tail recursion e Appendice~A
+(Lo stack delle chiamate).}}
 \end{tcolorbox}
 
 
