@@ -77,7 +77,7 @@ Allegro CL Free Express (Franz Inc.) — implementazione ANSI Common Lisp gratui
 \begin{envbox}[Avvio e REPL]{envBlue}
 
 \small\color{black!70}
-Avvia \fn{allegro-ansi.exe} \color{black!55}(modalità ANSI: i simboli diventano maiuscoli)\color{black!70}.
+Avvia \fn{allegro-express.exe} \color{black!55}(modalità ANSI: i simboli diventano maiuscoli)\color{black!70}.
 Compare il \textbf{\textcolor{envBlue!80!black}{prompt REPL}}:\nopagebreak
 \color{black}
 
@@ -126,10 +126,10 @@ Scrivi il codice in un file \fn{.lisp}, poi caricalo nel REPL:
 \begin{tabular}{@{}l@{\quad}l@{}}
 \rowcolor{envGreen!12}
 \textcolor{envGreen!80!black}{\textbf{Comando}} & \textcolor{envGreen!80!black}{\textbf{Effetto}} \\
-\fn{:ld "file.lisp"} & \small\color{black!65} Carica e valuta (interpretato) \\
+\fn{:ld file.lisp} & \small\color{black!65} Carica e valuta (interpretato) \\
 \rowcolor{envGreen!5}
-\fn{:cl "file.lisp"} & \small\color{black!65} Compila e carica (genera \fn{.fasl}) \\
-\fn{:cf "file.lisp"} & \small\color{black!65} Solo compila \\
+\fn{:cl file.lisp} & \small\color{black!65} Compila e carica (genera \fn{.fasl}) \\
+\fn{:cf file.lisp} & \small\color{black!65} Solo compila \\
 \end{tabular}
 \renewcommand{\arraystretch}{1.0}
 
@@ -139,13 +139,13 @@ Scrivi il codice in un file \fn{.lisp}, poi caricalo nel REPL:
 \color{black}
 
 \begin{lstlisting}
-CL-USER(1): :pwd                   ; directory corrente
-CL-USER(2): :cd "c:/esercizi-lisp" ; cambia directory
-CL-USER(3): :ld "es01.lisp"        ; carica file
+CL-USER(1): :pwd                 ; directory corrente
+CL-USER(2): :cd c:/esercizi-lisp ; cambia directory
+CL-USER(3): :ld es01.lisp        ; carica file
 \end{lstlisting}
 
 \begin{warnbox}[Percorsi Windows]
-Usa \fn{/} nei percorsi, non backslash. Esempio: \fn{"c:/cartella/file.lisp"}
+Usa \fn{/} nei percorsi, non backslash. Esempio: \fn{c:/cartella/file.lisp}
 \end{warnbox}
 
 \end{envbox}
@@ -165,18 +165,16 @@ I comandi \fn{:} sono specifici di Allegro \color{black!55}(non ANSI standard)\c
 \begin{tabular}{@{}l@{\quad}l@{\quad}l@{}}
 \rowcolor{envBlue!12}
 \textcolor{envBlue!80!black}{\textbf{Comando}} & \textcolor{envBlue!80!black}{\textbf{Abbr.}} & \textcolor{envBlue!80!black}{\textbf{Effetto}} \\
-\fn{:ld "file"} & --- & \small\color{black!65} carica file \\
+\fn{:ld file} & --- & \small\color{black!65} carica file \\
 \rowcolor{envBlue!5}
-\fn{:cl "file"} & --- & \small\color{black!65} compila e carica \\
-\fn{:pwd} / \fn{:cd "dir"} & \fn{:pw} & \small\color{black!65} directory \\
+\fn{:cl file} & --- & \small\color{black!65} compila e carica \\
+\fn{:pwd} / \fn{:cd dir} & \fn{:pw} & \small\color{black!65} directory \\
 \rowcolor{envBlue!5}
 \fn{:trace fn} & \fn{:tr} & \small\color{black!65} attiva trace \\
 \fn{:untrace fn} & \fn{:untr} & \small\color{black!65} disattiva trace \\
 \rowcolor{envBlue!5}
 \fn{:inspect obj} & \fn{:i} & \small\color{black!65} ispeziona oggetto \\
-\fn{:describe obj} & \fn{:de} & \small\color{black!65} documentazione \\
 \rowcolor{envBlue!5}
-\fn{:apropos "str"} & \fn{:ap} & \small\color{black!65} cerca simboli \\
 \fn{:history} & \fn{:his} & \small\color{black!65} cronologia \\
 \rowcolor{envBlue!5}
 \fn{:help} & \fn{:he} & \small\color{black!65} lista comandi \\
@@ -186,11 +184,11 @@ I comandi \fn{:} sono specifici di Allegro \color{black!55}(non ANSI standard)\c
 
 \smallskip
 \small\color{black!70}
-\textbf{\textcolor{envBlue!80!black}{Cercare funzioni}} con \fn{:apropos}:\nopagebreak
+\textbf{\textcolor{envBlue!80!black}{Cercare funzioni}} con \fn{apropos}:\nopagebreak
 \color{black}
 
 \begin{lstlisting}
-CL-USER(1): :apropos "remove"
+CL-USER(1): (apropos "remove")
 REMOVE           function
 REMOVE-IF        function
 REMOVE-DUPLICATES function
