@@ -2353,19 +2353,25 @@ o \fn{case} su \fn{op}.}
 \begin{colbox}{144}{Mini-interprete con variabili}{5}
 Estendere l'es.~143 con variabili (\fn{set x 10}) e riferimenti.\\\\
 \exspieg{Estendere il valutatore dell'es.~143 con un \textit{ambiente}
-(alist di coppie \fn{(nome . valore)}) che persiste tra le chiamate.
+(alist di coppie \fn{(nome . valore)}) passato esplicitamente.
+\fn{mio-eval} restituisce sempre una coppia \fn{(valore . nuovo-env)}.
 Nuovi casi da gestire:
 \begin{itemize}[leftmargin=1.8em, itemsep=1pt, topsep=2pt]
   \item se \fn{expr} è un simbolo, cercarlo nell'ambiente con \fn{assoc};
   \item se \fn{expr} è \fn{(set nome valore)}, valutare \fn{valore},
-        aggiornare l'ambiente e restituire il valore;
-  \item le espressioni aritmetiche continuano a funzionare come prima.
+        restituire \fn{(valore . (acons nome valore env))};
+  \item le espressioni aritmetiche propagano l'env aggiornato
+        tra la valutazione del primo e del secondo argomento.
 \end{itemize}
-L'ambiente viene passato esplicitamente ad ogni chiamata ricorsiva
-per mantenere lo scope lessicale semplice (no variabili globali).}
+Poiché l'ambiente non è mutato ma restituito, chi chiama deve
+usare il \fn{cdr} del risultato per incatenare le valutazioni.}
 \begin{lstlisting}
-(mio-eval '(set x 10) env)
-(mio-eval '(+ x 5) env)   ; -> 15
+;; mio-eval restituisce (valore . nuovo-env)
+(let* ((env0 '())
+       (r1   (mio-eval '(set x 10) env0))  ; r1 = (10 . ((x . 10)))
+       (env1 (cdr r1))                     ; propaga il nuovo env
+       (r2   (mio-eval '(+ x 5) env1)))    ; r2 = (15 . ...)
+  (car r2))   ; -> 15
 \end{lstlisting}
 \vincolo{ambiente separato come alist; non usare \fn{eval}.}
 

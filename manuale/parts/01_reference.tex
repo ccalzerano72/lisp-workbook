@@ -603,6 +603,7 @@ Molte funzioni funzionano su qualsiasi sequenza:
 (cdr (assoc 'mario *rubrica*))    ; -> "333-1111"
 (rassoc "333-1111" *rubrica* :test #'equal) ; cerca per valore
 (cons '(anna . "333-3333") *rubrica*)  ; aggiunge coppia in testa
+(acons 'anna "333-3333" *rubrica*)    ; equivalente, più leggibile
 \end{lstlisting}
 
 \textbf{Property list (plist):} chiavi e valori alternati nella stessa lista:\nopagebreak
