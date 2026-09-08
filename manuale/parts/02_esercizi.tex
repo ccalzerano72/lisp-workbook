@@ -282,6 +282,7 @@ Gestire la divisione per zero restituendo \fn{NIL}.
 (somma-cifre 1234)   ; -> 10
 (somma-cifre 99)     ; -> 18
 \end{lstlisting}
+\vincolo{assumere $n \geq 0$.}
 
 
 \small\color{black!55}\hyperref[sol:17]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:17]{$\rightarrow$ Suggerimento}\normalsize\color{black}
@@ -2509,8 +2510,12 @@ porta a uno \textit{stack overflow}. Quando la chiamata è in coda, il
 compilatore può riutilizzare lo stesso frame — trasformando la ricorsione
 in un ciclo a tutti gli effetti (\textit{tail call optimization}, TCO).
 Common Lisp non garantisce TCO nella specifica ANSI, ma tutte le
-implementazioni principali (SBCL, Allegro CL, CCL) la applicano in pratica
-quando la funzione ausiliaria è definita con \fn{labels}.
+implementazioni principali (SBCL, Allegro CL, CCL) la applicano
+sul codice \textit{compilato} quando la funzione ausiliaria è definita
+con \fn{labels}. In Allegro CL la TCO è attiva con \fn{:cl} (compila
+il file); con \fn{:ld} (carica il sorgente interpretato) la ricorsione
+in coda \textit{potrebbe} ancora consumare stack su liste molto lunghe.
+Per verificare l'assenza di stack overflow su input grandi, usare \fn{:cl}.
 
 \medskip
 \textbf{Il pattern con accumulatore.}
