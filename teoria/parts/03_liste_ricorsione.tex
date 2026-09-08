@@ -706,12 +706,70 @@ un passo per chiamata: O(n) senza strutture dati ausiliarie.}
 \argomento{Il crivello di Eratostene: ricorsione + array}
 
 \begin{concetto}{Quando uscire dalla ricorsione pura}
-\keyline{}{Alcuni algoritmi richiedono accesso casuale: usa un array.}
+\keyline{}{Alcuni algoritmi richiedono \emph{accesso casuale} a posizioni\\
+arbitrarie: per questi, un array è la struttura giusta.}
+\keyline{}{L'uscita dalla ricorsione pura è una scelta \emph{locale}:\\
+l'interfaccia esterna rimane funzionale.}
+
+\boxsep
 \detail{Il crivello di Eratostene marca celle di un array booleano.
-La struttura è imperativa (array mutabile + loop), ma l'interfaccia
-esterna è funzionale (restituisce una lista di primi).
+La struttura interna è imperativa (array mutabile + loop),
+ma l'interfaccia esterna è funzionale (restituisce una lista di primi).
 Ricorsione e stato mutabile coesistono in Common Lisp.}
 \end{concetto}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Perché uscire dalla ricorsione pura?}
+
+\medskip
+La ricorsione è naturale quando il problema ha struttura ricorsiva:
+una lista si scompone in testa e coda, un albero in radice e sottoalberi.
+Ma non tutti i problemi hanno questa forma.
+
+\medskip
+Il crivello di Eratostene ne è l'esempio classico.
+L'algoritmo funziona così: parti con un vettore di N celle, tutte
+segnate ``primo''. Per ogni numero $i$ non ancora eliminato, cancella
+tutti i suoi multipli $2i, 3i, 4i, \ldots$ Dal vettore che rimane,
+raccogli i numeri non cancellati.
+
+\medskip
+Il punto critico è \textbf{cancellare un multiplo}: significa accedere
+alla cella in posizione $j = k \cdot i$ e modificarla.
+Con una lista Lisp questo costo è $O(j)$ per ogni accesso
+(devi scorrere $j$ cons-cell). Con un array è $O(1)$ --- accesso diretto.
+Su N numeri, la differenza tra $O(1)$ e $O(N)$ per ogni accesso
+è enorme: l'algoritmo passerebbe da $O(N \log \log N)$ a $O(N^2)$.
+
+\medskip
+\textbf{La regola generale:}
+quando l'algoritmo richiede di \emph{tornare indietro} o
+\emph{saltare} a posizioni arbitrarie nella struttura dati --- non
+di attraversarla dall'inizio alla fine --- la lista è la struttura sbagliata.
+In questi casi usa un array con \fn{make-array} e \fn{aref}.
+
+\medskip
+\textbf{Lo stile ibrido} è la risposta professionale:
+usa la struttura mutabile \emph{localmente}, all'interno della funzione,
+per fare il lavoro efficiente; esponi all'esterno solo il risultato
+come lista o valore funzionale.
+Il chiamante non sa e non deve sapere cosa c'è dentro.
+Questo è incapsulamento: la scelta implementativa rimane privata.
+
+\medskip
+\textbf{In breve}: non è un fallimento del paradigma funzionale.
+È una scelta pragmatica che Common Lisp rende naturale,
+a differenza dei linguaggi funzionali puri (Haskell) che richiedono
+strutture dati persistenti o monadi per gestire lo stato.
+\end{tcolorbox}
 
 \begin{esempio}[Crivello di Eratostene]
 \begin{lstlisting}
