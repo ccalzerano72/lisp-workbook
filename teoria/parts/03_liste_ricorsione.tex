@@ -468,6 +468,97 @@ implicita. Per visitarla tutta servono \emph{due} casi ricorsivi:
 uno sulla testa (se è una lista, scendi dentro) e uno sulla coda.}
 \end{concetto}
 
+% ---- Figure: lista piatta e lista annidata come albero ----
+\vspace{8pt}
+\begin{center}
+
+% -- 1. Lista piatta (a b c) come catena di cons-cell --
+\begin{tikzpicture}[
+  cell/.style={draw=csBlue!50, fill=csBlue!5, minimum width=1.8cm,
+               minimum height=0.65cm, font=\small\ttfamily},
+  ptr/.style={-{Stealth[length=5pt]}, csBlue!70, thick},
+  nil/.style={draw=black!30, fill=black!5, minimum width=0.9cm,
+              minimum height=0.65cm, font=\small\ttfamily\color{black!50}}
+]
+\node[cell] (c1) at (0,0)   {a};
+\node[cell] (c2) at (2.4,0) {b};
+\node[cell] (c3) at (4.8,0) {c};
+\node[nil]  (n)  at (7.0,0) {nil};
+\draw[ptr] (c1.east) -- (c2.west);
+\draw[ptr] (c2.east) -- (c3.west);
+\draw[ptr] (c3.east) -- (n.west);
+\end{tikzpicture}
+
+\smallskip
+{\small\itshape\color{black!55}
+\texttt{(a b c)} --- lista piatta: catena lineare di cons-cell}
+
+\bigskip
+
+% -- 2. Lista annidata (a (b c) d) come albero --
+\begin{tikzpicture}[
+  level 1/.style={sibling distance=4.8cm, level distance=1.4cm},
+  level 2/.style={sibling distance=2.8cm, level distance=1.4cm},
+  level 3/.style={sibling distance=1.8cm, level distance=1.4cm},
+  level 4/.style={sibling distance=1.5cm, level distance=1.3cm},
+  edge from parent/.style={draw=csBlue!55, -{Stealth[length=4pt]}, thick},
+  inode/.style={draw=csBlue!50, fill=csBlue!8, circle,
+                minimum size=0.72cm, font=\small\ttfamily, inner sep=1pt},
+  leaf/.style={draw=csGreen!55, fill=csGreen!8, rectangle, rounded corners=3pt,
+               minimum width=0.7cm, minimum height=0.6cm,
+               font=\small\bfseries\ttfamily\color{csGreen!50!black}},
+  nilnode/.style={draw=black!25, fill=black!4, rectangle,
+                  minimum width=0.6cm, minimum height=0.5cm,
+                  font=\scriptsize\ttfamily\color{black!40}}
+]
+\node[inode] {cons}
+  child { node[leaf] {a} }
+  child { node[inode] {cons}
+    child { node[inode] {cons}
+      child { node[leaf] {b} }
+      child { node[inode] {cons}
+        child { node[leaf] {c} }
+        child { node[nilnode] {nil} }
+      }
+    }
+    child { node[inode] {cons}
+      child { node[leaf] {d} }
+      child { node[nilnode] {nil} }
+    }
+  };
+\end{tikzpicture}
+
+\smallskip
+{\small\itshape\color{black!55}
+\texttt{(a (b c) d)} --- lista annidata: albero binario di cons-cell}
+
+\bigskip
+
+% -- 3. Legenda --
+\begin{tikzpicture}
+\node[draw=csBlue!50, fill=csBlue!8, circle,
+      minimum size=0.55cm, font=\scriptsize] (n1) at (0,0) {};
+\node[font=\small\color{black!65}, right=5pt of n1] {cons-cell (nodo)};
+\node[draw=csGreen!55, fill=csGreen!8, rectangle, rounded corners=2pt,
+      minimum width=0.55cm, minimum height=0.5cm,
+      font=\scriptsize\bfseries] (n2) at (4.0,0) {};
+\node[font=\small\color{black!65}, right=5pt of n2] {atomo (foglia)};
+\node[draw=black!25, fill=black!4, rectangle,
+      minimum width=0.55cm, minimum height=0.45cm,
+      font=\scriptsize\ttfamily\color{black!40}] (n3) at (8.0,0) {};
+\node[font=\small\color{black!65}, right=5pt of n3] {\texttt{nil}};
+\end{tikzpicture}
+
+\smallskip
+{\small\color{black!55}
+Colonna sinistra (freccia \emph{car}) = scendi nella testa.
+Colonna destra (freccia \emph{cdr}) = avanza nella coda.
+La ricorsione su lista piatta percorre solo il \emph{cdr};
+la ricorsione su albero percorre entrambi.}
+
+\end{center}
+\vspace{6pt}
+
 \begin{sintassi}
 (defun f (tree)\\
 \hspace{2em}(cond ((null tree) ...)         \textit{; albero vuoto}\\
