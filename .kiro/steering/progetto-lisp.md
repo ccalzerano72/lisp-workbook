@@ -20,7 +20,7 @@ I due volumi sono **strettamente correlati**: ogni modifica deve mantenere coere
 
 ### Workbook — `manuale/`
 
-_Common Lisp — Guida Pratica_
+_Common Lisp — Workbook_
 
 Un libro di esercizi graduali. Non spiega: fa fare.
 

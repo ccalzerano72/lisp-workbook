@@ -1,4 +1,4 @@
-# Common Lisp — Guida Pratica
+# Common Lisp — Workbook
 
 Manuale LaTeX con 148 esercizi graduali, quick reference, suggerimenti e soluzioni.
 
@@ -27,28 +27,29 @@ pdflatex main   # seconda passata (stabilizza riferimenti incrociati)
 ```
 
 Due passate sono necessarie per:
+
 - Indice dei contenuti
 - Hyperlink interni (esercizi ↔ suggerimenti ↔ soluzioni)
 - Numerazione pagine negli header
 
 ## Contenuto
 
-| Sezione | Contenuto |
-|---|---|
-| Cheat sheet | 2 pagine, tabelle compatte, link interni |
-| Quick reference | ~25 sezioni su tutti i costrutti CL |
-| Esercizi cap. 1 | Fondamenti (defun, if, cond, let, loop) |
-| Esercizi cap. 2 | Liste e ricorsione |
-| Esercizi cap. 3 | Ricorsione avanzata |
-| Esercizi cap. 4 | Higher-order e closure |
-| Esercizi cap. 5 | Strutture dati (alist, hash, array, BST) |
-| Esercizi cap. 6 | Macro |
-| Esercizi cap. 7 | Backtracking e algoritmi |
-| Esercizi cap. 8 | Stringhe e I/O |
-| Esercizi cap. 9 | Parsing e interprete |
-| Esercizi cap. 10 | Progetti |
-| Suggerimenti | ~60 hint per esercizi ★★★+ |
-| Soluzioni | 148 soluzioni (commenti proporzionali alla difficoltà) |
+| Sezione          | Contenuto                                              |
+| ---------------- | ------------------------------------------------------ |
+| Cheat sheet      | 2 pagine, tabelle compatte, link interni               |
+| Quick reference  | ~25 sezioni su tutti i costrutti CL                    |
+| Esercizi cap. 1  | Fondamenti (defun, if, cond, let, loop)                |
+| Esercizi cap. 2  | Liste e ricorsione                                     |
+| Esercizi cap. 3  | Ricorsione avanzata                                    |
+| Esercizi cap. 4  | Higher-order e closure                                 |
+| Esercizi cap. 5  | Strutture dati (alist, hash, array, BST)               |
+| Esercizi cap. 6  | Macro                                                  |
+| Esercizi cap. 7  | Backtracking e algoritmi                               |
+| Esercizi cap. 8  | Stringhe e I/O                                         |
+| Esercizi cap. 9  | Parsing e interprete                                   |
+| Esercizi cap. 10 | Progetti                                               |
+| Suggerimenti     | ~60 hint per esercizi ★★★+                             |
+| Soluzioni        | 148 soluzioni (commenti proporzionali alla difficoltà) |
 
 ## Legenda
 
