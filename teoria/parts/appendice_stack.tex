@@ -1,0 +1,298 @@
+% =============================================================
+%  appendice_stack.tex
+%  Appendice A --- Lo stack delle chiamate
+% =============================================================
+
+\chapter{Lo stack delle chiamate}
+\label{app:stack}
+
+\begin{intuizione}
+Capire come il computer gestisce le chiamate di funzione
+è fondamentale per capire la tail recursion, lo stack overflow,
+e perché certi programmi ricorsivi sono più efficienti di altri.
+Questa appendice spiega il meccanismo dal basso.
+\end{intuizione}
+
+\vspace{4pt}
+
+% ================================================================
+\section{Cosa succede quando chiami una funzione}
+% ================================================================
+
+Quando un programma chiama una funzione, il computer deve:
+
+\begin{enumerate}
+  \item \textbf{Sospendere} l'esecuzione corrente
+  \item \textbf{Ricordare} dove riprendere quando la funzione finisce
+  \item \textbf{Passare} gli argomenti alla funzione
+  \item \textbf{Eseguire} il corpo della funzione
+  \item \textbf{Restituire} il risultato al chiamante
+  \item \textbf{Riprendere} l'esecuzione dal punto sospeso
+\end{enumerate}
+
+\detail{Per fare tutto questo serve una struttura dati che tenga traccia
+di tutte le chiamate attive nello stesso momento. Questa struttura
+si chiama \textbf{call stack} (pila delle chiamate).}
+
+\argomento{Il frame di attivazione}
+
+\begin{concetto}{Stack frame (frame di attivazione)}
+\keyline{}{Ogni chiamata di funzione crea un \emph{frame} sullo stack.}
+
+\detail{Un frame contiene:}
+\begin{itemize}
+  \item I \textbf{parametri} passati alla funzione
+  \item Le \textbf{variabili locali} definite nel corpo
+  \item L'\textbf{indirizzo di ritorno}: dove riprendere dopo la chiamata
+  \item Il \textbf{valore di ritorno} (o lo spazio per esso)
+\end{itemize}
+
+\detail{Quando la funzione termina, il suo frame viene \emph{rimosso}
+(``fatto saltare'' --- \emph{popped}) dallo stack, e l'esecuzione
+riprende dall'indirizzo di ritorno salvato nel frame.}
+\end{concetto}
+
+\begin{esempio}[Traccia dello stack per una chiamata semplice]
+\begin{lstlisting}
+(defun quadrato (x) (* x x))
+(defun somma-quadrati (a b) (+ (quadrato a) (quadrato b)))
+
+;; Chiamata: (somma-quadrati 3 4)
+\end{lstlisting}
+
+Lo stack durante l'esecuzione (cresce verso il basso):
+
+\begin{tcolorbox}[
+  enhanced, colback=black!3, colframe=black!25,
+  arc=2pt, boxrule=0.4pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=6pt, after skip=6pt
+]
+\ttfamily\small
+\begin{tabular}{|l|}
+\hline
+\textbf{frame: somma-quadrati} \\
+\quad a = 3, b = 4 \\
+\quad ritorna a: main \\
+\hline
+\textbf{frame: quadrato} \quad$\leftarrow$ stack top\\
+\quad x = 3 \\
+\quad ritorna a: somma-quadrati \\
+\hline
+\end{tabular}
+\end{tcolorbox}
+
+\detail{Quando \fn{quadrato} finisce, il suo frame viene rimosso.
+Poi viene creato un nuovo frame per la seconda chiamata \fn{(quadrato 4)}.
+Infine \fn{somma-quadrati} completa il calcolo e anche il suo frame
+viene rimosso.}
+\end{esempio}
+
+% ================================================================
+\section{La ricorsione e la crescita dello stack}
+% ================================================================
+
+\begin{concetto}{Ogni chiamata ricorsiva aggiunge un frame}
+\keyline{}{Una funzione ricorsiva profonda N livelli\\
+occupa N frame sullo stack \emph{contemporaneamente}.}
+
+\detail{Questo è il punto critico: i frame non vengono rimossi finché
+la ricorsione non comincia a ``tornare indietro''.
+Tutti i frame intermedi devono rimanere in memoria perché
+contengono il lavoro da fare ancora (la moltiplicazione, la somma, ecc.)
+dopo che la chiamata ricorsiva restituisce il suo risultato.}
+\end{concetto}
+
+\begin{esempio}[Stack durante fattoriale ricorsivo]
+\begin{lstlisting}
+(defun fattoriale (n)
+  (if (= n 0)
+      1
+      (* n (fattoriale (- n 1)))))  ; <-- il * aspetta il risultato
+
+;; (fattoriale 4)
+\end{lstlisting}
+
+Stack al momento più profondo (quando si chiama \fn{(fattoriale 0)}):
+
+\begin{tcolorbox}[
+  enhanced, colback=black!3, colframe=black!25,
+  arc=2pt, boxrule=0.4pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=6pt, after skip=6pt
+]
+\ttfamily\small
+\begin{tabular}{|l|}
+\hline
+\textbf{frame: fattoriale}, n=4 \quad(deve ancora fare \texttt{* 4 ?}) \\
+\hline
+\textbf{frame: fattoriale}, n=3 \quad(deve ancora fare \texttt{* 3 ?}) \\
+\hline
+\textbf{frame: fattoriale}, n=2 \quad(deve ancora fare \texttt{* 2 ?}) \\
+\hline
+\textbf{frame: fattoriale}, n=1 \quad(deve ancora fare \texttt{* 1 ?}) \\
+\hline
+\textbf{frame: fattoriale}, n=0 \quad$\leftarrow$ stack top: ritorna 1 \\
+\hline
+\end{tabular}
+\end{tcolorbox}
+
+\detail{Tutti e cinque i frame esistono \emph{contemporaneamente} in
+memoria. Ogni frame aspetta che quello sopra finisca per poter
+completare la propria moltiplicazione.}
+\end{esempio}
+
+\argomento{Stack overflow}
+
+\begin{concetto}{Stack overflow: quando lo stack esaurisce la memoria}
+\keyline{}{Lo stack ha una dimensione massima fissa.}
+\keyline{}{Se la ricorsione è troppo profonda, lo stack si esaurisce.}
+
+\detail{Il sistema operativo alloca allo stack uno spazio limitato
+(tipicamente 1--8 MB). Se il numero di frame supera quello che ci sta,
+il programma va in crash con un errore chiamato \textbf{stack overflow}.}
+\end{concetto}
+
+\begin{esempio}[Stack overflow in pratica]
+\begin{lstlisting}
+;; Questa funzione va in stack overflow per n grande
+(defun conta-giu (n)
+  (if (= n 0)
+      'fatto
+      (conta-giu (- n 1))))   ; crea un frame per ogni chiamata
+
+;; (conta-giu 100000)  --> potrebbe causare stack overflow
+;; dipende dall'implementazione e dalla dimensione dello stack
+\end{lstlisting}
+\end{esempio}
+
+\begin{confronto}
+\textbf{Linguaggi diversi, limiti diversi.}
+Java ha uno stack di default di 512KB--1MB: va in \texttt{StackOverflowError}
+con poche migliaia di chiamate ricorsive.
+Python ha un limite di ~1000 frame per default (configurabile con
+\texttt{sys.setrecursionlimit}).
+C/C++ dipende dall'OS: tipicamente 1--8MB di stack.
+Common Lisp non ha un limite fisso per lo stack nei compilatori moderni
+(come Allegro CL), ma la memoria disponibile è comunque finita.
+\end{confronto}
+
+% ================================================================
+\section{Tail Call Optimization (TCO)}
+% ================================================================
+
+\begin{concetto}{L'intuizione della TCO}
+\keyline{}{Se la chiamata ricorsiva è l'ultima cosa che la funzione fa,\\
+il suo frame non serve più dopo la chiamata.}
+
+\detail{Quando una funzione chiama sé stessa in \emph{posizione di coda}
+(cioè: il risultato della chiamata ricorsiva è direttamente il risultato
+della funzione, senza altri calcoli da fare), il frame corrente
+può essere \emph{riutilizzato} invece di crearne uno nuovo.
+Il compilatore lo trasforma essenzialmente in un \emph{salto} (jump)
+invece di una \emph{chiamata} (call).}
+\end{concetto}
+
+\begin{esempio}[Non-tail vs tail: cosa cambia nello stack]
+\begin{lstlisting}
+;; NON tail-recursive: dopo la chiamata c'e' ancora da fare (* n ...)
+(defun fattoriale-naif (n)
+  (if (= n 0) 1
+      (* n (fattoriale-naif (- n 1)))))
+;; Stack: cresce di N frame -> possibile overflow
+
+;; TAIL-recursive: la chiamata e' l'ultima operazione
+(defun fattoriale (n)
+  (labels ((aux (n acc)
+             (if (= n 0) acc
+                 (aux (- n 1) (* n acc)))))  ; niente dopo
+    (aux n 1)))
+;; Stack: il compilatore riusa lo stesso frame -> O(1) stack
+\end{lstlisting}
+
+Stack durante la versione tail-recursive (con TCO):
+
+\begin{tcolorbox}[
+  enhanced, colback=black!3, colframe=black!25,
+  arc=2pt, boxrule=0.4pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=6pt, after skip=6pt
+]
+\ttfamily\small
+\begin{tabular}{|l|}
+\hline
+\textbf{frame: aux} \quad(unico frame, aggiornato ad ogni passo) \\
+\quad n=4, acc=1   $\to$ aggiorna a n=3, acc=4 \\
+\quad n=3, acc=4   $\to$ aggiorna a n=2, acc=12 \\
+\quad n=2, acc=12  $\to$ aggiorna a n=1, acc=24 \\
+\quad n=1, acc=24  $\to$ aggiorna a n=0, acc=24 \\
+\quad n=0, acc=24  $\to$ ritorna 24 \\
+\hline
+\end{tabular}
+\end{tcolorbox}
+
+\detail{Un solo frame per tutta la ricorsione, indipendentemente da N.
+È equivalente a un ciclo \fn{while} come questo:}
+
+\begin{lstlisting}
+;; Equivalente imperativo:
+;; n = N, acc = 1
+;; while n > 0: acc = acc * n; n = n - 1
+;; return acc
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+La tail recursion con TCO \textbf{è} un loop, visto da prospettive diverse.
+Il compilatore trasforma la ricorsione in un salto all'inizio della
+funzione con i parametri aggiornati --- esattamente come fa un ciclo.
+Questo è il motivo per cui i linguaggi funzionali puri (Haskell, Erlang,
+Scheme) possono fare a meno dei loop: la tail recursion con TCO è
+altrettanto efficiente.
+\end{intuizione}
+
+% ================================================================
+\section{TCO in Common Lisp}
+% ================================================================
+
+\begin{confronto}
+\textbf{Lo standard ANSI Common Lisp non garantisce la TCO.}
+
+\medskip
+A differenza di Scheme (dove la TCO è obbligatoria per standard),
+Common Lisp lascia la decisione all'implementazione.
+
+\medskip
+\textbf{In pratica:}
+\begin{itemize}
+  \item \textbf{Allegro CL, SBCL, CCL}: applicano TCO sulle chiamate
+        in posizione di coda quando il codice è compilato
+        (non necessariamente interpretato).
+  \item \textbf{CLISP}: TCO limitata; per ricorsioni profonde
+        preferire \fn{loop}/\fn{do}.
+  \item \textbf{Regola pratica}: se la ricorsione può essere
+        molto profonda (migliaia di livelli), scrivi in forma
+        tail-recursive con \fn{labels} e compila il codice
+        con \fn{compile} o caricandolo con \fn{:ld}/\fn{compile-file}.
+\end{itemize}
+
+\medskip
+Nell'ambiente Allegro CL Free Express usato in questo corso,
+la TCO è attiva sul codice compilato. Gli esempi con \fn{labels}
+del Capitolo~3 sono sicuri.
+\end{confronto}
+
+\begin{nota}
+Per verificare se la TCO è attiva in Allegro CL, puoi testare:
+\begin{lstlisting}
+;; Definisci e COMPILA (non solo valuta) la funzione
+(defun conta (n)
+  (labels ((loop (n)
+             (if (= n 0) 'done (loop (- n 1)))))
+    (loop n)))
+(compile 'conta)          ; compila esplicitamente
+
+;; Ora prova con un numero grande
+(conta 10000000)          ; deve restituire DONE senza overflow
+\end{lstlisting}
+\end{nota}

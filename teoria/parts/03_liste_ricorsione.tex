@@ -1,0 +1,709 @@
+% =============================================================
+%  03_liste_ricorsione.tex
+%  Capitolo 3 --- Liste e ricorsione
+% =============================================================
+
+\chapter{Liste e ricorsione}
+
+\begin{intuizione}
+Le liste sono il cuore di Lisp. Il nome stesso viene da
+\textit{LISt Processing}. Capire le liste --- come sono fatte,
+come si attraversano, come si costruiscono --- è capire Lisp.
+La ricorsione non è un'alternativa ai cicli: è il modo naturale
+di pensare sulle liste.
+\end{intuizione}
+
+\vspace{4pt}
+
+% ================================================================
+\section{Cos'è una lista}
+% ================================================================
+
+\begin{concetto}{Una lista è una catena di cons-cell}
+\keyline{}{Una lista non è un array. È una catena di coppie collegate.}
+
+\detail{Ogni coppia si chiama \textbf{cons-cell} e contiene due slot:
+\texttt{car} (il valore) e \texttt{cdr} (il puntatore alla prossima cella).
+L'ultima cella punta a \texttt{nil}.}
+\end{concetto}
+
+\begin{esempio}[Struttura interna di una lista]
+\begin{lstlisting}
+;; La lista (a b c) in memoria:
+;;
+;;  [car|cdr] -> [car|cdr] -> [car|cdr] -> nil
+;;    a            b            c
+;;
+;; Si costruisce con cons:
+(cons 'a (cons 'b (cons 'c nil)))   ; => (A B C)
+
+;; Equivalente:
+(list 'a 'b 'c)   ; => (A B C)
+\end{lstlisting}
+\end{esempio}
+
+\begin{confronto}
+\textbf{Lista vs array:}
+In Java \texttt{int[] a = \{1,2,3\}} alloca tre celle contigue in memoria.
+In Lisp \texttt{(list 1 2 3)} crea tre cons-cell collegate.
+Conseguenza: accesso al primo elemento O(1), accesso all'n-esimo O(n).
+Le liste Lisp si usano per sequenze da attraversare dall'inizio, non per
+accesso casuale.
+\end{confronto}
+
+\argomento{Le operazioni primitive: \fn{car}, \fn{cdr}, \fn{cons}}
+
+\begin{concetto}{\fn{car}, \fn{cdr}, \fn{cons} --- le tre primitive}
+\keyline{\fn{car}}{restituisce il \emph{primo elemento} (la testa).}
+\keyline{\fn{cdr}}{restituisce il \emph{resto} (la coda, senza il primo).}
+\keyline{\fn{cons}}{\emph{costruisce} una nuova cons-cell: \fn{(cons x lst)}.}
+
+\boxsep
+\detail{\fn{first}, \fn{rest} sono alias leggibili di \fn{car} e \fn{cdr}.
+Usali nel codice nuovo: sono più chiari.}
+\end{concetto}
+
+\begin{esempio}[\fn{car}, \fn{cdr}, \fn{cons}]
+\begin{lstlisting}
+(car  '(a b c))   ; => A
+(cdr  '(a b c))   ; => (B C)
+(car  '(a))       ; => A
+(cdr  '(a))       ; => NIL   (coda di una lista da un elemento)
+(car  nil)        ; => NIL
+(cdr  nil)        ; => NIL
+
+;; cons aggiunge un elemento in testa
+(cons 'a '(b c))   ; => (A B C)
+(cons 'a nil)      ; => (A)
+(cons 'a '())      ; => (A)   ('() = nil)
+
+;; Alias leggibili
+(first  '(a b c))   ; => A      (identico a car)
+(rest   '(a b c))   ; => (B C)  (identico a cdr)
+(second '(a b c))   ; => B
+(third  '(a b c))   ; => C
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+\textbf{\fn{cons} non modifica la lista originale.}
+\texttt{(cons 'x lst)} crea una \emph{nuova} cons-cell che punta a \texttt{lst}.
+La lista \texttt{lst} rimane intatta.
+Questo vale per tutte le operazioni funzionali sulle liste: non
+modificano mai la struttura originale, restituiscono strutture nuove.
+\end{attenzione}
+
+\argomento{Composizione di \fn{car} e \fn{cdr}}
+
+\begin{sintassi}
+(cadr lst)    ; = (car (cdr lst))    = secondo elemento\\
+(caddr lst)   ; = (car (cddr lst))   = terzo elemento\\
+(cadddr lst)  ; = quarto elemento\\
+(cddr lst)    ; = (cdr (cdr lst))    = lista senza i primi due
+\end{sintassi}
+
+\begin{esempio}[Accesso a elementi interni]
+\begin{lstlisting}
+(cadr   '(a b c d))   ; => B   (secondo)
+(caddr  '(a b c d))   ; => C   (terzo)
+(cadddr '(a b c d))   ; => D   (quarto)
+
+;; In alternativa, piu' leggibile:
+(nth 0 '(a b c))   ; => A
+(nth 2 '(a b c))   ; => C
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+Le forme \fn{cadr}, \fn{caddr}, ecc. sono abbreviazioni storiche ancora
+molto usate nel codice Lisp. \fn{nth} è più leggibile ma meno
+idiomatico. In pratica: usa \fn{first}/\fn{second}/\fn{third} per le
+prime posizioni, \fn{nth} per posizioni arbitrarie.
+\end{nota}
+
+\begin{workbook}
+\textbf{Esercizi 22--26}
+(Costruire liste, Accesso con car/cdr, Primo e resto,
+Primo e ultimo, Scambia i primi due)\\[4pt]
+Sono esercizi di manipolazione diretta: niente ricorsione ancora,
+solo \fn{car}, \fn{cdr}, \fn{cons}, \fn{list}.
+L'obiettivo è interiorizzare la struttura a cons-cell.
+Falli nel REPL senza usare funzioni built-in come \fn{first}/\fn{last}/\fn{nth}.
+\end{workbook}
+
+% ================================================================
+\section{Il pattern ricorsivo sulle liste}
+% ================================================================
+
+\begin{intuizione}
+Ogni funzione che attraversa una lista segue lo stesso schema.
+Impararlo una volta significa saperlo applicare a qualsiasi problema.
+\end{intuizione}
+
+\begin{concetto}{Lo schema base della ricorsione su liste}
+\keyline{}{Caso base: lista vuota \fn{nil} → risultato terminale.}
+\keyline{}{Caso ricorsivo: elabora \fn{(car lst)}, poi ricorri su \fn{(cdr lst)}.}
+
+\boxsep
+\detail{Ogni lista è o vuota (\fn{nil}) o una cons-cell con testa e coda.
+La ricorsione rispecchia esattamente questa struttura.}
+\end{concetto}
+
+\begin{sintassi}
+(defun f (lst)\\
+\hspace{2em}(if (null lst)\\
+\hspace{4em}... ; caso base: lista vuota\\
+\hspace{4em}... ; caso ricorsivo: usa (car lst) e (f (cdr lst))
+))
+\end{sintassi}
+
+\argomento{Tre pattern fondamentali}
+
+Quasi tutte le funzioni sulle liste ricadono in uno di questi tre schemi:
+
+\begin{esempio}[Pattern 1 --- Calcola un valore (reduce)]
+\begin{lstlisting}
+;; Somma tutti gli elementi
+(defun sum-list (lst)
+  (if (null lst)
+      0                              ; caso base: lista vuota = 0
+      (+ (car lst)                   ; elabora la testa
+         (sum-list (cdr lst)))))     ; ricorri sul resto
+
+(sum-list '(1 2 3 4))   ; => 10
+
+;; Stessa struttura: lunghezza
+(defun length* (lst)
+  (if (null lst)
+      0
+      (1+ (length* (cdr lst)))))
+
+(length* '(a b c))   ; => 3
+\end{lstlisting}
+\end{esempio}
+
+\begin{esempio}[Pattern 2 --- Trasforma (map)]
+\begin{lstlisting}
+;; Aggiunge 1 a ogni elemento
+(defun incrementa-tutti (lst)
+  (if (null lst)
+      nil                                    ; lista vuota -> lista vuota
+      (cons (1+ (car lst))                   ; trasforma la testa
+            (incrementa-tutti (cdr lst)))))  ; ricorri sul resto
+
+(incrementa-tutti '(1 2 3))   ; => (2 3 4)
+
+;; Stessa struttura: raddoppia ogni elemento
+(defun raddoppia (lst)
+  (if (null lst)
+      nil
+      (cons (* 2 (car lst))
+            (raddoppia (cdr lst)))))
+\end{lstlisting}
+\end{esempio}
+
+\begin{esempio}[Pattern 3 --- Filtra (filter)]
+\begin{lstlisting}
+;; Mantieni solo i pari
+(defun solo-pari (lst)
+  (cond ((null lst) nil)             ; caso base
+        ((evenp (car lst))           ; se la testa soddisfa il predicato:
+         (cons (car lst)             ;   includila nel risultato
+               (solo-pari (cdr lst))))
+        (t                           ; altrimenti:
+         (solo-pari (cdr lst)))))    ;   salta la testa
+
+(solo-pari '(1 2 3 4 5 6))   ; => (2 4 6)
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+Questi tre pattern --- \textbf{reduce}, \textbf{map}, \textbf{filter} ---
+sono il fondamento di tutta la programmazione funzionale.
+Nel Capitolo~4 vedremo che \fn{reduce}, \fn{mapcar} e \fn{remove-if}
+sono proprio questi pattern incapsulati in funzioni di ordine superiore.
+Per ora, scriverli a mano con la ricorsione esplicita è fondamentale
+per capire cosa fanno davvero.
+\end{intuizione}
+
+\begin{confronto}
+\textbf{Da dove vengono i nomi map, reduce, filter?}
+
+\medskip
+\textbf{Map} viene dalla matematica: una funzione che \emph{mappa} ogni
+elemento di un insieme in un elemento di un altro.
+In Lisp il nome esiste dal 1960 (\fn{mapcar} in LISP 1.5).
+Python lo adottò negli anni '90 con \texttt{map()};
+JavaScript con \texttt{Array.map()} nel 2009.
+
+\medskip
+\textbf{Reduce} (detto anche \emph{fold} o \emph{accumulate}) viene
+dall'idea di \emph{ridurre} una sequenza a un singolo valore applicando
+un'operazione binaria cumulativamente.
+In Common Lisp si chiama \fn{reduce}; in Haskell \texttt{foldl}/\texttt{foldr};
+in Python \texttt{functools.reduce()}.
+Il nome \emph{MapReduce} del framework di Google (2004) prende esattamente
+questi due concetti per il calcolo distribuito su larga scala.
+
+\medskip
+\textbf{Filter} è il nome più ovvio: \emph{filtra} una sequenza tenendo
+solo gli elementi che soddisfano un predicato.
+In Common Lisp si chiama \fn{remove-if-not} o \fn{remove-if}
+(per la variante che scarta); in Python \texttt{filter()};
+in Java \texttt{Stream.filter()}.
+
+\medskip
+Questi tre pattern non sono un'invenzione di nessun linguaggio moderno.
+Vengono da Lisp, che li ha avuti sin dall'inizio.
+Quando vedi \texttt{.map().filter().reduce()} in JavaScript o
+\texttt{stream().map().filter().collect()} in Java, stai usando
+idee nate in Lisp sessant'anni prima.
+\end{confronto}
+
+\begin{workbook}
+\textbf{Esercizi 27--38}
+(Lunghezza, Somma, Prodotto, Massimo, Appartenenza, Conta occorrenze,
+Posizione, Ultimo, Incrementa tutti, Filtra pari, Elimina tutte, Seleziona dispari)\\[4pt]
+Ogni esercizio è uno dei tre pattern. Prima di scrivere il codice,
+identifica quale: reduce, map o filter?\\[4pt]
+Priorità agli essenziali: \textbf{27, 31, 35}.
+\end{workbook}
+
+% ================================================================
+\section{Costruire liste: \fn{cons} vs \fn{append}}
+% ================================================================
+
+\begin{concetto}{\fn{cons} e \fn{append}: quando usare quale}
+\keyline{\fn{cons}}{aggiunge \emph{un elemento} in testa. O(1).}
+\keyline{\fn{append}}{concatena \emph{due liste}. O(n) sulla prima lista.}
+
+\boxsep
+\detail{Errore comune: usare \fn{append} quando basta \fn{cons},
+o usare \fn{cons} con una lista quando serve \fn{append}.}
+\end{concetto}
+
+\begin{esempio}[\fn{cons} vs \fn{append}]
+\begin{lstlisting}
+;; cons: un elemento + una lista
+(cons 'a '(b c))          ; => (A B C)   corretto
+(cons '(a b) '(c d))      ; => ((A B) C D)  la testa e' una lista!
+
+;; append: lista + lista
+(append '(a b) '(c d))    ; => (A B C D)  corretto
+(append '(a) '(b c))      ; => (A B C)
+
+;; Errore tipico: cons dove serve append
+(cons '(a b) '(c d))      ; => ((A B) C D)  NON e' quello che vuoi
+(append '(a b) '(c d))    ; => (A B C D)    questo si'
+\end{lstlisting}
+\end{esempio}
+
+\begin{esempio}[Implementare \fn{append} con ricorsione]
+\begin{lstlisting}
+;; append* ricorre su lst1, ricostruisce la catena
+(defun append* (lst1 lst2)
+  (if (null lst1)
+      lst2                              ; caso base: lista1 vuota
+      (cons (car lst1)                  ; testa di lst1
+            (append* (cdr lst1) lst2))));; ricorri
+
+(append* '(a b) '(c d))   ; => (A B C D)
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+\fn{append} è O(n) sulla lunghezza della \emph{prima} lista perché deve
+ricopiare tutta la catena di cons-cell. La seconda lista non viene
+copiata --- viene solo puntata dall'ultima cella della prima.
+Conseguenza pratica: in un loop che accumula risultati, è più efficiente
+accumulare in testa con \fn{cons} e fare \fn{reverse} alla fine,
+piuttosto che fare \fn{append} ad ogni passo.
+\end{nota}
+
+\begin{workbook}
+\textbf{Esercizio 40} (Append)\\[4pt]
+Implementa \fn{append*} da zero. È un esercizio $\bigstar\bigstar\bigstar$: il suggerimento
+nel workbook aiuta a capire perché la ricorsione va su \fn{lst1} e non
+su \fn{lst2}.
+\end{workbook}
+
+% ================================================================
+\section{Reverse e l'accumulatore}
+% ================================================================
+
+\begin{concetto}{Il problema di \fn{reverse} ricorsivo naif}
+\keyline{}{La versione ovvia di reverse è $O(n^2)$ a causa di \fn{append}.}
+\end{concetto}
+
+\begin{esempio}[Reverse naif --- $O(n^2)$]
+\begin{lstlisting}
+;; Versione ovvia: LENTA
+(defun reverse-naif (lst)
+  (if (null lst)
+      nil
+      (append (reverse-naif (cdr lst))   ; ricorri sul resto
+              (list (car lst)))))         ; metti la testa in fondo
+
+;; Perche' e' O(n^2)?
+;; Al primo livello: append di una lista lunga n-1
+;; Al secondo livello: append di una lista lunga n-2
+;; ... -> n + (n-1) + ... + 1 = O(n^2)
+\end{lstlisting}
+\end{esempio}
+
+\begin{concetto}{L'accumulatore --- il pattern per O(n)}
+\keyline{}{Porta un \emph{accumulatore} come parametro aggiuntivo.}
+\keyline{}{Ad ogni passo, aggiungi in testa all'accumulatore.}
+\keyline{}{A lista esaurita, l'accumulatore contiene il risultato.}
+
+\boxsep
+\detail{L'accumulatore parte vuoto e cresce man mano che la lista
+originale si svuota. Alla fine, è già nell'ordine giusto senza
+bisogno di \fn{append}.}
+\end{concetto}
+
+\begin{esempio}[Reverse con accumulatore --- O(n)]
+\begin{lstlisting}
+(defun reverse* (lst)
+  (labels ((rev-acc (lst acc)
+             (if (null lst)
+                 acc                          ; lista esaurita: ritorna acc
+                 (rev-acc (cdr lst)           ; avanza sulla lista
+                          (cons (car lst) acc))))); aggiungi in testa ad acc
+    (rev-acc lst nil)))                        ; parte con acc vuoto
+
+;; Traccia dell'esecuzione:
+;; (reverse* '(a b c))
+;; (rev-acc '(a b c) nil)
+;; (rev-acc '(b c)   '(a))
+;; (rev-acc '(c)     '(b a))
+;; (rev-acc nil      '(c b a))   -> '(c b a)
+
+(reverse* '(a b c d))   ; => (D C B A)
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+L'accumulatore è il modo funzionale di simulare una variabile locale
+che accumula risultati in un ciclo imperativo. Invece di:
+\begin{lstlisting}
+;; Imperativo (concettuale):
+;; result = []
+;; for x in lst: result = [x] + result
+;; return result
+\end{lstlisting}
+si porta \fn{result} come parametro della funzione ricorsiva.
+\end{intuizione}
+
+\begin{workbook}
+\textbf{Esercizi 39, 51--53}\\[4pt]
+Es.~39: scrivi \fn{reverse*} prima nella versione naif, poi con
+l'accumulatore. Confronta le due: capire la differenza è fondamentale.\\[4pt]
+Es.~51--53: fattoriale, reverse e somma-range in forma tail-recursive
+con accumulatore. Sono esercizi su \fn{labels} --- il modo Lisp per
+definire funzioni locali ricorsive.
+\end{workbook}
+
+% ================================================================
+\section{Tail recursion}
+% ================================================================
+
+\begin{concetto}{Cos'è la tail recursion}
+\keyline{}{Una chiamata ricorsiva è in \emph{posizione di coda} se è l'ultima\\
+cosa che la funzione fa --- nessun calcolo dopo di essa.}
+
+\boxsep
+\detail{Il compilatore/interprete può ottimizzare la tail call riusando
+il frame dello stack invece di crearne uno nuovo. Il risultato:
+ricorsione profonda senza stack overflow.}
+
+\boxsep
+\detail{$\triangleright$ \emph{Non sai cosa sono frame dello stack e stack overflow?
+Vedi l'Appendice~\ref{app:stack} --- ``Lo stack delle chiamate'':
+spiega come funzionano le chiamate di funzione a basso livello,
+cosa è un frame di attivazione, quando si verifica lo stack overflow
+e come la TCO lo evita.}}
+\end{concetto}
+
+\begin{esempio}[Tail recursion vs non-tail recursion]
+\begin{lstlisting}
+;; NON tail-recursive: c'e' una moltiplicazione DOPO la chiamata
+(defun fattoriale-naif (n)
+  (if (= n 0)
+      1
+      (* n (fattoriale-naif (- n 1)))))  ; * aspetta il risultato
+
+;; Tail-recursive: la chiamata ricorsiva e' l'ULTIMA operazione
+(defun fattoriale (n)
+  (labels ((fact-acc (n acc)
+             (if (= n 0)
+                 acc                          ; ritorna direttamente
+                 (fact-acc (- n 1) (* n acc)))))  ; niente dopo
+    (fact-acc n 1)))
+
+(fattoriale 100000)   ; funziona senza stack overflow
+\end{lstlisting}
+\end{esempio}
+
+\begin{confronto}
+\textbf{In Common Lisp} la tail-call optimization (TCO) non è garantita
+dallo standard ANSI, ma tutti i compilatori seri (incluso Allegro CL)
+la applicano quando la chiamata è in posizione di coda.
+Se la ricorsione è molto profonda e non hai la TCO, usa \fn{loop}
+o \fn{do} come alternativa.
+\end{confronto}
+
+% ================================================================
+\section{Ricorsione su strutture annidate}
+% ================================================================
+
+\begin{concetto}{Liste come alberi}
+\keyline{}{Una lista può contenere altre liste: diventa un albero.}
+\keyline{}{Per attraversarla tutta, la ricorsione deve scendere\\
+anche \emph{dentro} gli elementi, non solo sul \fn{cdr}.}
+
+\boxsep
+\detail{La struttura \texttt{(a (b (c d) e) f)} è un albero con radice
+implicita. Per visitarla tutta servono \emph{due} casi ricorsivi:
+uno sulla testa (se è una lista, scendi dentro) e uno sulla coda.}
+\end{concetto}
+
+\begin{sintassi}
+(defun f (tree)\\
+\hspace{2em}(cond ((null tree) ...)         \textit{; albero vuoto}\\
+\hspace{2em}\hspace{6em}((atom tree) ...)   \textit{; foglia (atomo)}\\
+\hspace{2em}\hspace{6em}(t                  \textit{; nodo interno (lista)}\\
+\hspace{4em}... (f (car tree)) ...          \textit{; scendi nella testa}\\
+\hspace{4em}... (f (cdr tree)) ...)))       \textit{; scendi nella coda}
+\end{sintassi}
+
+\begin{esempio}[\fn{flatten*}: appiattire strutture annidate]
+\begin{lstlisting}
+(defun flatten* (tree)
+  (cond ((null tree) nil)              ; albero vuoto
+        ((atom tree) (list tree))      ; foglia: avvolgila in una lista
+        (t (append                     ; nodo: concatena
+             (flatten* (car tree))     ;   risultato della testa
+             (flatten* (cdr tree)))))) ;   risultato della coda
+
+(flatten* '(a (b (c d) e) f))   ; => (A B C D E F)
+(flatten* '((1 2) (3 (4 5))))   ; => (1 2 3 4 5)
+\end{lstlisting}
+\end{esempio}
+
+\begin{esempio}[Contare atomi e sommare in profondità]
+\begin{lstlisting}
+;; Conta tutti gli atomi a qualsiasi profondita'
+(defun count-atoms (tree)
+  (cond ((null tree) 0)
+        ((atom tree) 1)                          ; foglia = 1 atomo
+        (t (+ (count-atoms (car tree))
+              (count-atoms (cdr tree))))))
+
+(count-atoms '(a (b c) ((d))))   ; => 4
+
+
+;; Somma tutti i numeri a qualsiasi profondita'
+(defun sum-tree (tree)
+  (cond ((null tree)  0)
+        ((numberp tree) tree)                    ; foglia numerica
+        ((atom tree)    0)                       ; foglia non numerica
+        (t (+ (sum-tree (car tree))
+              (sum-tree (cdr tree))))))
+
+(sum-tree '(1 (2 3) ((4 5))))   ; => 15
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+Il pattern su alberi è una generalizzazione di quello sulle liste.
+Su una lista piatta ricorri solo sul \fn{cdr}.
+Su un albero ricorri sia sul \fn{car} (per scendere) che sul \fn{cdr}
+(per avanzare). È lo stesso schema dei parser, dei compilatori,
+dei motori di ragionamento: tutto ciò che ha struttura ricorsiva si
+attraversa con una funzione ricorsiva della stessa forma.
+\end{intuizione}
+
+\begin{workbook}
+\textbf{Esercizi 55--60}
+(Flatten, Profondità, Conta atomi, Somma profonda,
+Ricerca annidata, Sostituzione profonda)\\[4pt]
+Sono esercizi sull'attraversamento di alberi. Il primo (\fn{flatten*},
+es.~55) è il più importante: capirlo significa capire il pattern.
+Gli altri seguono la stessa struttura con piccole variazioni.\\[4pt]
+Attenzione all'es.~55: il caso base è \emph{due} casi base
+(\fn{null} e \fn{atom}), non uno solo come nelle liste piatte.
+\end{workbook}
+
+% ================================================================
+\section{Funzioni utili sulle liste}
+% ================================================================
+
+\detail{Common Lisp fornisce una libreria ricca di funzioni per le liste.
+Conoscerle evita di reinventare la ruota --- e di capire cosa stiamo
+reinventando negli esercizi.}
+
+\begin{esempio}[Le funzioni built-in più usate]
+\begin{lstlisting}
+;; Accesso
+(length '(a b c))           ; => 3
+(nth 1 '(a b c))            ; => B  (0-based)
+(last  '(a b c))            ; => (C)  restituisce una lista!
+(butlast '(a b c))          ; => (A B)
+
+;; Costruzione
+(append '(a b) '(c d))      ; => (A B C D)
+(reverse '(a b c))          ; => (C B A)
+
+;; Ricerca
+(member 'b '(a b c))        ; => (B C)  restituisce la coda!
+(member 'x '(a b c))        ; => NIL
+(position 'b '(a b c))      ; => 1
+
+;; Selezione
+(remove 'a '(a b a c))      ; => (B C)
+(remove-duplicates '(a b a)) ; => (A B)
+(subseq '(a b c d) 1 3)     ; => (B C)  come lst[1:3]
+
+;; Predicati
+(null  '())     ; => T
+(consp '(a))    ; => T  (lista non vuota)
+(listp '())     ; => T  (include nil)
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+\textbf{\fn{member} non restituisce T o NIL.}
+Restituisce la \emph{coda} della lista a partire dall'elemento trovato,
+oppure \fn{NIL} se non c'è. Questo significa che è comunque usabile
+come booleano (\fn{nil} = falso, coda non-nil = vero), ma se ti aspetti
+\fn{T} rimarrai sorpreso.
+\begin{lstlisting}
+(member 'b '(a b c))   ; => (B C)  non T!
+(if (member 'b '(a b c)) "trovato" "no")  ; => "trovato"  ok lo stesso
+\end{lstlisting}
+\end{attenzione}
+
+% ================================================================
+\section{Ricorsione con accumulatori avanzati}
+% ================================================================
+
+\argomento{Fibonacci efficiente: due accumulatori}
+
+\begin{concetto}{Quando servono più accumulatori}
+\keyline{}{Alcuni algoritmi richiedono tenere \emph{più stati} in parallelo.}
+\detail{Fibonacci naif è $O(2^n)$ perché ricalcola gli stessi valori.
+Con due accumulatori \fn{a = F(k)} e \fn{b = F(k+1)} si avanza di
+un passo per chiamata: O(n) senza strutture dati ausiliarie.}
+\end{concetto}
+
+\begin{esempio}[Fibonacci O(n) con due accumulatori]
+\begin{lstlisting}
+(defun fibonacci-fast (n)
+  (labels ((fib-step (n a b)
+             ;; a = F(k), b = F(k+1)
+             (if (= n 0)
+                 a                          ; F(0) = a corrente
+                 (fib-step (- n 1) b (+ a b))))) ; avanza: a<-b, b<-a+b
+    (fib-step n 0 1)))                      ; parte con F(0)=0, F(1)=1
+
+(fibonacci-fast 10)   ; => 55
+(fibonacci-fast 50)   ; => 12586269025   (nessun problema di stack)
+\end{lstlisting}
+\end{esempio}
+
+\argomento{Il crivello di Eratostene: ricorsione + array}
+
+\begin{concetto}{Quando uscire dalla ricorsione pura}
+\keyline{}{Alcuni algoritmi richiedono accesso casuale: usa un array.}
+\detail{Il crivello di Eratostene marca celle di un array booleano.
+La struttura è imperativa (array mutabile + loop), ma l'interfaccia
+esterna è funzionale (restituisce una lista di primi).
+Ricorsione e stato mutabile coesistono in Common Lisp.}
+\end{concetto}
+
+\begin{esempio}[Crivello di Eratostene]
+\begin{lstlisting}
+(defun crivello (n)
+  (let ((arr (make-array (1+ n) :initial-element t)))
+    (setf (aref arr 0) nil
+          (aref arr 1) nil)            ; 0 e 1 non sono primi
+    (loop for i from 2 to (isqrt n) do ; per ogni potenziale primo
+          (when (aref arr i)           ; se non e' gia' segnato
+            (loop for j from (* i i) to n by i do  ; segna multipli
+                  (setf (aref arr j) nil))))
+    (loop for i from 2 to n           ; raccogli i rimasti
+          when (aref arr i)
+          collect i)))
+
+(crivello 20)   ; => (2 3 5 7 11 13 17 19)
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+Questo è un esempio di \textbf{stile ibrido}: struttura dati mutabile
+(array) usata localmente per efficienza, interfaccia esterna funzionale.
+Il chiamante non sa (e non deve sapere) che dentro c'è un array.
+È un pattern professionale molto comune in Lisp.
+\end{nota}
+
+\begin{workbook}
+\textbf{Esercizi 54, 64, 65}
+(Fibonacci fast, Crivello di Eratostene, Fattori primi)\\[4pt]
+Questi tre esercizi richiedono ragionamento algoritmico, non solo
+pattern ricorsivi. Consulta il suggerimento nel workbook
+prima di tentare la soluzione.\\[4pt]
+L'es.~64 (crivello) è il primo esercizio che combina \fn{loop},
+\fn{make-array} e \fn{setf}: è un ottimo punto di contatto tra
+stile funzionale e stile imperativo.
+\end{workbook}
+
+% ================================================================
+\section*{Riepilogo del capitolo}
+% ================================================================
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=csBlue!5, colframe=csBlue!40,
+  arc=4pt, boxrule=0.6pt,
+  left=14pt, right=14pt, top=12pt, bottom=12pt,
+  before skip=16pt, after skip=16pt
+]
+\textbf{Quello che hai imparato:}
+
+\medskip
+\begin{itemize}
+  \item \textbf{Struttura}: una lista è una catena di cons-cell.
+        \fn{car} = testa, \fn{cdr} = coda, \fn{cons} = costruisce.
+  \item \textbf{Pattern ricorsivi}: reduce (calcola un valore),
+        map (trasforma), filter (seleziona).
+        Sono i fondamenti della programmazione funzionale.
+  \item \textbf{\fn{cons} vs \fn{append}}: \fn{cons} aggiunge in testa O(1),
+        \fn{append} concatena O(n). Usare \fn{cons} + \fn{reverse}
+        è più efficiente di \fn{append} in un loop.
+  \item \textbf{Accumulatore}: porta il risultato parziale come parametro.
+        Rende la ricorsione tail-recursive e O(n).
+  \item \textbf{Tail recursion}: chiamata in posizione di coda,
+        ottimizzabile dallo stack. Usa \fn{labels} per la funzione ausiliaria.
+  \item \textbf{Alberi}: liste annidate richiedono due casi ricorsivi
+        --- sulla testa (scendi) e sulla coda (avanza).
+  \item \textbf{Stile ibrido}: array per accesso casuale, lista come
+        interfaccia esterna. Ricorsione e mutabilità coesistono.
+\end{itemize}
+
+\medskip
+\textbf{Prossimo:} Capitolo~4 --- \emph{Higher-order e closure}.
+Le funzioni come valori, \fn{mapcar}, \fn{reduce}, lambda, closure.
+Quello che hai scritto a mano in questo capitolo diventa
+un'unica chiamata.
+\end{tcolorbox}
+
+\begin{workbook}
+\textbf{Prima di andare al Capitolo~4:}\\[4pt]
+Completa gli esercizi \textbf{22--65} (capitoli \emph{Liste} e
+\emph{Ricorsione avanzata}).\\[4pt]
+Priorità assoluta: \textbf{27, 31, 35, 39, 40, 51, 55}.
+Sono gli esercizi che insegnano i pattern --- gli altri li applicano.\\[4pt]
+Se hai difficoltà con un esercizio $\bigstar\bigstar\bigstar$ o superiore, leggi il
+suggerimento prima della soluzione.
+\end{workbook}
