@@ -10,7 +10,8 @@ Le liste sono il cuore di Lisp. Il nome stesso viene da
 \textit{LISt Processing}. Capire le liste, come sono fatte,
 come si attraversano, come si costruiscono, è capire Lisp.
 La ricorsione non è un'alternativa ai cicli: è il modo naturale
-di pensare sulle liste.
+di pensare su strutture come le liste, perché rispecchia direttamente
+la loro forma (testa e coda).
 \end{intuizione}
 
 \vspace{4pt}
@@ -889,7 +890,7 @@ di attraversarla dall'inizio alla fine, la lista è la struttura sbagliata.
 In questi casi usa un array con \fn{make-array} e \fn{aref}.
 
 \medskip
-\textbf{Lo stile ibrido} è la risposta professionale:
+\textbf{Lo stile ibrido} è la scelta pragmatica giusta in questi casi:
 usa la struttura mutabile \emph{localmente}, all'interno della funzione,
 per fare il lavoro efficiente; esponi all'esterno solo il risultato
 come lista o valore funzionale.

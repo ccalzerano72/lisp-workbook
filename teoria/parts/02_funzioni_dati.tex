@@ -576,10 +576,10 @@ viene usato automaticamente solo il primo.
 % ================================================================
 
 \begin{confronto}
-La ricorsione è il modo idiomatico in Lisp per trasformare dati.
-I costrutti iterativi (\fn{dotimes}, \fn{dolist}, \fn{loop}) servono
-principalmente per output e side-effect, oppure come alternativa
-esplicita quando è più leggibile.
+La ricorsione è particolarmente naturale per attraversare strutture
+ricorsive come liste e alberi. Per tutto il resto, Common Lisp offre
+\fn{dotimes}, \fn{dolist} e \fn{loop}: costrutti potenti e flessibili,
+usati normalmente in codice professionale.
 \end{confronto}
 
 \argomento{\texttt{dotimes} --- ripetizione N volte}
@@ -660,11 +660,13 @@ ufficiale o al Practical Common Lisp di Seibel.
 \end{esempio}
 
 \begin{attenzione}
-\textbf{\fn{setf} e mutabilità.}
-Negli esempi con \fn{dotimes} compare \fn{setf} (l'assegnazione).
-Nella programmazione funzionale si preferisce la ricorsione
-con accumulatori. Regola pratica: \fn{dotimes}/\fn{loop} per
-output e side-effect, ricorsione per trasformare strutture dati.
+\textbf{Quando usare la ricorsione e quando \fn{loop}.}
+Negli esempi con \fn{dotimes} compare \fn{setf}: è normale,
+i costrutti iterativi lavorano spesso con stato locale.
+Regola pratica: usa la ricorsione quando la struttura del problema
+è ricorsiva (lista, albero); usa \fn{dotimes}/\fn{loop} per iterazioni
+su range numerici o quando \fn{loop \ldots\ collect}/\fn{sum}/\fn{count}
+rende l'intento più diretto.
 \end{attenzione}
 
 \begin{workbook}
@@ -734,7 +736,7 @@ per prendere confidenza con l'output iterativo.
         \fn{\&rest} (argomenti variabili).
         Valori multipli con \fn{values}/\fn{multiple-value-bind}.
   \item \textbf{Iterazione}: \fn{dotimes}, \fn{dolist}, \fn{loop}
-        per output e side-effect.
+        per iterazioni imperative; ricorsione per strutture ricorsive.
   \item \textbf{\fn{format}}: \texttt{\textasciitilde a},
         \texttt{\textasciitilde d}, \texttt{\textasciitilde f},
         \texttt{\textasciitilde \%}, \texttt{\textasciitilde s}.

@@ -80,6 +80,37 @@ Studente universitario con basi imperative (C, Java, Python). Sa cos'è una vari
 
 ---
 
+## Caposaldo editoriale: paradigma funzionale prima, tutto il resto dopo
+
+Questa è la scelta pedagogica centrale del libro. Va rispettata in ogni pagina scritta o modificata.
+
+**La posizione:**
+
+> Prima impara a pensare in modo funzionale. Poi Common Lisp ti dà anche tutto il resto.
+
+**Cosa significa in pratica:**
+
+Il target è uno studente che viene da C/Java/Python e sa già scrivere `for` e `x = x + 1`. Se il testo non lo spinge attivamente verso il funzionale, torna ai pattern che già conosce: Lisp diventa "C con le parentesi" e il libro perde il suo scopo.
+
+**Progressione per capitolo:**
+
+- **Cap. 1–4**: stile funzionale puro. Ricorsione, accumulatori, higher-order, closure. `setf` citato come esistente ma non usato come default.
+- **Cap. 5** (strutture dati): la mutabilità entra per necessità tecnica (hash table, array). Si spiega _perché_ serve, non la si presenta come norma.
+- **Cap. 6+**: stile ibrido come scelta consapevole e motivata, non come default.
+
+**Cosa non fare:**
+
+- Non scrivere che `loop`/`dotimes` sono "solo per side-effect": è falso e riduttivo.
+- Non scrivere che la ricorsione è "il modo naturale di iterare in Lisp" in assoluto: è naturale per strutture ricorsive (liste, alberi), non per ogni problema.
+- Non presentare `setf` come errore o eccezione: è uno strumento legittimo, da introdurre al momento giusto.
+- Non equiparare "funzionale" a "senza mutabilità": in Common Lisp le closure possono avere stato, e questo è normale.
+
+**La formulazione corretta da usare come bussola:**
+
+> La ricorsione è particolarmente naturale per attraversare strutture ricorsive come liste e alberi. Per iterazioni imperative, Common Lisp offre costrutti potenti come `loop`. In codice professionale si usano entrambi.
+
+---
+
 ## Sistema visivo — teoria/
 
 | Box          | Colore         | Uso                          |

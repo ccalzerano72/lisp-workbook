@@ -227,6 +227,10 @@ indipendente dalla dimensione.
 \end{lstlisting}
 \end{esempio}
 
+\detail{\fn{maphash} è progettato per side-effect: non restituisce
+un valore utile. Per accumulare in una struttura esterna, \fn{setf}
+è la soluzione naturale e corretta in questo contesto.}
+
 \argomento{Test di uguaglianza e stringhe}
 
 \begin{attenzione}
@@ -307,8 +311,12 @@ funzione hash.
 \end{lstlisting}
 \end{esempio}
 
+\detail{Costruire una matrice per indice è un caso tipico dove
+\fn{dotimes} con \fn{setf} è la soluzione più diretta e leggibile:
+non c'è struttura ricorsiva da attraversare, solo un range numerico
+da scorrere modificando celle in posizione.}
+
 \begin{confronto}
-\textbf{Array vs lista di liste.}
 Una matrice si può rappresentare anche come lista di liste:
 \texttt{((1 0 0) (0 1 0) (0 0 1))}.
 Con la lista di liste, \fn{(nth j (nth i m))} ha costo $O(i+j)$.
@@ -558,6 +566,9 @@ leggi il suggerimento prima di tentare.
 (defun make-stack () (list nil))        ; wrapper mutabile
 (defun stack-empty-p (s) (null (car s)))
 (defun stack-peek (s)    (caar s))
+;; Il wrapper (list nil) crea una cons-cell mutabile che funge
+;; da contenitore: setf (car s) modifica il puntatore interno.
+;; E' il pattern standard per strutture dati mutabili in CL.
 
 (defun stack-push (item s)
   (setf (car s) (cons item (car s))))

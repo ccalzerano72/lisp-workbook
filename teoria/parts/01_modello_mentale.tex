@@ -9,6 +9,12 @@
 Lisp non è un linguaggio da \emph{imparare}, è un linguaggio da
 \emph{capire}. La sintassi si impara in dieci minuti. Il modello mentale
 richiede qualche ora. Questo capitolo serve a costruirlo.
+
+\medskip
+Vieni da C, Java, Python: sai già scrivere cicli e assegnamenti.
+Qui imparerai qualcosa di diverso - il modo funzionale di pensare
+ai problemi. È quello che ti darà il vantaggio reale dallo studio di Lisp.
+L'imperativo lo conosci già; il funzionale è la parte nuova.
 \end{intuizione}
 
 \vspace{4pt}
@@ -291,9 +297,10 @@ sono strumenti normali, da usare quando ha senso.
 \end{intuizione}
 
 \begin{attenzione}
-\textbf{All'inizio, non usare \fn{setf}.}
-Nei linguaggi imperativi scrivi \texttt{x = x + 1} per aggiornare \texttt{x}.
-In Lisp, invece di modificare un valore esistente, crei un nuovo binding:
+\textbf{Parti dal funzionale, non dall'assegnazione.}
+\fn{setf} esiste ed è uno strumento legittimo.
+Ma se lo usi come default fin dall'inizio, stai replicando
+i pattern di C senza guadagnare nulla dal cambio di linguaggio.
 \begin{lstlisting}
 ;; Imperativo (da evitare all'inizio)
 (setf x (+ x 1))
@@ -302,8 +309,6 @@ In Lisp, invece di modificare un valore esistente, crei un nuovo binding:
 (let ((x-nuovo (+ x 1)))
   ...)
 \end{lstlisting}
-\fn{setf} esiste ed è legittimo.
-Ma se lo usi subito come default stai scrivendo C, non Lisp.
 \end{attenzione}
 
 % ================================================================
@@ -356,10 +361,15 @@ Non preoccuparti ora dei dettagli di \texttt{format}: verrà trattato
 nel capitolo sull'I/O.
 \end{nota}
 
-\argomento{Ricorsione come default}
+\argomento{Ricorsione e iterazione}
 
-In Lisp la ricorsione non è un trucco avanzato: è il modo naturale
-di esprimere iterazione. Inizia a ragionarci subito:
+La ricorsione è particolarmente naturale per attraversare strutture
+ricorsive come liste e alberi: il codice rispecchia direttamente
+la struttura del dato.
+Per iterazioni imperative, Common Lisp offre costrutti potenti
+come \fn{loop}, \fn{dotimes} e \fn{dolist}.
+In codice professionale si usano entrambi, scegliendo
+il più leggibile caso per caso.
 
 \begin{esempio}[Prima funzione ricorsiva]
 \begin{lstlisting}
@@ -569,7 +579,8 @@ comporta come ti aspetti. Vedere le chiamate annidate risolve il
   \item \textbf{REPL}: il laboratorio interattivo. Scrivi, valuta, correggi.
   \item \textbf{defun}: come definire funzioni. Il corpo è un'espressione,
         non una sequenza di istruzioni.
-  \item \textbf{Ricorsione}: il modo naturale di iterare in Lisp.
+  \item \textbf{Ricorsione}: naturale per strutture ricorsive (liste, alberi).
+        Per iterazioni imperative: \fn{loop}, \fn{dotimes}, \fn{dolist}.
   \item \textbf{Convenzioni}: kebab-case, predicati con \texttt{-p},
         globali con \texttt{*asterischi*}.
   \item \textbf{Ciclo di sviluppo}: incrementale, con il REPL.
@@ -581,6 +592,14 @@ comporta come ti aspetti. Vedere le chiamate annidate risolve il
 Capitolo~2, \emph{Funzioni e dati fondamentali}: tutti i tipi di dato,
 le funzioni numeriche, le stringhe, \texttt{let}/\texttt{let*},
 parametri opzionali e \texttt{\&rest}.
+
+\medskip
+\textbf{La direzione del percorso:}\\
+I capitoli 1–4 ti chiedono di pensare in modo funzionale.
+Resistenza garantita: il tuo istinto cercherà di scrivere cicli
+e assegnamenti come sai fare. Tienilo a bada.
+Dal capitolo~5 in poi vedrai anche la mutabilità usata dove serve,
+come scelta consapevole - non come default.
 \end{tcolorbox}
 
 \begin{workbook}
