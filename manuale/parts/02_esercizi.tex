@@ -1712,7 +1712,7 @@ e implementare:
 \exspieg{Un nodo è semplicemente una lista di tre elementi.
 \fn{(make-leaf 5)} → \fn{(5 NIL NIL)};
 \fn{(make-node 5 sx dx)} → \fn{(5 sx dx)}.
-Implementare anche \fn{(node-value t)}, \fn{(node-left t)},
+Implementare anche \fn{(node-val t)}, \fn{(node-left t)},
 \fn{(node-right t)} come accessor (\fn{car}, \fn{cadr}, \fn{caddr}).}
 Costruire l'albero di esempio:
 \begin{lstlisting}
@@ -1780,7 +1780,7 @@ La visita \textit{inorder} su un BST produce sempre una sequenza ordinata
 in senso crescente.}
 Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 \begin{lstlisting}
-(inorder albero)   ; -> (1 3 4 5 8)
+(inorder *albero*)   ; -> (1 3 4 5 8)
 \end{lstlisting}
 
 \small\color{black!55}\hyperref[sol:109]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:109]{$\rightarrow$ Suggerimento}\normalsize\color{black}
@@ -1791,8 +1791,8 @@ Verificare che \fn{inorder} su un BST produca sequenza ordinata.
 \exlabel{Implementare} \fn{(tree-height tree)} e \fn{(count-leaves tree)}.
 \nopagebreak
 \begin{lstlisting}
-(tree-height albero)    ; -> 3
-(count-leaves albero)   ; -> 3
+(tree-height *albero*)    ; -> 3
+(count-leaves *albero*)   ; -> 3
 \end{lstlisting}
 
 
