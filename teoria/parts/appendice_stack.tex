@@ -287,9 +287,9 @@ Per verificare se la TCO è attiva in Allegro CL, puoi testare:
 \begin{lstlisting}
 ;; Definisci e COMPILA (non solo valuta) la funzione
 (defun conta (n)
-  (labels ((loop (n)
-             (if (= n 0) 'done (loop (- n 1)))))
-    (loop n)))
+  (labels ((iter (n)
+             (if (= n 0) 'done (iter (- n 1)))))
+    (iter n)))
 (compile 'conta)          ; compila esplicitamente
 
 ;; Ora prova con un numero grande

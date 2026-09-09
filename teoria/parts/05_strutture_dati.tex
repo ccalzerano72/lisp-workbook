@@ -582,20 +582,23 @@ leggi il suggerimento prima di tentare.
 \begin{esempio}[Applicazione: validazione parentesi]
 \begin{lstlisting}
 (defun valida-parentesi (stringa)
-  (let ((s (make-stack))
-        (aperte '(#\( #\[ #\{))
-        (chiuse '(#\) #\] #\})))
-    (every #'identity
-      (loop for c across stringa
-            collect
-            (cond
-              ((member c aperte) (stack-push c s) t)
-              ((member c chiuse)
-               (and (not (stack-empty-p s))
-                    (char= (stack-pop s)
-                           (nth (position c chiuse) aperte))))
-              (t t)))
-      (stack-empty-p s))))
+  ;; mappa ogni chiusa alla corrispondente aperta
+  (let ((match '((#\) . #\()
+                 (#\] . #\[)
+                 (#\} . #\{)))
+        (stack (make-stack)))
+    (loop for c across stringa
+          do (cond
+               ;; aperta: push
+               ((member c '(#\( #\[ #\{))
+                (stack-push c stack))
+               ;; chiusa: verifica top
+               ((assoc c match)
+                (if (or (stack-empty-p stack)
+                        (not (char= (stack-pop stack)
+                                    (cdr (assoc c match)))))
+                    (return-from valida-parentesi nil)))))
+    (stack-empty-p stack)))
 
 (valida-parentesi "([]{})")   ; => T
 (valida-parentesi "([)]")     ; => NIL

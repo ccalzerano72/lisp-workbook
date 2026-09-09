@@ -661,7 +661,7 @@ reinventando negli esercizi.}
 
 ;; Selezione
 (remove 'a '(a b a c))      ; => (B C)
-(remove-duplicates '(a b a)) ; => (A B)
+(remove-duplicates '(a b a)) ; => (B A)  tiene l'ultima occorrenza
 (subseq '(a b c d) 1 3)     ; => (B C)  come lst[1:3]
 
 ;; Predicati
@@ -680,6 +680,15 @@ come booleano (\fn{nil} = falso, coda non-nil = vero), ma se ti aspetti
 \begin{lstlisting}
 (member 'b '(a b c))   ; => (B C)  non T!
 (if (member 'b '(a b c)) "trovato" "no")  ; => "trovato"  ok lo stesso
+\end{lstlisting}
+\end{attenzione}
+
+\begin{attenzione}
+\textbf{\fn{remove-duplicates} tiene l'ultima occorrenza.}
+Per default scarta le occorrenze \emph{precedenti} di ogni elemento duplicato.
+\begin{lstlisting}
+(remove-duplicates '(a b a))              ; => (B A)  la prima A sparisce
+(remove-duplicates '(a b a) :from-end t)  ; => (A B)  tiene la prima
 \end{lstlisting}
 \end{attenzione}
 
