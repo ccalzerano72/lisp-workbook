@@ -210,6 +210,15 @@ raccoglierli in una lista di liste.}
 \end{lstlisting}
 \end{esempio}
 
+\begin{attenzione}
+\textbf{\fn{mapcan} è distruttivo.}
+Usa \fn{nconc} per concatenare i risultati: le liste restituite dalla
+funzione vengono modificate. Se la funzione ritorna liste condivise o
+costanti quoted, il comportamento è indefinito.
+Soluzione sicura: la funzione deve sempre restituire liste \emph{fresche}
+(create con \fn{list}, \fn{copy-list}, ecc.).
+\end{attenzione}
+
 \begin{workbook}
 \textbf{Esercizi 69--84}
 (\fn{mapcar}, \fn{remove-if-not}, \fn{reduce}, \fn{mapcan},
@@ -436,11 +445,11 @@ esplicitamente con una closure.}
 (defparameter *doppio* (partial #'* 2))
 (mapcar *doppio* '(1 2 3 4))   ; => (2 4 6 8)
 
-;; Combinato con mapcar: filtra i multipli di 3
-(defparameter *mult3?* (partial #'= 0))
-;; Non funziona direttamente, ma l'idea e' questa:
-(remove-if-not #'(lambda (x) (= (mod x 3) 0))
-               '(1 2 3 4 5 6 7 8 9))   ; => (3 6 9)
+;; Costruisce un comparatore parziale
+(defparameter *maggiore-di-10?* (partial #'< 10))
+(funcall *maggiore-di-10?* 15)   ; => T   (10 < 15)
+(funcall *maggiore-di-10?* 5)    ; => NIL (10 < 5 e' falso)
+(remove-if-not *maggiore-di-10?* '(5 12 8 20 3))  ; => (12 20)
 \end{lstlisting}
 \end{esempio}
 
@@ -456,7 +465,7 @@ esplicitamente con una closure.}
 (sort (copy-list '(3 1 4 1 5 9)) #'>)  ; => (9 5 4 3 1 1)
 
 ;; sort su strutture con :key
-(sort (copy-list '((anna . 92) (mario . 85) (luca . 78)))
+(sort (copy-list '((luca . 78) (anna . 92) (mario . 85)))
       #'>
       :key #'cdr)
 ; => ((ANNA . 92) (MARIO . 85) (LUCA . 78))

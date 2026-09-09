@@ -51,7 +51,7 @@ Il vantaggio: meno cerimonia, più flessibilità, codice più conciso.
 (type-of *x*)       ; => INTEGER  (o un sottotipo come FIXNUM)
 
 (setf *x* "ciao")
-(type-of *x*)       ; => un sottotipo di STRING (dipende dall'impl.)
+(type-of *x*)       ; => (SIMPLE-ARRAY CHARACTER (4))
 
 (setf *x* '(1 2 3))
 (type-of *x*)       ; => CONS
