@@ -1,6 +1,6 @@
 % =============================================================
 %  05_strutture_dati.tex
-%  Capitolo 5 --- Strutture dati
+%  Capitolo 5 — Strutture dati
 % =============================================================
 
 \chapter{Strutture dati}
@@ -13,7 +13,7 @@ Perche' ogni problema ha caratteristiche diverse.\\[2pt]
 \textcolor{black!60}{La struttura sbagliata trasforma un algoritmo elegante in uno lento o contorto.}
 
 \medskip
-La \textbf{lista} e' il punto di partenza --- flessibile, ricorsiva, perfetta
+La \textbf{lista} e' il punto di partenza: flessibile, ricorsiva, perfetta
 per elaborazioni sequenziali. Ma quando il problema cambia, emergono
 \emph{lacune} che richiedono strumenti diversi.
 
@@ -35,19 +35,19 @@ a una limitazione della precedente.}
 
 \medskip
 \begin{enumerate}
-  \item \textbf{Lista} --- Perfetta per sequenze, ma cercare un elemento
+  \item \textbf{Lista.} Perfetta per sequenze, ma cercare un elemento
         per chiave richiede $O(n)$.
-  \item \textbf{Alist} --- Aggiunge l'associazione chiave$\to$valore,
+  \item \textbf{Alist.} Aggiunge l'associazione chiave$\to$valore,
         ma la ricerca resta $O(n)$.
-  \item \textbf{Hash table} --- Ricerca in $O(1)$, ma e' mutabile
+  \item \textbf{Hash table.} Ricerca in $O(1)$, ma e' mutabile
         e non mantiene l'ordine.
-  \item \textbf{Array} --- Accesso diretto per indice in $O(1)$,
+  \item \textbf{Array.} Accesso diretto per indice in $O(1)$,
         ma gli indici sono numeri, non chiavi simboliche.
-  \item \textbf{Defstruct} --- Campi nominati con type-checking,
+  \item \textbf{Defstruct.} Campi nominati con type-checking,
         ma la struttura e' fissa a compile-time.
-  \item \textbf{BST} --- Ordine e ricerca efficiente insieme,
+  \item \textbf{BST.} Ordine e ricerca efficiente insieme,
         ma richiede implementazione esplicita.
-  \item \textbf{Stack/Queue} --- Semantica di accesso specifica
+  \item \textbf{Stack/Queue.} Semantica di accesso specifica
         (LIFO/FIFO) per problemi che la richiedono.
 \end{enumerate}
 
@@ -99,7 +99,7 @@ corrispondente'', la lista grezza non basta: serve una struttura
 che associ \emph{chiavi} a \emph{valori}. La alist e' la risposta
 piu' semplice e naturale in Lisp.
 
-\begin{concetto}{Alist --- la mappa piu' semplice}
+\begin{concetto}{Alist: la mappa piu' semplice}
 \keyline{}{Una alist è una lista di coppie \fn{(chiave . valore)}.}
 \keyline{\fn{assoc}}{trova la prima coppia con una data chiave. $O(n)$.}
 \keyline{\fn{acons}}{aggiunge una coppia in testa. $O(1)$.}
@@ -153,7 +153,7 @@ non importa; con 10\,000, diventa un collo di bottiglia.
 La hash table risolve questo problema: accesso in tempo costante,
 indipendente dalla dimensione.
 
-\begin{concetto}{Hash table --- dizionario a tempo costante}
+\begin{concetto}{Hash table: dizionario a tempo costante}
 \keyline{\fn{make-hash-table}}{crea una hash table vuota.}
 \keyline{\fn{gethash}}{legge un valore per chiave. $O(1)$.}
 \keyline{\fn{setf}\ \fn{gethash}}{scrive o sovrascrive un valore. $O(1)$.}
@@ -196,7 +196,7 @@ indipendente dalla dimensione.
 
 \argomento{Iterare: \fn{maphash}}
 
-\begin{concetto}{\fnt{maphash} --- iterare su tutte le coppie}
+\begin{concetto}{\fnt{maphash}: iterare su tutte le coppie}
 \begin{sintassi}
 (maphash \#'(lambda (chiave valore) ...) ht)
 \end{sintassi}
@@ -257,7 +257,7 @@ Chiavi simbolo o numero $\to$ default \fn{eql} va bene.
 rubrica, conta parole)\\[4pt]
 Priorità: \textbf{95, 96, 100}.
 L'esercizio~96 è fondamentale: ripete la stessa cosa dell'es.~94
-con hash table invece di alist --- il confronto diretto insegna
+con hash table invece di alist: il confronto diretto insegna
 quando usare quale.\\[4pt]
 L'esercizio~120 (conta parole) è il caso reale più comune di hash table:
 contatore di frequenze su input testuale di dimensione arbitraria.
@@ -273,7 +273,7 @@ Una matrice di pixel, una griglia di gioco, una tabella di valori.
 L'array offre accesso $O(1)$ per indice, senza l'overhead di una
 funzione hash.
 
-\begin{concetto}{Array 2D --- matrici}
+\begin{concetto}{Array 2D: matrici}
 \keyline{}{Passa una lista di dimensioni a \fn{make-array}.}
 \keyline{\fn{aref}}{accede con indici multipli.}
 \end{concetto}
@@ -327,14 +327,14 @@ stile funzionale (crea un nuovo array) e stile imperativo
 \end{workbook}
 
 % ================================================================
-\section{\texttt{defstruct} --- strutture con campi nominati}
+\section{\texttt{defstruct}: strutture con campi nominati}
 % ================================================================
 
 Con alist e hash table accedi ai dati per chiave, ma le chiavi
 sono simboli o stringhe arbitrarie: nulla impedisce di scrivere
 \fn{'nme} invece di \fn{'nome} e ottenere \fn{nil} senza errore.
-Quando la struttura dei dati e' \emph{nota a priori} --- una persona
-ha sempre nome, eta', citta' --- vuoi che il compilatore ti aiuti.
+Quando la struttura dei dati e' \emph{nota a priori}: una persona
+ha sempre nome, eta', citta', e vuoi che il compilatore ti aiuti.
 \fn{defstruct} definisce un \emph{tipo} con campi fissi, accessor
 generati, e controllo di tipo a runtime.
 
@@ -533,7 +533,7 @@ leggi il suggerimento prima di tentare.
 \section{Pila e coda come ADT}
 % ================================================================
 
-\begin{concetto}{Pila (stack) --- LIFO}
+\begin{concetto}{Pila (stack): LIFO}
 \keyline{\fn{push}}{aggiunge in cima.}
 \keyline{\fn{pop}}{rimuove e restituisce la cima.}
 \keyline{\fn{peek}}{legge la cima senza rimuoverla.}
@@ -542,7 +542,7 @@ leggi il suggerimento prima di tentare.
 \detail{Last In, First Out. Applicazioni: undo, parsing, call stack.}
 \end{concetto}
 
-\begin{concetto}{Coda (queue) --- FIFO}
+\begin{concetto}{Coda (queue): FIFO}
 \keyline{\fn{enqueue}}{aggiunge in fondo.}
 \keyline{\fn{dequeue}}{rimuove e restituisce la testa.}
 
@@ -550,7 +550,7 @@ leggi il suggerimento prima di tentare.
 \detail{First In, First Out. Applicazioni: code di lavoro, BFS, buffer.}
 \end{concetto}
 
-\begin{esempio}[Pila (stack) --- LIFO]
+\begin{esempio}[Pila (stack): LIFO]
 \begin{lstlisting}
 ;; Rappresentazione: una cons-cell (lista . puntatore-fine)
 ;; ma per la pila basta una lista: la testa e' il top
@@ -649,7 +649,7 @@ La risposta indica la struttura.
 \end{intuizione}
 
 \medskip
-\textbf{Prossimo:} Capitolo~6 --- \emph{Macro}.
+\textbf{Prossimo:} Capitolo~6, \emph{Macro}.
 Trasformare codice in codice prima della valutazione.
 
 \begin{workbook}

@@ -1,14 +1,14 @@
 % =============================================================
 %  03_liste_ricorsione.tex
-%  Capitolo 3 --- Liste e ricorsione
+%  Capitolo 3 — Liste e ricorsione
 % =============================================================
 
 \chapter{Liste e ricorsione}
 
 \begin{intuizione}
 Le liste sono il cuore di Lisp. Il nome stesso viene da
-\textit{LISt Processing}. Capire le liste --- come sono fatte,
-come si attraversano, come si costruiscono --- è capire Lisp.
+\textit{LISt Processing}. Capire le liste, come sono fatte,
+come si attraversano, come si costruiscono, è capire Lisp.
 La ricorsione non è un'alternativa ai cicli: è il modo naturale
 di pensare sulle liste.
 \end{intuizione}
@@ -53,7 +53,7 @@ accesso casuale.
 
 \argomento{Le operazioni primitive: \fn{car}, \fn{cdr}, \fn{cons}}
 
-\begin{concetto}{\fnt{car}, \fnt{cdr}, \fnt{cons} --- le tre primitive}
+\begin{concetto}{\fnt{car}, \fnt{cdr}, \fnt{cons}: le tre primitive}
 \keyline{\fn{car}}{restituisce il \emph{primo elemento} (la testa).}
 \keyline{\fn{cdr}}{restituisce il \emph{resto} (la coda, senza il primo).}
 \keyline{\fn{cons}}{\emph{costruisce} una nuova cons-cell: \fn{(cons x lst)}.}
@@ -149,7 +149,7 @@ Impararlo una volta significa saperlo applicare a qualsiasi problema.
 La ricorsione rispecchia esattamente questa struttura.}
 
 \boxsep
-\detail{\textbf{Nota:} questi pattern assumono \emph{liste proprie} --- catene
+\detail{\textbf{Nota:} questi pattern assumono \emph{liste proprie}, catene
 di cons-cell che terminano con \fn{nil}. Le liste improprie (dotted list)
 come \fn{'(a b . c)} non terminano con \fn{nil} e richiedono gestione diversa.
 In questo libro lavoriamo sempre con liste proprie.}
@@ -167,7 +167,7 @@ In questo libro lavoriamo sempre con liste proprie.}
 
 Quasi tutte le funzioni sulle liste ricadono in uno di questi tre schemi:
 
-\begin{esempio}[Pattern 1 --- Calcola un valore (reduce)]
+\begin{esempio}[Pattern 1: calcola un valore (reduce)]
 \begin{lstlisting}
 ;; Somma tutti gli elementi
 (defun sum-list (lst)
@@ -188,7 +188,7 @@ Quasi tutte le funzioni sulle liste ricadono in uno di questi tre schemi:
 \end{lstlisting}
 \end{esempio}
 
-\begin{esempio}[Pattern 2 --- Trasforma (map)]
+\begin{esempio}[Pattern 2: trasforma (map)]
 \begin{lstlisting}
 ;; Aggiunge 1 a ogni elemento
 (defun incrementa-tutti (lst)
@@ -208,7 +208,7 @@ Quasi tutte le funzioni sulle liste ricadono in uno di questi tre schemi:
 \end{lstlisting}
 \end{esempio}
 
-\begin{esempio}[Pattern 3 --- Filtra (filter)]
+\begin{esempio}[Pattern 3: filtra (filter)]
 \begin{lstlisting}
 ;; Mantieni solo i pari
 (defun solo-pari (lst)
@@ -224,7 +224,7 @@ Quasi tutte le funzioni sulle liste ricadono in uno di questi tre schemi:
 \end{esempio}
 
 \begin{intuizione}
-Questi tre pattern --- \textbf{reduce}, \textbf{map}, \textbf{filter} ---
+Questi tre pattern — \textbf{reduce}, \textbf{map}, \textbf{filter} —
 sono il fondamento di tutta la programmazione funzionale.
 Nel Capitolo~4 vedremo che \fn{reduce}, \fn{mapcar} e \fn{remove-if}
 sono proprio questi pattern incapsulati in funzioni di ordine superiore.
@@ -320,7 +320,7 @@ o usare \fn{cons} con una lista quando serve \fn{append}.}
 \begin{nota}
 \fn{append} è O(n) sulla lunghezza della \emph{prima} lista perché deve
 ricopiare tutta la catena di cons-cell. La seconda lista non viene
-copiata --- viene solo puntata dall'ultima cella della prima.
+copiata: viene solo puntata dall'ultima cella della prima.
 Conseguenza pratica: in un loop che accumula risultati, è più efficiente
 accumulare in testa con \fn{cons} e fare \fn{reverse} alla fine,
 piuttosto che fare \fn{append} ad ogni passo.
@@ -341,7 +341,7 @@ su \fn{lst2}.
 \keyline{}{La versione ovvia di reverse è $O(n^2)$ a causa di \fn{append}.}
 \end{concetto}
 
-\begin{esempio}[Reverse naif --- $O(n^2)$]
+\begin{esempio}[Reverse naif — $O(n^2)$]
 \begin{lstlisting}
 ;; Versione ovvia: LENTA
 (defun reverse-naif (lst)
@@ -357,7 +357,7 @@ su \fn{lst2}.
 \end{lstlisting}
 \end{esempio}
 
-\begin{concetto}{L'accumulatore --- il pattern per O(n)}
+\begin{concetto}{L'accumulatore: il pattern per O(n)}
 \keyline{}{Porta un \emph{accumulatore} come parametro aggiuntivo.}
 \keyline{}{Ad ogni passo, aggiungi in testa all'accumulatore.}
 \keyline{}{A lista esaurita, l'accumulatore contiene il risultato.}
@@ -368,7 +368,7 @@ originale si svuota. Alla fine, è già nell'ordine giusto senza
 bisogno di \fn{append}.}
 \end{concetto}
 
-\begin{esempio}[Reverse con accumulatore --- O(n)]
+\begin{esempio}[Reverse con accumulatore — O(n)]
 \begin{lstlisting}
 (defun reverse* (lst)
   (labels ((rev-acc (lst acc)
@@ -416,7 +416,7 @@ definire funzioni locali ricorsive.
 
 \begin{concetto}{Cos'è la tail recursion}
 \keyline{}{Una chiamata ricorsiva è in \emph{posizione di coda} se è l'ultima\\
-cosa che la funzione fa --- nessun calcolo dopo di essa.}
+cosa che la funzione fa: nessun calcolo dopo di essa.}
 
 \boxsep
 \detail{Quando l'implementazione applica la \emph{tail call optimization} (TCO),
@@ -499,7 +499,7 @@ uno sulla testa (se è una lista, scendi dentro) e uno sulla coda.}
 
 \smallskip
 {\small\itshape\color{black!55}
-\texttt{(a b c)} --- lista piatta: catena lineare di cons-cell}
+\texttt{(a b c)} — lista piatta: catena lineare di cons-cell}
 
 \bigskip
 
@@ -638,8 +638,7 @@ Attenzione all'es.~55: il caso base è \emph{due} casi base
 \section{Funzioni utili sulle liste}
 % ================================================================
 
-\detail{Common Lisp fornisce una libreria ricca di funzioni per le liste.
-Conoscerle evita di reinventare la ruota --- e di capire cosa stiamo
+\detail{Conoscerle evita di reinventare la ruota, e di capire cosa stiamo
 reinventando negli esercizi.}
 
 \begin{esempio}[Le funzioni built-in più usate]
@@ -878,15 +877,15 @@ raccogli i numeri non cancellati.
 Il punto critico è \textbf{cancellare un multiplo}: significa accedere
 alla cella in posizione $j = k \cdot i$ e modificarla.
 Con una lista Lisp questo costo è $O(j)$ per ogni accesso
-(devi scorrere $j$ cons-cell). Con un array è $O(1)$ --- accesso diretto.
+(devi scorrere $j$ cons-cell). Con un array è $O(1)$: accesso diretto.
 Su N numeri, la differenza tra $O(1)$ e $O(N)$ per ogni accesso
 è enorme: l'algoritmo passerebbe da $O(N \log \log N)$ a $O(N^2)$.
 
 \medskip
 \textbf{La regola generale:}
 quando l'algoritmo richiede di \emph{tornare indietro} o
-\emph{saltare} a posizioni arbitrarie nella struttura dati --- non
-di attraversarla dall'inizio alla fine --- la lista è la struttura sbagliata.
+\emph{saltare} a posizioni arbitrarie nella struttura dati, e non
+di attraversarla dall'inizio alla fine, la lista è la struttura sbagliata.
 In questi casi usa un array con \fn{make-array} e \fn{aref}.
 
 \medskip
@@ -967,14 +966,14 @@ stile funzionale e stile imperativo.
         Rende la ricorsione tail-recursive e O(n).
   \item \textbf{Tail recursion}: chiamata in posizione di coda,
         ottimizzabile dallo stack. Usa \fn{labels} per la funzione ausiliaria.
-  \item \textbf{Alberi}: liste annidate richiedono due casi ricorsivi
-        --- sulla testa (scendi) e sulla coda (avanza).
+  \item \textbf{Alberi}: liste annidate richiedono due casi ricorsivi:
+        sulla testa (scendi) e sulla coda (avanza).
   \item \textbf{Stile ibrido}: array per accesso casuale, lista come
         interfaccia esterna. Ricorsione e mutabilità coesistono.
 \end{itemize}
 
 \medskip
-\textbf{Prossimo:} Capitolo~4 --- \emph{Higher-order e closure}.
+\textbf{Prossimo:} Capitolo~4, \emph{Higher-order e closure}.
 Le funzioni come valori, \fn{mapcar}, \fn{reduce}, lambda, closure.
 Quello che hai scritto a mano in questo capitolo diventa
 un'unica chiamata.
@@ -985,7 +984,7 @@ un'unica chiamata.
 Completa gli esercizi \textbf{22--65} (capitoli \emph{Liste} e
 \emph{Ricorsione avanzata}).\\[4pt]
 Priorità assoluta: \textbf{27, 31, 35, 39, 40, 51, 55}.
-Sono gli esercizi che insegnano i pattern --- gli altri li applicano.\\[4pt]
+Sono gli esercizi che insegnano i pattern: gli altri li applicano.\\[4pt]
 Se hai difficoltà con un esercizio $\bigstar\bigstar\bigstar$ o superiore, leggi il
 suggerimento prima della soluzione.
 \end{workbook}

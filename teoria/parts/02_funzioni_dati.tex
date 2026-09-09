@@ -27,7 +27,7 @@ Il valore porta con sé il proprio tipo: non la variabile.}
 \boxsep
 
 \detail{Lo stesso nome può puntare prima a un numero, poi a una stringa,
-poi a una lista --- il linguaggio non si lamenta.}
+poi a una lista: il linguaggio non si lamenta.}
 
 \boxsep
 
@@ -63,7 +63,7 @@ Il vantaggio: meno cerimonia, più flessibilità, codice più conciso.
 
 \begin{nota}
 Tipizzazione dinamica $\neq$ assenza di tipi.
-I tipi ci sono --- vengono controllati mentre il programma gira.
+I tipi ci sono: vengono controllati mentre il programma gira.
 Per questo il REPL è fondamentale: testi ogni funzione con valori
 reali e scopri subito eventuali errori di tipo.
 \end{nota}
@@ -72,7 +72,7 @@ reali e scopri subito eventuali errori di tipo.
 
 \argomento{Numeri}
 
-\begin{concetto}{Numeri --- quattro sottotipi}
+\begin{concetto}{Numeri: quattro sottotipi}
 \boxitem{\texttt{integer}}{Interi a precisione arbitraria, limitati dalle risorse disponibili.}
 \boxitem{\texttt{ratio}}{Frazioni esatte: \texttt{3/4}, \texttt{1/3}, \texttt{22/7}.}
 \boxitem{\texttt{float}}{Virgola mobile; il formato concreto dipende dall'implementazione.}
@@ -108,7 +108,7 @@ reali e scopri subito eventuali errori di tipo.
 \textbf{\texttt{(/ 10 3)} non è la divisione intera.}
 Restituisce \texttt{10/3} (razionale esatto), non \texttt{3}.
 Per il quoziente intero: \texttt{(floor 10 3)} oppure
-\texttt{(truncate 10 3)} --- con due argomenti restituisce
+\texttt{(truncate 10 3)}, con due argomenti restituisce
 quoziente e resto come valori multipli.
 \end{attenzione}
 
@@ -145,7 +145,7 @@ nil            ; => NIL  (falso, lista vuota, simbolo: tutto in uno)
 
 \begin{attenzione}
 \textbf{Solo \texttt{nil} è falso.} Zero, stringa vuota, numero
-negativo --- tutto è vero. La lista vuota \texttt{()} è falsa
+negativo: tutto è vero. La lista vuota \texttt{()} è falsa
 perché \textbf{è} \texttt{nil}: sono lo stesso oggetto.
 Differenza critica rispetto a Python e C.
 \end{attenzione}
@@ -153,7 +153,7 @@ Differenza critica rispetto a Python e C.
 \begin{intuizione}
 \texttt{nil} è un unico oggetto con tre ruoli: valore falso,
 lista vuota \texttt{()}, simbolo \texttt{NIL}.
-Non tre cose diverse --- la stessa identità.\\[4pt]
+Non tre cose diverse: la stessa identità.\\[4pt]
 \texttt{(null nil)} $\Rightarrow$ \texttt{T} \quad
 \texttt{(not nil)} $\Rightarrow$ \texttt{T} \quad
 \texttt{(listp nil)} $\Rightarrow$ \texttt{T} \quad
@@ -741,7 +741,7 @@ per prendere confidenza con l'output iterativo.
 \end{itemize}
 
 \medskip
-\textbf{Prossimo:} Capitolo~3 --- \emph{Liste e ricorsione}.
+\textbf{Prossimo:} Capitolo~3, \emph{Liste e ricorsione}.
 Le liste sono la struttura dati fondamentale di Lisp.
 \end{tcolorbox}
 

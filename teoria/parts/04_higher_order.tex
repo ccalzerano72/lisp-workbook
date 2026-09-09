@@ -1,6 +1,6 @@
 % =============================================================
 %  04_higher_order.tex
-%  Capitolo 4 --- Higher-order e closure
+%  Capitolo 4 — Higher-order e closure
 % =============================================================
 
 \chapter{Higher-order e closure}
@@ -8,7 +8,7 @@
 \begin{intuizione}
 Nel Capitolo~3 hai scritto \fn{map}, \fn{filter} e \fn{reduce}
 a mano, con ricorsione esplicita.
-Questo capitolo ti mostra che Lisp li ha già incorporati ---
+Questo capitolo ti mostra che Lisp li ha già incorporati,
 e molto di più.
 Le funzioni sono valori di prima classe: si passano, si restituiscono,
 si compongono. Questa è la programmazione funzionale vera.
@@ -84,7 +84,7 @@ vuoi passare una funzione.
 \section{Le funzioni higher-order della libreria}
 % ================================================================
 
-\begin{concetto}{\fnt{mapcar} --- il map}
+\begin{concetto}{\fnt{mapcar}: il map}
 \keyline{}{Applica una funzione a ogni elemento, raccoglie i risultati.}
 
 \begin{sintassi}
@@ -107,7 +107,7 @@ vuoi passare una funzione.
 
 \seprule
 
-\begin{concetto}{\fnt{remove-if} e \fnt{remove-if-not} --- il filter}
+\begin{concetto}{\fnt{remove-if} e \fnt{remove-if-not}: il filter}
 \keyline{\fn{remove-if}}{rimuove gli elementi per cui il predicato è vero.}
 \keyline{\fn{remove-if-not}}{mantiene gli elementi per cui il predicato è vero.}
 
@@ -134,12 +134,12 @@ vuoi passare una funzione.
 Common Lisp moderno preferisce \fn{remove} con \fn{:test} o
 \fn{:key} per casi semplici. Le varianti \fn{-if} accettano
 predicati arbitrari. Vedi anche \fn{find-if}, \fn{count-if},
-\fn{every}, \fn{some} --- stessa struttura, risultato diverso.
+\fn{every}, \fn{some}: stessa struttura, risultato diverso.
 \end{nota}
 
 \seprule
 
-\begin{concetto}{\fnt{reduce} --- il reduce/fold}
+\begin{concetto}{\fnt{reduce}: il reduce/fold}
 \keyline{}{Riduce una lista a un singolo valore applicando\\
 una funzione binaria in modo cumulativo.}
 
@@ -184,7 +184,7 @@ con \fn{:from-end t} si procede da destra a sinistra (\emph{fold right}).
 
 \seprule
 
-\begin{concetto}{\fnt{mapcan} --- map + flatten}
+\begin{concetto}{\fnt{mapcan}: map + flatten}
 \keyline{}{Come \fn{mapcar}, ma concatena i risultati invece di\\
 raccoglierli in una lista di liste.}
 
@@ -234,7 +234,7 @@ vedono \fn{reduce} usato in modo non ovvio.
 \section{Lambda: funzioni anonime}
 % ================================================================
 
-\begin{concetto}{\fnt{lambda} --- funzione senza nome}
+\begin{concetto}{\fnt{lambda}: funzione senza nome}
 \keyline{}{Crea una funzione al volo, senza darle un nome.}
 
 \begin{sintassi}
@@ -267,7 +267,7 @@ solo in un posto e non vale la pena nominarla.}
 
 \begin{nota}
 La notazione \fn{\#'(lambda ...)} è equivalente a \fn{(lambda ...)} in
-Common Lisp moderno --- la lambda è già una funzione di prima classe.
+Common Lisp moderno: la lambda è già una funzione di prima classe.
 La forma con \fn{\#'} è più esplicita e preferita per chiarezza.
 \end{nota}
 
@@ -275,7 +275,7 @@ La forma con \fn{\#'} è più esplicita e preferita per chiarezza.
 \section{Closure: funzioni con memoria}
 % ================================================================
 
-\begin{concetto}{Closure --- cattura dell'ambiente lessicale}
+\begin{concetto}{Closure: cattura dell'ambiente lessicale}
 \keyline{}{Una closure è una funzione che \emph{cattura} le variabili\\
 dell'ambiente in cui è stata creata.}
 \keyline{}{Le variabili catturate sopravvivono alla funzione che le ha create.}
@@ -283,7 +283,7 @@ dell'ambiente in cui è stata creata.}
 \boxsep
 \detail{Quando una lambda viene creata, ``chiude sopra'' le variabili
 locali visibili in quel momento. Ogni chiamata successiva alla lambda
-vede e può modificare quelle variabili --- anche se la funzione che le
+vede e può modificare quelle variabili, anche se la funzione che le
 aveva definite è già terminata.}
 \end{concetto}
 
@@ -527,7 +527,7 @@ la struttura in-place.
 \end{itemize}
 
 \medskip
-\textbf{Prossimo:} Capitolo~5 --- \emph{Strutture dati}.
+\textbf{Prossimo:} Capitolo~5, \emph{Strutture dati}.
 Association list, hash table, \fn{defstruct}, CLOS base.
 \end{tcolorbox}
 
@@ -535,7 +535,7 @@ Association list, hash table, \fn{defstruct}, CLOS base.
 \textbf{Prima di andare al Capitolo~5:}\\[4pt]
 Completa gli esercizi \textbf{69--88} (capitolo \emph{Higher-order
 e closure}).\\[4pt]
-Priorità: \textbf{69, 70, 72, 78, 85, 87} --- questi sei coprono
+Priorità: \textbf{69, 70, 72, 78, 85, 87}: questi sei coprono
 tutti i pattern fondamentali del capitolo.\\[4pt]
 Se l'esercizio~85 (\fn{compose}) o l'87 (\fn{make-counter}) ti
 mette in difficoltà, leggi il suggerimento prima della soluzione.

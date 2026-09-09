@@ -1,6 +1,6 @@
 % =============================================================
 %  06_macro.tex
-%  Capitolo 6 --- Macro
+%  Capitolo 6 — Macro
 % =============================================================
 
 \chapter{Macro}
@@ -77,7 +77,7 @@ riceve le espressioni non valutate e decide lei come (e se) valutarle.
 con valori, possono \emph{ristrutturare} il codice prima
 che venga eseguito.
 In Java o Python non esiste nulla di equivalente.
-Le annotazioni, i decorator, il preprocessore C --- sono tutti
+Le annotazioni, i decorator, il preprocessore C sono tutti
 meccanismi più limitati che operano in fasi separate.
 Le macro Lisp lavorano direttamente sulle forme del programma,
 rappresentate come dati (liste, simboli, atomi), con tutto il
@@ -178,9 +178,9 @@ Senza backquote, costruire una lista che rappresenta codice
 Il \textbf{backquote} (\texttt{`}) avvia un template.
 All'interno, tutto è quotato tranne ciò che è preceduto da:
 \begin{itemize}
-  \item \textbf{\texttt{,}} (comma) --- inserisce il valore di
+  \item \textbf{\texttt{,}} (comma): inserisce il valore di
         un'espressione
-  \item \textbf{\texttt{,@}} (comma-at) --- inserisce gli elementi
+  \item \textbf{\texttt{,@}} (comma-at): inserisce gli elementi
         di una lista (splice)
 \end{itemize}
 
@@ -252,7 +252,7 @@ gli editor Lisp indentano correttamente le forme con \fn{\&body}.}
 \textbf{Esercizi 121--123}
 (\fn{quando}, \fn{mio-while}, \fn{mio-for})\\[4pt]
 Questi tre esercizi seguono una progressione precisa.
-Dopo ciascuno usa \fn{macroexpand-1} per verificare l'espansione ---
+Dopo ciascuno usa \fn{macroexpand-1} per verificare l'espansione:
 è l'unico modo per essere sicuri che la macro faccia quello che pensi.\\[4pt]
 L'esercizio~123 (\fn{mio-for}) introduce \fn{gensym}: leggilo con
 attenzione anche se non lo implementi, perché il problema della
@@ -263,7 +263,7 @@ cattura di variabile è reale e importante.
 \section{Il problema della cattura di variabile}
 % ================================================================
 
-\begin{concetto}{Cattura di variabile --- il bug silenzioso delle macro}
+\begin{concetto}{Cattura di variabile: il bug silenzioso delle macro}
 \keyline{}{Se la macro usa nomi di variabile ``comuni'', può\\
 \emph{catturare} variabili del codice chiamante per errore.}
 \end{concetto}
@@ -387,13 +387,13 @@ rendono il codice più difficile da analizzare.}
 \textbf{Esempi di macro nella libreria standard} che mostrano
 quando le macro sono giustificate:
 \begin{itemize}
-  \item \fn{with-open-file} --- garantisce la chiusura del file
+  \item \fn{with-open-file}: garantisce la chiusura del file
         anche in caso di errore (il corpo è valutato in un contesto
         protetto con cleanup automatico)
-  \item \fn{loop} --- mini-linguaggio per iterazione
-  \item \fn{setf} --- generalizzazione dell'assegnazione a qualsiasi
+  \item \fn{loop}: mini-linguaggio per iterazione
+  \item \fn{setf}: generalizzazione dell'assegnazione a qualsiasi
         ``posto'' (lista, array, slot di struttura...)
-  \item \fn{defun}, \fn{defstruct}, \fn{defclass} --- definizioni
+  \item \fn{defun}, \fn{defstruct}, \fn{defclass}: definizioni
         che creano binding globali e metadata
 \end{itemize}
 \end{tcolorbox}
@@ -451,7 +451,7 @@ quando le macro sono giustificate:
 \end{itemize}
 
 \medskip
-\textbf{Prossimo:} Capitolo~7 --- \emph{Backtracking e algoritmi}.
+\textbf{Prossimo:} Capitolo~7, \emph{Backtracking e algoritmi}.
 Spazi di ricerca, sottoinsiemi, permutazioni, ordinamento,
 problemi classici.
 \end{tcolorbox}

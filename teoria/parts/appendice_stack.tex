@@ -1,6 +1,6 @@
 % =============================================================
 %  appendice_stack.tex
-%  Appendice A --- Lo stack delle chiamate
+%  Appendice A — Lo stack delle chiamate
 % =============================================================
 
 \chapter{Lo stack delle chiamate}
@@ -48,7 +48,7 @@ si chiama \textbf{call stack} (pila delle chiamate).}
 \end{itemize}
 
 \detail{Quando la funzione termina, il suo frame viene \emph{rimosso}
-(``fatto saltare'' --- \emph{popped}) dallo stack, e l'esecuzione
+(``fatto saltare'', \emph{popped}) dallo stack, e l'esecuzione
 riprende dall'indirizzo di ritorno salvato nel frame.}
 \end{concetto}
 
@@ -245,7 +245,7 @@ Stack durante la versione tail-recursive (con TCO):
 \begin{intuizione}
 La tail recursion con TCO \textbf{è} un loop, visto da prospettive diverse.
 Il compilatore trasforma la ricorsione in un salto all'inizio della
-funzione con i parametri aggiornati --- esattamente come fa un ciclo.
+funzione con i parametri aggiornati, esattamente come fa un ciclo.
 Questo è il motivo per cui i linguaggi funzionali puri (Haskell, Erlang,
 Scheme) possono fare a meno dei loop: la tail recursion con TCO è
 altrettanto efficiente.

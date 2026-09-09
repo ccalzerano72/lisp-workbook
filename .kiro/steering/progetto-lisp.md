@@ -122,6 +122,13 @@ Studente universitario con basi imperative (C, Java, Python). Sa cos'è una vari
 - **Pesantezza grafica.** Box colorati ravvicinati senza respiro; box che si spezzano a metà pagina (usare `\Needspace`).
 - **Uniformità tipografica dentro i box.** Usare `\keyline` per frasi-chiave e `\detail` per contorno.
 - **Unicode problematico** (stelle ★, caratteri apice ⁿ, emoji): usare sempre le macro LaTeX equivalenti.
+- **Em-dash (`---`) nel testo narrativo.** È il marcatore tipografico più riconoscibile del testo AI-generato. Non usarlo mai come separatore, inciso o introduttore. Sostituzioni corrette:
+  - inciso parentetico → virgole o parentesi tonde
+  - introduttore di spiegazione → due punti
+  - titolo box `Nome --- descrizione` → `Nome: descrizione`
+  - "Prossimo: Cap. N --- Titolo" → "Prossimo: Cap. N, _Titolo_"
+  - voci di lista `item --- descrizione` → `item.` + spazio, oppure `item:` + spazio
+  - L'unico uso legittimo di `---` è come segno tipografico in celle di tabella per indicare "assenza di valore" (`& --- &`).
 
 ---
 
