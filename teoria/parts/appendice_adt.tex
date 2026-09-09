@@ -1,0 +1,206 @@
+% =============================================================
+%  appendice_adt.tex
+%  Appendice B --- Abstract Data Type (ADT)
+% =============================================================
+
+\chapter{Abstract Data Type (ADT)}
+\label{app:adt}
+
+\begin{intuizione}
+{\large\bfseries Cos'è un ADT?}
+
+\medskip
+Un tipo di dato definito \textbf{solo} dalle operazioni che supporta,\\
+\textcolor{black!60}{non da come è implementato internamente.}
+
+\medskip
+\textcolor{csTeal}{\itshape Chi usa un ADT vede l'interfaccia.
+Chi lo implementa sceglie la rappresentazione.
+Le due cose sono separate.}
+\end{intuizione}
+
+\vspace{4pt}
+
+% ================================================================
+\section{L'idea fondamentale}
+% ================================================================
+
+Quando programmi, lavori continuamente con strutture dati: liste,
+array, hash table. Ma c'è una distinzione importante tra la
+\emph{struttura concreta} che usi e il \emph{concetto astratto}
+che rappresenta.
+
+Considera uno stack. Dal punto di vista concettuale, uno stack è
+una collezione con una regola precisa: l'ultimo elemento inserito
+è il primo a uscire (LIFO). Questa è l'\textbf{essenza} dello stack
+--- non importa se sotto c'è una lista, un array, o qualcos'altro.
+
+L'idea dell'ADT è esattamente questa: separare \emph{cosa} fa
+una struttura dati da \emph{come} lo fa. Chi usa lo stack vede
+solo le operazioni (\fn{push}, \fn{pop}, \fn{peek}). Chi lo implementa
+sceglie la rappresentazione interna. Le due prospettive sono
+indipendenti.
+
+\begin{concetto}{I tre elementi di un ADT}
+\keyline{Interfaccia}{Le operazioni visibili al chiamante: \fn{push}, \fn{pop}, \fn{empty?}.}
+\keyline{Implementazione}{La struttura dati sottostante: lista, array, hash table.}
+\keyline{Invariante}{Proprietà che l'ADT garantisce sempre (es: LIFO per lo stack).}
+\end{concetto}
+
+Questa separazione ha una conseguenza pratica importante:
+puoi cambiare l'implementazione senza modificare il codice che
+usa l'ADT. Se oggi il tuo stack è una lista e domani diventa
+un array (magari per motivi di performance), il resto del programma
+continua a funzionare esattamente come prima.
+
+\begin{esempio}[Stack: stessa interfaccia, implementazioni diverse]
+\begin{lstlisting}
+;; Interfaccia dello stack (quello che il chiamante vede)
+;; - make-stack    : crea stack vuoto
+;; - push item s   : aggiunge in cima
+;; - pop s         : rimuove e restituisce la cima
+;; - peek s        : legge la cima senza rimuovere
+;; - empty? s      : vero se vuoto
+
+;; Implementazione A: lista semplice
+(defun make-stack-A () nil)
+(defun push-A (item s) (cons item s))
+(defun pop-A (s) (values (car s) (cdr s)))
+(defun peek-A (s) (car s))
+(defun empty-A? (s) (null s))
+
+;; Implementazione B: vettore con indice
+(defun make-stack-B ()
+  (list (make-array 100 :fill-pointer 0)))
+(defun push-B (item s)
+  (vector-push item (car s)) s)
+(defun pop-B (s)
+  (vector-pop (car s)))
+\end{lstlisting}
+
+\detail{Il codice che usa lo stack non cambia se passi da A a B.
+Vede solo \fn{push}/\fn{pop}, non sa cosa c'è sotto.}
+\end{esempio}
+
+% ================================================================
+\section{Perché usare gli ADT?}
+% ================================================================
+
+\begin{concetto}{I tre vantaggi degli ADT}
+\keyline{Astrazione}{Nascondi la complessità. Il chiamante pensa a ``stack'', non a ``lista con cons in testa''.}
+\keyline{Modularità}{Puoi cambiare implementazione senza toccare il codice che usa l'ADT.}
+\keyline{Correttezza}{L'interfaccia forza l'uso corretto. Non puoi accidentalmente rompere l'invariante.}
+\end{concetto}
+
+\begin{attenzione}
+\textbf{Senza ADT: accesso diretto alla rappresentazione.}
+
+\begin{lstlisting}
+;; Stack "nudo" come lista
+(defparameter *stack* '(3 2 1))
+
+;; Chiunque puo' fare cose sbagliate:
+(setf *stack* (append *stack* '(4)))  ; aggiunge in fondo! non e' LIFO
+(setf (cadr *stack*) 99)              ; modifica elemento interno!
+\end{lstlisting}
+
+Con un ADT, queste operazioni non sarebbero possibili:
+l'interfaccia espone solo \fn{push}/\fn{pop}.
+\end{attenzione}
+
+% ================================================================
+\section{ADT in Common Lisp}
+% ================================================================
+
+Common Lisp non ha un costrutto ``ADT'' esplicito come alcuni linguaggi
+(ML, Haskell). Ma puoi ottenere lo stesso risultato con:
+
+\begin{concetto}{Tre modi per implementare ADT in Lisp}
+\keyline{\fn{defstruct}}{Campi privati, accessor generati. Semplice e veloce.}
+\keyline{Closure}{Funzioni che catturano stato privato. Massimo incapsulamento.}
+\keyline{CLOS}{Classi con slot e metodi. Massima flessibilità.}
+\end{concetto}
+
+\begin{esempio}[Stack con closure: stato completamente nascosto]
+\begin{lstlisting}
+(defun make-stack ()
+  (let ((data '()))   ; stato privato, invisibile dall'esterno
+    (lambda (op &optional item)
+      (case op
+        (:push  (push item data))
+        (:pop   (pop data))
+        (:peek  (car data))
+        (:empty (null data))))))
+
+;; Uso
+(defparameter *s* (make-stack))
+(funcall *s* :push 1)
+(funcall *s* :push 2)
+(funcall *s* :pop)     ; => 2
+(funcall *s* :peek)    ; => 1
+
+;; Non c'e' modo di accedere a 'data' direttamente
+\end{lstlisting}
+
+\detail{La variabile \fn{data} è catturata dalla closure.
+L'unico modo di interagire è attraverso i messaggi
+\fn{:push}, \fn{:pop}, \fn{:peek}, \fn{:empty}.}
+\end{esempio}
+
+% ================================================================
+\section{ADT classici}
+% ================================================================
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small
+
+\begin{tabular}{@{}llp{5.5cm}@{}}
+\toprule
+\textbf{ADT} & \textbf{Operazioni chiave} & \textbf{Invariante} \\
+\midrule
+Stack & \fn{push}, \fn{pop}, \fn{peek} & LIFO: ultimo inserito = primo estratto \\[4pt]
+Queue & \fn{enqueue}, \fn{dequeue} & FIFO: primo inserito = primo estratto \\[4pt]
+Set & \fn{add}, \fn{remove}, \fn{member?} & No duplicati \\[4pt]
+Map/Dict & \fn{get}, \fn{put}, \fn{remove} & Chiavi uniche \\[4pt]
+Priority Queue & \fn{insert}, \fn{extract-min} & Estrae sempre il minimo \\[4pt]
+BST & \fn{insert}, \fn{find}, \fn{delete} & Ordinamento: sx $<$ nodo $<$ dx \\
+\bottomrule
+\end{tabular}
+\end{tcolorbox}
+
+\detail{Ogni ADT può avere implementazioni diverse con trade-off diversi.
+Una coda può essere implementata con due liste (efficiente per \fn{enqueue}/\fn{dequeue})
+o con un array circolare (efficiente in spazio).
+L'interfaccia resta la stessa.}
+
+% ================================================================
+\section{Quando serve un ADT?}
+% ================================================================
+
+\begin{intuizione}
+{\bfseries Non sempre.}
+
+\medskip
+Se usi una lista come stack in tre righe di codice,
+incapsularla in un ADT è overhead inutile.
+
+\medskip
+\textcolor{csTeal}{\itshape Un ADT serve quando:}
+\begin{itemize}
+  \item La struttura è usata in più punti del programma
+  \item Potresti voler cambiare implementazione in futuro
+  \item L'invariante è importante e facile da violare
+  \item Vuoi documentare l'intento (``questo è uno stack'')
+\end{itemize}
+
+\medskip
+\textcolor{black!60}{\small Regola pratica: inizia semplice.
+Se la rappresentazione ``nuda'' crea problemi, incapsula.}
+\end{intuizione}
+

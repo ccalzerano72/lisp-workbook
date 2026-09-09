@@ -6,11 +6,85 @@
 \chapter{Strutture dati}
 
 \begin{intuizione}
-Una lista è flessibile ma lenta per l'accesso per chiave.
-Una hash table è veloce ma non ordinata.
-\fn{defstruct} dà nomi ai campi.
-Scegliere la struttura giusta non è un dettaglio: determina
-la complessità dell'algoritmo.
+{\large\bfseries Perche' tante strutture dati?}
+
+\medskip
+Perche' ogni problema ha caratteristiche diverse.\\[2pt]
+\textcolor{black!60}{La struttura sbagliata trasforma un algoritmo elegante in uno lento o contorto.}
+
+\medskip
+La \textbf{lista} e' il punto di partenza --- flessibile, ricorsiva, perfetta
+per elaborazioni sequenziali. Ma quando il problema cambia, emergono
+\emph{lacune} che richiedono strumenti diversi.
+
+\medskip
+\textcolor{csTeal}{\itshape Questo capitolo e' un percorso: ogni struttura risponde
+a una limitazione della precedente.}
+\end{intuizione}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Il percorso concettuale di questo capitolo.}
+
+\medskip
+\begin{enumerate}
+  \item \textbf{Lista} --- Perfetta per sequenze, ma cercare un elemento
+        per chiave richiede $O(n)$.
+  \item \textbf{Alist} --- Aggiunge l'associazione chiave$\to$valore,
+        ma la ricerca resta $O(n)$.
+  \item \textbf{Hash table} --- Ricerca in $O(1)$, ma e' mutabile
+        e non mantiene l'ordine.
+  \item \textbf{Array} --- Accesso diretto per indice in $O(1)$,
+        ma gli indici sono numeri, non chiavi simboliche.
+  \item \textbf{Defstruct} --- Campi nominati con type-checking,
+        ma la struttura e' fissa a compile-time.
+  \item \textbf{BST} --- Ordine e ricerca efficiente insieme,
+        ma richiede implementazione esplicita.
+  \item \textbf{Stack/Queue} --- Semantica di accesso specifica
+        (LIFO/FIFO) per problemi che la richiedono.
+\end{enumerate}
+
+\medskip
+Alla fine del capitolo troverai una tabella riassuntiva:
+\emph{dato il problema, quale struttura scegliere?}
+\end{tcolorbox}
+
+\begin{concetto}{Built-in vs Abstract Data Type (ADT)}
+\keyline{Built-in}{Strutture fornite dal linguaggio: \fn{list}, \fn{array}, \fn{hash-table}, \fn{defstruct}.}
+\keyline{ADT}{Strutture che implementi tu sopra i built-in, esponendo solo un'interfaccia di operazioni.}
+
+\boxsep
+
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Built-in (usi direttamente)} & \textbf{ADT (implementi tu)} \\
+\midrule
+\fn{list}, \fn{cons} & stack, queue \\
+\fn{array}, \fn{vector} & matrice sparsa \\
+\fn{hash-table} & set, multimap \\
+\fn{defstruct} & BST, grafo \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{concetto}
+
+\begin{intuizione}
+Il chiamante di un ADT usa \fn{push}/\fn{pop} senza sapere
+che sotto c'e' una lista. Se cambi rappresentazione,
+l'interfaccia resta la stessa.
+
+\medskip
+\textcolor{black!60}{\small Per una discussione approfondita del concetto di ADT,
+vedi l'Appendice~\ref{app:adt}.}
 \end{intuizione}
 
 \vspace{4pt}
@@ -19,7 +93,13 @@ la complessità dell'algoritmo.
 \section{Association list (alist)}
 % ================================================================
 
-\begin{concetto}{Alist --- la mappa più semplice}
+La lista funziona bene per elaborare sequenze di dati omogenei.
+Ma quando il problema diventa ``dato un nome, trovare il valore
+corrispondente'', la lista grezza non basta: serve una struttura
+che associ \emph{chiavi} a \emph{valori}. La alist e' la risposta
+piu' semplice e naturale in Lisp.
+
+\begin{concetto}{Alist --- la mappa piu' semplice}
 \keyline{}{Una alist è una lista di coppie \fn{(chiave . valore)}.}
 \keyline{\fn{assoc}}{trova la prima coppia con una data chiave. $O(n)$.}
 \keyline{\fn{acons}}{aggiunge una coppia in testa. $O(1)$.}
@@ -54,21 +134,6 @@ Per dizionari grandi, preferire le hash table.}
 \end{lstlisting}
 \end{esempio}
 
-\begin{confronto}
-\textbf{Alist vs hash table vs \fn{defstruct}.}
-\begin{itemize}
-  \item \textbf{Alist}: chiavi arbitrarie, funzionale (no mutazione),
-        ricerca $O(n)$. Usa per configurazioni, piccoli dizionari,
-        risultati di \fn{raggruppa-per}.
-  \item \textbf{Hash table}: ricerca $O(1)$, mutabile, chiavi
-        confrontate con \fn{equal}/\fn{eql}. Usa per dizionari grandi
-        o frequentemente consultati.
-  \item \textbf{\fn{defstruct}}: campi nominati, accesso $O(1)$,
-        type-checking automatico. Usa quando la struttura è fissa
-        e i campi sono noti a priori.
-\end{itemize}
-\end{confronto}
-
 \begin{workbook}
 \textbf{Esercizi 93--94, 100}
 (Lookup/set su alist, Frequenza con alist, Conversione alist$\leftrightarrow$hash)\\[4pt]
@@ -81,6 +146,12 @@ bene per accumulare conteggi su insiemi piccoli.
 % ================================================================
 \section{Hash table}
 % ================================================================
+
+La alist e' elegante e funzionale, ma ha un limite strutturale:
+ogni ricerca parte dalla testa e scorre la lista. Con 10 coppie
+non importa; con 10\,000, diventa un collo di bottiglia.
+La hash table risolve questo problema: accesso in tempo costante,
+indipendente dalla dimensione.
 
 \begin{concetto}{Hash table --- dizionario a tempo costante}
 \keyline{\fn{make-hash-table}}{crea una hash table vuota.}
@@ -196,6 +267,12 @@ contatore di frequenze su input testuale di dimensione arbitraria.
 \section{Array multidimensionali}
 % ================================================================
 
+Le hash table usano chiavi arbitrarie, ma a volte il problema
+e' piu' semplice: hai bisogno di accedere per \emph{posizione numerica}.
+Una matrice di pixel, una griglia di gioco, una tabella di valori.
+L'array offre accesso $O(1)$ per indice, senza l'overhead di una
+funzione hash.
+
 \begin{concetto}{Array 2D --- matrici}
 \keyline{}{Passa una lista di dimensioni a \fn{make-array}.}
 \keyline{\fn{aref}}{accede con indici multipli.}
@@ -253,38 +330,23 @@ stile funzionale (crea un nuovo array) e stile imperativo
 \section{\texttt{defstruct} --- strutture con campi nominati}
 % ================================================================
 
+Con alist e hash table accedi ai dati per chiave, ma le chiavi
+sono simboli o stringhe arbitrarie: nulla impedisce di scrivere
+\fn{'nme} invece di \fn{'nome} e ottenere \fn{nil} senza errore.
+Quando la struttura dei dati e' \emph{nota a priori} --- una persona
+ha sempre nome, eta', citta' --- vuoi che il compilatore ti aiuti.
+\fn{defstruct} definisce un \emph{tipo} con campi fissi, accessor
+generati, e controllo di tipo a runtime.
+
 \begin{concetto}{\texttt{defstruct}}
-\keyline{}{Definisce un tipo con campi nominati, costruttore e accessor\\
-generati automaticamente.}
+\keyline{}{Definisce un tipo con campi nominati, costruttore e accessor generati automaticamente.}
+
+\boxsep
+\detail{Quando scrivi \fn{(defstruct persona nome eta citta)}, Common Lisp
+genera: \fn{make-persona} (costruttore), \fn{persona-nome}/\fn{persona-eta}/\fn{persona-citta} (accessor),
+\fn{persona-p} (predicato di tipo), \fn{copy-persona} (copia), e supporto \fn{setf} su ogni accessor.
+A differenza di alist o hash table, il tipo e' verificabile a runtime.}
 \end{concetto}
-
-\begin{tcolorbox}[
-  enhanced,
-  colback=black!2, colframe=black!20,
-  arc=3pt, boxrule=0.4pt,
-  left=12pt, right=12pt, top=9pt, bottom=9pt,
-  before skip=8pt, after skip=10pt
-]
-\small\color{black!65}
-
-\textbf{Cosa genera \fn{defstruct} automaticamente.}
-
-\medskip
-Quando scrivi \fn{(defstruct persona nome eta citta)}, Common Lisp
-genera in automatico:
-\begin{itemize}
-  \item \fn{make-persona} --- costruttore con parametri keyword
-  \item \fn{persona-nome}, \fn{persona-eta}, \fn{persona-citta} --- accessor (getter)
-  \item \fn{persona-p} --- predicato di tipo
-  \item \fn{copy-persona} --- copia superficiale della struttura
-  \item Supporto per \fn{setf} su ogni accessor (setter)
-\end{itemize}
-
-\medskip
-Il valore di ritorno è un oggetto \fn{\#S(PERSONA ...)},
-che può essere stampato e riletto dal reader Lisp.
-A differenza di una alist o hash table, il tipo è verificabile a runtime.
-\end{tcolorbox}
 
 \begin{esempio}[\fn{defstruct}: definizione e uso]
 \begin{lstlisting}
@@ -352,6 +414,10 @@ Dopo averlo fatto, nota come il codice diventa più leggibile:
 % ================================================================
 \section{Alberi binari e BST}
 % ================================================================
+
+Le strutture viste finora non offrono insieme \emph{ordine} e
+\emph{ricerca efficiente}: la hash table ha $O(1)$ ma non mantiene
+ordinamento. Il Binary Search Tree (BST) risolve questa tensione.
 
 \begin{concetto}{Albero binario come lista}
 \keyline{}{Convenzione: \fn{(valore sinistra destra)}.}
@@ -467,14 +533,21 @@ leggi il suggerimento prima di tentare.
 \section{Pila e coda come ADT}
 % ================================================================
 
-\begin{concetto}{Abstract Data Type (ADT)}
-\keyline{}{Un ADT espone solo le operazioni, non la rappresentazione interna.}
+\begin{concetto}{Pila (stack) --- LIFO}
+\keyline{\fn{push}}{aggiunge in cima.}
+\keyline{\fn{pop}}{rimuove e restituisce la cima.}
+\keyline{\fn{peek}}{legge la cima senza rimuoverla.}
 
 \boxsep
-\detail{La pila e la coda si implementano su liste Lisp,
-ma il chiamante non sa (e non deve sapere) come sono fatte dentro.
-È incapsulamento: se si cambia la rappresentazione interna,
-l'interfaccia non cambia.}
+\detail{Last In, First Out. Applicazioni: undo, parsing, call stack.}
+\end{concetto}
+
+\begin{concetto}{Coda (queue) --- FIFO}
+\keyline{\fn{enqueue}}{aggiunge in fondo.}
+\keyline{\fn{dequeue}}{rimuove e restituisce la testa.}
+
+\boxsep
+\detail{First In, First Out. Applicazioni: code di lavoro, BFS, buffer.}
 \end{concetto}
 
 \begin{esempio}[Pila (stack) --- LIFO]
@@ -542,38 +615,39 @@ la pila è la struttura giusta per problemi di matching.
 \section*{Riepilogo del capitolo}
 % ================================================================
 
-\begin{tcolorbox}[
-  enhanced,
-  colback=csBlue!5, colframe=csBlue!40,
-  arc=4pt, boxrule=0.6pt,
-  left=14pt, right=14pt, top=12pt, bottom=12pt,
-  before skip=16pt, after skip=16pt
-]
-\textbf{Quello che hai imparato:}
+\argomento{Quale struttura scegliere?}
 
-\medskip
-\begin{itemize}
-  \item \textbf{Alist}: lista di coppie \fn{(chiave . valore)}.
-        \fn{assoc} per cercare, \fn{acons} per aggiungere.
-        Funzionale, $O(n)$. Buona per dizionari piccoli.
-  \item \textbf{Hash table}: \fn{make-hash-table}, \fn{gethash},
-        \fn{setf gethash}, \fn{remhash}, \fn{maphash}.
-        $O(1)$ per accesso. Per stringhe usa \fn{:test \#'equal}.
-  \item \textbf{Array 2D}: \fn{make-array '(n m)}, \fn{aref} con
-        due indici. Per matrici e algoritmi con accesso casuale.
-  \item \textbf{\fn{defstruct}}: genera costruttore, accessor,
-        predicato. Campi nominati, type-checking, \fn{setf} su accessor.
-  \item \textbf{BST}: proprietà sinistra-minore/destra-maggiore.
-        Inserimento e ricerca funzionali ($O(\log n)$).
-        Inorder produce sequenza ordinata.
-  \item \textbf{Pila/coda}: ADT con interfaccia esplicita.
-        La rappresentazione è privata; l'interfaccia è stabile.
-\end{itemize}
+Il percorso del capitolo ha mostrato come ogni struttura risponda
+a un'esigenza diversa. Questa tabella riassume la scelta:
+
+\begin{center}
+\begin{tabular}{@{}p{6.8cm}l@{}}
+\toprule
+\textbf{Problema} & \textbf{Struttura} \\
+\midrule
+Sequenza lineare, elaborazione ordinata & \fn{list} \\
+Accesso per indice numerico & \fn{vector} / \fn{array} \\
+Chiave $\to$ valore, pochi dati ($<$30) & \fn{alist} \\
+Chiave $\to$ valore, molti dati & \fn{hash-table} \\
+Record con campi fissi e noti & \fn{defstruct} \\
+Comportamento polimorfico & CLOS \\
+Ordine + ricerca efficiente & BST \\
+LIFO (undo, parsing, ricorsione) & stack \\
+FIFO (code di lavoro, BFS) & queue \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{intuizione}
+La scelta della struttura dati non e' un dettaglio implementativo:
+determina la complessita' dell'algoritmo e la chiarezza del codice.
+Prima di scrivere, chiediti: \emph{qual e' l'operazione piu' frequente?}
+La risposta indica la struttura.
+\end{intuizione}
 
 \medskip
 \textbf{Prossimo:} Capitolo~6 --- \emph{Macro}.
 Trasformare codice in codice prima della valutazione.
-\end{tcolorbox}
 
 \begin{workbook}
 \textbf{Prima di andare al Capitolo~6:}\\[4pt]
