@@ -48,10 +48,10 @@ Il vantaggio: meno cerimonia, più flessibilità, codice più conciso.
 \begin{esempio}[Tipizzazione dinamica in pratica]
 \begin{lstlisting}
 (defparameter *x* 42)
-(type-of *x*)       ; => INTEGER
+(type-of *x*)       ; => INTEGER  (o un sottotipo come FIXNUM)
 
 (setf *x* "ciao")
-(type-of *x*)       ; => (SIMPLE-ARRAY CHARACTER (*))
+(type-of *x*)       ; => un sottotipo di STRING (dipende dall'impl.)
 
 (setf *x* '(1 2 3))
 (type-of *x*)       ; => CONS
@@ -73,14 +73,15 @@ reali e scopri subito eventuali errori di tipo.
 \argomento{Numeri}
 
 \begin{concetto}{Numeri --- quattro sottotipi}
-\boxitem{\texttt{integer}}{Interi a dimensione arbitraria. Nessun overflow mai.}
+\boxitem{\texttt{integer}}{Interi a precisione arbitraria, limitati dalle risorse disponibili.}
 \boxitem{\texttt{ratio}}{Frazioni esatte: \texttt{3/4}, \texttt{1/3}, \texttt{22/7}.}
-\boxitem{\texttt{float}}{Virgola mobile IEEE 754.}
+\boxitem{\texttt{float}}{Virgola mobile; il formato concreto dipende dall'implementazione.}
 \boxitem{\texttt{complex}}{Numeri complessi. Raramente usati.}
 
 \boxsep
 \detail{La distinzione più importante: \texttt{(/ 10 3)} restituisce
-\texttt{10/3} (razionale esatto), non \texttt{3}. Vedi sotto.}
+\texttt{10/3} (razionale esatto), non \texttt{3}. Le implementazioni moderne
+(incluso Allegro CL) usano normalmente IEEE 754 per i float.}
 \end{concetto}
 
 \begin{esempio}[Aritmetica di base]

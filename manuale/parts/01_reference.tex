@@ -471,7 +471,7 @@ un valore (\fn{car}) e il puntatore al resto (\fn{cdr}).
 (list 'a 'b 'c)             ; -> (A B C)
 (append '(a b) '(c d))      ; -> (A B C D)  (non distruttivo)
 (reverse '(a b c))          ; -> (C B A)    (non distruttivo)
-(nreverse '(a b c))         ; -> (C B A)    (distruttivo!)
+(nreverse (list 'a 'b 'c))  ; -> (C B A)    (distruttivo!)
 (copy-list lst)             ; copia superficiale
 \end{lstlisting}
 

@@ -147,6 +147,12 @@ Impararlo una volta significa saperlo applicare a qualsiasi problema.
 \boxsep
 \detail{Ogni lista è o vuota (\fn{nil}) o una cons-cell con testa e coda.
 La ricorsione rispecchia esattamente questa struttura.}
+
+\boxsep
+\detail{\textbf{Nota:} questi pattern assumono \emph{liste proprie} --- catene
+di cons-cell che terminano con \fn{nil}. Le liste improprie (dotted list)
+come \fn{'(a b . c)} non terminano con \fn{nil} e richiedono gestione diversa.
+In questo libro lavoriamo sempre con liste proprie.}
 \end{concetto}
 
 \begin{sintassi}
@@ -413,9 +419,11 @@ definire funzioni locali ricorsive.
 cosa che la funzione fa --- nessun calcolo dopo di essa.}
 
 \boxsep
-\detail{Il compilatore/interprete può ottimizzare la tail call riusando
-il frame dello stack invece di crearne uno nuovo. Il risultato:
-ricorsione profonda senza stack overflow.}
+\detail{Quando l'implementazione applica la \emph{tail call optimization} (TCO),
+può riusare il frame dello stack invece di crearne uno nuovo.
+Il risultato: ricorsione profonda con consumo di stack O(1).
+Lo standard ANSI Common Lisp non garantisce TCO, ma le implementazioni
+principali (SBCL, Allegro CL, CCL) la applicano sul codice compilato.}
 
 \boxsep
 \detail{$\triangleright$ \emph{Non sai cosa sono frame dello stack e stack overflow?
@@ -441,16 +449,16 @@ e come la TCO lo evita.}}
                  (fact-acc (- n 1) (* n acc)))))  ; niente dopo
     (fact-acc n 1)))
 
-(fattoriale 100000)   ; funziona senza stack overflow
+(fattoriale 100000)   ; con TCO attiva, niente stack overflow
 \end{lstlisting}
 \end{esempio}
 
 \begin{confronto}
 \textbf{In Common Lisp} la tail-call optimization (TCO) non è garantita
-dallo standard ANSI, ma tutti i compilatori seri (incluso Allegro CL)
-la applicano quando la chiamata è in posizione di coda.
-Se la ricorsione è molto profonda e non hai la TCO, usa \fn{loop}
-o \fn{do} come alternativa.
+dallo standard ANSI. Le implementazioni principali (SBCL, Allegro CL, CCL)
+la applicano sul codice compilato quando la chiamata è in posizione di coda.
+Se la ricorsione è molto profonda e l'implementazione non applica TCO
+(es.\ codice interpretato), usa \fn{loop} o \fn{do} come alternativa.
 \end{confronto}
 
 % ================================================================

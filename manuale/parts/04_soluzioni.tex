@@ -1147,9 +1147,12 @@
             (setf (gethash args cache)
                   (apply funzione args)))))))
 \end{lstlisting}
-\textbf{Nota:} questa versione memoizza le chiamate \emph{esterne}.
-Per memoizzare una funzione ricorsiva occorre che la funzione stessa
-chiami la versione memoizzata, non se stessa:
+\textbf{Nota avanzata:} questa \fn{memoize} restituisce una \emph{nuova}
+funzione; non trasforma i riferimenti ricorsivi interni alla funzione
+originale. Se \fn{fibonacci} chiama \fn{(fibonacci (- n 1))}, quelle
+chiamate interne non passano per la cache.
+Per memoizzare anche le chiamate ricorsive, occorre sostituire la
+definizione globale della funzione:
 \begin{lstlisting}
 (setf (symbol-function 'fibonacci)
       (memoize #'fibonacci))
@@ -1658,17 +1661,18 @@ chiami la versione memoizzata, non se stessa:
 \begin{solbox}{119}{BFS su grafo}
 \small\color{black!55}\hyperref[ex:119]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:119]{$\leftarrow$ Suggerimento}\normalsize\color{black}
 \begin{lstlisting}
+;; Usa l'ADT queue dell'esercizio 114
 (defun bfs (graph start)
   (let ((visited nil)
-        (queue   (list start)))
-    (loop while queue
-          for node = (pop queue)
+        (q (make-queue)))
+    (enqueue start q)
+    (loop until (queue-empty-p q)
+          for node = (dequeue q)
           unless (member node visited)
           do (push node visited)
-             (setf queue
-                   (append queue
-                           (remove-if (lambda (n) (member n visited))
-                                      (neighbors node graph)))))
+             (dolist (neighbor (neighbors node graph))
+               (unless (member neighbor visited)
+                 (enqueue neighbor q))))
     (reverse visited)))
 \end{lstlisting}
 \end{solbox}
@@ -2389,20 +2393,32 @@ controlla le 8 combinazioni vincenti hard-coded
 
 \label{sol:148}
 \begin{solbox}{148}{Mini sistema gestionale}
-\small\color{black!55}\hyperref[ex:148]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:148]{$\leftarrow$ Suggerimento}\normalsize\color{black}
-\textit{Soluzione di riferimento --- scheletro minimale per studenti.}
+\small\color{black!55}\hyperref[ex:148]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:148]{$\leftarrow$ Suggerimento}\normalsize\color{black}\\
+\textit{Soluzione di riferimento --- da salvare in \fn{gestionale.lisp}.}
 
 \begin{ragionamentoBox}{148}
-Struttura a tre strati: MODEL (defstruct), LOGIC (operazioni),
-IO (file e interazione). Il salvataggio usa \fn{print} (S-expression)
-per semplicita': e' leggibile con \fn{read} senza parsing custom.
+Struttura a quattro strati: MODEL (defstruct), LOGIC (operazioni),
+IO (file e interazione), TESTS (verifica automatica).
+Il salvataggio usa \fn{print} (S-expression) per semplicita':
+e' leggibile con \fn{read} senza parsing custom.
+L'uso di \fn{handler-case} gestisce errori di I/O in modo controllato.
 \end{ragionamentoBox}
 \begin{lstlisting}
+;;; gestionale.lisp
+(defpackage :gestionale
+  (:use :cl)
+  (:export #:inserisci #:cerca #:elimina
+           #:filtra-per-voto #:ordina-per-voto
+           #:salva #:carica #:run-tests))
+
+(in-package :gestionale)
+
 ;;; MODEL
 (defstruct studente nome cognome voto)
 
-;;; ARCHIVIO
-(defparameter *db* (make-hash-table :test #'equal))
+;;; ARCHIVIO (unica variabile globale mutabile)
+(defparameter *db* (make-hash-table :test #'equal)
+  "Database degli studenti.")
 
 ;;; LOGIC
 (defun inserisci (nome cognome voto)
@@ -2432,7 +2448,7 @@ per semplicita': e' leggibile con \fn{read} senza parsing custom.
   (sort (loop for s being the hash-values of *db* collect s)
         #'> :key #'studente-voto))
 
-;;; IO
+;;; IO (con gestione errori)
 (defun salva (file)
   "Salva il database su FILE come S-expressions."
   (with-open-file (s file :direction :output :if-exists :supersede)
@@ -2444,15 +2460,66 @@ per semplicita': e' leggibile con \fn{read} senza parsing custom.
              *db*)))
 
 (defun carica (file)
-  "Carica il database da FILE."
+  "Carica il database da FILE. Gestisce file non trovato."
+  (handler-case
+      (with-open-file (s file :direction :input)
+        (clrhash *db*)
+        (loop for record = (read s nil nil)
+              while record
+              do (inserisci (second record)
+                            (third record)
+                            (fourth record)))
+        t)
+    (file-error (e)
+      (format t "Errore: impossibile aprire ~A~%" file)
+      nil)))
+
+;;; TESTS
+(defun test-inserimento ()
   (clrhash *db*)
-  (with-open-file (s file :direction :input :if-does-not-exist nil)
-    (when s
-      (loop for record = (read s nil nil)
-            while record
-            do (inserisci (second record)
-                          (third record)
-                          (fourth record))))))
+  (inserisci "Mario" "Rossi" 28)
+  (if (gethash "Mario Rossi" *db*)
+      (format t "test-inserimento: PASS~%")
+      (format t "test-inserimento: FAIL~%")))
+
+(defun test-cerca ()
+  (clrhash *db*)
+  (inserisci "Anna" "Verdi" 30)
+  (let ((s (cerca "Anna" "Verdi")))
+    (if (and s (= (studente-voto s) 30))
+        (format t "test-cerca: PASS~%")
+        (format t "test-cerca: FAIL~%"))))
+
+(defun test-elimina ()
+  (clrhash *db*)
+  (inserisci "Luca" "Bianchi" 25)
+  (elimina "Luca" "Bianchi")
+  (if (null (gethash "Luca Bianchi" *db*))
+      (format t "test-elimina: PASS~%")
+      (format t "test-elimina: FAIL~%")))
+
+(defun test-filtra ()
+  (clrhash *db*)
+  (inserisci "A" "X" 20) (inserisci "B" "Y" 28)
+  (if (= 1 (length (filtra-per-voto 25)))
+      (format t "test-filtra: PASS~%")
+      (format t "test-filtra: FAIL~%")))
+
+(defun test-ordina ()
+  (clrhash *db*)
+  (inserisci "A" "X" 20) (inserisci "B" "Y" 30)
+  (let ((lst (ordina-per-voto)))
+    (if (= 30 (studente-voto (first lst)))
+        (format t "test-ordina: PASS~%")
+        (format t "test-ordina: FAIL~%"))))
+
+(defun run-tests ()
+  "Esegue tutti i test."
+  (test-inserimento)
+  (test-cerca)
+  (test-elimina)
+  (test-filtra)
+  (test-ordina))
 \end{lstlisting}
 \end{solbox}
 

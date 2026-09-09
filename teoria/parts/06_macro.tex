@@ -29,8 +29,10 @@ da quelle native.
 \detail{Questa differenza è fondamentale.
 Una funzione non può implementare \fn{if}: se tutti gli argomenti
 fossero valutati prima della chiamata, entrambi i rami verrebbero
-eseguiti sempre. \fn{if} è una forma speciale (o macro) proprio
-perché controlla \emph{quale} ramo valutare.}
+eseguiti sempre. \fn{if} è una \emph{forma speciale} (special operator):
+possiede regole di valutazione proprie che controllano \emph{quale}
+ramo valutare. Forme come \fn{when}, \fn{unless}, \fn{and}, \fn{or}
+sono invece macro costruite sopra \fn{if}.}
 \end{concetto}
 
 \begin{tcolorbox}[
@@ -77,8 +79,9 @@ che venga eseguito.
 In Java o Python non esiste nulla di equivalente.
 Le annotazioni, i decorator, il preprocessore C --- sono tutti
 meccanismi più limitati che operano in fasi separate.
-Le macro Lisp lavorano direttamente sull'AST del programma,
-con tutto il linguaggio disponibile.
+Le macro Lisp lavorano direttamente sulle forme del programma,
+rappresentate come dati (liste, simboli, atomi), con tutto il
+linguaggio disponibile per manipolarle.
 \end{tcolorbox}
 
 % ================================================================
@@ -89,13 +92,16 @@ con tutto il linguaggio disponibile.
 \keyline{}{1. Il compilatore incontra \fn{(nome-macro arg1 arg2 ...)}.}
 \keyline{}{2. Chiama il \emph{trasformatore} della macro con gli argomenti\\
 come liste simboliche (codice grezzo).}
-\keyline{}{3. Il trasformatore restituisce una nuova espressione S.}
-\keyline{}{4. Il compilatore valuta quella nuova espressione.}
+\keyline{}{3. Il trasformatore restituisce una nuova espressione S\\
+(fase di \emph{macro expansion}).}
+\keyline{}{4. La forma risultante viene compilata o valutata\\
+secondo il contesto.}
 
 \boxsep
 \detail{Il trasformatore è codice Common Lisp ordinario.
 Può usare tutto il linguaggio: variabili, funzioni, ricorsione.
-Viene eseguito a \emph{compile time}, non a runtime.}
+L'espansione avviene a \emph{compile time} (o prima della valutazione
+nell'interprete), non a runtime.}
 \end{concetto}
 
 \begin{esempio}[Prima macro: \fn{quando} come \fn{when}]

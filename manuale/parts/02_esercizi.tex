@@ -1916,6 +1916,7 @@ dei suoi vicini diretti.
 \fn{add-edge}: aggiungere \fn{node2} ai vicini di \fn{node1} e
 \fn{node1} ai vicini di \fn{node2} (grafo non orientato).
 Non modificare la struttura originale; restituire un nuovo grafo.}
+\vincolo{assumere che entrambi i nodi siano già presenti nel grafo.}
 \begin{lstlisting}
 (neighbors 'a '((a b c) (b a d) (c a d) (d b c)))
 ; -> (B C)
@@ -1949,7 +1950,7 @@ diretti di un nodo, poi i vicini dei vicini, e così via — livello per livello
 (bfs '((a b c) (b a d) (c a) (d b)) 'a)
 ; -> (A B C D)
 \end{lstlisting}
-\vincolo{usare una coda.}
+\vincolo{usare l'ADT queue dell'esercizio 114.}
 
 \small\color{black!55}\hyperref[sol:119]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:119]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{colbox}
@@ -1958,6 +1959,7 @@ diretti di un nodo, poi i vicini dei vicini, e così via — livello per livello
 \begin{colbox}{120}{Conta parole}{3}
 \exlabel{Implementare} \fn{(conta-parole testo)} e
 \fn{(parola-piu-frequente testo)}.
+\vincolo{per semplicità, assumere che le parole siano separate solo da spazi.}
 \begin{lstlisting}
 (conta-parole "il gatto e' sul tetto e il tetto")
 ; hash table: "il"->2, ...
@@ -2156,6 +2158,7 @@ si ottengono 6 coppie: \fn{(a b)}, \fn{(a c)}, \fn{(a d)}, \fn{(b c)}, \fn{(b d)
 \exlabel{Implementare} \fn{(somma-a-target numeri target)}.\\\\
 \exspieg{Trovare tutti i sottoinsiemi di \fn{numeri} la cui somma è
 esattamente \fn{target}.}
+\vincolo{assumere che \fn{numeri} contenga solo interi positivi.}
 \nopagebreak
 \begin{lstlisting}
 (somma-a-target '(1 2 3 4 5) 6)
@@ -2520,25 +2523,41 @@ Regole: sopravvive con 2--3 vicini vivi; nasce con esattamente 3.
 \begin{stdbox}{148}{Mini sistema gestionale}{5}
 Programma completo (studenti, libri, prodotti, film o contatti).
 
-Requisiti minimi:
+\textbf{Requisiti minimi:}
 \begin{itemize}[leftmargin=2em]
-  \item \fn{defstruct} o CLOS;
+  \item \fn{defstruct} o CLOS per il modello dati;
   \item hash table o lista come archivio;
-  \item inserimento, ricerca, modifica, eliminazione,
-        filtraggio, ordinamento;
+  \item operazioni CRUD: inserimento, ricerca, modifica, eliminazione;
+  \item filtraggio e ordinamento;
   \item salvataggio e caricamento da file;
-  \item gestione degli errori;
   \item docstring su ogni funzione pubblica.
 \end{itemize}
 
-Struttura minima:
+\textbf{Requisiti professionali:}
+\begin{itemize}[leftmargin=2em]
+  \item package dedicato (\fn{defpackage} + \fn{in-package});
+  \item almeno 5 test automatici (funzioni \fn{test-*} che verificano
+        il comportamento e stampano PASS/FAIL);
+  \item nessuna variabile globale mutabile, salvo l'archivio
+        esplicitamente dichiarato con \fn{defparameter};
+  \item gestione di almeno un errore con \fn{handler-case}
+        (es.\ file non trovato, record duplicato).
+\end{itemize}
+
+\textbf{Struttura del file:}
 \begin{lstlisting}
-;; MODEL  -- strutture dati
-;; LOGIC  -- operazioni
-;; IO     -- input/output e file
+;;; gestionale.lisp
+(defpackage :gestionale (:use :cl) (:export ...))
+(in-package :gestionale)
+
+;;; MODEL  -- strutture dati
+;;; LOGIC  -- operazioni
+;;; IO     -- input/output e file
+;;; TESTS  -- test automatici
 \end{lstlisting}
 
-
+\vincolo{il progetto deve poter essere caricato da file con
+\fn{:ld "gestionale.lisp"}, non solo copiato nel REPL.}
 
 \small\color{black!55}\hyperref[sol:148]{$\rightarrow$ Soluzione}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:148]{$\rightarrow$ Suggerimento}\normalsize\color{black}
 \end{stdbox}
