@@ -76,6 +76,7 @@ Studente universitario con basi imperative (C, Java, Python). Sa cos'è una vari
 - **Collegamento bidirezionale.** Il teorico rimanda agli esercizi del workbook. Il workbook è autosufficiente ma più potente se letto dopo la teoria corrispondente.
 - **Spiegare il perché.** Non "questo è il codice" ma "perché si fa così e non diversamente".
 - **Confrontare con l'imperativo dove aiuta.** Il lettore conosce Java/C: la differenza va nominata esplicitamente.
+- **Common Lisp è multi-paradigma.** Non è un linguaggio funzionale puro: supporta programmazione funzionale, imperativa e orientata agli oggetti nello stesso linguaggio. Non dare mai l'impressione che `setf`, array mutabili, hash table, I/O e side-effect siano "scorretti" o eccezionali. Il funzionale è il default naturale, non l'unico paradigma.
 
 ---
 

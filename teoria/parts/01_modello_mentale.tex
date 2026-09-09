@@ -209,71 +209,102 @@ il secondo caso. Questa simmetria — chiamata \emph{homoiconicity} —
 \section{Differenza con il paradigma imperativo}
 % ================================================================
 
-Vieni da C, Java, Python. Ecco i punti di rottura:
+Vieni da C, Java, Python. La differenza più profonda non è la sintassi:
+è come pensi al programma.
 
-\bigskip
-\begin{center}
-\renewcommand{\arraystretch}{1.6}
-\begin{tabular}{@{}p{4.8cm}p{5.5cm}@{}}
-\toprule
-\textbf{Linguaggio imperativo} & \textbf{Common Lisp} \\
-\midrule
-\texttt{result = f(x)} \newline (assegnazione) &
-\texttt{(let ((result (f x))) ...)} \newline (binding locale) \\
-\addlinespace
-\texttt{if (cond) \{ ... \} else \{ ... \}} \newline (istruzione) &
-\texttt{(if cond vero falso)} \newline (espressione con valore) \\
-\addlinespace
-\texttt{for (int i=0; i<n; i++)} \newline (loop imperativo) &
-\texttt{(loop for i from 0 below n ...)} \newline o ricorsione \\
-\addlinespace
-\texttt{void f(x) \{ ... \}} \newline (procedura senza return) &
-Non esiste: ogni funzione \newline restituisce sempre un valore \\
-\addlinespace
-\texttt{f = \&g} (puntatore a funzione, raro) &
-\texttt{\#'g} o \texttt{(lambda ...)} \newline (funzioni come valori normali) \\
-\bottomrule
-\end{tabular}
-\end{center}
+\begin{confronto}
+\textbf{In C o Java} un programma è una sequenza di \emph{istruzioni}
+che modificano uno stato.
+Si \emph{fa} qualcosa: si assegna, si itera, si modifica.
 
-\bigskip
+\medskip
+\textbf{In Common Lisp} un programma è una composizione di
+\emph{espressioni} che producono valori.
+Non ci sono istruzioni: ogni forma restituisce qualcosa.
+\fn{if} restituisce un valore. \fn{let} restituisce un valore.
+Anche una funzione che stampa a schermo restituisce un valore.
+\end{confronto}
 
-\begin{attenzione}
-\textbf{La mutabilità non è la norma.}
-In Lisp si \emph{può} modificare variabili con \texttt{setf},
-ma il pattern naturale è creare nuovi valori, non modificare quelli
-esistenti. Inizia così: evita \texttt{setf} finché non è strettamente
-necessario.
-\end{attenzione}
-
-\seprule
-
-\argomento{Il modello di esecuzione}
-
-In un linguaggio imperativo il programma è una sequenza di
-\emph{istruzioni} che modificano uno stato. In Lisp è una
-\emph{composizione di espressioni} che producono valori:
-
-\begin{esempio}[Imperativo vs funzionale]
+\begin{esempio}[Stesso calcolo: imperativo vs Lisp]
 \begin{lstlisting}
-;;; Python (imperativo)
-;; x = 3
-;; y = x * 2
-;; z = y + 1
+;;; Python
+x = 3
+y = x * 2
+z = y + 1   ; z vale 7
 
-;;; Common Lisp (composizione)
+;;; Common Lisp: tutto e' un'espressione
 (let* ((x 3)
        (y (* x 2))
        (z (+ y 1)))
-  z)
-; => 7
+  z)           ; => 7
 
-;;; Oppure direttamente:
-(+ (* 3 2) 1)   ; => 7
+;;; O direttamente, senza variabili:
+(+ (* 3 2) 1)  ; => 7
 \end{lstlisting}
 \end{esempio}
 
-\mnota{\fn{let*} permette binding sequenziali: ognuno vede i precedenti.}
+La tabella seguente riassume i punti di rottura principali:
+
+\begin{confronto}
+\renewcommand{\arraystretch}{1.4}
+\small
+\begin{tabular}{@{}p{5.8cm}p{6.0cm}@{}}
+\rowcolor{boxCfFrame!12}
+\textbf{\color{boxCfFrame!80!black}Imperativo (C / Java)} &
+\textbf{\color{csBlue}Common Lisp} \\[2pt]
+%
+\texttt{result = f(x)} \newline
+{\footnotesize\color{black!55}assegnazione} &
+\texttt{(let ((result (f x))) \ldots)} \newline
+{\footnotesize\color{black!55}binding locale} \\
+\hline
+\texttt{if (...) \{\} else \{\}} \newline
+{\footnotesize\color{black!55}istruzione, non restituisce valore} &
+\texttt{(if cond vero falso)} \newline
+{\footnotesize\color{black!55}espressione con valore} \\
+\hline
+\texttt{for (int i=0; i<n; i++)} \newline
+{\footnotesize\color{black!55}loop imperativo} &
+\texttt{(loop for i from 0 below n)} \newline
+{\footnotesize\color{black!55}o ricorsione} \\
+\hline
+\texttt{void f(x) \{ ... \}} \newline
+{\footnotesize\color{black!55}procedura senza return} &
+{\footnotesize\color{black!55}Non esiste: ogni funzione} \newline
+{\footnotesize\color{black!55}restituisce sempre un valore} \\
+\hline
+\texttt{f = \&myfunc} \newline
+{\footnotesize\color{black!55}puntatore a funzione (raro)} &
+\texttt{\#'f} \ o \ \texttt{(lambda (x) \ldots)} \newline
+{\footnotesize\color{black!55}funzioni come valori normali} \\
+\end{tabular}
+\end{confronto}
+
+\seprule
+
+\begin{intuizione}
+\textbf{Common Lisp è multi-paradigma}: funzionale, imperativo, a oggetti (CLOS).
+Non è Haskell: \fn{setf}, array mutabili, hash table e side-effect
+sono strumenti normali, da usare quando ha senso.
+
+\keyline{}{Il funzionale è lo stile naturale, non l'unico consentito.}
+\end{intuizione}
+
+\begin{attenzione}
+\textbf{All'inizio, non usare \fn{setf}.}
+Nei linguaggi imperativi scrivi \texttt{x = x + 1} per aggiornare \texttt{x}.
+In Lisp, invece di modificare un valore esistente, crei un nuovo binding:
+\begin{lstlisting}
+;; Imperativo (da evitare all'inizio)
+(setf x (+ x 1))
+
+;; Funzionale: calcola un nuovo valore
+(let ((x-nuovo (+ x 1)))
+  ...)
+\end{lstlisting}
+\fn{setf} esiste ed è legittimo.
+Ma se lo usi subito come default stai scrivendo C, non Lisp.
+\end{attenzione}
 
 % ================================================================
 \section{Definire funzioni: \texttt{defun}}
