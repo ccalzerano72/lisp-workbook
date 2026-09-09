@@ -39,6 +39,10 @@
   left=3cm, right=3cm
 ]{geometry}
 
+% --- Paragrafi: no rientro, spaziatura tra paragrafi ---
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
 % --- Colori ---
 \usepackage[dvipsnames,svgnames,table]{xcolor}
 
@@ -160,7 +164,9 @@
 
 \lstset{style=lispstyle}
 \newcommand{\cl}[1]{\lstinline[style=lispstyle]{#1}}
-\newcommand{\fn}[1]{\texttt{\color{clKeyword}\bfseries#1}}
+\newcommand{\fn}[1]{\texttt{\bfseries\color{clKeyword}#1}}
+% Versione per titoli su sfondo colorato (eredita il colore del contesto)
+\newcommand{\fnt}[1]{\texttt{\bfseries #1}}
 
 % --- tcolorbox ---
 \usepackage[most]{tcolorbox}
@@ -174,7 +180,6 @@
 % \Needspace{5\baselineskip} = salta pagina se mancano meno di 5 righe
 \newenvironment{concetto}[1]{%
   \Needspace{6\baselineskip}%
-  \medskip
   \begin{tcolorbox}[
     enhanced,
     colframe=boxConFrame, colback=boxConBack,
@@ -189,11 +194,11 @@
     },
     arc=4pt, boxrule=1pt,
     left=12pt, right=12pt, top=14pt, bottom=10pt,
-    before skip=18pt plus 4pt, after skip=14pt plus 3pt,
-    parskip=6pt
+    before skip=14pt plus 4pt, after skip=14pt plus 3pt,
+    parskip=4pt
   ]
-  \small\color{black!80}%
-}{\end{tcolorbox}\medskip}
+  \small\color{black!75}%
+}{\end{tcolorbox}}
 
 % ---- SINTASSI ----
 \newenvironment{sintassi}{%
@@ -211,7 +216,6 @@
 % ---- ESEMPIO ----
 % breakable ma con soglia minima di righe prima dello spacco
 \newenvironment{esempio}[1][Esempio]{%
-  \medskip
   \begin{tcolorbox}[
     enhanced, breakable,
     lines before break=5,
@@ -227,16 +231,15 @@
     },
     arc=3pt, boxrule=0.8pt,
     left=10pt, right=10pt, top=12pt, bottom=8pt,
-    before skip=10pt plus 2pt, after skip=10pt plus 2pt,
+    before skip=12pt plus 2pt, after skip=12pt plus 2pt,
     parskip=4pt
   ]
   \small\color{black!80}%
-}{\end{tcolorbox}\medskip}
+}{\end{tcolorbox}}
 
 % ---- ATTENZIONE ----
 \newenvironment{attenzione}{%
   \Needspace{5\baselineskip}%
-  \medskip
   \begin{tcolorbox}[
     enhanced,
     colframe=boxWarnFrame, colback=boxWarnBack,
@@ -251,16 +254,15 @@
     },
     arc=3pt, boxrule=0.8pt,
     left=10pt, right=10pt, top=12pt, bottom=8pt,
-    before skip=10pt plus 2pt, after skip=10pt plus 2pt,
+    before skip=12pt plus 2pt, after skip=12pt plus 2pt,
     parskip=4pt
   ]
   \small\color{black!80}%
-}{\end{tcolorbox}\medskip}
+}{\end{tcolorbox}}
 
 % ---- INTUIZIONE ----
 \newenvironment{intuizione}{%
   \Needspace{5\baselineskip}%
-  \medskip
   \begin{tcolorbox}[
     enhanced,
     colframe=boxKeyFrame, colback=boxKeyBack,
@@ -275,16 +277,15 @@
     },
     arc=3pt, boxrule=0.8pt,
     left=12pt, right=12pt, top=12pt, bottom=10pt,
-    before skip=10pt plus 2pt, after skip=10pt plus 2pt,
+    before skip=12pt plus 2pt, after skip=12pt plus 2pt,
     parskip=4pt
   ]
   \small\color{black!80}%
-}{\end{tcolorbox}\medskip}
+}{\end{tcolorbox}}
 
 % ---- WORKBOOK ----
 \newenvironment{workbook}{%
   \Needspace{6\baselineskip}%
-  \medskip
   \begin{tcolorbox}[
     enhanced,
     colframe=boxWbFrame, colback=boxWbBack,
@@ -299,42 +300,40 @@
     },
     arc=3pt, boxrule=0.8pt,
     left=12pt, right=12pt, top=12pt, bottom=8pt,
-    before skip=10pt plus 2pt, after skip=10pt plus 2pt,
+    before skip=12pt plus 2pt, after skip=12pt plus 2pt,
     parskip=3pt
   ]
   \small\color{black!80}%
-}{\end{tcolorbox}\medskip}
+}{\end{tcolorbox}}
 
 % ---- NOTA ----
 \newenvironment{nota}{%
   \Needspace{4\baselineskip}%
-  \smallskip
   \begin{tcolorbox}[
     enhanced,
     colframe=boxNoteFrame, colback=boxNoteBack,
     arc=3pt, boxrule=0.5pt,
     left=10pt, right=10pt, top=6pt, bottom=6pt,
-    before skip=8pt, after skip=8pt
+    before skip=10pt, after skip=10pt
   ]
   \small\color{black!65}\itshape%
-}{\end{tcolorbox}\smallskip}
+}{\end{tcolorbox}}
 
 % ---- CONFRONTO ----
 \definecolor{boxCfFrame}{RGB}{160,80,20}
 \definecolor{boxCfBack}{RGB}{253,247,238}
 \newenvironment{confronto}{%
   \Needspace{4\baselineskip}%
-  \smallskip
   \begin{tcolorbox}[
     enhanced,
     colframe=boxCfFrame, colback=boxCfBack,
     leftrule=3pt, toprule=0.3pt, bottomrule=0.3pt, rightrule=0.3pt,
     arc=2pt,
     left=12pt, right=10pt, top=6pt, bottom=6pt,
-    before skip=8pt, after skip=8pt
+    before skip=10pt, after skip=10pt
   ]
   \small\color{black!70}%
-}{\end{tcolorbox}\smallskip}
+}{\end{tcolorbox}}
 
 % ================================================================
 %  SEPARATORI E COMANDI SEMANTICI
@@ -371,23 +370,22 @@
 
 % ---- Comandi per gerarchia INTERNA ai box ----
 
-% Frase-chiave: barra arancione + etichetta + testo, seconda riga allineata
-% \keyline{etichetta}{testo} -- etichetta grande sffamily + testo bold
-% \keyline{}{testo}          -- solo testo bold
-% hangindent allinea le righe successive dopo la barra (14pt = 3pt barra + 5pt spazio + 6pt margine)
+% Frase-chiave: barra arancione + etichetta + testo
+% \keyline{etichetta}{testo} -- etichetta sffamily + testo in nero
+% \keyline{}{testo}          -- solo testo
 \newcommand{\keyline}[2]{%
-  \par\smallskip%
+  \par\vspace{2pt}%
   \noindent%
   \setlength{\hangindent}{14pt}%
   \setlength{\hangafter}{1}%
-  \textcolor{csOrange}{\rule{3pt}{1em}}\hspace{5pt}%
+  \textcolor{csOrange}{\rule{3pt}{0.9em}}\hspace{5pt}%
   \ifx&#1&%
-    {\normalsize\bfseries\color{csBlue!85!black} #2}%
+    {\small\color{black!80} #2}%
   \else%
-    {\large\sffamily\bfseries\color{csBlue} #1}\enspace%
-    {\normalsize\bfseries\color{csBlue!85!black} #2}%
+    {\normalsize\sffamily\bfseries\color{csBlue} #1}\enspace%
+    {\small\color{black!80} #2}%
   \fi\par%
-  \vspace{3pt}%
+  \vspace{2pt}%
 }
 
 % Dettaglio: testo attenuato, leggermente più piccolo

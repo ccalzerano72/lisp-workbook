@@ -44,7 +44,7 @@ In Lisp questo meccanismo esiste dal 1960 ed è al centro del linguaggio.
 
 \argomento{La sintassi: \fn{\#'} e \fn{funcall}}
 
-\begin{concetto}{\fn{\#'} e \fn{funcall}}
+\begin{concetto}{\fnt{\#'} e \fnt{funcall}}
 \keyline{\fn{\#'nome}}{riferimento a una funzione definita (``sharp-quote'').}
 \keyline{\fn{(funcall f arg...)}}{chiama la funzione contenuta nella variabile \fn{f}.}
 \keyline{\fn{(apply f lista)}}{chiama \fn{f} con gli elementi della lista come argomenti.}
@@ -84,7 +84,7 @@ vuoi passare una funzione.
 \section{Le funzioni higher-order della libreria}
 % ================================================================
 
-\begin{concetto}{\fn{mapcar} --- il map}
+\begin{concetto}{\fnt{mapcar} --- il map}
 \keyline{}{Applica una funzione a ogni elemento, raccoglie i risultati.}
 
 \begin{sintassi}
@@ -107,7 +107,7 @@ vuoi passare una funzione.
 
 \seprule
 
-\begin{concetto}{\fn{remove-if} e \fn{remove-if-not} --- il filter}
+\begin{concetto}{\fnt{remove-if} e \fnt{remove-if-not} --- il filter}
 \keyline{\fn{remove-if}}{rimuove gli elementi per cui il predicato è vero.}
 \keyline{\fn{remove-if-not}}{mantiene gli elementi per cui il predicato è vero.}
 
@@ -139,7 +139,7 @@ predicati arbitrari. Vedi anche \fn{find-if}, \fn{count-if},
 
 \seprule
 
-\begin{concetto}{\fn{reduce} --- il reduce/fold}
+\begin{concetto}{\fnt{reduce} --- il reduce/fold}
 \keyline{}{Riduce una lista a un singolo valore applicando\\
 una funzione binaria in modo cumulativo.}
 
@@ -184,7 +184,7 @@ con \fn{:from-end t} si procede da destra a sinistra (\emph{fold right}).
 
 \seprule
 
-\begin{concetto}{\fn{mapcan} --- map + flatten}
+\begin{concetto}{\fnt{mapcan} --- map + flatten}
 \keyline{}{Come \fn{mapcar}, ma concatena i risultati invece di\\
 raccoglierli in una lista di liste.}
 
@@ -234,7 +234,7 @@ vedono \fn{reduce} usato in modo non ovvio.
 \section{Lambda: funzioni anonime}
 % ================================================================
 
-\begin{concetto}{\fn{lambda} --- funzione senza nome}
+\begin{concetto}{\fnt{lambda} --- funzione senza nome}
 \keyline{}{Crea una funzione al volo, senza darle un nome.}
 
 \begin{sintassi}

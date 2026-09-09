@@ -53,7 +53,7 @@ accesso casuale.
 
 \argomento{Le operazioni primitive: \fn{car}, \fn{cdr}, \fn{cons}}
 
-\begin{concetto}{\fn{car}, \fn{cdr}, \fn{cons} --- le tre primitive}
+\begin{concetto}{\fnt{car}, \fnt{cdr}, \fnt{cons} --- le tre primitive}
 \keyline{\fn{car}}{restituisce il \emph{primo elemento} (la testa).}
 \keyline{\fn{cdr}}{restituisce il \emph{resto} (la coda, senza il primo).}
 \keyline{\fn{cons}}{\emph{costruisce} una nuova cons-cell: \fn{(cons x lst)}.}
@@ -279,7 +279,7 @@ Priorità agli essenziali: \textbf{27, 31, 35}.
 \section{Costruire liste: \fn{cons} vs \fn{append}}
 % ================================================================
 
-\begin{concetto}{\fn{cons} e \fn{append}: quando usare quale}
+\begin{concetto}{\fnt{cons} e \fnt{append}: quando usare quale}
 \keyline{\fn{cons}}{aggiunge \emph{un elemento} in testa. O(1).}
 \keyline{\fn{append}}{concatena \emph{due liste}. O(n) sulla prima lista.}
 
@@ -337,7 +337,7 @@ su \fn{lst2}.
 \section{Reverse e l'accumulatore}
 % ================================================================
 
-\begin{concetto}{Il problema di \fn{reverse} ricorsivo naif}
+\begin{concetto}{Il problema di \fnt{reverse} ricorsivo naif}
 \keyline{}{La versione ovvia di reverse è $O(n^2)$ a causa di \fn{append}.}
 \end{concetto}
 
