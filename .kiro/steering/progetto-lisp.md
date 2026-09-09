@@ -50,10 +50,10 @@ Un percorso narrativo. Non è una reference: è il "perché" e il "come si pensa
 **Struttura (capitoli scritti / da scrivere):**
 | Cap. | Titolo | Esercizi workbook |
 |------|--------|-------------------|
-| 1 | Il modello mentale di Lisp | es. 1–11 |
-| 2 | Funzioni e dati fondamentali | es. 1–21 |
-| 3 | Liste e ricorsione | es. 22–65 |
-| 4 | Higher-order e closure | es. 69–88 |
+| 1 | Il modello mentale di Lisp | es. 1–11 (essenziali: 1, 6; con cap.2: 4, 8) |
+| 2 | Funzioni e dati fondamentali | es. 1–21 (completa 12–21 se 1–11 già fatti) |
+| 3 | Liste e ricorsione | es. 22–65 + estensioni 66–68 |
+| 4 | Higher-order e closure | es. 69–88 + estensioni 89–92 |
 | 5 | Strutture dati | es. 93–120 |
 | 6 | Macro | es. 121–123 |
 | 7 | Backtracking e algoritmi | **da scrivere** |
