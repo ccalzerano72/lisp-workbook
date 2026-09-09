@@ -671,9 +671,9 @@ Uso tipico & dati associativi & proprietà oggetti \\
 \begin{lstlisting}
 #(10 20 30)          ; vettore letterale (immutabile)
 
-; creazione
-(make-array 5)                              ; vettore non inizializzato
+; creazione (sempre con :initial-element per evitare letture indefinite)
 (make-array 5 :initial-element 0)           ; vettore di 5 zeri
+(make-array 5 :initial-element nil)         ; vettore di 5 NIL
 (make-array '(3 3) :initial-element 0)      ; matrice 3x3
 
 ; accesso e modifica

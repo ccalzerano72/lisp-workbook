@@ -249,8 +249,8 @@
 \begin{cheatbox}[Array e vettori]{csTeal}
 \begin{tabular}{@{}l@{\hspace{8pt}}l@{}}
 \fn{\#(1 2 3)}                & \desc{vettore letterale} \\
-\fn{(make-array n)}           & \desc{vettore} \\
-\fn{(make-array '(r c))}      & \desc{matrice r×c} \\
+\fn{(make-array n :initial-element v)} & \desc{vettore} \\
+\fn{(make-array '(r c) :initial-element v)} & \desc{matrice} \\
 \fn{(aref a i)}               & \desc{accesso} \\
 \fn{(setf (aref a i) v)}      & \desc{assegna} \\
 \end{tabular}

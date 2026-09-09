@@ -1333,7 +1333,7 @@ chiami la versione memoizzata, non se stessa:
 \begin{lstlisting}
 (defun trasposta (m n)
   ;; t[i][j] = m[j][i]
-  (let ((result (make-array (list n n))))
+  (let ((result (make-array (list n n) :initial-element 0)))
     (dotimes (i n result)
       (dotimes (j n)
         (setf (aref result i j)
