@@ -63,7 +63,7 @@ su tutti e tre.
 \boxsep
 \detail{\fn{map} e \fn{concatenate} richiedono il tipo del risultato
 come primo argomento: \fn{'list}, \fn{'vector} o \fn{'string}.
-Questo e' diverso da \fn{mapcar}, che restituisce sempre una lista.}
+Questo è diverso da \fn{mapcar}, che restituisce sempre una lista.}
 \end{concetto}
 
 \begin{esempio}[\fn{map} e \fn{concatenate} su tipi diversi]
@@ -89,15 +89,15 @@ Questo e' diverso da \fn{mapcar}, che restituisce sempre una lista.}
 
 \begin{attenzione}
 \fn{map} (su sequenze) e \fn{mapcar} (su liste) non sono la stessa cosa.
-\fn{map 'list} e' equivalente a \fn{mapcar} solo quando l'input
-e' una lista. Su stringhe e vettori usare \fn{map}.
+\fn{map 'list} è equivalente a \fn{mapcar} solo quando l'input
+è una lista. Su stringhe e vettori usare \fn{map}.
 Usare \fn{mapcar} su una stringa produce un errore di tipo.
 \end{attenzione}
 
 \begin{workbook}
 \textbf{Esercizio 136}\\[4pt]
 Prende confidenza con le funzioni di sequenza su stringhe
-e vettori prima di entrare nelle sezioni piu' specifiche.
+e vettori prima di entrare nelle sezioni più specifiche.
 \end{workbook}
 
 % ================================================================
@@ -105,7 +105,7 @@ e vettori prima di entrare nelle sezioni piu' specifiche.
 % ================================================================
 
 In Common Lisp i caratteri sono un tipo distinto dalle stringhe.
-Una stringa e' un vettore di caratteri.
+Una stringa è un vettore di caratteri.
 
 \argomento{Caratteri}
 
@@ -148,7 +148,7 @@ Una stringa e' un vettore di caratteri.
 \keyline{\fn{search}}{posizione di una sottostringa: \fn{(search sub str)}.}
 
 \boxsep
-\detail{Le stringhe in Common Lisp sono mutabili (si puo' usare
+\detail{Le stringhe in Common Lisp sono mutabili (si può usare
 \fn{setf} su \fn{char}), ma nella pratica si preferisce
 costruire nuove stringhe piuttosto che modificare quelle esistenti.}
 \end{concetto}
@@ -173,9 +173,9 @@ costruire nuove stringhe piuttosto che modificare quelle esistenti.}
 
 \begin{confronto}
 \textbf{Confronto con Java.}
-In Java \texttt{String} e' immutabile: ogni operazione
+In Java \texttt{String} è immutabile: ogni operazione
 crea una nuova stringa. In Common Lisp le stringhe sono
-tecnicamente mutabili, ma la convenzione funzionale e'
+tecnicamente mutabili, ma la convenzione funzionale è
 di trattarle come immutabili e costruire nuove stringhe.
 \fn{string-upcase} e \fn{string-downcase} restituiscono
 una \emph{nuova} stringa senza modificare l'originale,
@@ -194,7 +194,7 @@ L'esercizio~139 (capitalizza parole) combina
 \section{Stream e file}
 % ================================================================
 
-Uno stream e' un'astrazione per una sorgente o destinazione
+Uno stream è un'astrazione per una sorgente o destinazione
 di dati: un file, il terminale, una stringa in memoria.
 Le stesse funzioni di lettura e scrittura funzionano
 su qualsiasi tipo di stream.
@@ -247,7 +247,7 @@ il file di nuovo (salvo usare \fn{file-position}).}
 \begin{attenzione}
 Attenzione all'encoding. Allegro CL e la maggior parte
 delle implementazioni moderne usano UTF-8 per default,
-ma il comportamento puo' dipendere dalla piattaforma.
+ma il comportamento può dipendere dalla piattaforma.
 Per file con caratteri non ASCII, specificare esplicitamente
 \fn{:external-format :utf-8} in \fn{with-open-file}.
 \end{attenzione}
@@ -263,8 +263,8 @@ soddisfano un predicato e le scrive su un nuovo file.
 \section{\texttt{read} e \texttt{write}: il confine codice/dati}
 % ================================================================
 
-Una delle caratteristiche piu' distinctive di Lisp
-e' che il suo reader di default capisce la sintassi
+Una delle caratteristiche più distinctive di Lisp
+è che il suo reader di default capisce la sintassi
 del linguaggio stesso.
 \fn{read} non parsa stringhe: parsa S-expression.
 
@@ -277,7 +277,7 @@ come testo leggibile dal reader.}
 \keyline{\fn{write-to-string}}{serializza in una stringa.}
 
 \boxsep
-\detail{Il ciclo REPL (Read-Eval-Print Loop) e' letteralmente:
+\detail{Il ciclo REPL (Read-Eval-Print Loop) è letteralmente:
 \fn{(loop (print (eval (read))))}. I tre passi sono funzioni
 del linguaggio standard.}
 \end{concetto}
@@ -302,7 +302,7 @@ del linguaggio standard.}
 \begin{attenzione}
 \fn{read} esegue i reader macro (\fn{\#'}, \fn{`}, \fn{,}).
 Su input non fidato (stringhe da un utente esterno, rete, file
-di terze parti) questo e' un rischio di sicurezza: un input
+di terze parti) questo è un rischio di sicurezza: un input
 malevolo potrebbe far eseguire codice arbitrario al momento
 della lettura.
 
@@ -322,23 +322,23 @@ di eseguirlo.
 \textbf{Esercizio 142}\\[4pt]
 Implementa un semplice database in memoria che viene
 salvato su file con \fn{write} e ricaricato con \fn{read}.
-E' il caso d'uso pratico piu' comune di questo meccanismo.
+È il caso d'uso pratico più comune di questo meccanismo.
 \end{workbook}
 
 % ================================================================
 \section{Tokenizzazione}
 % ================================================================
 
-La tokenizzazione e' il primo passo di qualsiasi parser:
-spezzare una stringa in unita' significative (token)
+La tokenizzazione è il primo passo di qualsiasi parser:
+spezzare una stringa in unità significative (token)
 prima di interpretarle.
 
 \begin{concetto}{Token e tokenizzazione}
-\keyline{Token}{unita' minima con significato: numero, simbolo,
+\keyline{Token}{unità minima con significato: numero, simbolo,
 operatore, parentesi.}
 \keyline{Tokenizzatore}{funzione che prende una stringa e restituisce
 la lista dei token.}
-\keyline{}{Il tokenizzatore non capisce la struttura: solo le unita'.
+\keyline{}{Il tokenizzatore non capisce la struttura: solo le unità.
 Il parser costruisce la struttura dai token.}
 \end{concetto}
 
@@ -370,19 +370,19 @@ Il parser costruisce la struttura dai token.}
 
 \begin{nota}
 \fn{(coerce lista 'string)} converte una lista di caratteri
-in stringa. E' la funzione opposta di \fn{(coerce stringa 'list)}.
-\fn{map nil} e' come \fn{mapcar} ma scarta i risultati
+in stringa. È la funzione opposta di \fn{(coerce stringa 'list)}.
+\fn{map nil} è come \fn{mapcar} ma scarta i risultati
 e restituisce \fn{nil}: si usa quando l'effetto collaterale
-(qui: costruire i token) e' il punto.
+(qui: costruire i token) è il punto.
 \end{nota}
 
 \begin{workbook}
 \textbf{Esercizio 143}\\[4pt]
 Estendi il tokenizzatore per riconoscere non solo stringhe
-ma gia' il tipo di ogni token: \fn{:number} per sequenze
+ma già il tipo di ogni token: \fn{:number} per sequenze
 di cifre, \fn{:operator} per \fn{+}, \fn{-}, \fn{*}, \fn{/},
 \fn{:symbol} per il resto.
-Questo e' il passo che rende il parser piu' semplice.
+Questo è il passo che rende il parser più semplice.
 \end{workbook}
 
 % ================================================================
@@ -390,15 +390,15 @@ Questo e' il passo che rende il parser piu' semplice.
 % ================================================================
 
 La notazione polacca inversa (RPN, Reverse Polish Notation)
-e' il banco di prova ideale per un parser minimale:
-la grammatica e' semplice, non ci sono parentesi da gestire,
-e uno stack e' la struttura naturale per l'evaluazione.
+è il banco di prova ideale per un parser minimale:
+la grammatica è semplice, non ci sono parentesi da gestire,
+e uno stack è la struttura naturale per l'evaluazione.
 
 \begin{concetto}{RPN e lo stack}
 \keyline{}{In RPN gli operatori seguono gli operandi: \texttt{3 4 +} = \texttt{7}.}
 \keyline{}{Algoritmo: scorri i token. Se numero: metti sullo stack.
 Se operatore: togli due operandi dallo stack, calcola, rimetti il risultato.}
-\keyline{}{Alla fine dello stream il risultato e' in cima allo stack.}
+\keyline{}{Alla fine dello stream il risultato è in cima allo stack.}
 \end{concetto}
 
 \begin{esempio}[Evaluatore RPN completo]
@@ -442,14 +442,14 @@ Se operatore: togli due operandi dallo stack, calcola, rimetti il risultato.}
 una condizione, restituisce \fn{nil} invece di propagare
 l'errore. Utile per conversioni tentative (``prova a leggere
 un numero, se non riesci restituisci nil'').
-Per una gestione piu' robusta degli errori vedi il Capitolo~9.
+Per una gestione più robusta degli errori vedi il Capitolo~9.
 \end{nota}
 
 \begin{workbook}
 \textbf{Esercizio 144}\\[4pt]
 Estendi \fn{valuta-rpn} con le operazioni \fn{mod}, \fn{expt}
 e \fn{sqrt}. Poi aggiungi una gestione degli errori che
-segnali un messaggio leggibile quando lo stack e' vuoto
+segnali un messaggio leggibile quando lo stack è vuoto
 o quando si incontra un token non riconosciuto.
 \end{workbook}
 
@@ -458,11 +458,11 @@ o quando si incontra un token non riconosciuto.
 % ================================================================
 
 Il passo finale: valutare un sottoinsieme di S-expression Lisp.
-Non e' un esercizio accademico: e' esattamente come funziona
+Non è un esercizio accademico: è esattamente come funziona
 il cuore di un interprete Lisp.
 
 \begin{intuizione}
-Una S-expression e' gia' una struttura dati Lisp.
+Una S-expression è già una struttura dati Lisp.
 \fn{read-from-string "(+ 1 (* 2 3))"} restituisce
 \fn{(+ 1 (* 2 3))}: una lista con testa \fn{+} e argomenti
 \fn{1} e \fn{(* 2 3)}.
@@ -525,14 +525,14 @@ valuta ricorsivamente ogni argomento, applica.}
 \end{esempio}
 
 \begin{intuizione}
-Questo e' il cuore di Lisp.
+Questo è il cuore di Lisp.
 Il REPL di qualsiasi implementazione Common Lisp
 fa esattamente questo: \fn{read} parsa, \fn{eval} valuta
 ricorsivamente seguendo le stesse regole.
 La differenza tra \fn{mini-eval} e il vero \fn{eval} di Lisp
-e' nei casi gestiti: il vero \fn{eval} gestisce anche
+è nei casi gestiti: il vero \fn{eval} gestisce anche
 \fn{if}, \fn{let}, \fn{lambda}, \fn{quote}, le macro, ecc.
-Ma la struttura e' identica.
+Ma la struttura è identica.
 \end{intuizione}
 
 \begin{esempio}[Estendere l'ambiente con variabili]
@@ -554,13 +554,13 @@ L'esercizio~145 aggiunge \fn{if} al mini-evaluator (con
 valutazione condizionale degli argomenti).
 L'esercizio~146 aggiunge \fn{let} (estende l'ambiente localmente).
 L'esercizio~147 aggiunge \fn{lambda} (chiusura sull'ambiente corrente).
-L'esercizio~148 e' il progetto finale: un mini-REPL
+L'esercizio~148 è il progetto finale: un mini-REPL
 che legge espressioni da terminale, le valuta con
 \fn{mini-eval} e stampa il risultato.\\[4pt]
-L'esercizio~148 e' la sintesi di tutti i capitoli precedenti:
+L'esercizio~148 è la sintesi di tutti i capitoli precedenti:
 strutture dati (alist per l'ambiente), higher-order
 (funzioni come valori nell'ambiente), ricorsione
-(la valutazione e' ricorsiva), I/O (legge da terminale).
+(la valutazione è ricorsiva), I/O (legge da terminale).
 \end{workbook}
 
 % ================================================================
@@ -585,18 +585,18 @@ strutture dati (alist per l'ambiente), higher-order
         stringhe come vettori di caratteri. \fn{char-code}/\fn{code-char},
         \fn{string=}, \fn{string-trim}, \fn{search}.
   \item \textbf{Stream e file}: \fn{with-open-file} per la lettura
-        e scrittura. Lo stream e' un cursore: avanza a ogni lettura.
+        e scrittura. Lo stream è un cursore: avanza a ogni lettura.
   \item \textbf{\fn{read} e \fn{write}}: confine tra codice e dati.
         \fn{read-from-string} e \fn{write-to-string} per il roundtrip.
         Mai usare \fn{read} su input non fidato senza
         \fn{*read-eval* nil}.
   \item \textbf{Tokenizzazione}: prima fase di ogni parser.
-        Spezza la stringa in unita' minimali prima di interpretarla.
+        Spezza la stringa in unità minimali prima di interpretarla.
   \item \textbf{RPN}: stack + un passaggio sui token.
         Pattern trasferibile a qualsiasi grammatica context-free semplice.
   \item \textbf{Mini-evaluator}: numero, simbolo, lista.
         La ricorsione sulla struttura della S-expression
-        e' il cuore di ogni interprete Lisp.
+        è il cuore di ogni interprete Lisp.
   \item \textbf{Ambiente come alist}: \fn{acons} aggiunge senza mutare,
         \fn{assoc} cerca. Lo stesso meccanismo del Capitolo~5,
         ora usato come ambiente di valutazione.
@@ -611,9 +611,9 @@ in produzione.
 \begin{workbook}
 \textbf{Prima di andare al Capitolo~9:}\\[4pt]
 Completa gli esercizi \textbf{136--147} (core del capitolo).
-L'esercizio~148 (mini-REPL) e' il progetto conclusivo:
+L'esercizio~148 (mini-REPL) è il progetto conclusivo:
 affrontalo dopo aver fatto gli altri.\\[4pt]
-Priorita': \textbf{137, 140, 142, 144, 145, 148}.
+Priorità: \textbf{137, 140, 142, 144, 145, 148}.
 Questi sei coprono stringhe, file, \fn{read}/\fn{write},
 RPN, evaluator con \fn{if} e il progetto finale.
 \end{workbook}

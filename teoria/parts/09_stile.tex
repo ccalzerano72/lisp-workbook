@@ -11,14 +11,14 @@ le funzioni, le liste, la ricorsione, gli higher-order,
 le strutture dati, le macro, il backtracking, l'I/O.
 
 \medskip
-Questo capitolo e' su qualcosa di diverso: come scrivere
+Questo capitolo è su qualcosa di diverso: come scrivere
 \emph{buon} Lisp. Codice che si legge, si testa, si organizza
 e si mantiene. Non una lista di regole, ma un modo di pensare
 al codice come manufatto che sopravvive alla sessione di REPL.
 
 \medskip
-E' anche il capitolo piu' soggettivo. Le scelte di stile
-dipendono dal contesto. Quello che segue e' un insieme
+È anche il capitolo più soggettivo. Le scelte di stile
+dipendono dal contesto. Quello che segue è un insieme
 di principi con solide motivazioni, non dogmi.
 \end{intuizione}
 
@@ -28,21 +28,21 @@ di principi con solide motivazioni, non dogmi.
 \section{Funzioni piccole e API}
 % ================================================================
 
-La regola piu' importante del buon codice funzionale
-non e' specifica di Lisp: una funzione fa una cosa.
+La regola più importante del buon codice funzionale
+non è specifica di Lisp: una funzione fa una cosa.
 
-\begin{concetto}{Una funzione, una responsabilita'}
+\begin{concetto}{Una funzione, una responsabilità}
 \keyline{}{Una funzione dovrebbe essere descrivibile in una riga.}
 \keyline{}{Se il nome ha una congiunzione (\emph{e}, \emph{o}, \emph{poi}),
 probabilmente fa due cose.}
-\keyline{}{Se il corpo e' piu' lungo di una schermata, probabilmente
-contiene piu' funzioni.}
+\keyline{}{Se il corpo è più lungo di una schermata, probabilmente
+contiene più funzioni.}
 
 \boxsep
-\detail{Questa non e' una regola sul numero di righe.
-E' una regola sulla coerenza concettuale.
+\detail{Questa non è una regola sul numero di righe.
+È una regola sulla coerenza concettuale.
 Una funzione di 30 righe che fa davvero una cosa
-e' meglio di tre funzioni di 10 righe con responsabilita' sovrapposte.}
+è meglio di tre funzioni di 10 righe con responsabilità sovrapposte.}
 \end{concetto}
 
 \begin{esempio}[Refactoring: una funzione grande in tre]
@@ -87,13 +87,13 @@ e' meglio di tre funzioni di 10 righe con responsabilita' sovrapposte.}
 \end{lstlisting}
 \end{esempio}
 
-La versione a tre funzioni e' piu' lunga, ma ogni parte
-e' testabile indipendentemente, riusabile separatamente
+La versione a tre funzioni è più lunga, ma ogni parte
+è testabile indipendentemente, riusabile separatamente
 e comprensibile senza leggere il resto.
 
 \begin{concetto}{API: il contratto di una funzione}
 \keyline{Nome}{descrittivo, non abbreviato. \fn{conta-vocali} non \fn{cnt-v}.}
-\keyline{Argomenti}{nell'ordine piu' naturale per l'uso parziale.
+\keyline{Argomenti}{nell'ordine più naturale per l'uso parziale.
 La ``cosa su cui si opera'' viene prima.}
 \keyline{Valore di ritorno}{coerente: sempre dello stesso tipo,
 o almeno sempre lo stesso tipo per lo stesso ramo.}
@@ -103,26 +103,26 @@ Se modifica lo stato globale, il nome dovrebbe suggerirlo.}
 
 \begin{attenzione}
 Non spezzare eccessivamente. Cinque funzioni di due righe
-ciascuna, che si chiamano in sequenza senza possibilita'
+ciascuna, che si chiamano in sequenza senza possibilità
 di riuso, sono peggio di una funzione di dieci righe.
-Il punto e' la \emph{separazione delle responsabilita'},
+Il punto è la \emph{separazione delle responsabilità},
 non la minimizzazione delle righe.
 \end{attenzione}
 
 % ================================================================
-\section{Nomi e leggibilita'}
+\section{Nomi e leggibilità}
 % ================================================================
 
 In Common Lisp i nomi seguono alcune convenzioni forti.
 Non sono obbligatorie, ma il codice che le rispetta
-e' immediatamente riconoscibile come ``idiomatico''.
+è immediatamente riconoscibile come ``idiomatico''.
 
 \begin{concetto}{Convenzioni di naming}
 \keyline{\fn{predicato-p}}{funzione che restituisce vero o falso:
 \fn{null}, \fn{listp}, \fn{attivo-p}, \fn{valido-p}.}
 \keyline{\fn{operazione!}}{funzione con side effect distruttivi:
 \fn{sort}, \fn{nreverse}, \fn{delete}.
-Il \fn{!} e' una convenzione di stile, non sintassi.}
+Il \fn{!} è una convenzione di stile, non sintassi.}
 \keyline{\fn{*variabile*}}{variabile globale speciale (``ear muffs''):
 \fn{*standard-output*}, \fn{*env-default*}.}
 \keyline{\fn{+costante+}}{costante globale: \fn{+max-tentativi+}.}
@@ -145,7 +145,7 @@ quindi \fn{conta-vocali} e \fn{CONTA-VOCALI} sono lo stesso simbolo.
 
 \begin{concetto}{Docstring in \fnt{defun}}
 \keyline{}{La prima stringa nel corpo di \fn{defun}, se presente,
-e' la docstring.}
+è la docstring.}
 \keyline{\fn{documentation}}{recupera la docstring a runtime:
 \fn{(documentation 'nome-funzione 'function)}.}
 \keyline{\fn{describe}}{mostra il tipo, la docstring e altri dettagli
@@ -183,13 +183,13 @@ e cosa restituisce.}
 \section{Package e namespace}
 % ================================================================
 
-Fino a qui tutto il codice e' vissuto nel package
+Fino a qui tutto il codice è vissuto nel package
 di default, \texttt{CL-USER}.
-Appena il progetto ha piu' di un file, serve un sistema
+Appena il progetto ha più di un file, serve un sistema
 di namespace per evitare conflitti di nomi.
 
 \begin{concetto}{Package}
-\keyline{}{Un package e' uno spazio di nomi: un insieme di simboli
+\keyline{}{Un package è uno spazio di nomi: un insieme di simboli
 con un nome comune.}
 \keyline{\fn{defpackage}}{definisce un package con i suoi import ed export.}
 \keyline{\fn{in-package}}{cambia il package corrente.}
@@ -198,7 +198,7 @@ con un nome comune.}
 
 \boxsep
 \detail{I simboli non esportati sono privati: visibili solo
-dall'interno del package. E' il meccanismo di incapsulamento
+dall'interno del package. È il meccanismo di incapsulamento
 di Common Lisp, equivalente al \texttt{private} di Java.}
 \end{concetto}
 
@@ -245,7 +245,7 @@ di Common Lisp, equivalente al \texttt{private} di Java.}
 \begin{attenzione}
 Se due package esportano lo stesso simbolo e li importi
 entrambi con \fn{use-package}, ottieni un conflitto.
-La soluzione e' accedere al simbolo con il nome qualificato
+La soluzione è accedere al simbolo con il nome qualificato
 (\fn{package:simbolo}) invece di importarlo.
 \end{attenzione}
 
@@ -253,11 +253,11 @@ La soluzione e' accedere al simbolo con il nome qualificato
 \section{Progetti multi-file e ASDF}
 % ================================================================
 
-Un progetto reale ha piu' file da compilare nell'ordine giusto.
-ASDF (Another System Definition Facility) e' lo strumento
+Un progetto reale ha più file da compilare nell'ordine giusto.
+ASDF (Another System Definition Facility) è lo strumento
 standard per descrivere questa struttura.
 
-\begin{concetto}{ASDF: cos'e' e cosa fa}
+\begin{concetto}{ASDF: cos'è e cosa fa}
 \keyline{}{ASDF descrive un sistema: quali file lo compongono,
 in che ordine compilarli, quali dipendenze esterne richiede.}
 \keyline{System definition}{un file \fn{.asd} nella radice del progetto.}
@@ -288,9 +288,9 @@ sequenza corretta.}
 Questa sezione mostra la forma base.
 ASDF ha molte altre opzioni: test runner integrato, versioni
 dei file, gerarchie di moduli, sistemi condizionali.
-La documentazione completa e' su \url{https://asdf.common-lisp.dev}.
+La documentazione completa è su \url{https://asdf.common-lisp.dev}.
 Per la maggior parte dei progetti piccoli e medi,
-la struttura mostrata sopra e' sufficiente.
+la struttura mostrata sopra è sufficiente.
 \end{nota}
 
 % ================================================================
@@ -298,12 +298,12 @@ la struttura mostrata sopra e' sufficiente.
 % ================================================================
 
 Scrivere test prima di dichiarare finita una funzione
-non e' solo buona pratica: e' il modo piu' rapido
+non è solo buona pratica: è il modo più rapido
 per capire se la funzione fa quello che pensi.
 
 \begin{concetto}{Testing in Common Lisp}
 \keyline{\fn{assert}}{macro della libreria standard: segnala un errore
-se la condizione e' falsa.}
+se la condizione è falsa.}
 \keyline{Framework}{librerie come \fn{fiveam} o \fn{parachute}
 aggiungono suite di test, report, fixture.}
 \keyline{Uso minimale}{per progetti piccoli \fn{assert} basta.
@@ -358,8 +358,8 @@ reinventare la ruota.}
 \end{esempio}
 
 \begin{intuizione}
-Scrivere il test prima di scrivere la funzione non e'
-masochismo: e' il modo piu' veloce per chiarire
+Scrivere il test prima di scrivere la funzione non è
+masochismo: è il modo più veloce per chiarire
 esattamente cosa la funzione deve fare.
 Se non riesci a scrivere il test, non hai ancora capito
 abbastanza bene il problema.
@@ -370,7 +370,7 @@ abbastanza bene il problema.
 % ================================================================
 
 Common Lisp ha un sistema di gestione delle condizioni
-piu' potente del semplice try/catch.
+più potente del semplice try/catch.
 Qui ne vediamo la forma base, che copre la maggior parte
 dei casi pratici.
 
@@ -379,10 +379,10 @@ dei casi pratici.
 (salvo handler).}
 \keyline{\fn{warn}}{segnala un avviso: il programma continua.}
 \keyline{\fn{handler-case}}{intercetta condizioni, come try/catch.}
-\keyline{\fn{ignore-errors}}{esegue il corpo; se c'e' un errore
+\keyline{\fn{ignore-errors}}{esegue il corpo; se c'è un errore
 restituisce \fn{nil} e il messaggio d'errore.}
 \keyline{\fn{check-type}}{segnala un errore di tipo se il valore
-non e' del tipo atteso.}
+non è del tipo atteso.}
 \end{concetto}
 
 \begin{esempio}[Segnalare e intercettare condizioni]
@@ -412,23 +412,23 @@ non e' del tipo atteso.}
 \begin{confronto}
 \textbf{Confronto con Java.}
 In Java si usa \texttt{try}/\texttt{catch}/\texttt{finally}.
-\fn{handler-case} e' l'equivalente diretto.
-La differenza principale e' che Common Lisp distingue
+\fn{handler-case} è l'equivalente diretto.
+La differenza principale è che Common Lisp distingue
 tra condizioni segnalate (\fn{error}, \fn{warn}, \fn{signal})
 e handler che le intercettano (\fn{handler-case},
 \fn{handler-bind}).
-Il sistema di condizioni e' piu' flessibile del modello
-exception-based perche' permette di riprendere l'esecuzione
-dal punto in cui e' stata segnalata la condizione
+Il sistema di condizioni è più flessibile del modello
+exception-based perché permette di riprendere l'esecuzione
+dal punto in cui è stata segnalata la condizione
 (restart), senza necessariamente salire nello stack.
 \end{confronto}
 
 \begin{attenzione}
-\fn{ignore-errors} e' comodo ma pericoloso se usato
+\fn{ignore-errors} è comodo ma pericoloso se usato
 senza attenzione: nasconde tutti gli errori, anche
 quelli che indicano bug nel codice.
 Usarlo solo quando si sa esattamente quale condizione
-puo' accadere e si e' sicuri di volerla ignorare.
+può accadere e si è sicuri di volerla ignorare.
 Per tutto il resto, preferire \fn{handler-case} con
 una clausola esplicita.
 \end{attenzione}
@@ -438,7 +438,7 @@ una clausola esplicita.
 % ================================================================
 
 Prima di ottimizzare, misura.
-Il profiling e' lo strumento che trasforma ``questo codice
+Il profiling è lo strumento che trasforma ``questo codice
 sembra lento'' in ``questa funzione specifica consuma il 90\%
 del tempo''.
 
@@ -447,10 +447,10 @@ del tempo''.
 il tempo trascorso e l'allocazione di memoria.}
 \keyline{\fn{room}}{mostra l'uso corrente della memoria heap.}
 \keyline{\fn{declare optimize}}{direttiva al compilatore:
-piu' velocita', meno controlli di tipo.}
+più velocità, meno controlli di tipo.}
 
 \boxsep
-\detail{Per profiling piu' dettagliato (quale funzione specificamente),
+\detail{Per profiling più dettagliato (quale funzione specificamente),
 Allegro CL offre \fn{prof:with-profiling} / \fn{prof:show-flat-profile}.
 SBCL offre \fn{sb-profile:profile}. La sintassi varia per
 implementazione.}
@@ -490,7 +490,7 @@ implementazione.}
 La regola d'oro del profiling: prima corretto, poi veloce.
 Non ottimizzare prima di avere la soluzione giusta.
 Non ottimizzare prima di misurare.
-Il collo di bottiglia e' quasi sempre dove non ti aspetti.
+Il collo di bottiglia è quasi sempre dove non ti aspetti.
 \end{intuizione}
 
 \begin{esempio}[\fn{declare optimize}: dare suggerimenti al compilatore]
@@ -512,9 +512,9 @@ Il collo di bottiglia e' quasi sempre dove non ti aspetti.
 
 \begin{nota}
 Le dichiarazioni di tipo in \fn{declare} aiutano il compilatore
-a generare codice piu' efficiente, non solo a validare.
+a generare codice più efficiente, non solo a validare.
 Su Allegro CL e SBCL, aggiungere \fn{(type fixnum n)} a una
-funzione aritmetica intera puo' ridurre l'uso di bignum boxing
+funzione aritmetica intera può ridurre l'uso di bignum boxing
 e accelerare il codice di un ordine di grandezza.
 \end{nota}
 
@@ -526,16 +526,16 @@ Sei arrivato alla fine del percorso.
 Vale la pena fare il punto sull'arco che hai percorso.
 
 Al Capitolo~1 valutavi \fn{(+ 1 2)} nel REPL e capivi
-perche' le parentesi stanno dove stanno.
+perché le parentesi stanno dove stanno.
 All'esercizio~148 hai costruito un mini-REPL:
 legge espressioni dall'utente, le valuta con il tuo
 evaluator, stampa il risultato.
 
-Quella distanza e' Lisp.
+Quella distanza è Lisp.
 
 \argomento{Cosa ha reso possibile il mini-REPL}
 
-Il mini-REPL del Capitolo~8 non e' un esercizio isolato:
+Il mini-REPL del Capitolo~8 non è un esercizio isolato:
 usa ogni strato del percorso:
 
 \begin{itemize}
@@ -552,22 +552,21 @@ usa ogni strato del percorso:
   \item \textbf{Capitolo~6}: la comprensione di come
         le macro trasformano il codice prima della valutazione.
   \item \textbf{Capitolo~7}: il backtracking come template
-        per la ricerca (il resolver del Sudoku, ma anche
-        la valutazione con scelta di regola).
+        per la ricerca.
   \item \textbf{Capitolo~8}: stream, tokenizzazione,
         il parser, l'evaluator.
 \end{itemize}
 
 \argomento{Da qui in avanti}
 
-Un mini-REPL con le funzioni aritmetiche di base e' un punto
+Un mini-REPL con le funzioni aritmetiche di base è un punto
 di partenza, non un punto di arrivo.
 Le direzioni naturali per estenderlo:
 
 \begin{itemize}
   \item Aggiungere \fn{define} per creare funzioni
         nell'ambiente a runtime.
-  \item Aggiungere \fn{cond} e \fn{let} (gia' abbozzato
+  \item Aggiungere \fn{cond} e \fn{let} (già abbozzato
         negli esercizi~145--146).
   \item Aggiungere \fn{lambda} con chiusura sull'ambiente
         (esercizio~147).
@@ -578,22 +577,22 @@ Le direzioni naturali per estenderlo:
 \end{itemize}
 
 Questo progetto, sviluppato con i principi di questo capitolo
-(funzioni piccole, package, test, condizioni), e' un'ottima
+(funzioni piccole, package, test, condizioni), è un'ottima
 palestra per tutto quello che hai imparato.
 
 \begin{workbook}
-\textbf{Usare gli esercizi gia' fatti come banco di prova:}\\[4pt]
+\textbf{Usare gli esercizi già fatti come banco di prova:}\\[4pt]
 Non ci sono nuovi esercizi per questo capitolo.
 Invece, riprendi il codice degli esercizi 121--148
 e applicaci i principi di questo capitolo:
 
 \begin{itemize}
-  \item Aggiungi le docstring alle funzioni piu' importanti.
+  \item Aggiungi le docstring alle funzioni più importanti.
   \item Organizza il mini-evaluator (es. 145--148) in un package.
   \item Scrivi una suite di test \fn{assert} per ogni funzione
         del Capitolo~7 che hai implementato.
   \item Misura con \fn{time} la differenza tra \fn{fib-lento}
-        e \fn{fib-veloce}: e' il modo piu' diretto per
+        e \fn{fib-veloce}: è il modo più diretto per
         capire cosa fa il profiling.
 \end{itemize}
 \end{workbook}
@@ -613,7 +612,7 @@ e applicaci i principi di questo capitolo:
 
 \medskip
 \begin{itemize}
-  \item \textbf{Funzioni piccole}: una funzione, una responsabilita'.
+  \item \textbf{Funzioni piccole}: una funzione, una responsabilità.
         Il corpo descrivibile in una riga. Separazione dei livelli.
   \item \textbf{API}: nomi descrittivi, argomenti nell'ordine naturale,
         valore di ritorno coerente, side effect dichiarati.
@@ -625,15 +624,15 @@ e applicaci i principi di questo capitolo:
         \fn{in-package}, \fn{export}. I simboli non esportati
         sono privati.
   \item \textbf{ASDF}: descrive quali file compilare e in che ordine.
-        Il file \fn{.asd} e' il punto di entrata del sistema.
+        Il file \fn{.asd} è il punto di entrata del sistema.
   \item \textbf{Testing}: \fn{assert} per casi semplici,
         \fn{fiveam}/\fn{parachute} per suite strutturate.
         Scrivere il test prima chiarisce il problema.
   \item \textbf{Condizioni}: \fn{error}, \fn{warn},
         \fn{handler-case}, \fn{ignore-errors}.
-        Piu' flessibili delle eccezioni Java grazie ai restart.
+        Più flessibili delle eccezioni Java grazie ai restart.
   \item \textbf{Profiling}: \fn{time} per misurare. Prima corretto,
-        poi veloce. Il collo di bottiglia e' quasi sempre
+        poi veloce. Il collo di bottiglia è quasi sempre
         dove non ti aspetti.
 \end{itemize}
 
@@ -641,6 +640,6 @@ e applicaci i principi di questo capitolo:
 \textbf{Fine del percorso.}
 Hai attraversato il linguaggio dal modello mentale alla
 programmazione professionale.
-Il resto e' pratica: scrivere codice, leggerlo, migliorarlo.
+Il resto è pratica: scrivere codice, leggerlo, migliorarlo.
 Il REPL ti aspetta.
 \end{tcolorbox}
