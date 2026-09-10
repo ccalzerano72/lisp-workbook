@@ -297,8 +297,8 @@ sono strumenti normali, da usare quando ha senso.
 \end{intuizione}
 
 \begin{attenzione}
-\textbf{Parti dal funzionale, non dall'assegnazione.}
-\fn{setf} esiste ed è uno strumento legittimo.
+\textbf{Parti dal funzionale, non dall'assegnazione.}\\
+\fn{setf} è l'operatore di assegnazione: esiste ed è uno strumento legittimo.
 Ma se lo usi come default fin dall'inizio, stai replicando
 i pattern di C senza guadagnare nulla dal cambio di linguaggio.
 \begin{lstlisting}
@@ -420,7 +420,8 @@ ma la convenzione di scrittura è \textbf{kebab-case} minuscolo:
 (defun pari-p (n) (= (mod n 2) 0))
 (defun vuoto-p (lst) (null lst))
 
-;; Costanti globali: asterischi (per convenzione)
+;; Variabili globali: asterischi (per convenzione)
+;; defparameter definisce una variabile globale con un valore iniziale
 (defparameter *pi-greco* 3.14159)
 (defconstant +max-iter+ 1000)
 

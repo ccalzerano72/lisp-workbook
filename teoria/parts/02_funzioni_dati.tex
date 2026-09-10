@@ -45,6 +45,21 @@ Il prezzo: errori di tipo emergono a runtime.
 Il vantaggio: meno cerimonia, più flessibilità, codice più conciso.
 \end{confronto}
 
+\begin{concetto}{\texttt{defparameter} e \texttt{setf}: variabili globali e assegnazione}
+\keyline{\fn{defparameter}}{definisce una variabile globale e le assegna un valore iniziale.}
+\keyline{\fn{setf}}{assegna un nuovo valore a una variabile (o a un posto qualsiasi).}
+
+\begin{sintassi}
+(defparameter *nome* valore)   \textit{; definisce e inizializza}\\
+(setf *nome* nuovo-valore)     \textit{; riassegna}
+\end{sintassi}
+
+\detail{Per convenzione le variabili globali si scrivono con gli asterischi:
+\texttt{*nome*}. Non è obbligatorio, ma è universale nel codice Lisp.
+\fn{defparameter} crea sempre la variabile; \fn{setf} su una variabile
+non ancora definita è un errore.}
+\end{concetto}
+
 \begin{esempio}[Tipizzazione dinamica in pratica]
 \begin{lstlisting}
 (defparameter *x* 42)
@@ -180,6 +195,19 @@ Non tre cose diverse: la stessa identità.\\[4pt]
 (consp '())        ; => NIL  (nil non e' cons-cell)
 \end{lstlisting}
 \end{esempio}
+
+\begin{concetto}{Uguaglianza: \fnt{=}, \fnt{eq}, \fnt{eql}, \fnt{equal}, \fnt{equalp}}
+\keyline{\fn{=}}{confronta \emph{numeri}. Solo numeri.}
+\keyline{\fn{eq}}{identità: stesso oggetto in memoria. Per simboli e \fn{nil}.}
+\keyline{\fn{eql}}{come \fn{eq}, ma funziona anche per numeri e caratteri. Il default.}
+\keyline{\fn{equal}}{confronto strutturale: liste, stringhe, array con stesso contenuto.}
+\keyline{\fn{equalp}}{come \fn{equal}, ma ignora case nelle stringhe e confronta numeri di tipo diverso.}
+
+\boxsep
+\detail{Regola pratica: usa \fn{=} per i numeri, \fn{equal} per tutto il resto.
+\fn{eql} è il default usato da \fn{member}, \fn{assoc}, \fn{case} e simili.
+\fn{eq} solo quando sai di confrontare simboli o \fn{nil}.}
+\end{concetto}
 
 % ================================================================
 \section{Binding locale: \texttt{let} e \texttt{let*}}

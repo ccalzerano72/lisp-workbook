@@ -28,13 +28,50 @@ la loro forma (testa e coda).
 L'ultima cella punta a \texttt{nil}.}
 \end{concetto}
 
+% Diagramma: (a b c) come catena di cons-cell
+\begin{center}
+\begin{tikzpicture}[
+  slot/.style={
+    draw=csBlue!50, fill=csBlue!6,
+    minimum width=0.75cm, minimum height=0.65cm,
+    font=\small\ttfamily, inner sep=2pt
+  },
+  val/.style={slot, fill=csBlue!12, font=\small\bfseries\ttfamily\color{csBlue!80!black}},
+  ptr/.style={-{Stealth[length=5pt]}, csBlue!65, thick},
+  nil/.style={draw=black!30, fill=black!5,
+    minimum width=0.75cm, minimum height=0.65cm,
+    font=\small\ttfamily\color{black!45}}
+]
+
+% Cell 1
+\node[val] (a)   at (0,0)    {a};
+\node[slot] (p1) at (0.75,0) {};
+% Cell 2
+\node[val] (b)   at (2.4,0)  {b};
+\node[slot] (p2) at (3.15,0) {};
+% Cell 3
+\node[val] (c)   at (4.8,0)  {c};
+\node[slot] (p3) at (5.55,0) {};
+% nil
+\node[nil]  (n)  at (7.1,0)  {nil};
+
+% Frecce
+\draw[ptr] (p1.center) -- (b.west);
+\draw[ptr] (p2.center) -- (c.west);
+\draw[ptr] (p3.center) -- (n.west);
+
+% Etichette car/cdr
+\foreach \x/\lbl in {a/car, p1/cdr, b/car, p2/cdr, c/car, p3/cdr} {
+  \node[font=\tiny\color{black!40}, above=2pt of \x] {\lbl};
+}
+
+% Didascalia
+\node[font=\small\itshape\color{black!50}, below=10pt of b] {la lista \texttt{(a b c)} in memoria};
+\end{tikzpicture}
+\end{center}
+
 \begin{esempio}[Struttura interna di una lista]
 \begin{lstlisting}
-;; La lista (a b c) in memoria:
-;;
-;;  [car|cdr] -> [car|cdr] -> [car|cdr] -> nil
-;;    a            b            c
-;;
 ;; Si costruisce con cons:
 (cons 'a (cons 'b (cons 'c nil)))   ; => (A B C)
 
@@ -92,6 +129,11 @@ Usali nel codice nuovo: sono più chiari.}
 La lista \texttt{lst} rimane intatta.
 Questo vale per tutte le operazioni funzionali sulle liste: non
 modificano mai la struttura originale, restituiscono strutture nuove.
+
+\detail{La nuova lista condivide la coda con quella originale:
+non viene copiata, solo puntata dalla nuova cons-cell.
+Questo è lo \emph{structural sharing}: efficiente in memoria,
+e possibile proprio perché la coda non viene mai modificata.}
 \end{attenzione}
 
 \argomento{Composizione di \fn{car} e \fn{cdr}}
@@ -797,7 +839,26 @@ La funzione è \fn{make-array}. Il primo argomento è la dimensione;
 \end{tcolorbox}
 
 \textbf{Modificare un elemento: \fn{setf} + \fn{aref}.}
-\fn{setf} è l'operatore di assegnazione generalizzato.
+
+\begin{concetto}{\texttt{setf}: assegnazione a un \emph{posto}}
+\label{sec:setf-places}
+\keyline{}{\fn{setf} non è semplice assegnazione a una variabile.}
+\keyline{}{Assegna a qualsiasi \emph{posto} individuato da una forma.}
+
+\begin{sintassi}
+(setf variabile       valore)  \textit{; posto = variabile}\\
+(setf (aref arr i)    valore)  \textit{; posto = cella di array}\\
+(setf (gethash k ht)  valore)  \textit{; posto = entry di hash table}\\
+(setf (car lst)       valore)  \textit{; posto = testa di lista}
+\end{sintassi}
+
+\detail{Questo meccanismo si chiama \emph{generalized reference}.
+Qualsiasi forma che \emph{legge} un valore può diventare un posto
+per \fn{setf}, a patto che Common Lisp sappia come invertire la lettura
+in scrittura. Vedrai lo stesso pattern con \fn{gethash}, \fn{persona-eta}
+e altri accessor man mano che il libro avanza.}
+\end{concetto}
+
 Combinato con \fn{aref} modifica una cella specifica.
 
 \begin{tcolorbox}[
@@ -941,6 +1002,53 @@ stile funzionale e stile imperativo.
 \end{workbook}
 
 % ================================================================
+\section{\texttt{destructuring-bind}: destrutturare una lista}
+% ================================================================
+
+\fn{destructuring-bind} lega variabili ai componenti di una lista
+seguendo la sua struttura, in un'unica forma:
+
+\begin{concetto}{\texttt{destructuring-bind}}
+\keyline{}{Associa variabili agli elementi di una lista usando un \emph{pattern}.}
+\keyline{}{Il pattern rispecchia la struttura attesa della lista.}
+
+\begin{sintassi}
+(destructuring-bind (var1 var2 ...) lista corpo)
+\end{sintassi}
+
+\detail{Se la lista non corrisponde al pattern, viene segnalato un errore a runtime.}
+\end{concetto}
+
+\begin{esempio}[\fn{destructuring-bind}]
+\begin{lstlisting}
+;; Destrutturazione semplice
+(destructuring-bind (a b c) '(1 2 3)
+  (list c b a))          ; => (3 2 1)
+
+;; Con struttura annidata
+(destructuring-bind (x (y z)) '(1 (2 3))
+  (+ x y z))             ; => 6
+
+;; Con &rest: cattura la coda
+(destructuring-bind (primo &rest resto) '(a b c d)
+  (list primo resto))    ; => (A (B C D))
+
+;; Con &optional
+(destructuring-bind (a b &optional (c 0)) '(10 20)
+  (list a b c))          ; => (10 20 0)
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+\fn{destructuring-bind} usa la stessa sintassi delle lambda-list di \fn{defun}
+(\fn{\&rest}, \fn{\&optional}, \fn{\&key}) applicata a una lista di dati.
+Questo non è una coincidenza: le macro ricevono i loro argomenti
+esattamente con questo meccanismo.
+Capire \fn{destructuring-bind} significa capire come funzionano
+i parametri di una macro.
+\end{intuizione}
+
+% ================================================================
 \section*{Riepilogo del capitolo}
 % ================================================================
 
@@ -971,6 +1079,8 @@ stile funzionale e stile imperativo.
         sulla testa (scendi) e sulla coda (avanza).
   \item \textbf{Stile ibrido}: array per accesso casuale, lista come
         interfaccia esterna. Ricorsione e mutabilità coesistono.
+  \item \textbf{\fn{destructuring-bind}}: destruttura una lista con un pattern,
+        usando la stessa sintassi delle lambda-list. Ponte verso le macro.
 \end{itemize}
 
 \medskip

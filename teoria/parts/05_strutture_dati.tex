@@ -153,6 +153,9 @@ non importa; con 10\,000, diventa un collo di bottiglia.
 La hash table risolve questo problema: accesso in tempo costante,
 indipendente dalla dimensione.
 
+\mnota{\fn{setf} funziona qui perché usa i \emph{generalized places}:
+vedi la spiegazione completa a p.~\pageref{sec:setf-places}.}
+
 \begin{concetto}{Hash table: dizionario a tempo costante}
 \keyline{\fn{make-hash-table}}{crea una hash table vuota.}
 \keyline{\fn{gethash}}{legge un valore per chiave. $O(1)$.}
