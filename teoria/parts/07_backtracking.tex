@@ -1,0 +1,559 @@
+% =============================================================
+%  07_backtracking.tex
+%  Capitolo 7 -- Backtracking e algoritmi
+% =============================================================
+
+\chapter{Backtracking e algoritmi}
+
+\begin{intuizione}
+Nei capitoli precedenti le funzioni trasformavano dati:
+una lista entra, una lista diversa esce.
+Qui le funzioni \emph{esplorano possibilita'}: provano una scelta,
+verificano se va bene, e se non va tornano indietro
+per provarne un'altra.
+
+\medskip
+Questo schema si chiama \textbf{backtracking}.
+Non e' un algoritmo specifico: e' un modo di strutturare
+la ricerca in uno spazio di soluzioni.
+La ricorsione che hai imparato nel Capitolo~3 e' lo strumento naturale
+per esprimerlo.
+\end{intuizione}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!2, colframe=black!20,
+  arc=3pt, boxrule=0.4pt,
+  left=12pt, right=12pt, top=9pt, bottom=9pt,
+  before skip=8pt, after skip=10pt
+]
+\small\color{black!65}
+
+\textbf{Il percorso di questo capitolo.}
+
+\medskip
+\begin{enumerate}
+  \item \textbf{Generate-and-test.} Il modello piu' semplice:
+        genera tutti i candidati, testa quelli che soddisfano il vincolo.
+  \item \textbf{Stato, scelta, vincolo.} I tre ingredienti di
+        ogni algoritmo di backtracking.
+  \item \textbf{Pruning.} Tagliare rami prima di esplorarli:
+        trasforma un algoritmo esponenziale in qualcosa di accettabile.
+  \item \textbf{Permutazioni e sottoinsiemi.} Due problemi classici
+        come istanza dello stesso schema.
+  \item \textbf{N-Queens.} Il problema archetipico del backtracking,
+        costruito passo per passo.
+  \item \textbf{Sudoku.} Lo stesso modello su un dominio piu' ricco.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{4pt}
+
+% ================================================================
+\section{Generate-and-test}
+% ================================================================
+
+Il modo piu' diretto per trovare soluzioni in uno spazio discreto
+e' questo: genera tutti i candidati possibili, poi tieni solo
+quelli che soddisfano il vincolo.
+Non e' efficiente, ma e' corretto e facile da ragionare.
+
+\begin{concetto}{Generate-and-test}
+\keyline{Genera}{produci tutti i candidati (o un sottoinsieme).}
+\keyline{Testa}{per ognuno, verifica il predicato di correttezza.}
+\keyline{Raccogli}{tieni i candidati che passano il test.}
+
+\boxsep
+\detail{E' il pattern \fn{remove-if-not} applicato a uno spazio
+di soluzioni invece che a una lista gia' pronta.
+La difficolta' sta nel definire correttamente cosa si
+intende per ``tutti i candidati''.}
+\end{concetto}
+
+\begin{esempio}[Trova le coppie la cui somma e' N]
+\begin{lstlisting}
+;; Genera tutte le coppie (i j) con i < j da una lista,
+;; poi filtra quelle che sommano a target.
+
+(defun coppie-con-somma (lst target)
+  (let ((coppie '()))
+    (dolist (i lst)
+      (dolist (j lst)
+        (when (and (< i j) (= (+ i j) target))
+          (push (list i j) coppie))))
+    (nreverse coppie)))
+
+(coppie-con-somma '(1 2 3 4 5 6) 7)
+; => ((1 6) (2 5) (3 4))
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+Generate-and-test con loop esplicito va bene per spazi piccoli.
+Quando lo spazio cresce in modo combinatorio (es. tutti i sottoinsiemi
+di una lista di 20 elementi sono $2^{20} \approx 10^6$), serve
+qualcosa di piu' intelligente: il backtracking vero.
+\end{nota}
+
+\begin{workbook}
+\textbf{Esercizi 121--122}\\[4pt]
+L'esercizio~121 (generate-and-test su interi) e' il punto di entrata:
+prendi confidenza con il pattern prima di aggiungere la ricorsione.
+\end{workbook}
+
+% ================================================================
+\section{Stato, scelta, vincolo}
+% ================================================================
+
+Ogni algoritmo di backtracking ha tre ingredienti.
+Riconoscerli nel problema e' il primo passo per implementarlo.
+
+\argomento{Stato}
+
+\begin{concetto}{Stato}
+\keyline{}{Lo stato e' la configurazione parziale costruita fin qui.}
+\keyline{}{All'inizio e' vuoto. Ad ogni passo cresce di una scelta.}
+
+\boxsep
+\detail{In Lisp lo stato e' tipicamente una lista delle scelte
+fatte finora, passata come parametro ricorsivo.
+Non serve modificarla: si costruisce una nuova lista
+ad ogni chiamata ricorsiva.}
+\end{concetto}
+
+\begin{esempio}[Stato come lista di scelte]
+\begin{lstlisting}
+;; Genera tutte le sequenze binarie di lunghezza n.
+;; Lo "stato" e' la lista dei bit scelti finora.
+
+(defun binarie (n &optional (stato '()))
+  (if (= (length stato) n)
+      (list stato)                        ; soluzione completa: raccoglila
+      (append
+        (binarie n (cons 0 stato))        ; scelta: aggiungi 0
+        (binarie n (cons 1 stato)))))     ; scelta: aggiungi 1
+
+(binarie 2)
+; => ((0 0) (0 1) (1 0) (1 1))
+\end{lstlisting}
+\end{esempio}
+
+\argomento{Scelta}
+
+\begin{concetto}{Scelta}
+\keyline{}{Ad ogni passo si sceglie un elemento da un insieme di candidati.}
+\keyline{}{La funzione ricorsiva viene chiamata una volta per ogni scelta.}
+
+\boxsep
+\detail{L'insieme dei candidati dipende dallo stato corrente:
+scelte gia' fatte possono escludere certi valori.
+Questo e' il punto in cui si inserisce il pruning.}
+\end{concetto}
+
+\argomento{Vincolo}
+
+\begin{concetto}{Vincolo}
+\keyline{}{Il vincolo dice quando uno stato e' una soluzione valida.}
+\keyline{}{Puo' essere controllato alla fine (stato completo) o durante (pruning).}
+\end{concetto}
+
+\begin{intuizione}
+Un algoritmo di backtracking e' una funzione ricorsiva
+che esplora un albero di scelte.
+Ogni nodo e' uno stato. Ogni arco e' una scelta.
+Le foglie sono gli stati completi. Il vincolo seleziona
+le foglie valide.
+
+\medskip
+Se il vincolo viene verificato \emph{anche nei nodi interni},
+si tagliano interi sottoalberi prima di raggiungerli.
+Questo e' il pruning.
+\end{intuizione}
+
+\begin{confronto}
+\textbf{Confronto con il backtracking imperativo (Java/C).}
+In un linguaggio imperativo il backtracking si implementa
+tipicamente con cicli annidati e \texttt{continue}/\texttt{break},
+o con una struttura di stack esplicita.
+La versione ricorsiva in Lisp usa lo stack delle chiamate
+come stack implicito: il ``tornare indietro'' e' semplicemente
+il ritorno dalla chiamata ricorsiva.
+Non serve stato globale mutabile: ogni ramo dell'albero
+ha il proprio stato locale.
+\end{confronto}
+
+\begin{workbook}
+\textbf{Esercizi 123--124}\\[4pt]
+L'esercizio~123 chiede di enumerare le sequenze con un vincolo
+semplice. E' il punto in cui padroneggiare la struttura
+stato/scelta/vincolo prima di aggiungere il pruning.
+\end{workbook}
+
+% ================================================================
+\section{Pruning}
+% ================================================================
+
+Il backtracking puro esplora tutto lo spazio.
+Per molti problemi questo e' troppo lento.
+Il pruning taglia i rami che non possono portare a soluzioni.
+
+\begin{concetto}{Pruning}
+\keyline{}{Prima di fare una scelta, verifica se lo stato parziale
+puo' ancora portare a una soluzione.}
+\keyline{}{Se non puo', non espandere quel ramo: ritorna \fn{nil}.}
+
+\boxsep
+\detail{Il pruning non cambia le soluzioni trovate:
+cambia solo il tempo per trovarle.
+Un vincolo applicato presto (nodo interno) e' sempre
+meglio dello stesso vincolo applicato tardi (foglia).}
+\end{concetto}
+
+\begin{esempio}[Sequenze senza due 1 consecutivi, con pruning]
+\begin{lstlisting}
+;; Genera sequenze binarie di lunghezza n
+;; senza due 1 consecutivi.
+;;
+;; Pruning: se l'ultimo elemento aggiunto e' 1,
+;; non aggiungere un altro 1 (lo scarto prima della ricorsione).
+
+(defun binarie-no-11 (n &optional (stato '()))
+  (if (= (length stato) n)
+      (list stato)
+      (let ((candidati
+              (if (and stato (= (first stato) 1))
+                  '(0)          ; l'ultimo e' 1: posso solo aggiungere 0
+                  '(0 1))))     ; altrimenti entrambi
+        (mapcan (lambda (bit)
+                  (binarie-no-11 n (cons bit stato)))
+                candidati))))
+
+(binarie-no-11 3)
+; => ((0 0 0) (0 0 1) (0 1 0) (1 0 0) (1 0 1))
+\end{lstlisting}
+\end{esempio}
+
+\begin{attenzione}
+Il pruning cambia l'ordine in cui le soluzioni vengono
+trovate, ma non quali soluzioni vengono trovate.
+Se il pruning e' \emph{corretto} (non esclude stati che
+potrebbero diventare soluzioni valide), la correttezza
+dell'algoritmo e' preservata.
+Un pruning sbagliato puo' eliminare soluzioni valide.
+Verifica sempre: ``questo vincolo, applicato a uno stato parziale,
+esclude davvero tutti gli stati completi non validi derivabili da esso?''
+\end{attenzione}
+
+\begin{workbook}
+\textbf{Esercizi 124--125}\\[4pt]
+L'esercizio~125 richiede di aggiungere pruning a una
+funzione di ricerca esistente. Misura il numero di
+nodi esplorati prima e dopo: la differenza e' spesso
+di ordini di grandezza.
+\end{workbook}
+
+% ================================================================
+\section{Permutazioni e sottoinsiemi}
+% ================================================================
+
+Due problemi classici che appaiono frequentemente
+e che sono entrambi istanze dirette del modello
+stato/scelta/vincolo.
+
+\argomento{Permutazioni}
+
+\begin{concetto}{Permutazioni}
+\keyline{}{Una permutazione di \fn{(a b c)} usa ogni elemento esattamente una volta.}
+\keyline{}{Stato: elementi gia' scelti. Scelta: un elemento non ancora usato.}
+\end{concetto}
+
+\begin{esempio}[Tutte le permutazioni di una lista]
+\begin{lstlisting}
+(defun permutazioni (lst)
+  (if (null lst)
+      '(())                          ; caso base: lista vuota -> una soluzione vuota
+      (mapcan
+        (lambda (el)
+          (let ((resto (remove el lst :count 1)))
+            (mapcar (lambda (perm) (cons el perm))
+                    (permutazioni resto))))
+        lst)))
+
+(permutazioni '(1 2 3))
+; => ((1 2 3) (1 3 2) (2 1 3) (2 3 1) (3 1 2) (3 2 1))
+\end{lstlisting}
+\end{esempio}
+
+\argomento{Sottoinsiemi (power set)}
+
+\begin{concetto}{Sottoinsiemi}
+\keyline{}{Il power set di una lista e' l'insieme di tutti i suoi sottoinsiemi.}
+\keyline{}{Per ogni elemento: due scelte, includerlo o no.}
+\keyline{}{}{Una lista di $n$ elementi ha $2^n$ sottoinsiemi.}
+\end{concetto}
+
+\begin{esempio}[Power set]
+\begin{lstlisting}
+(defun power-set (lst)
+  (if (null lst)
+      '(())                          ; caso base: il solo sottoinsieme e' nil
+      (let* ((testa  (car lst))
+             (coda   (cdr lst))
+             (senza  (power-set coda))    ; sottoinsiemi senza la testa
+             (con    (mapcar (lambda (s) (cons testa s))
+                             senza)))    ; sottoinsiemi con la testa
+        (append senza con))))
+
+(power-set '(a b c))
+; => (NIL (C) (B) (B C) (A) (A C) (A B) (A B C))
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+Permutazioni e power set sembrano problemi diversi,
+ma hanno la stessa struttura: a ogni passo scegli
+un elemento (o se includerlo), e chiami ricorsivamente
+su cio' che resta.
+La funzione \fn{mapcan} e' lo strumento naturale
+per raccogliere i risultati di tutte le scelte.
+\end{intuizione}
+
+\begin{workbook}
+\textbf{Esercizi 126--128}\\[4pt]
+L'esercizio~126 (permutazioni) e il~127 (power set) sono
+implementazioni dirette di quanto visto qui.
+L'esercizio~128 aggiunge un vincolo: genera solo i sottoinsiemi
+di taglia $k$. Provalo prima senza guardare la soluzione.
+\end{workbook}
+
+% ================================================================
+\section{N-Queens}
+% ================================================================
+
+Il problema delle N regine e' il problema archetipico
+del backtracking: posizionare $N$ regine su una scacchiera
+$N \times N$ in modo che nessuna si minacci.
+
+\argomento{Il modello}
+
+Prima di scrivere codice, identifica i tre ingredienti.
+
+\begin{concetto}{N-Queens: stato, scelta, vincolo}
+\keyline{Stato}{lista delle colonne occupate, una per riga, dall'alto.
+Se lo stato e' \fn{(3 1)}, la riga~1 ha la regina in colonna~3,
+la riga~2 in colonna~1.}
+\keyline{Scelta}{la colonna in cui posizionare la regina nella prossima riga.}
+\keyline{Vincolo}{nessuna regina minaccia un'altra: stessa colonna
+o stessa diagonale.}
+
+\boxsep
+\detail{Rappresentare lo stato come lista di colonne (una per riga)
+elimina automaticamente il conflitto di riga: ogni riga ha
+esattamente una regina.}
+\end{concetto}
+
+\argomento{Il predicato di sicurezza}
+
+\begin{esempio}[Verifica se una posizione e' sicura]
+\begin{lstlisting}
+;; Controlla se aggiungere una regina nella colonna `col`
+;; (riga corrente = (length stato) + 1) e' sicuro
+;; rispetto alle regine gia' piazzate in `stato`.
+;;
+;; stato: lista delle colonne (prima riga = last, ultima = first).
+;; Riga della regina da piazzare: (length stato).
+
+(defun sicura-p (col stato)
+  (loop for c in stato
+        for dist from 1
+        never (or (= c col)               ; stessa colonna
+                  (= (abs (- c col))      ; stessa diagonale
+                     dist))))
+\end{lstlisting}
+\end{esempio}
+
+\argomento{La funzione principale}
+
+\begin{esempio}[N-Queens completo]
+\begin{lstlisting}
+(defun n-queens (n &optional (stato '()))
+  (if (= (length stato) n)
+      (list stato)                        ; trovata una soluzione
+      (mapcan
+        (lambda (col)
+          (when (sicura-p col stato)      ; pruning: colonna sicura?
+            (n-queens n (cons col stato))))
+        (loop for i from 1 to n collect i))))
+
+;; Tutte le soluzioni per 4 regine
+(n-queens 4)
+; => ((3 1 4 2) (2 4 1 3))
+
+;; Solo il numero di soluzioni
+(length (n-queens 8))
+; => 92
+\end{lstlisting}
+\end{esempio}
+
+\begin{nota}
+Il pruning e' dentro il \fn{when}: se \fn{sicura-p} restituisce \fn{nil},
+\fn{when} non chiama \fn{n-queens} e \fn{mapcan} raccoglie \fn{nil}
+(che viene ignorato). Il taglio avviene senza codice aggiuntivo.
+
+\medskip
+La soluzione per $N=8$ trova 92 configurazioni esplorando
+una piccola frazione dei $8! = 40320$ candidati possibili.
+\end{nota}
+
+\begin{confronto}
+\textbf{N-Queens in Java.}
+La versione Java tipica usa un array mutabile e un ciclo
+\texttt{for} con \texttt{backtrack} esplicito:
+si piazza, si verifica, si rimuove.
+La versione Lisp non modifica niente: ogni chiamata ricorsiva
+crea un nuovo stato (la lista \fn{(cons col stato)}) senza
+toccare lo stato precedente.
+Il ``backtrack'' non e' un'operazione esplicita:
+e' semplicemente il ritorno dalla chiamata ricorsiva
+che non ha trovato soluzioni.
+\end{confronto}
+
+\begin{workbook}
+\textbf{Esercizi 129--132}\\[4pt]
+L'esercizio~129 implementa N-Queens seguendo lo schema di questo
+capitolo. Gli esercizi~130--132 lo estendono: conta le soluzioni,
+stampa la scacchiera, trova solo la prima soluzione.\\[4pt]
+L'esercizio~131 (``prima soluzione'') e' particolarmente istruttivo:
+mostra come usare le eccezioni per uscire dalla ricerca appena
+trovata la prima risposta valida.
+\end{workbook}
+
+% ================================================================
+\section{Sudoku}
+% ================================================================
+
+Il Sudoku e' un'istanza piu' ricca dello stesso modello.
+Lo spazio di ricerca e' piu' grande, ma la struttura
+dell'algoritmo non cambia.
+
+\begin{concetto}{Sudoku come backtracking}
+\keyline{Stato}{la griglia $9 \times 9$ con alcune celle gia' riempite.}
+\keyline{Scelta}{scegli la prima cella vuota; prova i valori 1--9.}
+\keyline{Vincolo}{il valore non deve apparire nella stessa riga,
+colonna o box $3 \times 3$.}
+
+\boxsep
+\detail{In Lisp la griglia si rappresenta comodamente come vettore
+di 81 elementi (accessibile con \fn{aref}) o come lista di liste.
+Il vettore e' piu' efficiente per l'accesso per indice.}
+\end{concetto}
+
+\begin{esempio}[Schema di un risolutore Sudoku]
+\begin{lstlisting}
+;; Rappresentazione: vettore di 81 interi (0 = vuoto).
+
+(defun prima-cella-vuota (griglia)
+  (loop for i from 0 to 80
+        when (= (aref griglia i) 0)
+        return i))
+
+(defun validi (griglia pos)
+  "Valori 1-9 che non violano riga, colonna, box."
+  (remove-if (lambda (v) (viola-p griglia pos v))
+             '(1 2 3 4 5 6 7 8 9)))
+
+(defun risolvi (griglia)
+  (let ((pos (prima-cella-vuota griglia)))
+    (if (null pos)
+        griglia                           ; nessuna cella vuota: soluzione!
+        (some (lambda (v)
+                (let ((g2 (copy-seq griglia)))
+                  (setf (aref g2 pos) v)
+                  (risolvi g2)))
+              (validi griglia pos)))))
+\end{lstlisting}
+\end{esempio}
+
+\begin{intuizione}
+\fn{some} restituisce il primo valore non-\fn{nil} restituito
+dalla sua funzione. Qui: il primo ramo che porta a una soluzione.
+Non esplora gli altri rami una volta trovata la soluzione.
+E' il modo idiomatico in Lisp per esprimere ``trovami la prima
+soluzione che funziona''.
+\end{intuizione}
+
+\begin{nota}
+Il risolutore di questo esempio e' corretto ma non ottimizzato.
+Per Sudoku la strategia ``scegli la cella con meno valori validi''
+(MRV, minimum remaining values) riduce drasticamente l'albero
+di ricerca. La struttura dell'algoritmo non cambia: cambia solo
+quale cella viene scelta a ogni passo.
+
+\medskip
+La memoization (cache dei risultati gia' calcolati) non si applica
+al backtracking in senso stretto, perche' ogni stato e' unico.
+Si applica invece alla programmazione dinamica, dove sottoproblemi
+identici si ripresentano: see Appendice~\ref{app:adt} per
+una discussione sulle strutture dati adatte.
+\end{nota}
+
+\begin{workbook}
+\textbf{Esercizi 133--135}\\[4pt]
+L'esercizio~133 implementa \fn{viola-p} per il Sudoku.
+L'esercizio~134 completa il risolutore.
+L'esercizio~135 aggiunge la strategia MRV.\\[4pt]
+Questi tre esercizi sono collaterali: non sono nel percorso
+minimo, ma chi li fa capisce concretamente come il backtracking
+scala su problemi reali.
+\end{workbook}
+
+% ================================================================
+\section*{Riepilogo del capitolo}
+% ================================================================
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=csBlue!5, colframe=csBlue!40,
+  arc=4pt, boxrule=0.6pt,
+  left=14pt, right=14pt, top=12pt, bottom=12pt,
+  before skip=16pt, after skip=16pt
+]
+\textbf{Quello che hai imparato:}
+
+\medskip
+\begin{itemize}
+  \item \textbf{Generate-and-test}: genera tutti i candidati, filtra
+        quelli che soddisfano il vincolo. Corretto ma potenzialmente lento.
+  \item \textbf{Stato}: la configurazione parziale costruita finora,
+        passata come parametro ricorsivo senza mutarla.
+  \item \textbf{Scelta}: l'insieme di candidati al passo corrente,
+        che dipende dallo stato.
+  \item \textbf{Vincolo}: predicato di correttezza, applicabile
+        agli stati parziali per il pruning.
+  \item \textbf{Pruning}: non espandere i rami che non possono portare
+        a soluzioni. Preserva la correttezza, riduce il tempo.
+  \item \textbf{Permutazioni e power set}: due istanze canoniche
+        del modello, costruite con \fn{mapcan}.
+  \item \textbf{N-Queens}: stato = colonne scelte per riga,
+        pruning = \fn{sicura-p}. La versione funzionale non modifica
+        mai la griglia.
+  \item \textbf{\fn{some}}: restituisce la prima soluzione trovata,
+        interrompendo la ricerca. Idioma Lisp per ``prima soluzione''.
+  \item \textbf{Backtrack implicito}: in Lisp il ritorno dalla
+        chiamata ricorsiva \emph{e'} il backtrack. Non serve
+        stato globale da ripristinare.
+\end{itemize}
+
+\medskip
+\textbf{Prossimo:} Capitolo~8, \emph{Stringhe, I/O e parsing}.
+Dati che vengono dall'esterno: file, terminale, stringhe da interpretare.
+\end{tcolorbox}
+
+\begin{workbook}
+\textbf{Prima di andare al Capitolo~8:}\\[4pt]
+Completa gli esercizi \textbf{121--132} (core del capitolo).
+Gli esercizi 133--135 (Sudoku) sono facoltativi ma consigliati.\\[4pt]
+Priorita': \textbf{123, 126, 127, 129, 131}.
+Questi cinque coprono generate-and-test, stato/scelta/vincolo,
+permutazioni, N-Queens e la ricerca della prima soluzione.
+\end{workbook}
