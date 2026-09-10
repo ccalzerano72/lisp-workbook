@@ -1110,6 +1110,15 @@
 \label{sol:89}
 \begin{solbox}{89}{Generatore Fibonacci con closure}
 \small\color{black!55}\hyperref[ex:89]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:89]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{89}
+\raglabel{Idea:} la closure cattura due variabili mutabili \fn{a} e \fn{b}
+che rappresentano gli ultimi due termini della sequenza.
+Ogni chiamata restituisce \fn{a} e fa avanzare la coppia.
+\raglabel{Stato:} \fn{(a, b)} = coppia di interi, aggiornata con \fn{psetf}
+(assegnamento simultaneo: evita che il nuovo \fn{a} inquini il calcolo del nuovo \fn{b}).
+\raglabel{Ricorrenza:} \fn{restituisci a; (a, b) <- (b, a+b)}.
+\raglabel{Complessita':} $O(1)$ per chiamata, $O(1)$ spazio.
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun make-fib-generator ()
   ;; a e b condividono la stessa closure
@@ -1134,6 +1143,20 @@
 \label{sol:91}
 \begin{solbox}{91}{Memoization}
 \small\color{black!55}\hyperref[ex:91]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:91]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{91}
+\raglabel{Idea:} la closure cattura una hash table privata (cache).
+Ad ogni chiamata: se il risultato per questi argomenti e' gia'
+in cache, restituirlo; altrimenti calcolarlo, salvarlo e restituirlo.
+\raglabel{Struttura dati:} hash table con chiave \fn{args} (lista di argomenti),
+test \fn{equal} per confronto strutturale.
+\raglabel{Complessita':} $O(1)$ per ogni cache hit;
+costo della funzione originale per ogni cache miss.
+\detail{Limite: questa \fn{memoize} non intercetta le chiamate ricorsive
+\emph{interne} alla funzione. Se \fn{fibonacci} chiama \fn{(fibonacci (- n 1))},
+quelle chiamate non passano per la cache.
+Per memoizzare anche la ricorsione interna occorre sostituire la
+definizione globale: \fn{(setf (symbol-function 'fibonacci) (memoize \#'fibonacci))}.}
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun memoize (funzione)
   ;; la cache e' privata alla closure
@@ -1146,16 +1169,6 @@
             ;; calcola e memorizza
             (setf (gethash args cache)
                   (apply funzione args)))))))
-\end{lstlisting}
-\textbf{Nota avanzata:} questa \fn{memoize} restituisce una \emph{nuova}
-funzione; non trasforma i riferimenti ricorsivi interni alla funzione
-originale. Se \fn{fibonacci} chiama \fn{(fibonacci (- n 1))}, quelle
-chiamate interne non passano per la cache.
-Per memoizzare anche le chiamate ricorsive, occorre sostituire la
-definizione globale della funzione:
-\begin{lstlisting}
-(setf (symbol-function 'fibonacci)
-      (memoize #'fibonacci))
 \end{lstlisting}
 \end{solbox}
 
@@ -1361,6 +1374,14 @@ definizione globale della funzione:
 \label{sol:104}
 \begin{solbox}{104}{Moltiplicazione di matrici \quattroStelle\ (opzionale)}
 \small\color{black!55}\hyperref[ex:104]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:104]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{104}
+\raglabel{Idea:} tre cicli annidati: $i$ sulle righe di $A$, $j$ sulle colonne
+di $B$, $k$ sull'indice interno della somma.
+\raglabel{Formula:} $C[i][j] = \sum_{k=0}^{n-1} A[i][k] \cdot B[k][j]$.
+\raglabel{Struttura dati:} array 2D mutabile inizializzato a 0;
+gli accumulatori si aggiornano con \fn{incf} in place.
+\raglabel{Complessita':} $O(n^3)$ tempo, $O(n^2)$ spazio per la matrice risultato.
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun moltiplica-matrici (a b n)
   (let ((c (make-array (list n n) :initial-element 0)))
@@ -1433,6 +1454,18 @@ definizione globale della funzione:
 \label{sol:108}
 \begin{solbox}{108}{BST: inserimento e ricerca}
 \small\color{black!55}\hyperref[ex:108]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:108]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{108}
+\raglabel{Invariante BST:} per ogni nodo $v$, tutti i valori nel sottoalbero
+sinistro sono $< v$ e tutti quelli nel destro sono $> v$.
+Inserimento e ricerca sfruttano questa proprieta' per scartare meta'
+albero ad ogni passo.
+\raglabel{Persistenza funzionale:} \fn{bst-insert} non modifica l'albero
+esistente. Restituisce un \emph{nuovo} albero che condivide i sottoalberi
+non toccati con quello originale (structural sharing).
+\raglabel{Caso base:} albero vuoto (\fn{NIL}) — crea un nodo foglia.
+\raglabel{Complessita':} $O(\log n)$ medio su albero bilanciato;
+$O(n)$ nel caso peggiore (albero degenere, inserimenti in ordine).
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun bst-insert (value tree)
   ;; restituisce il nuovo albero (non modifica in loco)
@@ -1515,6 +1548,18 @@ definizione globale della funzione:
 \label{sol:112}
 \begin{solbox}{112}{Albero bilanciato?}
 \small\color{black!55}\hyperref[ex:112]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:112]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{112}
+\raglabel{Idea:} un'unica passata ricorsiva che calcola l'altezza e
+segnala lo sbilanciamento contemporaneamente.
+Restituire $-1$ come valore sentinella significa "sotto-albero non bilanciato":
+basta propagarlo verso l'alto senza ulteriori calcoli.
+\raglabel{Caso base:} albero vuoto $\Rightarrow$ altezza $0$, bilanciato.
+\raglabel{Ricorrenza:} se una delle due altezze e' $-1$, o la differenza
+supera 1, restituire $-1$; altrimenti $1 + \max(h_l, h_r)$.
+\raglabel{Complessita':} $O(n)$ — ogni nodo visitato esattamente una volta,
+a differenza di un approccio naive che calcola l'altezza separatamente
+($O(n \log n)$ su albero bilanciato, $O(n^2)$ nel caso peggiore).
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun bilanciato-p (tree)
   ;; ritorna altezza se bilanciato, -1 come segnale di errore
@@ -1643,6 +1688,19 @@ definizione globale della funzione:
 \label{sol:118}
 \begin{solbox}{118}{DFS su grafo}
 \small\color{black!55}\hyperref[ex:118]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:118]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{118}
+\raglabel{Idea:} esplora ogni ramo fino in fondo prima di tornare indietro
+(\textit{depth-first}). Si implementa naturalmente con la ricorsione:
+lo stack delle chiamate e' lo stack di visita.
+\raglabel{Stato:} lista \fn{visited} condivisa dalla \fn{labels} interna
+tramite il \fn{let} esterno. Ogni chiamata a \fn{visit} la aggiorna.
+\raglabel{Caso base:} nodo gia' visitato (\fn{member}) — non si procede.
+\raglabel{Complessita':} $O(V + E)$ dove $V$ = nodi, $E$ = archi.
+Ogni nodo viene aggiunto a \fn{visited} una sola volta;
+ogni lista di adiacenza viene scorsa una volta.
+\detail{Il grafo e' rappresentato come alist \fn{((nodo vicino1 vicino2 ...)\ ...)}:
+\fn{neighbors} cerca il nodo con \fn{assoc} e restituisce il \fn{cdr}.}
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun dfs (graph start)
   ;; visited e' condivisa dalla closure tramite let
@@ -1660,6 +1718,19 @@ definizione globale della funzione:
 \label{sol:119}
 \begin{solbox}{119}{BFS su grafo}
 \small\color{black!55}\hyperref[ex:119]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:119]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{119}
+\raglabel{Idea:} esplora i nodi livello per livello: prima tutti i vicini
+diretti del nodo di partenza, poi i vicini dei vicini, e cosi' via.
+La coda garantisce questo ordinamento: i nodi vengono estratti
+nell'ordine in cui sono stati inseriti (FIFO).
+\raglabel{Struttura dati:} coda (es.~114) per la frontiera di esplorazione;
+lista \fn{visited} per evitare cicli.
+\raglabel{Differenza con DFS:} DFS usa uno stack (o la ricorsione) e
+va in profondita'; BFS usa una coda e va in ampiezza.
+BFS trova il cammino piu' corto in grafi non pesati.
+\raglabel{Complessita':} $O(V + E)$ — ogni nodo e' accodato e rimosso al piu'
+una volta; ogni lista di adiacenza e' scorsa una volta.
+\end{ragionamentoBox}
 \begin{lstlisting}
 ;; Usa l'ADT queue dell'esercizio 114
 (defun bfs (graph start)
@@ -1754,6 +1825,19 @@ definizione globale della funzione:
 \label{sol:123}
 \begin{solbox}{123}{Macro for}
 \small\color{black!55}\hyperref[ex:123]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:123]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{123}
+\raglabel{Idea:} la macro riceve \fn{var}, \fn{da}, \fn{a} come codice
+grezzo e li espande in un \fn{let} + \fn{loop}.
+\raglabel{Problema della cattura di variabile:} se \fn{da} o \fn{a}
+hanno effetti collaterali (es. \fn{(incf n)}), una macro naive li
+valuterebbe due volte. Con \fn{gensym} si generano nomi freschi
+garantiti unici, e i valori vengono calcolati una sola volta nel \fn{let}.
+\raglabel{Igiene:} \fn{gensym} garantisce che i nomi interni
+(\fn{START\#42}, \fn{END\#42}) non collidano mai con variabili
+del codice che chiama la macro.
+\detail{Verifica sempre l'espansione con \fn{macroexpand-1} prima
+di fidarti di una nuova macro.}
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defmacro mio-for ((var da a) &body corpo)
   ;; gensym per start/end: evita valutazioni multiple
@@ -1790,6 +1874,19 @@ definizione globale della funzione:
 \label{sol:125}
 \begin{solbox}{125}{Permutazioni}
 \small\color{black!55}\hyperref[ex:125]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:125]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{125}
+\raglabel{Idea:} per ogni elemento $x$ della lista, costruisci tutte
+le permutazioni del resto e anteponi $x$ a ciascuna.
+\raglabel{Caso base:} lista vuota $\Rightarrow$ un'unica permutazione: la lista vuota.
+\raglabel{Ricorrenza:} \fn{permutations(lst)} $=
+\bigcup_{x \in lst}\ \{x\} \cdot \text{permutations}(lst \setminus \{x\})$.
+\raglabel{Complessita':} $O(n!)$ soluzioni, $O(n \cdot n!)$ tempo totale
+(ogni permutazione richiede $O(n)$ per essere costruita con \fn{cons}).
+\detail{\fn{mapcan} e' come \fn{mapcar} seguito da \fn{apply \#'append}:
+produce una lista piatta invece di una lista di liste.
+\fn{remove \ldots :count 1} rimuove solo la prima occorrenza di $x$,
+gestendo correttamente le liste con duplicati.}
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun permutations (lst)
   (if (null lst)
@@ -1861,6 +1958,21 @@ definizione globale della funzione:
 \label{sol:129}
 \begin{solbox}{129}{Merge sort}
 \small\color{black!55}\hyperref[ex:129]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:129]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{129}
+\raglabel{Idea:} dividi la lista a meta', ordina ricorsivamente le due meta',
+poi fondi le due sequenze ordinate in una sola.
+La fusione e' possibile in $O(n)$ perche' le due meta' sono gia' ordinate:
+basta confrontare le teste e prendere la minore.
+\raglabel{Caso base:} lista di lunghezza $< 2$ e' gia' ordinata.
+\raglabel{Ricorrenza:} $T(n) = 2T(n/2) + O(n)$,
+che per il Master Theorem da' $T(n) = O(n \log n)$.
+\raglabel{Complessita':} $O(n \log n)$ tempo nel caso peggiore (garantito),
+$O(n \log n)$ spazio per le liste intermedie create da \fn{subseq} e \fn{append}.
+\detail{In Common Lisp le liste non hanno accesso $O(1)$ alla meta':
+\fn{length} e \fn{subseq} costano $O(n)$. Il costo rimane $O(n \log n)$
+perche' queste operazioni avvengono solo una volta per livello di ricorsione,
+e ci sono $O(\log n)$ livelli.}
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun merge-sorted (lst1 lst2)
   (cond ((null lst1) lst2)
@@ -1885,6 +1997,25 @@ definizione globale della funzione:
 \label{sol:130}
 \begin{solbox}{130}{Quicksort}
 \small\color{black!55}\hyperref[ex:130]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:130]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{130}
+\raglabel{Idea:} scegli un pivot, partiziona il resto in elementi minori
+e maggiori, ordina ricorsivamente le due parti e concatena.
+\raglabel{Pivot:} \fn{(car lst)}, il primo elemento. Semplice da scrivere;
+in presenza di liste gia' ordinate degenera al caso peggiore.
+\raglabel{Caso base:} lista di lunghezza $\le 1$ e' gia' ordinata.
+\raglabel{Ricorrenza:} $T(n) = T(k) + T(n-1-k) + O(n)$
+dove $k$ e' la dimensione della partizione minore.
+Caso medio (pivot casuale): $O(n \log n)$.
+Caso peggiore (pivot sempre minimo o massimo): $O(n^2)$.
+\raglabel{Confronto con merge sort:} merge sort ha costo $O(n \log n)$
+garantito ma usa $O(n \log n)$ spazio extra.
+Quicksort usa $O(\log n)$ spazio medio (stack di chiamate)
+ma non e' garantito nel caso peggiore.
+\detail{\fn{remove-if} e \fn{remove-if-not} creano nuove liste:
+non si modifica \fn{lst} in place.
+Gli elementi uguali al pivot finiscono in \fn{maggiori};
+se vuoi includerli nell'output, il codice e' gia' corretto (uguali $\not<$ pivot).}
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun quicksort* (lst)
   (if (or (null lst) (null (cdr lst)))
@@ -2172,6 +2303,18 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 \label{sol:142}
 \begin{solbox}{142}{Calcolatrice RPN}
 \small\color{black!55}\hyperref[ex:142]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:142]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{142}
+\raglabel{Idea:} la notazione polacca inversa (RPN) si valuta con una pila.
+I numeri vengono impilati; quando si incontra un operatore,
+si estraggono i due operandi in cima e si impila il risultato.
+\raglabel{Struttura dati:} pila (es.~113). L'ordine di estrazione e'
+importante: \fn{b = pop}, poi \fn{a = pop}, quindi l'operazione e' \fn{a op b}
+(non \fn{b op a}), perche' \fn{a} e' stato inserito prima.
+\raglabel{Complessita':} $O(n)$ dove $n$ e' il numero di token nell'espressione.
+Ogni token richiede una push o una pop/push, entrambe $O(1)$.
+\detail{Questo e' il modello delle macchine a stack (JVM, CPython, PostScript):
+lo stesso schema usato da \fn{rpn-eval} e' alla base di molti interpreti reali.}
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun rpn-eval (expr)
   (let ((stack (make-stack)))
@@ -2193,6 +2336,22 @@ Riduce drasticamente il backtracking rispetto al DFS puro.
 \label{sol:143}
 \begin{solbox}{143}{Valutatore di espressioni}
 \small\color{black!55}\hyperref[ex:143]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:143]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{143}
+\raglabel{Idea:} ricorsione strutturale sull'albero sintattico.
+Un'espressione e' un albero: le foglie sono numeri,
+i nodi interni sono operatori con due sottoalberi (gli operandi).
+Valutare un nodo significa valutare ricorsivamente i figli
+e applicare l'operatore ai risultati.
+\raglabel{Struttura dati:} le S-expression di Lisp \emph{sono} gia' alberi sintattici.
+\fn{'(* 4 (+ 2 3))} e' una lista \fn{(op arg1 arg2)} pronta da attraversare.
+\raglabel{Caso base:} numero (\fn{numberp}) — restituisce se stesso.
+\raglabel{Caso ricorsivo:} lista — \fn{car} e' l'operatore, \fn{cadr}/\fn{caddr}
+sono i sottoalberi sinistro e destro; si valutano ricorsivamente.
+\raglabel{Complessita':} $O(n)$ dove $n$ e' il numero di nodi dell'albero.
+\detail{Questo e' il nucleo di ogni interprete: es.~144 lo estende
+con un ambiente di variabili; un interprete completo aggiungerebbe
+\fn{lambda}, \fn{if}, \fn{let}. Lo schema non cambia.}
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun evaluate-expression (expr)
   ;; atomo numerico: restituisci direttamente
@@ -2353,6 +2512,21 @@ controlla le 8 combinazioni vincenti hard-coded
 \label{sol:147}
 \begin{solbox}{147}{Gioco della vita (Conway)}
 \small\color{black!55}\hyperref[ex:147]{$\leftarrow$ Esercizio}\enspace\textcolor{black!30}{|}\enspace\hyperref[hint:147]{$\leftarrow$ Suggerimento}\normalsize\color{black}
+\begin{ragionamentoBox}{147}
+\raglabel{Idea:} automa cellulare su griglia 2D.
+Ogni cella evolve in base al conteggio dei suoi 8 vicini.
+\raglabel{Double buffering:} la griglia non puo' essere aggiornata in place.
+Se modificassimo \fn{griglia} direttamente, le celle gia' aggiornate
+influenzerebbero il calcolo delle celle successive — violando la regola
+che tutte le celle evolvono \emph{simultaneamente}.
+Soluzione: creare \fn{nuova} griglia a ogni passo, leggere sempre da
+quella vecchia, scrivere solo su quella nuova.
+\raglabel{Struttura dati:} array 2D di 0/1.
+\fn{conta-vicini} scorre i 9 offset $\{-1,0,1\}^2$ (escluso $0,0$),
+controllando i bordi.
+\raglabel{Complessita':} $O(r \cdot c)$ per passo, dove $r \times c$ e'
+la dimensione della griglia. Ogni cella viene visitata una volta.
+\end{ragionamentoBox}
 \begin{lstlisting}
 (defun conta-vicini (g r c rows cols)
   ;; conta le 8 celle adiacenti vive
