@@ -94,11 +94,13 @@ Questo è diverso da \fn{mapcar}, che restituisce sempre una lista.}
 Usare \fn{mapcar} su una stringa produce un errore di tipo.
 \end{attenzione}
 
-\begin{workbook}
-\textbf{Esercizio 136}\\[4pt]
-Prende confidenza con le funzioni di sequenza su stringhe
-e vettori prima di entrare nelle sezioni più specifiche.
-\end{workbook}
+\begin{nota}
+Non ci sono esercizi dedicati al tipo \texttt{sequence} come tale:
+le funzioni \fn{map}, \fn{subseq} e \fn{concatenate} compaiono
+all'interno degli esercizi sulle stringhe (137--141).
+Prova i frammenti di questa sezione direttamente nel REPL
+prima di proseguire.
+\end{nota}
 
 % ================================================================
 \section{Caratteri e stringhe}
@@ -184,10 +186,13 @@ esattamente come Java.
 
 \begin{workbook}
 \textbf{Esercizi 137--139}\\[4pt]
-L'esercizio~137 (conta vocali) usa \fn{char} e un ciclo.
-L'esercizio~138 (palindromo) usa \fn{reverse} su stringhe.
-L'esercizio~139 (capitalizza parole) combina
-\fn{string-trim}, \fn{search} e \fn{concatenate}.
+L'esercizio~137 (\fn{reverse-string}) usa \fn{coerce} per convertire
+la stringa in lista di caratteri, invertirla e riconvertirla.
+L'esercizio~138 (\fn{palindrome-p}) confronta la stringa con
+la sua versione invertita.
+L'esercizio~139 (\fn{palindrome-robust-p}) aggiunge
+la normalizzazione: ignora maiuscole, spazi e punteggiatura
+prima del confronto. Richiede \fn{remove-if} e \fn{char-equal}.
 \end{workbook}
 
 % ================================================================
@@ -254,9 +259,16 @@ Per file con caratteri non ASCII, specificare esplicitamente
 
 \begin{workbook}
 \textbf{Esercizi 140--141}\\[4pt]
-L'esercizio~140 legge un file e conta le righe, le parole
-e i caratteri. L'esercizio~141 filtra le righe che
-soddisfano un predicato e le scrive su un nuovo file.
+L'esercizio~140 (\fn{anagram-p}) confronta due stringhe
+verificando che abbiano gli stessi caratteri con le stesse frequenze.
+Usa \fn{sort} su \fn{coerce} oppure una frequenza con hash table.
+L'esercizio~141 (\fn{count-char}) conta le occorrenze di un carattere
+in una stringa: breve ma utile per consolidare \fn{char=}
+e il loop su sequenze.\\[4pt]
+Le funzioni di stream e file non hanno esercizi dedicati
+in questo capitolo: li userai nell'esercizio~148 (progetto
+gestionale), che richiede il salvataggio e il caricamento
+da file con \fn{with-open-file}.
 \end{workbook}
 
 % ================================================================
@@ -318,12 +330,12 @@ eseguono codice (\fn{\#.}) segnalano un errore invece
 di eseguirlo.
 \end{attenzione}
 
-\begin{workbook}
-\textbf{Esercizio 142}\\[4pt]
-Implementa un semplice database in memoria che viene
-salvato su file con \fn{write} e ricaricato con \fn{read}.
-È il caso d'uso pratico più comune di questo meccanismo.
-\end{workbook}
+\begin{nota}
+Non c'è un esercizio dedicato a \fn{read}/\fn{write} come tali.
+Il meccanismo di serializzazione compare però nell'esercizio~148
+(progetto gestionale), dove salvare e ricaricare la struttura dati
+da file è uno dei requisiti espliciti.
+\end{nota}
 
 % ================================================================
 \section{Tokenizzazione}
@@ -376,14 +388,12 @@ e restituisce \fn{nil}: si usa quando l'effetto collaterale
 (qui: costruire i token) è il punto.
 \end{nota}
 
-\begin{workbook}
-\textbf{Esercizio 143}\\[4pt]
-Estendi il tokenizzatore per riconoscere non solo stringhe
-ma già il tipo di ogni token: \fn{:number} per sequenze
-di cifre, \fn{:operator} per \fn{+}, \fn{-}, \fn{*}, \fn{/},
-\fn{:symbol} per il resto.
-Questo è il passo che rende il parser più semplice.
-\end{workbook}
+\begin{nota}
+Non c'è un esercizio dedicato alla tokenizzazione come fase separata.
+La funzione \fn{tokenizza} che hai visto qui viene usata internamente
+nella sezione successiva (RPN) e può essere riutilizzata liberamente
+nei tuoi esercizi.
+\end{nota}
 
 % ================================================================
 \section{Parser RPN}
@@ -398,59 +408,56 @@ e uno stack è la struttura naturale per l'evaluazione.
 \keyline{}{In RPN gli operatori seguono gli operandi: \texttt{3 4 +} = \texttt{7}.}
 \keyline{}{Algoritmo: scorri i token. Se numero: metti sullo stack.
 Se operatore: togli due operandi dallo stack, calcola, rimetti il risultato.}
-\keyline{}{Alla fine dello stream il risultato è in cima allo stack.}
+\keyline{}{Alla fine della sequenza il risultato è in cima allo stack.}
 \end{concetto}
 
-\begin{esempio}[Evaluatore RPN completo]
+\begin{esempio}[Evaluatore RPN su lista di simboli e numeri]
 \begin{lstlisting}
-(defun stringa->numero (s)
-  "Restituisce il numero se s e' una stringa numerica, NIL altrimenti."
-  (let ((*read-eval* nil))
-    (ignore-errors
-      (let ((v (read-from-string s)))
-        (when (numberp v) v)))))
+;; L'input e' una lista Lisp: numeri e simboli operatore.
+;; Non serve tokenizzare: la lista e' gia' strutturata.
 
 (defun applica-op (op a b)
-  (case (intern (string-upcase op))
+  (case op
     (+ (+ a b))
     (- (- a b))
     (* (* a b))
     (/ (/ a b))
     (t (error "Operatore sconosciuto: ~a" op))))
 
-(defun valuta-rpn (espressione)
-  "Valuta una stringa in notazione RPN.
-   Es: (valuta-rpn \"3 4 + 2 *\") => 14"
+(defun rpn-eval (espressione)
+  "Valuta una lista in notazione RPN.
+   (rpn-eval '(3 4 +))          => 7
+   (rpn-eval '(3 4 * 2 +))      => 14"
   (let ((stack '()))
-    (dolist (token (tokenizza espressione))
-      (let ((n (stringa->numero token)))
-        (if n
-            (push n stack)
-            (let ((b (pop stack))
-                  (a (pop stack)))
-              (push (applica-op token a b) stack)))))
+    (dolist (token espressione)
+      (if (numberp token)
+          (push token stack)
+          (let ((b (pop stack))
+                (a (pop stack)))
+            (push (applica-op token a b) stack))))
     (first stack)))
 
-(valuta-rpn "3 4 +")        ; => 7
-(valuta-rpn "3 4 + 2 *")    ; => 14
-(valuta-rpn "5 1 2 + 4 * + 3 -") ; => 14
+(rpn-eval '(3 4 +))              ; => 7
+(rpn-eval '(3 4 * 2 +))         ; => 14
+(rpn-eval '(5 1 2 + 4 * + 3 -)) ; => 14
 \end{lstlisting}
 \end{esempio}
 
 \begin{nota}
 \fn{ignore-errors} esegue il corpo e, se viene segnalata
 una condizione, restituisce \fn{nil} invece di propagare
-l'errore. Utile per conversioni tentative (``prova a leggere
-un numero, se non riesci restituisci nil'').
+l'errore. Utile per conversioni tentative.
 Per una gestione più robusta degli errori vedi il Capitolo~9.
 \end{nota}
 
 \begin{workbook}
-\textbf{Esercizio 144}\\[4pt]
-Estendi \fn{valuta-rpn} con le operazioni \fn{mod}, \fn{expt}
-e \fn{sqrt}. Poi aggiungi una gestione degli errori che
-segnali un messaggio leggibile quando lo stack è vuoto
-o quando si incontra un token non riconosciuto.
+\textbf{Esercizio 142} (\fn{rpn-eval})\\[4pt]
+Il workbook usa la stessa interfaccia: una lista Lisp
+con numeri e simboli operatore, come \fn{'(3 4 +)}.
+Implementa \fn{rpn-eval} seguendo lo schema dello stack
+mostrato qui. Il vincolo esplicito è di usare una pila.\\[4pt]
+Testa con \fn{(rpn-eval '(5 1 2 + 4 * + 3 -))}
+che deve restituire 14.
 \end{workbook}
 
 % ================================================================
@@ -549,18 +556,17 @@ Ma la struttura è identica.
 \end{esempio}
 
 \begin{workbook}
-\textbf{Esercizi 145--148}\\[4pt]
-L'esercizio~145 aggiunge \fn{if} al mini-evaluator (con
-valutazione condizionale degli argomenti).
-L'esercizio~146 aggiunge \fn{let} (estende l'ambiente localmente).
-L'esercizio~147 aggiunge \fn{lambda} (chiusura sull'ambiente corrente).
-L'esercizio~148 è il progetto finale: un mini-REPL
-che legge espressioni da terminale, le valuta con
-\fn{mini-eval} e stampa il risultato.\\[4pt]
-L'esercizio~148 è la sintesi di tutti i capitoli precedenti:
-strutture dati (alist per l'ambiente), higher-order
-(funzioni come valori nell'ambiente), ricorsione
-(la valutazione è ricorsiva), I/O (legge da terminale).
+\textbf{Esercizi 143--144}\\[4pt]
+L'esercizio~143 (\fn{evaluate-expression}) implementa esattamente
+questo evaluator: numero~→ se stesso, lista \fn{(op a1 a2)}~→
+valuta ricorsivamente gli argomenti e applica l'operatore.
+Usa \fn{cond} o \fn{case} su \fn{op} per le quattro operazioni.\\[4pt]
+L'esercizio~144 (\fn{mio-eval}) estende il modello con un ambiente
+esplicito: aggiunge il caso simbolo (cerca nell'ambiente con \fn{assoc})
+e il caso \fn{(set nome valore)} che restituisce il valore insieme
+all'ambiente aggiornato. L'ambiente è una alist, esattamente come
+nell'esempio di questa sezione.\\[4pt]
+L'esercizio~143 è il fondamentale: fallo prima di affrontare il~144.
 \end{workbook}
 
 % ================================================================
@@ -610,10 +616,13 @@ in produzione.
 
 \begin{workbook}
 \textbf{Prima di andare al Capitolo~9:}\\[4pt]
-Completa gli esercizi \textbf{136--147} (core del capitolo).
-L'esercizio~148 (mini-REPL) è il progetto conclusivo:
-affrontalo dopo aver fatto gli altri.\\[4pt]
-Priorità: \textbf{137, 140, 142, 144, 145, 148}.
-Questi sei coprono stringhe, file, \fn{read}/\fn{write},
-RPN, evaluator con \fn{if} e il progetto finale.
+Completa gli esercizi \textbf{137--144} (core del capitolo).\\[4pt]
+Priorità: \textbf{137, 138, 142, 143, 144}.
+L'esercizio~137 (reverse-string) introduce \fn{coerce};
+138 (palindrome-p) consolida il confronto di stringhe;
+142 (rpn-eval) insegna lo stack come struttura di valutazione;
+143--144 sono l'evaluator, cuore del capitolo.\\[4pt]
+Gli esercizi~139--141 (palindromo robusto, anagrammi, conta-caratteri)
+completano la parte sulle stringhe: falli se vuoi
+padroneggiare le funzioni di sequenza prima di passare al parsing.
 \end{workbook}

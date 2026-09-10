@@ -527,73 +527,81 @@ Vale la pena fare il punto sull'arco che hai percorso.
 
 Al Capitolo~1 valutavi \fn{(+ 1 2)} nel REPL e capivi
 perché le parentesi stanno dove stanno.
-All'esercizio~148 hai costruito un mini-REPL:
-legge espressioni dall'utente, le valuta con il tuo
-evaluator, stampa il risultato.
+All'esercizio~148 costruirai un sistema gestionale completo:
+strutture dati, operazioni CRUD, salvataggio su file,
+package, test automatici e gestione degli errori.
 
 Quella distanza è Lisp.
 
-\argomento{Cosa ha reso possibile il mini-REPL}
+\argomento{Cosa ha reso possibile l'esercizio~148}
 
-Il mini-REPL del Capitolo~8 non è un esercizio isolato:
+Il progetto gestionale non è un esercizio isolato:
 usa ogni strato del percorso:
 
 \begin{itemize}
-  \item \textbf{Capitolo~1}: il modello mentale che rende
-        ovvio il codice da esaminare come dati.
-  \item \textbf{Capitolo~2}: le funzioni come blocchi
-        di costruzione (\fn{read-from-string}, \fn{format}).
-  \item \textbf{Capitolo~3}: la ricorsione sulla struttura
-        delle S-expression.
-  \item \textbf{Capitolo~4}: le funzioni come valori
-        nell'ambiente di valutazione.
-  \item \textbf{Capitolo~5}: la alist come ambiente,
-        la hash table come cache.
-  \item \textbf{Capitolo~6}: la comprensione di come
-        le macro trasformano il codice prima della valutazione.
-  \item \textbf{Capitolo~7}: il backtracking come template
-        per la ricerca.
-  \item \textbf{Capitolo~8}: stream, tokenizzazione,
-        il parser, l'evaluator.
+  \item \textbf{Capitolo~2}: \fn{defun}, \fn{defparameter},
+        le funzioni come blocchi di costruzione.
+  \item \textbf{Capitolo~3}: ricorsione e liste per attraversare
+        l'archivio.
+  \item \textbf{Capitolo~4}: higher-order per il filtraggio
+        e l'ordinamento (\fn{remove-if-not}, \fn{sort}).
+  \item \textbf{Capitolo~5}: \fn{defstruct} o CLOS per il modello
+        dati; hash table come archivio principale.
+  \item \textbf{Capitolo~8}: \fn{with-open-file}, \fn{write}
+        e \fn{read} per il salvataggio e il caricamento da file.
+  \item \textbf{Questo capitolo}: package con \fn{defpackage},
+        test con \fn{assert}, \fn{handler-case} per la gestione
+        degli errori (file non trovato, record duplicato).
 \end{itemize}
+
+\argomento{Cosa richiede l'esercizio~148}
+
+Il workbook è esplicito sui requisiti:
+modello dati con \fn{defstruct} o CLOS, hash table come archivio,
+operazioni CRUD complete, filtraggio e ordinamento,
+salvataggio e caricamento da file, docstring su ogni funzione pubblica,
+package dedicato, almeno cinque test automatici,
+nessuna variabile globale mutabile salvo l'archivio dichiarato
+con \fn{defparameter}, gestione di almeno un errore con \fn{handler-case}.
+
+Ogni requisito corrisponde a qualcosa che hai già imparato.
+Il progetto non introduce concetti nuovi: ti chiede di combinarli.
 
 \argomento{Da qui in avanti}
 
-Un mini-REPL con le funzioni aritmetiche di base è un punto
-di partenza, non un punto di arrivo.
+Il gestionale dell'esercizio~148 è un punto di partenza,
+non un punto di arrivo.
 Le direzioni naturali per estenderlo:
 
 \begin{itemize}
-  \item Aggiungere \fn{define} per creare funzioni
-        nell'ambiente a runtime.
-  \item Aggiungere \fn{cond} e \fn{let} (già abbozzato
-        negli esercizi~145--146).
-  \item Aggiungere \fn{lambda} con chiusura sull'ambiente
-        (esercizio~147).
-  \item Separare il codice in package, aggiungere un file \fn{.asd},
-        scrivere test per ogni funzione dell'evaluator.
-  \item Aggiungere la gestione delle condizioni per
-        segnalare errori leggibili invece di crash.
+  \item Aggiungere un sistema di autenticazione con closure
+        che mantengono lo stato dell'utente corrente.
+  \item Aggiungere un layer di persistenza più robusto
+        con \fn{write}/\fn{read} e transazioni atomiche.
+  \item Organizzare il codice con ASDF e separare
+        modello, logica, I/O e test in file distinti.
+  \item Aggiungere condizioni personalizzate con \fn{define-condition}
+        per sostituire i semplici \fn{error} con segnali tipizzati.
 \end{itemize}
-
-Questo progetto, sviluppato con i principi di questo capitolo
-(funzioni piccole, package, test, condizioni), è un'ottima
-palestra per tutto quello che hai imparato.
 
 \begin{workbook}
 \textbf{Usare gli esercizi già fatti come banco di prova:}\\[4pt]
 Non ci sono nuovi esercizi per questo capitolo.
-Invece, riprendi il codice degli esercizi 121--148
+Invece, riprendi il codice degli esercizi 124--147
 e applicaci i principi di questo capitolo:
 
 \begin{itemize}
-  \item Aggiungi le docstring alle funzioni più importanti.
-  \item Organizza il mini-evaluator (es. 145--148) in un package.
-  \item Scrivi una suite di test \fn{assert} per ogni funzione
-        del Capitolo~7 che hai implementato.
-  \item Misura con \fn{time} la differenza tra \fn{fib-lento}
-        e \fn{fib-veloce}: è il modo più diretto per
-        capire cosa fa il profiling.
+  \item Aggiungi docstring a ogni funzione pubblica che hai scritto.
+  \item Organizza l'evaluator (es.~143--144) in un package
+        con \fn{defpackage} e \fn{export} per le funzioni principali.
+  \item Scrivi una suite di test \fn{assert} per le funzioni
+        di backtracking del Capitolo~7 (es.~124--127).
+  \item Misura con \fn{time} la differenza tra la versione
+        di \fn{fib-lento} e la versione con memoization
+        dell'esercizio~91: è il modo più diretto per vedere
+        cosa fa il profiling.
+  \item Nell'esercizio~148, usa \fn{handler-case} per gestire
+        almeno il caso ``file non trovato'' durante il caricamento.
 \end{itemize}
 \end{workbook}
 

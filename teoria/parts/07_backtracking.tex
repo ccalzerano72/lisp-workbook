@@ -96,9 +96,10 @@ qualcosa di più intelligente: il backtracking vero.
 \end{nota}
 
 \begin{workbook}
-\textbf{Esercizi 121--122}\\[4pt]
-L'esercizio~121 (generate-and-test su interi) è il punto di entrata:
-prendi confidenza con il pattern prima di aggiungere la ricorsione.
+\textbf{Esercizio 127}\\[4pt]
+L'esercizio~127 (\fn{somma-a-target}) è il punto di entrata naturale:
+genera tutti i sottoinsiemi e testa quelli la cui somma è il target.
+È generate-and-test puro, senza pruning.
 \end{workbook}
 
 % ================================================================
@@ -183,10 +184,13 @@ ha il proprio stato locale.
 \end{confronto}
 
 \begin{workbook}
-\textbf{Esercizi 123--124}\\[4pt]
-L'esercizio~123 chiede di enumerare le sequenze con un vincolo
-semplice. È il punto in cui padroneggiare la struttura
-stato/scelta/vincolo prima di aggiungere il pruning.
+\textbf{Esercizi 124--125}\\[4pt]
+L'esercizio~124 (\fn{subsets}) usa esattamente questo schema:
+lo stato è il sottoinsieme parziale, la scelta è includere o no
+l'elemento corrente.
+L'esercizio~125 (\fn{permutations}) estende il modello:
+la scelta è quale elemento non ancora usato aggiungere allo stato.
+Falli in quest'ordine: subsets prima, permutations dopo.
 \end{workbook}
 
 % ================================================================
@@ -245,11 +249,13 @@ esclude davvero tutti gli stati completi non validi derivabili da esso?''
 \end{attenzione}
 
 \begin{workbook}
-\textbf{Esercizi 124--125}\\[4pt]
-L'esercizio~125 richiede di aggiungere pruning a una
-funzione di ricerca esistente. Misura il numero di
-nodi esplorati prima e dopo: la differenza è spesso
-di ordini di grandezza.
+\textbf{Esercizi 127--128}\\[4pt]
+L'esercizio~127 (\fn{somma-a-target}) diventa molto più efficiente
+con pruning: se la somma parziale supera già il target, non ha senso
+continuare ad aggiungere elementi (assumendo valori positivi).
+L'esercizio~128 (\fn{genera-parentesi}) è un esempio di pruning
+strutturale: le parentesi aperte non possono superare $n$,
+quelle chiuse non possono superare quelle aperte.
 \end{workbook}
 
 % ================================================================
@@ -319,11 +325,12 @@ per raccogliere i risultati di tutte le scelte.
 \end{intuizione}
 
 \begin{workbook}
-\textbf{Esercizi 126--128}\\[4pt]
-L'esercizio~126 (permutazioni) e il~127 (power set) sono
-implementazioni dirette di quanto visto qui.
-L'esercizio~128 aggiunge un vincolo: genera solo i sottoinsiemi
-di taglia $k$. Provalo prima senza guardare la soluzione.
+\textbf{Esercizi 124--126}\\[4pt]
+L'esercizio~124 (\fn{subsets}) e il~125 (\fn{permutations}) sono
+le implementazioni dirette di quanto visto qui.
+L'esercizio~126 (\fn{combinations lst k}) aggiunge un vincolo
+sulla taglia: genera solo i sottoinsiemi di esattamente $k$ elementi.
+È un ottimo banco di prova per capire dove inserire il pruning.
 \end{workbook}
 
 % ================================================================
@@ -419,13 +426,14 @@ che non ha trovato soluzioni.
 \end{confronto}
 
 \begin{workbook}
-\textbf{Esercizi 129--132}\\[4pt]
-L'esercizio~129 implementa N-Queens seguendo lo schema di questo
-capitolo. Gli esercizi~130--132 lo estendono: conta le soluzioni,
-stampa la scacchiera, trova solo la prima soluzione.\\[4pt]
-L'esercizio~131 (``prima soluzione'') è particolarmente istruttivo:
-mostra come usare le eccezioni per uscire dalla ricerca appena
-trovata la prima risposta valida.
+\textbf{Esercizio 134}\\[4pt]
+L'esercizio~134 (\fn{n-queens}) è esattamente questo problema.
+Implementalo seguendo lo schema di questo capitolo:
+\fn{sicura-p} prima, poi la funzione principale con \fn{mapcan}.
+Verifica con \fn{(length (n-queens 8))} che il risultato sia 92.\\[4pt]
+Gli esercizi~131 (Hanoi) e~132 (knapsack) applicano schemi
+analoghi a domini diversi: vale la pena farli per consolidare
+il modello prima di affrontare N-Queens.
 \end{workbook}
 
 % ================================================================
@@ -498,13 +506,14 @@ una discussione sulle strutture dati adatte.
 \end{nota}
 
 \begin{workbook}
-\textbf{Esercizi 133--135}\\[4pt]
-L'esercizio~133 implementa \fn{viola-p} per il Sudoku.
-L'esercizio~134 completa il risolutore.
-L'esercizio~135 aggiunge la strategia MRV.\\[4pt]
-Questi tre esercizi sono collaterali: non sono nel percorso
-minimo, ma chi li fa capisce concretamente come il backtracking
-scala su problemi reali.
+\textbf{Esercizi 135--136}\\[4pt]
+L'esercizio~135 (\fn{solve-sudoku}) è esattamente questo problema:
+implementa il risolutore completo con backtracking.
+L'esercizio~136 (\fn{knights-tour}, cammino del cavallo) applica
+lo stesso schema a un dominio diverso: lo stato è la sequenza di
+caselle visitate, il vincolo è non rivisitare nessuna.
+Entrambi sono esercizi collaterali: non sono nel percorso minimo,
+ma chi li fa consolida il backtracking su problemi di difficoltà reale.
 \end{workbook}
 
 % ================================================================
@@ -551,9 +560,11 @@ Dati che vengono dall'esterno: file, terminale, stringhe da interpretare.
 
 \begin{workbook}
 \textbf{Prima di andare al Capitolo~8:}\\[4pt]
-Completa gli esercizi \textbf{121--132} (core del capitolo).
-Gli esercizi 133--135 (Sudoku) sono facoltativi ma consigliati.\\[4pt]
-Priorità: \textbf{123, 126, 127, 129, 131}.
-Questi cinque coprono generate-and-test, stato/scelta/vincolo,
-permutazioni, N-Queens e la ricerca della prima soluzione.
+Completa gli esercizi \textbf{124--135} (core del capitolo).
+L'esercizio~136 (cammino del cavallo) è facoltativo.\\[4pt]
+Priorità: \textbf{124, 125, 126, 127, 134}.
+L'esercizio~124 (subsets) insegna lo schema base;
+125 (permutations) e 126 (combinations) lo variano;
+127 (somma-a-target) aggiunge il pruning;
+134 (N-Queens) è la sintesi del capitolo.
 \end{workbook}
