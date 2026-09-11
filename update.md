@@ -1,22 +1,28 @@
-# AI-KB INCREMENTAL UPDATE
+# AI-KB Incremental Synchronization
 
-You are the **AI-KB Maintenance Agent**.
+## Role
 
-Your task is to reconcile the existing `.ai-docs/` Knowledge Base with the **current state of the workspace**.
+You are the project's **AI-KB Maintenance Agent**.
 
-Apply **AI-KB Specification v1.0**.
+Your task is to incrementally reconcile the AI Knowledge Base with the current project state according to **AI-KB Specification v1.1**.
 
-This is an **incremental update**, not a complete onboarding.
+This is a synchronization operation, not a full onboarding operation.
 
-Do NOT rebuild the entire AI-KB unless the existing structure is fundamentally invalid.
-
-Do NOT modify project source files.
+Do not modify project source code unless explicitly instructed.
 
 ---
 
-# PHASE 1 — LOAD CURRENT KNOWLEDGE
+# Phase 1 — Load the bootstrap and router
 
-Load:
+The project bootstrap is:
+
+```text
+AGENTS.md
+```
+
+Use it to identify the AI-KB entry point.
+
+Then load only:
 
 ```text
 .ai-docs/index.md
@@ -24,17 +30,17 @@ Load:
 .ai-docs/system-rules.md
 ```
 
-Do NOT automatically load every AI-KB document.
+when they exist.
 
-Use `index.md` to determine which documents may be affected.
+Do not load the entire AI-KB initially.
 
 ---
 
-# PHASE 2 — DETECT PROJECT CHANGES
+# Phase 2 — Detect project changes
 
-Inspect the current workspace for changes relevant to the AI-KB.
+Determine whether relevant project changes have occurred since the AI-KB was last synchronized.
 
-Look for changes affecting:
+Check, where applicable:
 
 - architecture;
 - components;
@@ -47,106 +53,87 @@ Look for changes affecting:
 - conventions;
 - data structures;
 - tests;
-- project objectives;
-- project state;
-- significant design decisions.
+- objectives;
+- current state;
+- important decisions;
+- documentation.
 
-Use available version-control information when present.
+Use version-control history when available.
 
-If version control is unavailable, compare the current project state with the existing AI-KB and inspect relevant files selectively.
+If version control is unavailable, inspect the relevant workspace areas selectively.
 
-Do NOT perform an unnecessary exhaustive analysis.
+Do not perform an unnecessary full-project comparison.
 
 ---
 
-# PHASE 3 — IMPACT ANALYSIS
+# Phase 3 — Classify impact
 
-For each detected change, determine whether it affects the AI-KB.
-
-Classify changes as:
-
-```text
-NO IMPACT
-LOCAL IMPACT
-STRUCTURAL IMPACT
-GLOBAL IMPACT
-```
+Classify detected changes as:
 
 ### NO IMPACT
 
-The change does not affect persistent project knowledge.
+No AI-KB update is necessary.
 
-Do nothing.
+### LOCAL
 
-### LOCAL IMPACT
+Only one or a small number of knowledge documents are affected.
 
-Only one or a small number of AI-KB documents require updating.
+### STRUCTURAL
 
-Update only those documents.
+The document structure, dependencies, routing, or project architecture changed.
 
-### STRUCTURAL IMPACT
+### GLOBAL
 
-The change affects architecture, modules, dependencies or routing.
+Project identity, objectives, major architecture, or broad operating assumptions changed.
 
-Update the affected documents and `index.md` when necessary.
-
-### GLOBAL IMPACT
-
-The change alters fundamental project assumptions, objectives or architecture.
-
-Re-evaluate the relevant AI-KB sections and update them accordingly.
-
-Do NOT automatically rebuild unrelated documentation.
+Use the smallest synchronization scope compatible with correctness.
 
 ---
 
-# PHASE 4 — SELECTIVE LOADING
+# Phase 4 — Selective loading
 
-For each affected area:
+For LOCAL, STRUCTURAL, or GLOBAL changes:
 
-1. identify the corresponding AI-KB document using `index.md`;
-2. load the affected document;
-3. inspect the relevant project source;
-4. compare the two;
-5. update only the information that is actually obsolete or missing.
+1. identify affected AI-KB documents;
+2. identify their dependencies;
+3. load the relevant documents;
+4. inspect the corresponding project evidence;
+5. expand context only when necessary.
 
-If a dependency is discovered, load the additional document only when required.
-
-Use progressive loading.
+Do not reload unrelated AI-KB documents.
 
 ---
 
-# PHASE 5 — RECONCILIATION
+# Phase 5 — Reconcile knowledge
 
-The current project state takes precedence over stale AI-KB information.
+Compare the AI-KB with current project evidence.
 
-When a discrepancy is found:
+Use this precedence:
 
 ```text
-CURRENT PROJECT
-      ↓
-authoritative
-      ↓
-update AI-KB
+current explicit user instruction
+        >
+current project state
+        >
+primary project documentation/source
+        >
+AI-KB
+        >
+AI inference
 ```
 
-Do not preserve obsolete information merely because it already exists in `.ai-docs/`.
+When the AI-KB is stale:
 
-Do not delete historical decision records merely because their decisions are no longer active.
+- update it if the knowledge remains relevant;
+- supersede it if the information changed;
+- deprecate or archive it if historically relevant;
+- remove it if it has no remaining value.
 
-Instead, update their status:
-
-```text
-active
-deprecated
-archived
-```
-
-when appropriate.
+Do not silently rewrite historical decisions.
 
 ---
 
-# PHASE 6 — STATE UPDATE
+# Phase 6 — Update project state
 
 Update:
 
@@ -154,17 +141,22 @@ Update:
 .ai-docs/state.md
 ```
 
-when the project state has materially changed.
+when the project's current status changed.
 
-Keep the file concise.
+Maintain:
 
-Remove obsolete status information rather than continuously appending history.
+- Implemented;
+- In progress;
+- Planned;
+- Blocked;
+- Known issues;
+- Recent structural changes.
 
-Record only information useful for future work.
+Do not record trivial edits.
 
 ---
 
-# PHASE 7 — ROUTING UPDATE
+# Phase 7 — Update routing
 
 Update:
 
@@ -172,134 +164,102 @@ Update:
 .ai-docs/index.md
 ```
 
-if any of the following changed:
+when any of the following changed:
 
-- documents added;
-- documents removed;
-- documents renamed;
-- document IDs changed;
-- project classification changed;
-- project objective changed;
-- routing relevance changed.
+- project identity;
+- project type;
+- objective;
+- high-level status;
+- document structure;
+- document IDs;
+- document paths;
+- routing information;
+- active documents.
 
-Keep `index.md` below approximately 500 tokens.
-
----
-
-# PHASE 8 — METADATA UPDATE
-
-For every modified document:
-
-1. update `updated`;
-2. update `volatility` if appropriate;
-3. update `confidence` if the evidence changed;
-4. update `source` when appropriate;
-5. update `depends_on` if dependencies changed;
-6. update `related` if relationships changed;
-7. update `triggers` if task relevance changed.
-
-Do not modify metadata without a reason.
+Do not modify the index for changes that do not affect routing.
 
 ---
 
-# PHASE 9 — DEAD KNOWLEDGE
+# Phase 8 — Update specialized documents
 
-Identify AI-KB documents that are:
+Update only documents affected by the detected changes.
 
-- obsolete;
-- duplicated;
-- empty;
-- no longer useful;
-- disconnected from the current project.
+Ensure:
 
-For each:
+- metadata remains valid;
+- `updated` is current;
+- IDs remain stable where possible;
+- dependencies remain correct;
+- obsolete references are repaired;
+- duplicated knowledge is eliminated.
 
-### Useful but obsolete
-
-Update it.
-
-### Historical but still useful
-
-Mark it:
-
-```yaml
-status: archived
-```
-
-or:
-
-```yaml
-status: deprecated
-```
-
-### Completely useless
-
-Remove it and update `index.md`.
-
-Never accumulate dead documentation.
+Do not create a new document when an existing document can be updated cleanly.
 
 ---
 
-# PHASE 10 — VALIDATION
+# Phase 9 — Validate bootstrap
 
-Before finishing, verify:
-
-1. all active document IDs are unique;
-2. all `depends_on` references resolve;
-3. `index.md` contains all active documents;
-4. no active document is orphaned;
-5. metadata is valid;
-6. obsolete information has been removed or marked appropriately;
-7. facts and inferences remain distinguishable;
-8. no unsupported information has been introduced;
-9. `.ai-docs/` reflects the current project;
-10. the resulting KB remains minimal.
-
----
-
-# PHASE 11 — FINAL REPORT
-
-Provide a concise report:
+Verify that:
 
 ```text
-Update status:
-NO CHANGES / UPDATED
+AGENTS.md
+```
 
-Project areas inspected:
-- ...
+still:
 
+- exists;
+- points to `.ai-docs/index.md`;
+- describes the correct AI-KB startup process;
+- does not contain duplicated project knowledge.
+
+If the project uses a tool-specific adapter, verify that it still correctly delegates to `AGENTS.md`.
+
+---
+
+# Phase 10 — Validate the AI-KB
+
+Verify:
+
+- all active documents are represented in `index.md`;
+- IDs are unique;
+- `depends_on` references resolve;
+- internal references are valid;
+- metadata is valid;
+- no significant duplication remains;
+- obsolete documents are handled correctly;
+- current project state is reflected;
+- unsupported assumptions are not presented as facts;
+- the AI-KB remains minimal and routable.
+
+---
+
+# Phase 11 — Final report
+
+Return a concise report:
+
+```text
+Synchronization status:
+Changes detected:
 Documents updated:
-- ...
-
-Documents created:
-- ...
-
+Documents added:
 Documents archived/removed:
-- ...
-
-Structural changes:
-- ...
-
-Potential inconsistencies:
-- ...
+Routing changes:
+Bootstrap status:
+Remaining UNKNOWN items:
 ```
 
-Do not provide a long narrative.
+Do not produce a historical changelog unless explicitly requested.
 
 ---
 
-# OPERATING PRINCIPLE
+# Operating principles
 
-The purpose of this protocol is not to keep a historical diary.
-
-The purpose is to keep the AI-KB:
-
-```text
-accurate
-current
-minimal
-routable
-useful
-```
-
-Only persistent knowledge that can improve future AI work should remain in `.ai-docs/`.
+- Synchronize incrementally.
+- Prefer selective inspection.
+- Current project state beats stale AI-KB information.
+- Never fabricate missing information.
+- Do not update documents unnecessarily.
+- Do not turn the AI-KB into a project diary.
+- Do not duplicate project knowledge.
+- Preserve important historical decisions.
+- Keep the AI-KB small, current, and routable.

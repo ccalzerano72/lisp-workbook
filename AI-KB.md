@@ -1,57 +1,167 @@
 # AI Knowledge Base Specification
 
-**Version:** 1.0
+**Version:** 1.1
 
 ## 1. Purpose
 
-This specification defines a standard architecture and operating protocol for AI-oriented project knowledge bases.
+This specification defines a lightweight, persistent, tool-independent knowledge system for AI agents working on a project.
 
-An AI-KB is a compact, structured, incrementally loadable knowledge layer that enables AI agents to work effectively on a project across multiple sessions.
-
-The AI-KB is **not a copy of the project** and must not attempt to document everything.
-
-Its purpose is to maximize:
+The system is designed to maximize:
 
 - relevant context;
 - reliability;
+- freshness;
 - traceability;
-- maintainability;
+- efficient context loading;
 
 while minimizing:
 
-- context size;
-- redundant information;
-- unnecessary file loading;
-- obsolete knowledge.
+- unnecessary context;
+- duplicated information;
+- stale knowledge;
+- uncontrolled growth of documentation.
+
+The AI-KB is intended to be usable by different AI agents and development environments without making the knowledge itself dependent on a specific tool.
 
 ---
 
-# 2. Core Principles
+## 2. Architecture
 
-Every AI-KB MUST follow these principles:
+The system has four layers:
 
-1. **Minimality** — store only knowledge useful for future AI work.
-2. **Non-duplication** — do not reproduce information already obvious from project files.
-3. **Modularity** — separate independent knowledge into focused documents.
-4. **Lazy loading** — load only knowledge relevant to the current task.
-5. **Progressive disclosure** — start with minimal context and expand when necessary.
-6. **Traceability** — distinguish facts, inferences and unknowns.
-7. **Freshness** — keep the KB synchronized with significant project changes.
-8. **Human readability** — use Markdown as the primary content format.
-9. **Machine routability** — metadata must support efficient document selection.
-10. **Source precedence** — current project reality takes precedence over stale KB information.
+```text
+Bootstrap layer
+    ↓
+AGENTS.md / tool-specific adapter
+    ↓
+Routing layer
+    ↓
+.ai-docs/index.md
+    ↓
+Knowledge layer
+    ↓
+.ai-docs/*.md
+```
 
----
+Additional project-level files:
 
-# 3. Standard Location
+```text
+AI-KB.md       Specification of the AI-KB system
+onboard.md     Initial creation/reconstruction procedure
+update.md      Incremental synchronization procedure
+```
 
-The project AI-KB MUST be located at:
+### 2.1 Bootstrap layer
+
+The bootstrap layer solves a fundamental problem:
+
+> A new AI session cannot use `.ai-docs/index.md` unless the agent first knows that the file exists.
+
+`AGENTS.md` is therefore the canonical project-level bootstrap file.
+
+Its responsibilities are limited to:
+
+- directing the agent to `.ai-docs/index.md`;
+- defining the startup procedure;
+- defining source precedence;
+- pointing to `onboard.md` and `update.md`;
+- defining basic AI-KB operating principles.
+
+It must **not** contain detailed project knowledge.
+
+### 2.2 Tool adapters
+
+Different AI tools may use different project-level instruction mechanisms.
+
+The canonical instructions remain in `AGENTS.md`.
+
+When a tool does not natively load `AGENTS.md`, a minimal adapter MAY be provided.
+
+Example:
+
+```text
+CLAUDE.md
+    ↓
+@AGENTS.md
+```
+
+Adapters must not duplicate the contents of `AGENTS.md`.
+
+Tool-specific rules may be added only when they are genuinely specific to that tool.
+
+### 2.3 Knowledge layer
+
+Project knowledge is stored under:
 
 ```text
 .ai-docs/
 ```
 
-Minimum structure:
+The AI-KB is independent from the bootstrap mechanism.
+
+---
+
+## 3. Core principles
+
+### 3.1 Minimality
+
+Create only documents that provide real routing or knowledge value.
+
+Do not create empty placeholder directories or documents.
+
+### 3.2 Non-duplication
+
+Each significant piece of knowledge should have one canonical location.
+
+Other documents should reference it rather than duplicate it.
+
+### 3.3 Modularity
+
+Each document should have a clear scope and purpose.
+
+### 3.4 Lazy loading
+
+Do not load the entire AI-KB at session startup.
+
+Start with the router and load relevant knowledge progressively.
+
+### 3.5 Progressive disclosure
+
+Load additional context only when the current context is insufficient.
+
+### 3.6 Traceability
+
+Important decisions and non-obvious project constraints should be traceable to their source or decision record.
+
+### 3.7 Freshness
+
+Current project state takes precedence over stale documentation.
+
+### 3.8 Human readability
+
+Documents must remain understandable and useful to humans.
+
+### 3.9 Machine routability
+
+Documents must contain sufficient metadata and descriptions for an AI agent to determine when they are relevant.
+
+### 3.10 Source precedence
+
+When information conflicts, use:
+
+1. current explicit user instruction;
+2. actual current project/workspace state;
+3. primary project documentation and source files;
+4. AI-KB documentation;
+5. AI inference.
+
+Never allow stale AI-KB information to override current project evidence.
+
+---
+
+## 4. Required project structure
+
+The minimum AI-KB is:
 
 ```text
 .ai-docs/
@@ -60,101 +170,139 @@ Minimum structure:
 └── state.md
 ```
 
-Additional directories MUST be created only when justified by the project.
-
-Possible directories include:
+Additional directories are created only when justified:
 
 ```text
-architecture/
-decisions/
-standards/
-modules/
-knowledge/
-research/
-literature/
-data/
-tasks/
+.ai-docs/
+├── architecture/
+├── decisions/
+├── standards/
+├── modules/
+├── knowledge/
+├── research/
+├── literature/
+├── data/
+└── tasks/
 ```
 
-Do not create empty, redundant or irrelevant directories.
+The exact structure is project-dependent.
 
-The target is the **minimum sufficient architecture**.
+The AI-KB must not become a mirror of the source repository.
 
 ---
 
-# 4. Mandatory Documents
+## 5. Bootstrap
 
-## 4.1 index.md
+A compatible project should contain:
 
-`index.md` is the **master routing layer**.
+```text
+AGENTS.md
+```
 
-It MUST remain compact and SHOULD stay below 500 tokens.
+at the project root.
 
-It MUST contain:
+`AGENTS.md` is the entry point for agents that support project-level agent instructions.
+
+Its first responsibility is to direct the agent to:
+
+```text
+.ai-docs/index.md
+```
+
+The normal startup sequence is therefore:
+
+```text
+AGENTS.md
+    ↓
+.ai-docs/index.md
+    ↓
+task classification
+    ↓
+relevant AI-KB documents
+    ↓
+actual project sources when required
+```
+
+The AI-KB specification does not assume that every AI tool automatically reads `AGENTS.md`.
+
+Tool-specific adapters may provide equivalent bootstrapping.
+
+---
+
+## 6. index.md
+
+`index.md` is the AI-KB router.
+
+It should normally remain below approximately 500 tokens.
+
+It should contain:
 
 - project identity;
 - project type;
 - primary objective;
-- concise current status;
-- complete map of active AI-KB documents.
+- current high-level status;
+- complete map of active AI-KB documents;
+- short descriptions;
+- task/domain routing information.
 
-Each document entry SHOULD include:
+It should **not** contain detailed project knowledge.
 
-- ID;
-- path;
-- one-line description;
-- relevant task/domain.
-
-`index.md` MUST NOT contain detailed project knowledge.
-
-Its purpose is:
-
-> determine which knowledge documents should be loaded for a task.
-
----
-
-## 4.2 state.md
-
-`state.md` represents the current project state.
-
-It SHOULD contain:
+Typical structure:
 
 ```text
-Implemented
-In progress
-Planned
-Blocked
-Known issues
-Recent structural changes
+Project identity
+Project type
+Primary objective
+Current status
+
+Document map:
+ID | Path | Description | Relevant tasks/domains
 ```
 
-Keep it concise.
-
-State information is inherently volatile and MUST NOT be assumed to be authoritative when the actual project can be checked.
+Every active AI-KB document should be represented in the index.
 
 ---
 
-## 4.3 system-rules.md
+## 7. state.md
 
-`system-rules.md` defines how future AI agents interact with the AI-KB.
+`state.md` describes the current project state.
 
-It MUST cover:
+Typical sections:
 
-- startup;
-- task routing;
-- lazy loading;
-- progressive context expansion;
+- Implemented
+- In progress
+- Planned
+- Blocked
+- Known issues
+- Recent structural changes
+
+It should describe the current state, not become a chronological project diary.
+
+---
+
+## 8. system-rules.md
+
+`system-rules.md` contains project-specific operating rules for AI agents.
+
+It may define:
+
+- startup behavior;
+- routing rules;
+- lazy-loading rules;
 - source precedence;
 - conflict resolution;
-- maintenance.
+- project conventions;
+- maintenance rules.
+
+It must not duplicate general project knowledge.
 
 ---
 
-# 5. Document Metadata
+## 9. Metadata
 
-Every AI-KB Markdown document SHOULD use YAML frontmatter.
+AI-KB documents should use YAML frontmatter.
 
-Minimum fields:
+Required fields:
 
 ```yaml
 ---
@@ -178,37 +326,9 @@ related:
 triggers:
 ```
 
----
+### 9.1 Standard values
 
-# 6. Metadata Definitions
-
-## 6.1 id
-
-A stable unique logical identifier.
-
-Format:
-
-```text
-lowercase-kebab-case
-```
-
-Example:
-
-```yaml
-id: architecture-overview
-```
-
-IDs MUST be unique within the AI-KB.
-
-IDs SHOULD remain stable even if the physical file is moved.
-
----
-
-## 6.2 type
-
-Defines the semantic role of a document.
-
-Standard values:
+`type`:
 
 ```text
 architecture
@@ -231,15 +351,7 @@ index
 other
 ```
 
-Projects MAY introduce additional domain-specific types when necessary.
-
----
-
-## 6.3 scope
-
-Defines the semantic scope.
-
-Allowed values:
+`scope`:
 
 ```text
 global
@@ -248,11 +360,7 @@ module
 task
 ```
 
----
-
-## 6.4 status
-
-Allowed values:
+`status`:
 
 ```text
 active
@@ -261,15 +369,7 @@ deprecated
 archived
 ```
 
-Only `active` documents SHOULD normally be selected for new tasks.
-
----
-
-## 6.5 priority
-
-Defines loading priority for task routing.
-
-Allowed values:
+`priority`:
 
 ```text
 critical
@@ -278,27 +378,7 @@ medium
 low
 ```
 
-Priority indicates expected usefulness during task execution, not overall project importance.
-
----
-
-## 6.6 updated
-
-Date of the latest substantive update.
-
-Format:
-
-```text
-YYYY-MM-DD
-```
-
----
-
-## 6.7 volatility
-
-Indicates how quickly the information may become obsolete.
-
-Allowed values:
+`volatility`:
 
 ```text
 low
@@ -306,21 +386,7 @@ medium
 high
 ```
 
-Examples:
-
-```text
-Architecture principles → low
-API specification       → medium
-Current project state   → high
-```
-
----
-
-## 6.8 confidence
-
-Indicates the reliability of the documented information.
-
-Allowed values:
+`confidence`:
 
 ```text
 high
@@ -328,15 +394,7 @@ medium
 low
 ```
 
-Confidence refers to the strength of the underlying evidence, not to the AI's subjective confidence.
-
----
-
-## 6.9 source
-
-Identifies the origin of the information.
-
-Allowed values:
+`source`:
 
 ```text
 repository
@@ -347,215 +405,103 @@ external
 inference
 ```
 
-Multiple values are allowed.
+`depends_on` must contain document IDs, not paths.
+
+`related` contains non-essential related document IDs.
+
+`triggers` contains concepts or keywords useful for routing.
 
 ---
 
-## 6.10 depends_on
+## 10. Document IDs
 
-Lists documents that are semantically required to understand the current document.
+Every AI-KB document should have a stable logical ID.
 
-Example:
+Recommended format:
 
-```yaml
-depends_on:
-  - architecture-overview
-  - data-model
+```text
+lowercase-kebab-case
 ```
 
-Dependencies MUST reference document IDs, not paths.
+Examples:
 
----
-
-## 6.11 related
-
-Lists documents that may be useful but are not required.
-
-Example:
-
-```yaml
-related:
-  - authentication-decision
-  - security-standard
+```text
+system-rules
+project-architecture
+authentication
+database-schema
+adr-003-api-versioning
 ```
 
----
-
-## 6.12 triggers
-
-Lists keywords or concepts associated with the document.
-
-Example:
-
-```yaml
-triggers:
-  - authentication
-  - login
-  - JWT
-  - OAuth
-  - session
-```
-
-Triggers SHOULD improve task routing.
+IDs should remain stable when possible, even if files are reorganized.
 
 ---
 
-# 7. Knowledge Classification
+## 11. Task routing
 
-Information SHOULD be classified as:
+The agent should classify documents relative to the current task as:
+
+### REQUIRED
+
+The document is necessary to perform the task correctly.
+
+### CANDIDATE
+
+The document may become relevant but is not currently necessary.
+
+### IRRELEVANT
+
+The document is unrelated to the current task.
+
+The agent should initially load the smallest useful context.
+
+Normally this means approximately 2–3 high-value documents when specialized knowledge is required.
+
+This is a heuristic, not a fixed limit.
+
+The agent must expand context when dependencies, ambiguities, or missing information require it.
+
+---
+
+## 12. Knowledge certainty
+
+Agents must distinguish:
 
 ### FACT
 
-Directly supported by:
-
-- current project files;
-- explicit user instructions;
-- reliable project documentation.
+Directly supported by project evidence or an authoritative source.
 
 ### INFERENCE
 
-Reasonably derived from available evidence but not explicitly documented.
+Derived from available evidence but not explicitly established.
 
 ### UNKNOWN
 
-Information that cannot currently be established.
+Not established by available evidence.
 
-AI agents MUST NOT silently convert an inference into a fact.
-
-Unknown information MUST NOT be fabricated.
+Agents must never convert an inference or unknown into an asserted fact.
 
 ---
 
-# 8. Source-of-Truth Hierarchy
+## 13. Source of truth
 
-When sources conflict, use this precedence:
+When an AI-KB document conflicts with the current project:
 
 ```text
-1. Current explicit user instruction
-2. Actual current project/workspace state
-3. Primary project documentation
-4. AI-KB
-5. AI inference
+current project > stale AI-KB
 ```
 
-The AI-KB is therefore a **knowledge-routing layer**, not an unquestionable source of truth.
+The AI-KB must then be reconciled.
 
-If an AI-KB document conflicts with the actual project:
+Historical decisions should not be silently rewritten.
 
-1. trust the current project;
-2. identify the discrepancy;
-3. update the AI-KB when appropriate.
+Instead, they should be superseded, deprecated, or archived when appropriate.
 
 ---
 
-# 9. Lazy-Loading Protocol
+## 14. Decision records
 
-At the beginning of a new session:
-
-```text
-LOAD .ai-docs/index.md
-```
-
-Do NOT automatically scan the entire workspace or the entire AI-KB.
-
-For every task:
-
-### Step 1 — Classify the task
-
-Identify:
-
-- domain;
-- relevant components;
-- required knowledge;
-- likely dependencies.
-
-### Step 2 — Route documents
-
-Use:
-
-- type;
-- scope;
-- priority;
-- triggers;
-- dependencies;
-- current state.
-
-Classify candidate documents as:
-
-```text
-REQUIRED
-CANDIDATE
-IRRELEVANT
-```
-
-### Step 3 — Initial loading
-
-Load the smallest useful context first.
-
-Normally begin with approximately 2–3 high-value documents.
-
-This is a heuristic, NOT a hard limit.
-
-### Step 4 — Progressive expansion
-
-If context is insufficient:
-
-```text
-discover dependency
-        ↓
-select document
-        ↓
-load document
-        ↓
-continue analysis
-```
-
-Stop loading when sufficient context has been obtained.
-
----
-
-# 10. Context Isolation
-
-Documents unrelated to the current task SHOULD remain unloaded.
-
-The existence of a document in `.ai-docs/` does not justify loading it.
-
-Large documents SHOULD be split when their contents contain independently useful knowledge.
-
----
-
-# 11. Maintenance
-
-Update the AI-KB when changes affect:
-
-- architecture;
-- components;
-- APIs;
-- workflows;
-- conventions;
-- dependencies;
-- project state;
-- significant design decisions;
-- objectives.
-
-Routine local changes SHOULD NOT automatically trigger KB updates.
-
-When updating:
-
-1. update the affected document;
-2. update its `updated` field;
-3. update `state.md` when appropriate;
-4. update `index.md` if routing or structure changed.
-
-Obsolete documents SHOULD be updated, replaced or archived.
-
-Dead documentation MUST NOT accumulate.
-
----
-
-# 12. Decision Records
-
-Significant architectural or design decisions SHOULD be stored under:
+Important architectural or project decisions should be recorded under:
 
 ```text
 .ai-docs/decisions/
@@ -564,10 +510,12 @@ Significant architectural or design decisions SHOULD be stored under:
 Recommended naming:
 
 ```text
-ADR-NNN.md
+ADR-001.md
+ADR-002.md
+ADR-003.md
 ```
 
-Each decision SHOULD contain:
+Recommended structure:
 
 ```text
 Decision
@@ -588,67 +536,94 @@ Rationale: UNKNOWN
 
 ---
 
-# 13. Document Design
+## 15. Maintenance
 
-AI-KB documents SHOULD be:
+The AI-KB should be updated after significant changes to:
 
-- concise;
-- focused;
-- modular;
-- independently understandable;
-- low in redundancy;
-- easy to route;
-- easy to update.
+- architecture;
+- components;
+- APIs;
+- interfaces;
+- dependencies;
+- configuration;
+- workflows;
+- conventions;
+- data structures;
+- tests;
+- objectives;
+- project state;
+- important decisions.
 
-Prefer:
+Trivial edits do not require AI-KB updates.
 
-```text
-authentication.md
-database.md
-deployment.md
-```
+When knowledge becomes obsolete:
 
-over:
+1. update it if still useful;
+2. deprecate or archive it if historically relevant;
+3. remove it if it has no remaining value.
 
-```text
-everything.md
-```
-
----
-
-# 14. Project-Specific Extensions
-
-Projects MAY extend this specification with:
-
-- additional document types;
-- additional metadata;
-- additional directories;
-- domain-specific routing rules.
-
-Extensions MUST NOT contradict the core principles of this specification.
+Avoid dead documents.
 
 ---
 
-# 15. Versioning
+## 16. Initialization
 
-This specification uses:
+`onboard.md` defines the procedure for:
+
+- first-time AI-KB creation;
+- reconstruction;
+- structural repair;
+- migration of an existing AI-KB.
+
+It should inspect the project and build the minimum sufficient knowledge architecture.
+
+---
+
+## 17. Incremental synchronization
+
+`update.md` defines the procedure for reconciling the AI-KB with project changes.
+
+It must prefer selective inspection over rebuilding the entire AI-KB.
+
+---
+
+## 18. Specification versus project knowledge
+
+The following are system-level files:
+
+```text
+AI-KB.md
+AGENTS.md
+onboard.md
+update.md
+```
+
+Project-specific knowledge belongs under:
+
+```text
+.ai-docs/
+```
+
+`AI-KB.md` must not be copied into `.ai-docs/`.
+
+---
+
+## 19. Versioning
+
+The specification uses:
 
 ```text
 MAJOR.MINOR
 ```
 
-Breaking changes increment MAJOR.
+A major version indicates structural or behavioral incompatibility.
 
-Backward-compatible additions increment MINOR.
-
-The specification version SHOULD be recorded in project onboarding metadata.
+A minor version indicates backward-compatible additions or clarifications.
 
 ---
 
-# 16. Primary Objective
+## 20. Design objective
 
-The objective of an AI-KB is NOT to maximize documentation.
+The AI-KB exists to provide:
 
-The objective is:
-
-> **maximize relevant, reliable and current context while minimizing the amount of information an AI agent must load to complete the current task.**
+> the smallest reliable and current set of project context required for an AI agent to perform a task correctly.

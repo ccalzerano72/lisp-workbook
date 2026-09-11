@@ -1,90 +1,135 @@
-# AI-KB PROJECT ONBOARDING
+# AI-KB Initialization and Reconstruction
 
-You are the **Lead Knowledge Architect and System Specialist** for this workspace.
+## Role
 
-Your task is to initialize or reconstruct the project's AI Knowledge Base according to **AI-KB Specification v1.0**.
+You are the project's **AI-KB Initialization Agent**.
 
-The AI-KB MUST be located at:
+Your task is to create, reconstruct, repair, or reorganize the project's AI Knowledge Base according to **AI-KB Specification v1.1**.
+
+The AI-KB must be:
+
+- minimal;
+- accurate;
+- current;
+- non-duplicated;
+- modular;
+- routable;
+- human-readable;
+- machine-readable.
+
+Do not modify project source code unless explicitly instructed.
+
+---
+
+# Phase 0 — Load the specification
+
+If `AI-KB.md` exists at the project root, read it first.
+
+Do not copy `AI-KB.md` into `.ai-docs/`.
+
+If it does not exist, continue using the rules defined by this document and the referenced AI-KB architecture.
+
+---
+
+# Phase 1 — Inspect the workspace
+
+Inspect the workspace systematically.
+
+Determine:
+
+- project type;
+- primary objective;
+- major components;
+- architecture;
+- important technologies;
+- dependencies;
+- interfaces;
+- configuration;
+- workflows;
+- important conventions;
+- tests;
+- current project state;
+- important decisions;
+- existing documentation.
+
+Possible project classifications:
+
+```text
+software
+editorial
+research
+study
+hybrid
+other
+```
+
+Do not infer details that are not supported by project evidence.
+
+Use:
+
+```text
+FACT
+INFERENCE
+UNKNOWN
+```
+
+where appropriate.
+
+---
+
+# Phase 2 — Inspect the existing AI-KB
+
+Check whether:
 
 ```text
 .ai-docs/
 ```
 
-Do not ask the user for confirmation during the onboarding process unless a destructive or irreversible operation would otherwise be required.
-
----
-
-# PHASE 0 — LOAD THE SPECIFICATION
-
-Locate and read `AI-KB.md` if it is available in the workspace or in the standard onboarding resources.
-
-Apply **AI-KB Specification v1.0** throughout this process.
-
-Do NOT create a copy of `AI-KB.md` inside `.ai-docs/`.
-
-If `AI-KB.md` is not physically available, continue using the AI-KB Specification v1.0 defined by this onboarding protocol.
-
----
-
-# PHASE 1 — PROJECT DISCOVERY
-
-Inspect the workspace systematically.
-
-Analyze:
-
-- directory structure;
-- important files;
-- configuration;
-- source code;
-- documentation;
-- dependencies;
-- tests;
-- data;
-- build/deployment configuration;
-- architecture;
-- project state;
-- significant design decisions.
-
-Do NOT modify project source files during discovery.
-
-Classify the project as:
-
-```text
-SOFTWARE / CODE
-EDITORIAL / WRITING
-SCIENTIFIC / ACADEMIC RESEARCH
-STUDY / EDUCATIONAL
-HYBRID / OTHER
-```
-
-For HYBRID projects, identify the principal components.
-
-Do not infer information that cannot be supported by the workspace.
-
----
-
-# PHASE 2 — EXISTING AI-KB
-
-Check whether `.ai-docs/` already exists.
+already exists.
 
 If it exists:
 
-1. inspect its structure;
-2. validate its metadata;
-3. identify obsolete or inconsistent information;
-4. preserve valid existing knowledge;
-5. repair or reorganize it when necessary;
-6. do NOT blindly overwrite it.
+- preserve valid knowledge;
+- identify obsolete knowledge;
+- identify duplicated knowledge;
+- repair invalid metadata;
+- repair broken references;
+- reorganize documents when necessary;
+- avoid blindly overwriting existing knowledge.
 
-If no AI-KB exists, create it from scratch.
-
-The goal is to produce a **current, coherent and minimal** AI-KB.
+If it does not exist, create the minimum required structure.
 
 ---
 
-# PHASE 3 — DESIGN THE KNOWLEDGE ARCHITECTURE
+# Phase 3 — Create the bootstrap
 
-Create or maintain:
+Ensure that the project root contains:
+
+```text
+AGENTS.md
+```
+
+`AGENTS.md` is the canonical bootstrap entry point for compatible AI agents.
+
+It must:
+
+1. direct the agent to `.ai-docs/index.md`;
+2. define startup and routing behavior;
+3. define source precedence;
+4. reference `onboard.md` and `update.md`;
+5. remain short and generic.
+
+Do not place detailed project knowledge in `AGENTS.md`.
+
+If a tool requires a separate adapter, create only the minimal adapter required to reference `AGENTS.md`.
+
+Never duplicate the complete bootstrap instructions in multiple files.
+
+---
+
+# Phase 4 — Design the minimum sufficient AI-KB
+
+The minimum structure is:
 
 ```text
 .ai-docs/
@@ -93,7 +138,7 @@ Create or maintain:
 └── state.md
 ```
 
-Create additional directories only when justified.
+Create specialized directories or documents only when the project actually requires them.
 
 Possible areas include:
 
@@ -109,142 +154,58 @@ data/
 tasks/
 ```
 
-Do NOT create empty or irrelevant directories.
+Do not create empty directories merely because they are listed in the specification.
 
-Do NOT create documentation merely to mirror the repository structure.
-
-Design the **minimum sufficient architecture**.
+Do not create a mirror of the repository.
 
 ---
 
-# PHASE 4 — BUILD / UPDATE THE KNOWLEDGE BASE
+# Phase 5 — Build the router
 
-## index.md
+Create or update:
 
-Create or update the master routing document.
+```text
+.ai-docs/index.md
+```
 
-Keep it below approximately 500 tokens.
+It must remain concise.
 
-It MUST contain:
+Include:
 
 - project identity;
 - project type;
-- macro objective;
-- concise current status;
-- complete map of active AI-KB documents.
+- primary objective;
+- current high-level status;
+- complete active-document map;
+- document descriptions;
+- routing information.
 
-For every document include:
+Do not put detailed knowledge in the index.
+
+---
+
+# Phase 6 — Build the current state
+
+Create or update:
 
 ```text
-ID
-PATH
-DESCRIPTION
-TASK / DOMAIN
+.ai-docs/state.md
 ```
 
-Do not put detailed project knowledge into `index.md`.
+Describe:
+
+- implemented work;
+- current work;
+- planned work;
+- blockers;
+- known issues;
+- recent structural changes.
+
+Do not turn the document into a chronological diary.
 
 ---
 
-## state.md
-
-Create or update the current project state.
-
-Use concise sections such as:
-
-```text
-Implemented
-In progress
-Planned
-Blocked
-Known issues
-Recent structural changes
-```
-
-Clearly distinguish facts from uncertainty.
-
----
-
-## Specialized documents
-
-Create or update focused documents for knowledge that will be useful across future sessions.
-
-Every document SHOULD use AI-KB metadata.
-
-Minimum:
-
-```yaml
----
-id:
-type:
-scope:
-status:
-priority:
-updated:
----
-```
-
-Add optional metadata when useful:
-
-```yaml
-volatility:
-confidence:
-source:
-depends_on:
-related:
-triggers:
-```
-
-Avoid redundant documentation.
-
----
-
-# PHASE 5 — DECISION RECORDS
-
-Identify significant architectural or design decisions that can be reliably reconstructed.
-
-Store them under:
-
-```text
-.ai-docs/decisions/
-```
-
-Use:
-
-```text
-ADR-NNN.md
-```
-
-Do NOT invent historical rationale.
-
-If rationale cannot be established:
-
-```text
-Rationale: UNKNOWN
-```
-
----
-
-# PHASE 6 — VALIDATION
-
-Before finishing, verify:
-
-1. every active AI-KB document has valid metadata;
-2. every ID is unique;
-3. every `depends_on` ID exists;
-4. every active document is referenced by `index.md`;
-5. there are no broken references;
-6. there is no unnecessary duplication;
-7. unsupported assumptions are not recorded as facts;
-8. `.ai-docs/` reflects the current project;
-9. the architecture is minimal;
-10. `system-rules.md` follows AI-KB Specification v1.0.
-
-Fix discovered inconsistencies before finishing.
-
----
-
-# PHASE 7 — GENERATE SYSTEM RULES
+# Phase 7 — Build system rules
 
 Create or update:
 
@@ -252,70 +213,109 @@ Create or update:
 .ai-docs/system-rules.md
 ```
 
-It MUST instruct future AI agents to:
+Define project-specific AI operating rules where necessary.
 
-1. load only `index.md` at session startup;
-2. classify the current task;
-3. identify REQUIRED and CANDIDATE documents;
-4. initially load only the smallest useful context;
-5. progressively load additional documents when dependencies are discovered;
-6. keep unrelated project knowledge unloaded;
-7. prefer actual project state over stale AI-KB information;
-8. distinguish FACT, INFERENCE and UNKNOWN;
-9. update the AI-KB after significant structural changes.
+At minimum, cover:
 
-The rules MUST comply with AI-KB Specification v1.0.
+- routing;
+- lazy loading;
+- progressive context expansion;
+- source precedence;
+- conflict resolution;
+- AI-KB maintenance.
+
+Do not duplicate detailed project knowledge.
 
 ---
 
-# PHASE 8 — FINAL REPORT
+# Phase 8 — Create specialized knowledge
 
-After completing onboarding, provide a concise report:
+Create specialized documents only where they provide clear value.
+
+Each document must:
+
+- have a single clear purpose;
+- use valid YAML metadata;
+- have a stable ID;
+- have a clear scope;
+- identify dependencies when applicable;
+- be represented in `index.md`.
+
+Prefer several small focused documents over one large knowledge dump.
+
+---
+
+# Phase 9 — Record important decisions
+
+Create decision records under:
+
+```text
+.ai-docs/decisions/
+```
+
+when important architectural or project decisions are identifiable.
+
+Never fabricate historical rationale.
+
+Use:
+
+```text
+Rationale: UNKNOWN
+```
+
+when necessary.
+
+---
+
+# Phase 10 — Validate
+
+Before finishing, verify:
+
+- `AGENTS.md` exists;
+- `AGENTS.md` points to `.ai-docs/index.md`;
+- `index.md` exists;
+- `system-rules.md` exists;
+- `state.md` exists;
+- all active documents have valid metadata;
+- IDs are unique;
+- `depends_on` references valid document IDs;
+- all active documents are represented in the index;
+- no broken internal references remain;
+- no significant duplication exists;
+- no unsupported assumptions are presented as facts;
+- the AI-KB reflects the current project;
+- the AI-KB is no larger than necessary;
+- the bootstrap and AI-KB specification are not duplicated unnecessarily.
+
+---
+
+# Phase 11 — Final report
+
+Return a concise report containing:
 
 ```text
 Project type:
-Primary objective:
-
 AI-KB status:
-Created / Updated / Reconstructed
-
 Documents created:
-- ...
-
 Documents updated:
-- ...
-
+Documents archived/removed:
+Bootstrap status:
 Important findings:
-- ...
-
-Unknown / ambiguous areas:
-- ...
+Remaining UNKNOWN items:
 ```
 
 Do not provide a long narrative.
 
 ---
 
-# OPERATING PRINCIPLES
+# Operating principles
 
-The objective is NOT to document everything.
-
-Create the smallest reliable knowledge layer that allows future AI agents to understand and modify the project efficiently.
-
-Prefer:
-
-```text
-small + focused + routable + current
-```
-
-over:
-
-```text
-large + exhaustive + redundant
-```
-
-Never fabricate missing project knowledge.
-
-Never treat an old AI-KB document as more authoritative than the actual current project.
-
-When `.ai-docs/` conflicts with the project, reconcile the discrepancy and update the AI-KB.
+- Current project state beats stale AI-KB information.
+- User instructions beat all stored knowledge.
+- Never fabricate missing information.
+- Prefer primary evidence.
+- Keep documents small and focused.
+- Avoid duplication.
+- Prefer routing over exhaustive loading.
+- Expand context only when required.
+- Preserve historical decisions instead of silently rewriting them.
